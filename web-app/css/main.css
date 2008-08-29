@@ -283,6 +283,11 @@ th.desc a {
 .irclog-message {
     width: 80%;
 }
+.criteria {
+    background-color: yellow;
+    color: red;
+    font-weight: bold;
+}
 .notice .irclog-message {
     font-style: italic;
 }
