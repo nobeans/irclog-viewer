@@ -171,7 +171,7 @@ th.desc a {
 }
 
 .odd {
-    background: #f7f7aa;
+    background: #fff;
 }
 .even {
     background: #fff;
@@ -274,7 +274,6 @@ th.desc a {
 }
 
 .irclog-time {
-    text-align: right;
     width: 10em;
 }
 .irclog-nick {
@@ -283,18 +282,23 @@ th.desc a {
 .irclog-message {
     width: 80%;
 }
+
 .irclog-nick strong,
 .irclog-message strong {
     background-color: yellow;
     color: red;
     font-weight: bold;
 }
-.notice .irclog-message {
+
+.irclog-notice .irclog-message {
     font-style: italic;
+    padding-left: 3em;
+    border-left: 2px solid #aff;
+    background-color: #dff;
 }
-.privmsg .irclog-message {
+.irclog-privmsg .irclog-message {
 }
 
 /*
-div { border : 1px dotted red; }
+div,span { border : 1px dotted red; }
 */

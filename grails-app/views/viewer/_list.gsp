@@ -15,7 +15,7 @@
     </thead>
     <tbody>
     <g:each in="${irclogList}" status="i" var="irclog">
-      <tr class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type}">
+      <tr class="${(i % 2) == 0 ? 'odd' : 'even'} irclog-line irclog-${irclog.type}">
         <%--<td><a href="#${irclog.id}">■</a></td>--%>
         <td class="irclog-time"><g:dateFormat value="${irclog.time}" format="yyyy-MM-dd hh:mm:ss" /></td>
         <td class="irclog-nick">${irclog.nick?.encodeAsHTML()}</td>

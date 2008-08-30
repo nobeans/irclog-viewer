@@ -35,8 +35,7 @@ class ViewerController {
             max:       params.max ? Long.valueOf(params.max) : 50,
             offset:    params.offset ? Long.valueOf(params.offset) : 0
         ]
-        //criterion.findAll{ !(it.value instanceof String && it.value == '') }
-        criterion
+        criterion.findAll{ !(it.value instanceof String && it.value == '') }
     }
 
     private getIrclogList(criterion) {
@@ -124,6 +123,12 @@ class ViewerController {
     }
     private resolveBeginDate_today() {
         getCalendarAtZeroHourOfToday().getTime()
+    }
+    private resolveBeginDate_specified() {
+        getCalendarAtZeroHourOfToday().getTime()
+        cal.set(Calendar.YEAR,  0)
+        cal.set(Calendar.MONTH, 0)
+        cal.set(Calendar.DATE,  0)
     }
     private resolveBeginDate_week() {
         def cal = getCalendarAtZeroHourOfToday()
