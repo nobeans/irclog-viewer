@@ -1,5 +1,5 @@
 <div id="search">
-  <h1><g:message code="search.condition" /></h1>
+  <h1><g:message code="search.title" /></h1>
   <g:form action="index" method="post" >
     <label for="search-channel"><g:message code="search.channel" />:</label>
       <g:select name="channelId" from="${selectableChannels}" value="${criterion?.channelId}" optionKey="key" optionValue="value" />
