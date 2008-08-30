@@ -18,8 +18,8 @@
       <tr class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type}">
         <%--<td><a href="#${irclog.id}">■</a></td>--%>
         <td class="irclog-time"><g:dateFormat value="${irclog.time}" format="yyyy-MM-dd hh:mm:ss" /></td>
-        <td class="irclog-nick"><g:irclog value="${irclog.nick}" highlightKeys="${criterion.nicks}"/></td>
-        <td class="irclog-message"><g:irclog value="${irclog.message}" highlightKeys="${criterion.messages}"/></td>
+        <td class="irclog-nick">${irclog.nick?.encodeAsHTML()}</td>
+        <td class="irclog-message"><g:irclog value="${irclog.message}" /></td>
       </tr>
     </g:each>
     </tbody>

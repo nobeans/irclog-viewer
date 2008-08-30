@@ -283,7 +283,8 @@ th.desc a {
 .irclog-message {
     width: 80%;
 }
-.criteria {
+.irclog-nick strong,
+.irclog-message strong {
     background-color: yellow;
     color: red;
     font-weight: bold;
