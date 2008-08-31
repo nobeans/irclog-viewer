@@ -28,10 +28,8 @@ class ViewerController {
         def criterion = [
             scope:     params.scope,
             channelId: params.channelId,
-            nicks:     params.nick?.split(/\s+/) as List,    // スペース区切りで複数OR指定可能
-            messages:  params.message?.split(/\s+/) as List, // スペース区切りで複数OR指定可能
-            nick:      params.nick,                          // そのままのもとっておく
-            message:   params.message,                       // そのままのもとっておく
+            nick:      params.nick,
+            message:   params.message,
             max:       params.max ? Long.valueOf(params.max) : 50,
             offset:    params.offset ? Long.valueOf(params.offset) : 0
         ]
@@ -89,15 +87,17 @@ class ViewerController {
         query.args << "resolveBeginDate_${criterion.scope}"()
 
         // ニックネーム
-        if (criterion.nicks) {
-            query.hql += " and ( " + criterion.nicks.collect{"i.nick like ?"}.join(" or ") + " )"
-            query.args.addAll(criterion.nicks.collect{"%${it}%"})
+        def nicks = params.nick?.split(/\s+/) as List // スペース区切りで複数OR指定可能
+        if (nicks) {
+            query.hql += " and ( " + nicks.collect{"i.nick like ?"}.join(" or ") + " )"
+            query.args.addAll(nicks.collect{"%${it}%"})
         }
 
         // メッセージ
-        if (criterion.messages) {
-            query.hql += " and ( " + criterion.messages.collect{"i.message like ?"}.join(" or ") + " )"
-            query.args.addAll(criterion.messages.collect{"%${it}%"})
+        def messages = params.message?.split(/\s+/) as List // スペース区切りで複数OR指定可能
+        if (messages) {
+            query.hql += " and ( " + messages.collect{"i.message like ?"}.join(" or ") + " )"
+            query.args.addAll(messages.collect{"%${it}%"})
         }
 
         // GString→String変換
