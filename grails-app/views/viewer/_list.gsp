@@ -2,7 +2,7 @@
   <h1><g:message code="list.title" /></h1>
   <div class="paginateButtons">
     <g:paginate total="${irclogCount}" params="${criterion}" />
-    <span class="info">${Math.min(criterion.offset + 1, irclogCount)} - ${Math.min(criterion.offset + criterion.max, irclogCount)} 件表示 / ${irclogCount} 件中</span>
+    <span class="info">${Math.min(params.offset + 1, irclogCount)} - ${Math.min(params.offset + params.max, irclogCount)} 件表示 / ${irclogCount} 件中</span>
   </div>
   <table>
     <thead>

@@ -10,44 +10,42 @@ class ViewerController {
         // 検索条件をパースする。
         def criterion = parseCriterion(params)
 
-        // ページングのために、max/offsetをparamsにコピーしておく。
-        params.max = criterion.max
-        params.offset = criterion.offset
+        // ページングのために、max/offsetをセットアップする。
+        params.max = params.max?.toInteger() ?: 50
+        params.offset = params.offset?.toInteger() ?: 0
 
         // モデルを作成して、デフォルトビューへ。
         [
-            irclogList: getIrclogList(criterion),
+            irclogList: getIrclogList(criterion, [max:params.max, offset:params.offset]),
             irclogCount: countIrclogList(criterion),
             selectableChannels: getSelectableChannels(),
             selectableScopes: getSelectableScopes(),
             criterion: criterion
         ]
     }
-    
-    private parseCriterion(params) {
-        def criterion = [
-            scope:     params.scope,
-            channelId: params.channelId,
-            nick:      params.nick,
-            message:   params.message,
-            max:       params.max ? Long.valueOf(params.max) : 50,
-            offset:    params.offset ? Long.valueOf(params.offset) : 0
-        ]
-        criterion.findAll{ !(it.value instanceof String && it.value == '') }
-    }
 
-    private getIrclogList(criterion) {
+    // paginateタグのparams属性でcriterionを渡すと、リクエストのparamsスコープのmax/offset値が
+    // params属性で渡しkたcriterion中のmax/offsetで上書きされてしまい、戻るボタンのページ遷移がおかしくなる。
+    // よって、max/offsetはcriterionとして取り扱わない。
+    private parseCriterion(params) {[
+        scope:     params.scope,
+        channelId: params.channelId,
+        nick:      params.nick,
+        message:   params.message,
+    ]}
+
+    private getIrclogList(criterion, params) {
         def query = createQuery(criterion)
 
         // ソート条件(固定)
         // 時系列ですべての許可されたログをソートする。チャンネル別にしないところがポイント。
         if (query.hql) query.hql += " order by i.time"
 
-        Irclog.findAll(query.hql, query.args, [max:criterion.max, offset:criterion.offset])
+        Irclog.findAll(query.hql, query.args, params)
     }
     private countIrclogList(criterion) {
         def query = createQuery(criterion)
-        Long.valueOf(Irclog.executeQuery("select count(i) " + query.hql, query.args)[0])
+        Irclog.executeQuery("select count(i) " + query.hql, query.args)[0].toInteger()
     }
 
     private createQuery(criterion) {
@@ -66,12 +64,12 @@ class ViewerController {
                 return query // channelId未指定の場合は、ヒット件数0件とする(デフォルト挙動)
             }
             query.hql += " and i.channel.id = ?"
-            query.args << Long.valueOf(criterion.channelId)
+            query.args << criterion.channelId.toInteger()
         } else if (criterion.channelId == 'all') { // 許可されたチャンネルすべて
             def channels = getAccessableChannels()
             if (channels) {
                 query.hql += " and ( " + channels.collect{"i.channel.id like ?"}.join(" or ") + " )"
-                query.args.addAll(channels.collect{Long.valueOf(it.id)})
+                query.args.addAll(channels.collect{it.id.toLong()})
             } else {
                 query.hql += " and 1 = 0" // 許可されたチャンネルが0件であれば、絶対にヒットさせない
             }
