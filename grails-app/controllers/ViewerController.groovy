@@ -27,12 +27,18 @@ class ViewerController {
     // paginateタグのparams属性でcriterionを渡すと、リクエストのparamsスコープのmax/offset値が
     // params属性で渡しkたcriterion中のmax/offsetで上書きされてしまい、戻るボタンのページ遷移がおかしくなる。
     // よって、max/offsetはcriterionとして取り扱わない。
-    private parseCriterion(params) {[
-        scope:     params.scope,
-        channelId: params.channelId,
-        nick:      params.nick,
-        message:   params.message,
-    ]}
+    private parseCriterion(params) {
+        def criterion = [
+            scope:              params.scope,
+            channelId:          params.channelId,
+            nick:               params.nick,
+            message:            params.message
+        ]
+        if (criterion.scope == 'specified') {
+            criterion['scope-specified'] = params['scope-specified']
+        }
+        criterion
+    }
 
     private getIrclogList(criterion, params) {
         def query = createQuery(criterion)
@@ -82,7 +88,7 @@ class ViewerController {
         // 対象期間
         if (!criterion.scope) criterion.scope = 'hour' // デフォルトは1時間以内
         query.hql += " and i.time >= ?"
-        query.args << "resolveBeginDate_${criterion.scope}"()
+        query.args << "resolveBeginDate_${criterion.scope}"(criterion)
 
         // ニックネーム
         def nicks = params.nick?.split(/\s+/) as List // スペース区切りで複数OR指定可能
@@ -114,36 +120,40 @@ class ViewerController {
         cal
     }
 
-    private resolveBeginDate_hour() {
+    private resolveBeginDate_hour(criterion) {
         def cal = Calendar.getInstance()
         cal.add(Calendar.HOUR_OF_DAY, -1)
         cal.getTime()
     }
-    private resolveBeginDate_today() {
+    private resolveBeginDate_today(criterion) {
         getCalendarAtZeroHourOfToday().getTime()
     }
-    private resolveBeginDate_specified() {
-        getCalendarAtZeroHourOfToday().getTime()
-        cal.set(Calendar.YEAR,  0)
-        cal.set(Calendar.MONTH, 0)
-        cal.set(Calendar.DATE,  0)
+    private resolveBeginDate_specified(criterion) {
+        try {
+            return new java.text.SimpleDateFormat('yyyy-MM-dd').parse(criterion['scope-specified'])
+        } catch (java.text.ParseException e) {
+            flash.message = '指定日の日付形式が不正です。'
+            def cal = getCalendarAtZeroHourOfToday()
+            cal.add(Calendar.DATE, 1) // 絶対にヒットさせない
+            return cal.getTime()
+        }
     }
-    private resolveBeginDate_week() {
+    private resolveBeginDate_week(criterion) {
         def cal = getCalendarAtZeroHourOfToday()
         cal.add(Calendar.DATE, -7)
         cal.getTime()
     }
-    private resolveBeginDate_month() {
+    private resolveBeginDate_month(criterion) {
         def cal = getCalendarAtZeroHourOfToday()
         cal.add(Calendar.MONTH, -1)
         cal.getTime()
     }
-    private resolveBeginDate_year() {
+    private resolveBeginDate_year(criterion) {
         def cal = getCalendarAtZeroHourOfToday()
         cal.add(Calendar.YEAR, -1)
         cal.getTime()
     }
-    private resolveBeginDate_all() {
+    private resolveBeginDate_all(criterion) {
         new Date(0) // エポックタイム
     }
 
@@ -160,7 +170,7 @@ class ViewerController {
     }
 
     private getSelectableScopes() {[
-        hour:'1時間以内', today:'今日のみ', week:'1週間以内', month:'1ヶ月以内', year:'1年以内', all:'すべて'
+        hour:'1時間以内', today:'今日のみ', specified:'指定日...', week:'1週間以内', month:'1ヶ月以内', year:'1年以内', all:'すべて'
     ]}
 
     /** ログの対象行の非表示・表示をトグルする。*/

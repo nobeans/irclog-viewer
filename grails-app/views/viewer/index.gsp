@@ -3,6 +3,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="main" />
     <g:javascript library="prototype" />
+    <g:javascript library="yui" />
+    <yui:javascript dir="calendar" file="calendar.js" />
+    <yui:stylesheet dir="calendar/assets" file="calendar.css" />
+    <g:javascript library="calendar" />
     <g:javascript library="viewer" />
     <title><g:message code="viewer.index" /></title>
   </head>

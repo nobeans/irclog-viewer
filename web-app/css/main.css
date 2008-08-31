@@ -273,6 +273,21 @@ th.desc a {
     padding-left: 28px;
 }
 
+/* Yahoo UI */
+
+#scope-specified {
+    width: 8em;
+}
+#yui-calendar {
+    display: none;
+    position: absolute;
+    left: 300px;
+    top: 50px;
+    z-index: 999;
+}
+
+/* Viewer */
+
 .irclog-time {
     width: 10em;
 }

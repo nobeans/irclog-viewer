@@ -1,7 +1,12 @@
 (function() {
+
+    // Initialize
     Event.observe(window, 'load', function() {
         highlightSearchedWord('nick');
         highlightSearchedWord('message');
+
+        $('search-scope').observe('change', handleChangeScope);
+        handleChangeScope(); // 表示時にも実行する (イベントの強制発火ができればいいのだが)
     });
 
     // 指定した種別の文字列中に、検索した文字列があればハイライト表示する。
@@ -19,8 +24,25 @@
             });
         });
     }
-
     function replaceToStrong(targetValue, pattern) {
         return (targetValue.match(pattern)) ? targetValue.replace(pattern, "<strong>$1</strong>") : targetValue;
     }
+
+    function handleChangeScope(event) {
+        // イベントから取得したいが、load時にも実行したい。
+        // prototype.js 1.5系では、イベントの強制Fireは対応してないので、
+        // 対象が固定要素だということもあって、固定で書いてみた。
+        //var ele = Event.element(event);
+        var ele = $('search-scope');
+
+        var selectedValue = ele.options[ele.selectedIndex].value;
+        if (selectedValue == 'specified') {
+            $('scope-specified-calendar').show();
+            $('scope-specified').disabled = false;
+        } else {
+            $('scope-specified-calendar').hide();
+            $('scope-specified').disabled = true;
+        }
+    }
+
 })()
