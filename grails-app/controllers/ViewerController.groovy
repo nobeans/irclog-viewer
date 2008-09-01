@@ -42,7 +42,7 @@ class ViewerController {
         if (criterion.scope == 'specified') {
             criterion['scope-specified-date'] = params['scope-specified-date']
         }
-        criterion
+        criterion.findAll{ it.value }
     }
 
     private getSelectableChannels() {
