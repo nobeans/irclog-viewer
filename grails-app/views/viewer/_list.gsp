@@ -8,7 +8,7 @@
     <thead>
       <tr>
         <%--<th>Click!</th>--%>
-        <th><g:message code="irclog.time"/></th>
+        <th title="クリックすると、対象期間がその日付の指定日条件に変更されます。ニックネームとメッセージ条件はクリアされます。"><g:message code="irclog.time"/></th>
         <th><g:message code="irclog.nick"/></th>
         <th><g:message code="irclog.message"/></th>
       </tr>
@@ -17,7 +17,7 @@
     <g:each in="${irclogList}" status="i" var="irclog">
       <tr class="${(i % 2) == 0 ? 'odd' : 'even'} irclog-line irclog-${irclog.type}">
         <%--<td><a href="#${irclog.id}">■</a></td>--%>
-        <td class="irclog-time"><my:dateFormat value="${irclog.time}" format="yyyy-MM-dd hh:mm:ss" /></td>
+        <td class="irclog-time"><my:specifiedDateLink value="${irclog.time}" params="${criterion}" /></td>
         <td class="irclog-nick">${irclog.nick?.encodeAsHTML()}</td>
         <td class="irclog-message"><my:irclog value="${irclog.message}" /></td>
       </tr>

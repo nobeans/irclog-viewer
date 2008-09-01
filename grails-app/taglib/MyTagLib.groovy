@@ -6,6 +6,19 @@ class MyTagLib {
         out << new java.text.SimpleDateFormat(attrs.format).format(attrs.value)
     }
 
+    def specifiedDateLink = { attrs ->
+        // 指定日部分と時間部分をフォーマットする。
+        def specifiedDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(attrs.value)
+        def time = new java.text.SimpleDateFormat("hh:mm:ss").format(attrs.value)
+
+        // 指定日検索を設定し、また、ニックネームとメッセージ検索を解除する。
+        def params = [*:attrs.params, scope:'specified', 'scope-specified-date':specifiedDate]
+        params.remove("nick")
+        params.remove("message")
+
+        out << """<a href="?${params.collect{"${it.key}=${it.value}"}.join("&amp;")}">${specifiedDate}</a> ${time}"""
+    }
+
     def irclog = { attrs ->
         def value = attrs.value?.encodeAsHTML() ?: ''
 
