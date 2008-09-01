@@ -1,16 +1,25 @@
 class SearchService {
 
-    def search(query, params) {
+    def search(criterion, params) {
+        def query = createQuery(criterion)
+        [
+            list: findAll(query, params),
+            totalCount: count(query),
+            message: query.message
+        ]
+    }
+
+    private findAll(query, params) {
         // ソート条件(固定)
         // 時系列ですべての許可されたログをソートする。チャンネル別にしないところがポイント。
         Irclog.findAll(query.hql + " order by i.time", query.args, params)
     }
 
-    def count(query) {
+    private count(query) {
         Irclog.executeQuery("select count(i) " + query.hql, query.args)[0].toInteger()
     }
 
-    def createQuery(criterion) {
+    private createQuery(criterion) {
         def query = [
             hql: "from Irclog as i where 1 = 1",
             args: [],
@@ -146,19 +155,8 @@ class SearchService {
         cal
     }
 
-    def getSelectableChannels() {
-        def channels = [:]
-        channels[''] = '未指定'
-        getAccessableChannels().each { channels[it.id] = '#' + it.name }
-        channels['all'] = 'すべて'
-        channels
-    }
-
-    def getSelectableScopes() {[
-        hour:'1時間以内', today:'今日のみ', specified:'指定日...', week:'1週間以内', month:'1ヶ月以内', year:'1年以内', all:'すべて'
-    ]}
-
-    private getAccessableChannels() {
+    // ★ChannelService?
+    def getAccessableChannels() {
         Channel.findAll('from Channel as c where c.isPublic = true order by c.name')
     }
 

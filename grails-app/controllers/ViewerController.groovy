@@ -17,13 +17,14 @@ class ViewerController {
         params.offset = params.offset?.toInteger() ?: 0
 
         // モデルを作成して、デフォルトビューへ。
-        def query = searchService.createQuery(criterion)
-        if (query.message) flash.message = query.message
+        def searchResult = searchService.search(criterion, [max:params.max, offset:params.offset])
+        if (searchResult.message) flash.message = searchResult.message
+println searchResult
         [
-            irclogList: searchService.search(query, [max:params.max, offset:params.offset]),
-            irclogCount: searchService.count(query),
-            selectableChannels: searchService.getSelectableChannels(),
-            selectableScopes: searchService.getSelectableScopes(),
+            irclogList: searchResult.list,
+            irclogCount: searchResult.totalCount,
+            selectableChannels: getSelectableChannels(),
+            selectableScopes: getSelectableScopes(),
             criterion: criterion
         ]
     }
@@ -43,6 +44,18 @@ class ViewerController {
         }
         criterion
     }
+
+    private getSelectableChannels() {
+        def channels = [:]
+        channels[''] = '未指定'
+        searchService.getAccessableChannels().each { channels[it.id] = '#' + it.name }
+        channels['all'] = 'すべて'
+        channels
+    }
+
+    private getSelectableScopes() {[
+        hour:'1時間以内', today:'今日のみ', specified:'指定日...', week:'1週間以内', month:'1ヶ月以内', year:'1年以内', all:'すべて'
+    ]}
 
     /** ログの対象行の非表示・表示をトグルする。*/
     def hideOrShow = {
