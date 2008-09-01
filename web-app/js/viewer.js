@@ -38,10 +38,10 @@
         var selectedValue = ele.options[ele.selectedIndex].value;
         if (selectedValue == 'specified') {
             $('scope-specified-calendar').show();
-            $('scope-specified').disabled = false;
+            $('scope-specified-date').disabled = false;
         } else {
             $('scope-specified-calendar').hide();
-            $('scope-specified').disabled = true;
+            $('scope-specified-date').disabled = true;
         }
     }
 

@@ -6,7 +6,7 @@
     <label for="search-scope"><g:message code="search.scope" />:</label>
       <g:select id="search-scope" name="scope" from="${selectableScopes}" value="${criterion?.scope}" optionKey="key" optionValue="value" />
       <span id="scope-specified-calendar" style="display:none">
-        <my:calendar name="scope-specified" value="${criterion?.'scope-specified'}"/>
+        <my:calendar name="scope-specified-date" value="${criterion?.'scope-specified-date'}"/>
       </span>
     <label for="search-nick"><g:message code="search.nick" />:</label>
       <input id="search-nick" type="text" name="nick" value="${criterion?.nick}"></input>
