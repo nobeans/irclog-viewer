@@ -1,7 +1,10 @@
-class SearchService {
+class IrclogSearchService {
+
+    def channelService
 
     def search(criterion, params) {
         def query = createQuery(criterion)
+        println query
         [
             list: findAll(query, params),
             totalCount: count(query),
@@ -29,16 +32,16 @@ class SearchService {
         // チャンネル
         if (criterion.channelId && criterion.channelId.isLong()) { // 指定された1つのチャンネル
             // 許可されていない場合は、何事もなかったかのように、とぼける。
-            if (!getAccessableChannels().any{ it.id.toString() == criterion.channelId }) {
+            if (!channelService.getAccessableChannels().any{ it.id.toString() == criterion.channelId }) {
                 query.message = "チャンネルを指定してください。"
                 criterion.channelId = null
                 query.hql += " and 1 = 0" // 許可されたチャンネルが0件であれば、絶対にヒットさせない
                 return query // channelId未指定の場合は、ヒット件数0件とする(デフォルト挙動)
             }
             query.hql += " and i.channel.id = ?"
-            query.args << criterion.channelId.toInteger()
+            query.args << criterion.channelId.toLong()
         } else if (criterion.channelId == 'all') { // 許可されたチャンネルすべて
-            def channels = getAccessableChannels()
+            def channels = channelService.getAccessableChannels()
             if (channels) {
                 query.hql += " and ( " + channels.collect{"i.channel.id like ?"}.join(" or ") + " )"
                 query.args.addAll(channels.collect{it.id.toLong()})
@@ -153,11 +156,6 @@ class SearchService {
         cal.set(Calendar.SECOND, 0)
         cal.set(Calendar.MILLISECOND, 0)
         cal
-    }
-
-    // ★ChannelService?
-    def getAccessableChannels() {
-        Channel.findAll('from Channel as c where c.isPublic = true order by c.name')
     }
 
 }

@@ -3,7 +3,8 @@
  */
 class ViewerController {
 
-    def searchService
+    def irclogSearchService
+    def channelService
     
     /**
      * ログ一覧を表示する。
@@ -17,9 +18,8 @@ class ViewerController {
         params.offset = params.offset?.toInteger() ?: 0
 
         // モデルを作成して、デフォルトビューへ。
-        def searchResult = searchService.search(criterion, [max:params.max, offset:params.offset])
+        def searchResult = irclogSearchService.search(criterion, [max:params.max, offset:params.offset])
         if (searchResult.message) flash.message = searchResult.message
-println searchResult
         [
             irclogList: searchResult.list,
             irclogCount: searchResult.totalCount,
@@ -48,7 +48,7 @@ println searchResult
     private getSelectableChannels() {
         def channels = [:]
         channels[''] = '未指定'
-        searchService.getAccessableChannels().each { channels[it.id] = '#' + it.name }
+        channelService.getAccessableChannels().each { channels[it.id] = it.name }
         channels['all'] = 'すべて'
         channels
     }
