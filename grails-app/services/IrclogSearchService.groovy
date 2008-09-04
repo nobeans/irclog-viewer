@@ -4,7 +4,6 @@ class IrclogSearchService {
 
     def search(criterion, params) {
         def query = createQuery(criterion)
-        println query
         [
             list: findAll(query, params),
             totalCount: count(query),
