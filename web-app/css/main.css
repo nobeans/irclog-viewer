@@ -289,6 +289,9 @@ th.desc a {
 
 /* Viewer */
 
+.irclog-specified {
+    text-align: center;
+}
 .irclog-time {
     width: 10em;
 }

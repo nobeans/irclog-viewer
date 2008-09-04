@@ -24,7 +24,7 @@ class ViewerController {
             irclogList: searchResult.list,
             irclogCount: searchResult.totalCount,
             selectableChannels: getSelectableChannels(),
-            selectableScopes: getSelectableScopes(),
+            selectablePeriods: getSelectablePeriods(),
             criterion: criterion
         ]
     }
@@ -34,27 +34,26 @@ class ViewerController {
     // よって、max/offsetはcriterionとして取り扱わない。
     private parseCriterion(params) {
         def criterion = [
-            scope:     params.scope,
-            channelId: params.channelId,
+            period:     params.period ?: 'all',
+            channelId: params.channelId ?: 'all',
             nick:      params.nick,
             message:   params.message
         ]
-        if (criterion.scope == 'specified') {
-            criterion['scope-specified-date'] = params['scope-specified-date']
+        if (criterion.period == 'oneday') {
+            criterion['period-oneday-date'] = params['period-oneday-date']
         }
         criterion.findAll{ it.value }
     }
 
     private getSelectableChannels() {
         def channels = [:]
-        channels[''] = '未指定'
-        channelService.getAccessableChannels().each { channels[it.id] = it.name }
         channels['all'] = 'すべて'
+        channelService.getAccessableChannels().each { channels[it.id] = it.name }
         channels
     }
 
-    private getSelectableScopes() {[
-        hour:'1時間以内', today:'今日のみ', specified:'指定日...', week:'1週間以内', month:'1ヶ月以内', year:'1年以内', all:'すべて'
+    private getSelectablePeriods() {[
+        hour:'1時間以内', today:'今日のみ', oneday:'指定日...', week:'1週間以内', month:'1ヶ月以内', year:'1年以内', all:'すべて'
     ]}
 
     /** ログの対象行の非表示・表示をトグルする。*/

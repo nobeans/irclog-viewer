@@ -54,11 +54,11 @@ class IrclogSearchService {
         }
 
         // 対象期間
-        if (!criterion.scope) criterion.scope = 'hour' // デフォルトは1時間以内
+        if (!criterion.period) criterion.period = 'hour' // デフォルトは1時間以内
         //query.hql += " and i.time between ? and ?"
         query.hql += " and i.time >= ? and i.time < ?"
-        query.args << "resolveBeginDate_${criterion.scope}"(criterion)
-        query.args << "resolveEndDate_${criterion.scope}"(criterion)
+        query.args << "resolveBeginDate_${criterion.period}"(criterion)
+        query.args << "resolveEndDate_${criterion.period}"(criterion)
 
         // ニックネーム
         def nicks = criterion.nick?.split(/\s+/) as List // スペース区切りで複数OR指定可能
@@ -90,9 +90,9 @@ class IrclogSearchService {
     private resolveBeginDate_today(criterion) {
         getCalendarAtZeroHourOfToday().getTime()
     }
-    private resolveBeginDate_specified(criterion) {
+    private resolveBeginDate_oneday(criterion) {
         try {
-            return new java.text.SimpleDateFormat('yyyy-MM-dd').parse(criterion['scope-specified-date'] ?: '')
+            return new java.text.SimpleDateFormat('yyyy-MM-dd').parse(criterion['period-oneday-date'] ?: '')
         } catch (java.text.ParseException e) {
             def cal = getCalendarAtZeroHourOfToday()
             cal.add(Calendar.DATE, 1) // 絶対にヒットさせない
@@ -125,11 +125,11 @@ class IrclogSearchService {
     private resolveEndDate_today(criterion) {
         getCalendarAtZeroHourOfToday().getTime()
     }
-    private resolveEndDate_specified(criterion) {
+    private resolveEndDate_oneday(criterion) {
         try {
-            def specifiedDate = new java.text.SimpleDateFormat('yyyy-MM-dd').parse(criterion['scope-specified-date'] ?: '')
+            def onedayDate = new java.text.SimpleDateFormat('yyyy-MM-dd').parse(criterion['period-oneday-date'] ?: '')
             def cal = Calendar.getInstance()
-            cal.setTime(specifiedDate)
+            cal.setTime(onedayDate)
             cal.add(Calendar.DATE, 1)
             return cal.getTime()
         } catch (java.text.ParseException e) {

@@ -7,8 +7,9 @@
   <table>
     <thead>
       <tr>
-        <%--<th>Click!</th>--%>
-        <th title="クリックすると、対象期間がその日付の指定日条件に変更されます。ニックネームとメッセージ条件はクリアされます。"><g:message code="irclog.time"/></th>
+        <th title="${message(code:'viewer.specified.tooltips')}"><g:message code="viewer.specified.header"/></th>
+        <th title="${message(code:'viewer.time.tooltips')}"><g:message code="irclog.time"/></th>
+        <th title="${message(code:'viewer.channel.tooltips')}"><g:message code="irclog.channel"/></th>
         <th><g:message code="irclog.nick"/></th>
         <th><g:message code="irclog.message"/></th>
       </tr>
@@ -16,8 +17,9 @@
     <tbody>
     <g:each in="${irclogList}" status="i" var="irclog">
       <tr class="${(i % 2) == 0 ? 'odd' : 'even'} irclog-line irclog-${irclog.type}">
-        <%--<td><a href="#${irclog.id}">■</a></td>--%>
-        <td class="irclog-time"><my:specifiedDateLink value="${irclog.time}" params="${criterion}" /></td>
+        <td class="irclog-specified"><my:specifiedLink time="${irclog.time}" channel="${irclog.channel}" params="${criterion}" /></td>
+        <td class="irclog-time"><my:onedayLink time="${irclog.time}" params="${criterion}" /></td>
+        <td class="irclog-channel"><my:channelLink channel="${irclog.channel}" params="${criterion}" /></td>
         <td class="irclog-nick">${irclog.nick?.encodeAsHTML()}</td>
         <td class="irclog-message"><my:irclog value="${irclog.message}" /></td>
       </tr>

@@ -6,17 +6,33 @@ class MyTagLib {
         out << new java.text.SimpleDateFormat(attrs.format).format(attrs.value)
     }
 
-    def specifiedDateLink = { attrs ->
+    def specifiedLink = { attrs ->
         // 指定日部分と時間部分をフォーマットする。
-        def specifiedDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(attrs.value)
-        def time = new java.text.SimpleDateFormat("hh:mm:ss").format(attrs.value)
+        def onedayDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(attrs.time)
+        def time = new java.text.SimpleDateFormat("hh:mm:ss").format(attrs.time)
 
-        // 指定日検索を設定し、また、ニックネームとメッセージ検索を解除する。
-        def params = [*:attrs.params, scope:'specified', 'scope-specified-date':specifiedDate]
+        // 指定日検索とチャンネルを設定し、また、ニックネームとメッセージ検索を解除する。
+        def params = [*:attrs.params, channelId:"${attrs.channel.id}", period:'oneday', 'period-oneday-date':onedayDate]
         params.remove("nick")
         params.remove("message")
 
-        out << """<a href="?${params.collect{"${it.key}=${it.value}"}.join("&amp;")}">${specifiedDate}</a> ${time}"""
+        out << """<a href="?${params.collect{"${it.key}=${it.value}"}.join("&amp;")}">${g.message(code:'viewer.specified.link')}</a>"""
+    }
+
+    def onedayLink = { attrs ->
+        // 指定日部分と時間部分をフォーマットする。
+        def onedayDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(attrs.time)
+        def time = new java.text.SimpleDateFormat("hh:mm:ss").format(attrs.time)
+
+        // 指定日検索を設定する。
+        def params = [*:attrs.params, period:'oneday', 'period-oneday-date':onedayDate]
+
+        out << """<a href="?${params.collect{"${it.key}=${it.value}"}.join("&amp;")}">${onedayDate}</a>&nbsp;&nbsp;${time}"""
+    }
+
+    def channelLink = { attrs ->
+        def params = [*:attrs.params, channelId:"${attrs.channel.id}" ]
+        out << """<a href="?${params.collect{"${it.key}=${it.value}"}.join("&amp;")}">${attrs.channel.name}</a>"""
     }
 
     def irclog = { attrs ->

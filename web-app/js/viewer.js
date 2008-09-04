@@ -5,7 +5,7 @@
         highlightSearchedWord('nick');
         highlightSearchedWord('message');
 
-        $('search-scope').observe('change', handleChangeScope);
+        $('search-period').observe('change', handleChangeScope);
         handleChangeScope(); // 表示時にも実行する (イベントの強制発火ができればいいのだが)
     });
 
@@ -33,15 +33,15 @@
         // prototype.js 1.5系では、イベントの強制Fireは対応してないので、
         // 対象が固定要素だということもあって、固定で書いてみた。
         //var ele = Event.element(event);
-        var ele = $('search-scope');
+        var ele = $('search-period');
 
         var selectedValue = ele.options[ele.selectedIndex].value;
-        if (selectedValue == 'specified') {
-            $('scope-specified-calendar').show();
-            $('scope-specified-date').disabled = false;
+        if (selectedValue == 'oneday') {
+            $('period-oneday-calendar').show();
+            $('period-oneday-date').disabled = false;
         } else {
-            $('scope-specified-calendar').hide();
-            $('scope-specified-date').disabled = true;
+            $('period-oneday-calendar').hide();
+            $('period-oneday-date').disabled = true;
         }
     }
 

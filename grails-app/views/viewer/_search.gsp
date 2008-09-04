@@ -3,10 +3,10 @@
   <g:form action="index" method="post" >
     <label for="search-channel"><g:message code="search.channel" />:</label>
       <g:select name="channelId" from="${selectableChannels}" value="${criterion?.channelId}" optionKey="key" optionValue="value" />
-    <label for="search-scope"><g:message code="search.scope" />:</label>
-      <g:select id="search-scope" name="scope" from="${selectableScopes}" value="${criterion?.scope}" optionKey="key" optionValue="value" />
-      <span id="scope-specified-calendar" style="display:none">
-        <my:calendar name="scope-specified-date" value="${criterion?.'scope-specified-date'}"/>
+    <label for="search-period"><g:message code="search.period" />:</label>
+      <g:select id="search-period" name="period" from="${selectablePeriods}" value="${criterion?.period}" optionKey="key" optionValue="value" />
+      <span id="period-oneday-calendar" style="display:none">
+        <my:calendar name="period-oneday-date" value="${criterion?.'period-oneday-date'}"/>
       </span>
     <label for="search-nick"><g:message code="search.nick" />:</label>
       <input id="search-nick" type="text" name="nick" value="${criterion?.nick}"></input>
