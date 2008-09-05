@@ -188,7 +188,7 @@ th.desc a {
 .list td {
     border-bottom: 1px dotted #ddd;
 }
-.list th:hover, .list tr:hover {
+.list tr:hover {
     background: #ddf;
 }
 
@@ -328,6 +328,9 @@ th.desc a {
     background-color: #ded;
 }
 .irclog-privmsg .irclog-message {
+}
+.list tr.irclog-notice:hover .irclog-message {
+    background: #fdf;
 }
 
 /*

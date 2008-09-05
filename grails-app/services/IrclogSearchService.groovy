@@ -28,6 +28,13 @@ class IrclogSearchService {
             message: []
         ]
 
+        // 対象期間
+        if (!criterion.period) criterion.period = 'hour' // デフォルトは1時間以内
+        //query.hql += " and i.time between ? and ?"
+        query.hql += " and i.time >= ? and i.time < ?"
+        query.args << "resolveBeginDate_${criterion.period}"(criterion)
+        query.args << "resolveEndDate_${criterion.period}"(criterion)
+
         // チャンネル
         if (criterion.channelId && criterion.channelId.isLong()) { // 指定された1つのチャンネル
             // 許可されていない場合は、何事もなかったかのように、とぼける。
@@ -53,12 +60,11 @@ class IrclogSearchService {
             return query // channelId未指定の場合は、ヒット件数0件とする(デフォルト挙動)
         }
 
-        // 対象期間
-        if (!criterion.period) criterion.period = 'hour' // デフォルトは1時間以内
-        //query.hql += " and i.time between ? and ?"
-        query.hql += " and i.time >= ? and i.time < ?"
-        query.args << "resolveBeginDate_${criterion.period}"(criterion)
-        query.args << "resolveEndDate_${criterion.period}"(criterion)
+        // 種別
+        if (criterion.type != 'all') { // すべての種別でなければ限定条件を追加する。
+          query.hql += " and i.type = ?"
+          query.args << criterion.type
+        }
 
         // ニックネーム
         def nicks = criterion.nick?.split(/\s+/) as List // スペース区切りで複数OR指定可能
@@ -81,7 +87,8 @@ class IrclogSearchService {
         ]
     }
 
-    // resolveBeginDate_XXXXX
+    // ----------------------------------------------
+    // 対象期間:〜から
     private resolveBeginDate_hour(criterion) {
         def cal = Calendar.getInstance()
         cal.add(Calendar.HOUR_OF_DAY, -1)
@@ -118,7 +125,8 @@ class IrclogSearchService {
         new Date(0) // エポックタイム
     }
 
-    // resolveEndDate_XXXXX
+    // ----------------------------------------------
+    // 対象期間:〜まで
     private resolveEndDate_hour(criterion) {
         getCalendarAtZeroHourOfToday().getTime()
     }

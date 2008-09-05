@@ -5,6 +5,8 @@ class ViewerController {
 
     def irclogSearchService
     def channelService
+
+    final SELECTABLE_PERIODS = ['hour', 'today', 'oneday', 'week', 'month', 'year', 'all']
     
     /**
      * ログ一覧を表示する。
@@ -24,7 +26,7 @@ class ViewerController {
             irclogList: searchResult.list,
             irclogCount: searchResult.totalCount,
             selectableChannels: getSelectableChannels(),
-            selectablePeriods: getSelectablePeriods(),
+            selectablePeriods: SELECTABLE_PERIODS,
             criterion: criterion
         ]
     }
@@ -34,8 +36,9 @@ class ViewerController {
     // よって、max/offsetはcriterionとして取り扱わない。
     private parseCriterion(params) {
         def criterion = [
-            period:     params.period ?: 'all',
+            period:    params.period ?: 'all',
             channelId: params.channelId ?: 'all',
+            type:      params.type ?: 'all',
             nick:      params.nick,
             message:   params.message
         ]
@@ -47,14 +50,11 @@ class ViewerController {
 
     private getSelectableChannels() {
         def channels = [:]
-        channels['all'] = 'すべて'
+        channels['all'] = message(code:'search.channel.all')
         channelService.getAccessableChannels().each { channels[it.id] = it.name }
         channels
     }
 
-    private getSelectablePeriods() {[
-        hour:'1時間以内', today:'今日のみ', oneday:'指定日...', week:'1週間以内', month:'1ヶ月以内', year:'1年以内', all:'すべて'
-    ]}
 
     /** ログの対象行の非表示・表示をトグルする。*/
     def hideOrShow = {

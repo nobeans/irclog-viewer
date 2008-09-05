@@ -10,12 +10,14 @@ class Irclog {
     static belongsTo = Channel
 
     static constraints  = {
-        time(nullable:false)
-        type(nullable:false, inList:["privmsg", "notice", "topic"]) // Åö
-        message(nullable:false, blank:false)
-        nick(nullable:false, blank:true)
-        isHidden(nullable:false)
-        channel(nullable:false)
+        time     nullable:false
+        type     nullable:false, inList:typeList
+        message  nullable:false, blank:false
+        nick     nullable:false, blank:true
+        isHidden nullable:false
+        channel  nullable:false
     }
 
+    static final typeList = ['all', 'PRIVMSG', 'NOTICE', 'JOIN', 'NICK', 'QUIT', 'PART', 'KICK', 'MODE', 'TOPIC', 'SYSTEM', 'OTHER', 'SIMPLE']
+ 
 }
