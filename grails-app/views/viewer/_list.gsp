@@ -1,5 +1,4 @@
 <div class="list">
-  <h1><g:message code="viewer.list.title" /></h1>
   <div class="paginateButtons top">
     <g:paginate total="${irclogCount}" params="${criterion}" />
     <span class="info">${Math.min(params.offset + 1, irclogCount)} - ${Math.min(params.offset + params.max, irclogCount)} 件表示 / ${irclogCount} 件中</span>

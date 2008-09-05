@@ -1,5 +1,4 @@
-<div id="search">
-  <h1><g:message code="viewer.search.title" /></h1>
+<div class="search">
   <g:form action="index" method="post">
     <label for="search-period"><g:message code="viewer.search.period" />:</label>
       <g:select id="search-period" name="period" from="${selectablePeriods}" value="${criterion?.period}" valueMessagePrefix="viewer.search.period" />
