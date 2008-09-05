@@ -29,6 +29,7 @@ class IrclogSearchService {
         ]
 
         // 対象期間
+        assert (criterion.period) : '必須'
         if (!criterion.period) criterion.period = 'hour' // デフォルトは1時間以内
         //query.hql += " and i.time between ? and ?"
         query.hql += " and i.time >= ? and i.time < ?"
@@ -36,10 +37,11 @@ class IrclogSearchService {
         query.args << "resolveEndDate_${criterion.period}"(criterion)
 
         // チャンネル
-        if (criterion.channelId && criterion.channelId.isLong()) { // 指定された1つのチャンネル
+        assert (criterion.channelId) : '必須'
+        if (criterion.channelId.isLong()) { // 指定された1つのチャンネル
             // 許可されていない場合は、何事もなかったかのように、とぼける。
             if (!channelService.getAccessableChannels().any{ it.id.toString() == criterion.channelId }) {
-                query.message = "チャンネルを指定してください。"
+                query.message = 'viewer.search.error.notFoundChannel'
                 criterion.channelId = null
                 query.hql += " and 1 = 0" // 許可されたチャンネルが0件であれば、絶対にヒットさせない
                 return query // channelId未指定の場合は、ヒット件数0件とする(デフォルト挙動)
@@ -54,13 +56,10 @@ class IrclogSearchService {
             } else {
                 query.hql += " and 1 = 0" // 許可されたチャンネルが0件であれば、絶対にヒットさせない
             }
-        } else {
-            query.message = "チャンネルを指定してください。"
-            query.hql += " and 1 = 0" // 許可されたチャンネルが0件であれば、絶対にヒットさせない
-            return query // channelId未指定の場合は、ヒット件数0件とする(デフォルト挙動)
         }
 
         // 種別
+        assert (criterion.type) : '必須'
         if (criterion.type != 'all') { // すべての種別でなければ限定条件を追加する。
           query.hql += " and i.type = ?"
           query.args << criterion.type
