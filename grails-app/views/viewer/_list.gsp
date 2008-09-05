@@ -1,5 +1,5 @@
 <div class="list">
-  <h1><g:message code="list.title" /></h1>
+  <h1><g:message code="viewer.list.title" /></h1>
   <div class="paginateButtons top">
     <g:paginate total="${irclogCount}" params="${criterion}" />
     <span class="info">${Math.min(params.offset + 1, irclogCount)} - ${Math.min(params.offset + params.max, irclogCount)} 件表示 / ${irclogCount} 件中</span>
@@ -7,9 +7,9 @@
   <table>
     <thead>
       <tr>
-        <th title="${message(code:'viewer.specified.tooltips')}"><g:message code="viewer.specified.header"/></th>
-        <th title="${message(code:'viewer.time.tooltips')}"><g:message code="irclog.time"/></th>
-        <th title="${message(code:'viewer.channel.tooltips')}"><g:message code="irclog.channel"/></th>
+        <th title="${message(code:'viewer.list.specified.tooltips')}"><g:message code="viewer.list.specified.header"/></th>
+        <th title="${message(code:'viewer.list.time.tooltips')}"><g:message code="irclog.time"/></th>
+        <th title="${message(code:'viewer.list.channel.tooltips')}"><g:message code="irclog.channel"/></th>
         <th><g:message code="irclog.nick"/></th>
         <th><g:message code="irclog.message"/></th>
         <th><g:message code="irclog.type"/></th>

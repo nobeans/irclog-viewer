@@ -200,7 +200,7 @@ th.desc a {
     border: 1px solid #ccc;
     color: #666;
     overflow: hidden;
-    padding: 5px 3px;
+    padding: 6px;
     height: 1.2em;
     font-size: 95%;
 }
@@ -223,7 +223,7 @@ th.desc a {
 }
 .paginateButtons span.info {
     position: absolute;
-    right: 0;
+    right: 5px;
 }
 
 /* DIALOG */

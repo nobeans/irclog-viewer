@@ -16,7 +16,7 @@ class MyTagLib {
         params.remove("nick")
         params.remove("message")
 
-        out << """<a href="?${params.collect{"${it.key}=${it.value}"}.join("&amp;")}">${g.message(code:'viewer.specified.link')}</a>"""
+        out << """<a href="?${params.collect{"${it.key}=${it.value}"}.join("&amp;")}">${g.message(code:'viewer.list.specified.link')}</a>"""
     }
 
     def onedayLink = { attrs ->
