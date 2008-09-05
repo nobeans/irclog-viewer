@@ -50,7 +50,7 @@ class ViewerController {
 
     private getSelectableChannels() {
         def channels = [:]
-        channels['all'] = message(code:'search.channel.all')
+        channels['all'] = message(code:'viewer.search.channel.all')
         channelService.getAccessableChannels().each { channels[it.id] = it.name }
         channels
     }

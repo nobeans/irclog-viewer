@@ -17,13 +17,13 @@
     </thead>
     <tbody>
     <g:each in="${irclogList}" status="i" var="irclog">
-      <tr class="${(i % 2) == 0 ? 'odd' : 'even'} irclog-line irclog-${irclog.type}">
+      <tr class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type}">
         <td class="irclog-specified"><my:specifiedLink time="${irclog.time}" channel="${irclog.channel}" params="${criterion}" /></td>
         <td class="irclog-time"><my:onedayLink time="${irclog.time}" params="${criterion}" /></td>
         <td class="irclog-channel"><my:channelLink channel="${irclog.channel}" params="${criterion}" /></td>
         <td class="irclog-nick">${irclog.nick?.encodeAsHTML()}</td>
-        <td class="irclog-message"><my:irclog value="${irclog.message}" /></td>
-        <td class="irclog-type">${irclog.type?.encodeAsHTML()}</td>
+        <td class="irclog-message"><my:messageFormat value="${irclog.message}" /></td>
+        <td class="irclog-type">${irclog.type}</td>
       </tr>
     </g:each>
     </tbody>

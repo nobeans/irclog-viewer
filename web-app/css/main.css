@@ -302,35 +302,47 @@ th.desc a {
 
 /* Viewer */
 
-.irclog-specified {
+.viewer .list .irclog-specified {
     text-align: center;
 }
-.irclog-time {
+.viewer .list .irclog-time {
     width: 10em;
 }
-.irclog-nick {
+.viewer .list .irclog-nick {
     text-align: right;
 }
-.irclog-message {
+.viewer .list .irclog-message {
     width: 80%;
 }
 
-.irclog-nick strong,
-.irclog-message strong {
+.viewer .list .irclog-nick strong,
+.viewer .list .irclog-message strong {
     background-color: yellow;
     color: red;
     font-weight: bold;
 }
 
-.irclog-notice .irclog-message {
+.viewer .list .irclog-message {
+    color: #888;
+    font-style: italic;
+    background-color: #e8e8e8;
+}
+.viewer .list .PRIVMSG .irclog-message {
+    color: #333;
+    font-style: normal;
+    background-color: #fff;
+}
+.viewer .list .NOTICE .irclog-message {
+    color: #333;
     font-style: italic;
     padding-left: 3em;
-    background-color: #ded;
+    background-color: #eed;
 }
-.irclog-privmsg .irclog-message {
+.viewer .list .KICK .irclog-message {
+    color: red;
 }
-.list tr.irclog-notice:hover .irclog-message {
-    background: #fdf;
+.viewer .list tr:hover .irclog-message {
+    background: #ddf;
 }
 
 /*

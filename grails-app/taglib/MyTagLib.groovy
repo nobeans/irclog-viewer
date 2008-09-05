@@ -35,7 +35,7 @@ class MyTagLib {
         out << """<a href="?${params.collect{"${it.key}=${it.value}"}.join("&amp;")}">${attrs.channel.name}</a>"""
     }
 
-    def irclog = { attrs ->
+    def messageFormat = { attrs ->
         def value = attrs.value?.encodeAsHTML() ?: ''
 
         // http/https‚ğƒŠƒ“ƒN‚É‚·‚éB

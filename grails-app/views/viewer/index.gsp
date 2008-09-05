@@ -11,7 +11,7 @@
     <title><g:message code="viewer.index" /></title>
   </head>
   <body>
-    <div class="body">
+    <div class="body viewer">
       <g:if test="${flash.message}">
         <div class="message"><g:message code="${flash.message}" args="${flash.args}" default="${flash.defaultMessage}" /></div>
       </g:if>
