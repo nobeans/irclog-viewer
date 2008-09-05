@@ -12,7 +12,9 @@
     // 指定した種別の文字列中に、検索した文字列があればハイライト表示する。
     // <strong>要素で挟むので、色づけはCSSで。
     function highlightSearchedWord(type) {
-        var pattern = new RegExp("(" + $('search-' + type).value.replace(/\s+/g, '|') + ")", 'g');
+        var searchKey = $('search-' + type).value;
+        if (!searchKey) return;
+        var pattern = new RegExp("(" + searchKey.replace(/\s+/g, '|') + ")", 'g');
         $$('td.irclog-' + type).each(function(td) {
             td.innerHTML = $A(td.childNodes).inject('', function(resultHTML, child) {
                 if (child.tagName == 'A') {
