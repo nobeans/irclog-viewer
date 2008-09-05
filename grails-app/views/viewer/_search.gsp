@@ -12,6 +12,6 @@
       <input id="search-nick" type="text" name="nick" value="${criterion?.nick}"></input>
     <label for="search-message"><g:message code="search.message" />:</label>
       <input id="search-message" type="text" name="message" value="${criterion?.message}"></input>
-    <span class="button"><g:actionSubmit class="search" action="index" value="${message(code:'search')}" /></span>
+    <span class="button"><input type="submit" value="${message(code:'search')}" /></span>
   </g:form>
 </div>

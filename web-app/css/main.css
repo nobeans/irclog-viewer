@@ -14,36 +14,36 @@ html * {
 body {
     background: #fff;
     color: #333;
-    font: verdana, arial, helvetica, sans-serif;
+    font-family: verdana, arial, helvetica, sans-serif;
     position: relative;
     width: 100%;
 }
 
 a:link, a:visited {
-    color: #666;
+    color: #779;
     font-weight: bold;
     text-decoration: none;
-} 
+}
 a:hover {
     color: blue;
     text-decoration: underline;
 }
 
 h1 {
-    color: #006dba;
+    color: #06f;
     font-weight: normal;
-    font-size: 180%;
+    font-size: 170%;
     margin: .8em 0 .3em 0;
 }
 
 ul {
-    padding-left: 15px;	
+    padding-left: 15px;
 }
 
 input, select, textarea {
+    font-family: verdana, arial, helvetica, sans-serif;
     background-color: #fcfcfc;
     border: 1px solid #ccc;
-    font: verdana, arial, helvetica, sans-serif;
     margin: 2px 0;
     padding: 2px 4px;
 }
@@ -51,9 +51,9 @@ select {
    padding: 2px 2px 2px 0;
 }
 textarea {
-	width: 250px;
-	height: 150px;
-	vertical-align: top;
+    width: 250px;
+    height: 150px;
+    vertical-align: top;
 }
 
 input:focus, select:focus, textarea:focus {
@@ -69,7 +69,7 @@ input:focus, select:focus, textarea:focus {
 .nav {
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
     border: 1px solid #ccc;
-    border-style: solid none solid none;	
+    border-style: solid none solid none;
     margin-top: 5px;
     padding: 7px 12px;
 }
@@ -78,22 +78,22 @@ input:focus, select:focus, textarea:focus {
     padding: 0 5px;
 }
 .menuButton a {
-    color: #333;
+    color: #666;
     padding: 4px 6px;
 }
 .menuButton a.home {
     background: url(../images/skin/house.png) center left no-repeat;
-    color: #333;
+    color: #666;
     padding-left: 25px;
 }
 .menuButton a.list {
     background: url(../images/skin/database_table.png) center left no-repeat;
-    color: #333;
+    color: #666;
     padding-left: 25px;
 }
 .menuButton a.create {
     background: url(../images/skin/database_add.png) center left no-repeat;
-    color: #333;
+    color: #666;
     padding-left: 25px;
 }
 
@@ -116,10 +116,10 @@ div.errors {
 }
 div.errors ul {
     list-style: none;
-    padding: 0;	
+    padding: 0;
 }
 div.errors li {
-	background: url(../images/skin/exclamation.png) 8px 0% no-repeat;
+    background: url(../images/skin/exclamation.png) 8px 0% no-repeat;
     line-height: 16px;
     padding-left: 30px;
 }
@@ -141,16 +141,15 @@ table {
 tr {
     border: 0;
 }
-td, th { 
-    font: verdana, arial, helvetica, sans-serif;
+td, th {
+    font-family: verdana, arial, helvetica, sans-serif;
     line-height: 12px;
     padding: 5px 6px;
     text-align: left;
     vertical-align: top;
 }
 th {
-    background: #fff url(../images/skin/shadow.jpg) repeat-x;
-    background-position: right;
+    background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
     color: #666;
     font-size: 95%;
     font-weight: bold;
@@ -184,6 +183,10 @@ th.desc a {
 }
 .list th, .list td {
     border-left: 1px solid #ddd;
+    padding: 7px;
+}
+.list td {
+    border-bottom: 1px dotted #ddd;
 }
 .list th:hover, .list tr:hover {
     background: #ddf;
@@ -199,6 +202,7 @@ th.desc a {
     overflow: hidden;
     padding: 5px 3px;
     height: 1.2em;
+    font-size: 95%;
 }
 .paginateButtons.top {
     border-bottom: 0;
@@ -255,7 +259,7 @@ th.desc a {
 .buttons input {
     background: #fff;
     border: 0;
-    color: #333;
+    color: #666;
     cursor: pointer;
     font-weight: bold;
     margin-left: 3px;
@@ -273,6 +277,14 @@ th.desc a {
 .buttons input.save {
     background: transparent url(../images/skin/database_save.png) 5px 50% no-repeat;
     padding-left: 28px;
+}
+
+.button input {
+    background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 2px 6px;
+    color: #666;
 }
 
 /* Yahoo UI */
@@ -313,8 +325,7 @@ th.desc a {
 .irclog-notice .irclog-message {
     font-style: italic;
     padding-left: 3em;
-    border-left: 2px solid #aff;
-    background-color: #dff;
+    background-color: #ded;
 }
 .irclog-privmsg .irclog-message {
 }
