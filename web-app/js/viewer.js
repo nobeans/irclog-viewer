@@ -5,8 +5,8 @@
         highlightSearchedWord('nick');
         highlightSearchedWord('message');
 
-        $('search-period').observe('change', handleChangeScope);
-        handleChangeScope(); // 表示時にも実行する (イベントの強制発火ができればいいのだが)
+        $('search-period').observe('change', handleChangePeriod);
+        handleChangePeriod(); // 表示時にも実行する (イベントの強制発火ができればいいのだが)
     });
 
     // 指定した種別の文字列中に、検索した文字列があればハイライト表示する。
@@ -30,7 +30,7 @@
         return (targetValue.match(pattern)) ? targetValue.replace(pattern, "<strong>$1</strong>") : targetValue;
     }
 
-    function handleChangeScope(event) {
+    function handleChangePeriod(event) {
         // イベントから取得したいが、load時にも実行したい。
         // prototype.js 1.5系では、イベントの強制Fireは対応してないので、
         // 対象が固定要素だということもあって、固定で書いてみた。
@@ -39,11 +39,11 @@
 
         var selectedValue = ele.options[ele.selectedIndex].value;
         if (selectedValue == 'oneday') {
-            $('period-oneday-calendar').show();
-            $('period-oneday-date').disabled = false;
+            $('period-oneday-select').show();
+            $('period-oneday-date-text').disabled = false;
         } else {
-            $('period-oneday-calendar').hide();
-            $('period-oneday-date').disabled = true;
+            $('period-oneday-select').hide();
+            $('period-oneday-date-text').disabled = true;
         }
     }
 

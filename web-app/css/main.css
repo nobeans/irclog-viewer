@@ -197,6 +197,7 @@ th.desc a {
     overflow: hidden;
     padding: 3px 6px;
     font-size: 95%;
+    height: 1.1em;
 }
 .paginateButtons.top {
     border-bottom: 0;
@@ -283,14 +284,14 @@ th.desc a {
 
 /* Yahoo UI */
 
-#scope-specified-date {
-    width: 8em;
+#period-oneday-date-text {
+    width: 7em;
 }
-#yui-calendar {
+#period-oneday-date-calendar {
     display: none;
     position: absolute;
-    left: 300px;
-    top: 50px;
+    left: 280px;
+    top: 30px;
     z-index: 999;
 }
 
@@ -301,7 +302,6 @@ th.desc a {
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
     border: 1px solid #ccc;
     color: #666;
-    overflow: hidden;
     padding: 3px;
     font-size: 95%;
     margin: 10px 0px;
@@ -309,11 +309,16 @@ th.desc a {
 .viewer .search label {
     padding-left: 10px;
 }
-.viewer .search span.button {
+.viewer .search input.image {
     padding-left: 10px;
+    border: 0;
 }
-.viewer .search input#period-oneday-date {
-    width: 8em;
+.viewer .search input.image,
+.viewer .search img {
+    vertical-align: middle;
+    cursor: pointer;
+    width: 1.5em;
+    height: 1.5em;
 }
 
 .viewer .list .irclog-nick {

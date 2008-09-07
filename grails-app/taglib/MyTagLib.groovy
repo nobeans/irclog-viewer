@@ -7,11 +7,11 @@ class MyTagLib {
     }
 
     def specifiedLink = { attrs ->
-        // w’è“ú•”•ª‚ÆŠÔ•”•ª‚ğƒtƒH[ƒ}ƒbƒg‚·‚éB
+        // æŒ‡å®šæ—¥éƒ¨åˆ†ã¨æ™‚é–“éƒ¨åˆ†ã‚’ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã™ã‚‹ã€‚
         def onedayDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(attrs.time)
         def time = new java.text.SimpleDateFormat("hh:mm:ss").format(attrs.time)
 
-        // w’è“úŒŸõ‚Æƒ`ƒƒƒ“ƒlƒ‹‚ğİ’è‚µA‚Ü‚½AƒjƒbƒNƒl[ƒ€‚ÆƒƒbƒZ[ƒWŒŸõ‚ğ‰ğœ‚·‚éB
+        // æŒ‡å®šæ—¥æ¤œç´¢ã¨ãƒãƒ£ãƒ³ãƒãƒ«ã‚’è¨­å®šã—ã€ã¾ãŸã€ãƒ‹ãƒƒã‚¯ãƒãƒ¼ãƒ ã¨ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸æ¤œç´¢ã‚’è§£é™¤ã™ã‚‹ã€‚
         def params = [*:attrs.params, channelId:"${attrs.channel.id}", period:'oneday', 'period-oneday-date':onedayDate]
         params.remove("nick")
         params.remove("message")
@@ -20,11 +20,11 @@ class MyTagLib {
     }
 
     def onedayLink = { attrs ->
-        // w’è“ú•”•ª‚ÆŠÔ•”•ª‚ğƒtƒH[ƒ}ƒbƒg‚·‚éB
+        // æŒ‡å®šæ—¥éƒ¨åˆ†ã¨æ™‚é–“éƒ¨åˆ†ã‚’ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã™ã‚‹ã€‚
         def onedayDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(attrs.time)
         def time = new java.text.SimpleDateFormat("hh:mm:ss").format(attrs.time)
 
-        // w’è“úŒŸõ‚ğİ’è‚·‚éB
+        // æŒ‡å®šæ—¥æ¤œç´¢ã‚’è¨­å®šã™ã‚‹ã€‚
         def params = [*:attrs.params, period:'oneday', 'period-oneday-date':onedayDate]
 
         out << """<a href="?${params.collect{"${it.key}=${it.value}"}.join("&amp;")}">${onedayDate}</a>&nbsp;&nbsp;${time}"""
@@ -38,7 +38,7 @@ class MyTagLib {
     def messageFormat = { attrs ->
         def value = attrs.value?.encodeAsHTML() ?: ''
 
-        // http/https‚ğƒŠƒ“ƒN‚É‚·‚éB
+        // http/httpsã‚’ãƒªãƒ³ã‚¯ã«ã™ã‚‹ã€‚
         value = value.replaceAll('(https?:\\/\\/[-_.!~*\'()a-zA-Z0-9;/?:@&=+$,%#]+)', '<a href="$1">$1</a>')
 
         out << value
@@ -46,8 +46,9 @@ class MyTagLib {
 
     def calendar = { attrs ->
         out << """
-            <input id="${attrs.name}" name="${attrs.name}" type="text" value="${attrs.value ?: ''}" />
-            <span id="yui-calendar">${attrs.name}</span>
+            <input id="${attrs.name}-text" name="${attrs.name}" type="text" value="${attrs.value ?: ''}" maxlength="10" />
+            <img id="${attrs.name}-button" src="${createLinkTo(dir:'images',file:'calendar.png')}" title="${attrs.title ?: ''}" />
+            <span id="${attrs.name}-calendar">${attrs.name}</span>
         """
     }
 
