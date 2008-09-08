@@ -52,7 +52,7 @@ security {
     //ajaxHeader = 'X-Requested-With'
   
     /** default user's role for user registration */
-    defaultRole = 'ROLE_ANONYMOUS'
+    defaultRole = 'ROLE_USER'
 
     /** use basicProcessingFilter */
     basicProcessingFilter = false

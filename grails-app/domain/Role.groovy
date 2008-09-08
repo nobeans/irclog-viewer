@@ -1,6 +1,3 @@
-/**
- * Role class for Authority.
- */
 class Role {
 
 	String name = 'ROLE_'

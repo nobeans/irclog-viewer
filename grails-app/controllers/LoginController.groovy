@@ -1,30 +1,15 @@
-import org.codehaus.groovy.grails.plugins.springsecurity.RedirectUtils
 import org.grails.plugins.springsecurity.service.AuthenticateService
 
 import org.springframework.security.DisabledException
 import org.springframework.security.ui.AbstractProcessingFilter
-import org.springframework.security.ui.openid.OpenIDConsumerException
 import org.springframework.security.ui.webapp.AuthenticationProcessingFilter
 
-/**
- * Login Controller (Example).
- */
 class LoginController {
 
 	/**
 	 * Dependency injection for the authentication service.
 	 */
 	AuthenticateService authenticateService
-
-	/**
-	 * Dependency injection for OpenIDConsumer.
-	 */
-	def openIDConsumer
-
-	/**
-	 * Dependency injection for OpenIDAuthenticationProcessingFilter.
-	 */
-	def openIDAuthenticationProcessingFilter
 
 	def index = {
 		if (isLoggedIn()) {
@@ -49,23 +34,6 @@ class LoginController {
 		}
 		else {
 			render(view: 'auth')
-		}
-	}
-
-	/**
-	 * Form submit action to start an OpenID authentication.
-	 */
-	def openIdAuthenticate = {
-		String openID = params['j_username']
-		try {
-			String returnToURL = RedirectUtils.buildRedirectUrl(
-					request, response, openIDAuthenticationProcessingFilter.filterProcessesUrl)
-			String redirectUrl = openIDConsumer.beginConsumption(request, openID, returnToURL)
-			redirect(url: redirectUrl)
-		}
-		catch (OpenIDConsumerException e) {
-			log.error "Consumer error: ${e.message}", e
-			redirect(url: openIDAuthenticationProcessingFilter.authenticationFailureUrl)
 		}
 	}
 
@@ -108,15 +76,15 @@ class LoginController {
 	 */
 	def authfail = {
 
-		def username = session[AuthenticationProcessingFilter.SPRING_SECURITY_LAST_USERNAME_KEY]
+		def loginName = session[AuthenticationProcessingFilter.SPRING_SECURITY_LAST_USERNAME_KEY]
 		def msg = ''
 		def exception = session[AbstractProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY]
 		if (exception) {
 			if (exception instanceof DisabledException) {
-				msg = "[$username] is disabled."
+				msg = "[$loginName] is disabled."
 			}
 			else {
-				msg = "[$username] wrong username/password."
+				msg = "[$loginName] wrong loginName/password."
 			}
 		}
 

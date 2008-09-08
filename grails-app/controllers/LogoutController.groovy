@@ -1,6 +1,3 @@
-/**
- * Logout Controller (Example).
- */
 class LogoutController {
 
 	/**
