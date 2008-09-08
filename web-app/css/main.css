@@ -60,6 +60,15 @@ input:focus, select:focus, textarea:focus {
     border: 1px solid #b2d1ff;
 }
 
+input.image, img {
+    vertical-align: middle;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    border: 0;
+}
+
 .body {
     margin: 5px 15px 10px 15px;
 }
@@ -313,45 +322,41 @@ th.desc a {
     padding-left: 10px;
     border: 0;
 }
-.viewer .search input.image,
-.viewer .search img {
-    vertical-align: middle;
-    cursor: pointer;
-    width: 1.5em;
-    height: 1.5em;
-}
 
+.viewer .list .irclog-specified {
+    width: 12px;
+}
 .viewer .list .irclog-nick {
     text-align: right;
 }
 .viewer .list .irclog-message {
     width: 80%;
 }
-.viewer .list .irclog-message strong {
+.viewer .list td.irclog-message strong {
     background-color: yellow;
     color: red;
     font-weight: bold;
 }
-.viewer .list .irclog-message {
+.viewer .list td.irclog-message {
     color: #888;
     font-style: italic;
     background-color: #e8e8e8;
 }
-.viewer .list .PRIVMSG .irclog-message {
+.viewer .list .PRIVMSG td.irclog-message {
     color: #333;
     font-style: normal;
     background-color: #fff;
 }
-.viewer .list .NOTICE .irclog-message {
+.viewer .list .NOTICE td.irclog-message {
     color: #333;
     font-style: italic;
     padding-left: 3em;
     background-color: #eed;
 }
-.viewer .list .KICK .irclog-message {
+.viewer .list .KICK td.irclog-message {
     color: red;
 }
-.viewer .list tr:hover .irclog-message {
+.viewer .list tr:hover td.irclog-message {
     background: #ddf;
 }
 

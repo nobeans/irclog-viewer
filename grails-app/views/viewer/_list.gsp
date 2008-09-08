@@ -6,12 +6,14 @@
   <table>
     <thead>
       <tr>
-        <th title="${message(code:'viewer.list.specified.tooltips')}"><g:message code="viewer.list.specified.header"/></th>
-        <th title="${message(code:'viewer.list.time.tooltips')}"><g:message code="irclog.time"/></th>
-        <th title="${message(code:'viewer.list.channel.tooltips')}"><g:message code="irclog.channel"/></th>
-        <th><g:message code="irclog.nick"/></th>
-        <th><g:message code="irclog.message"/></th>
-        <th><g:message code="irclog.type"/></th>
+        <th class="irclog-specified"  title="${message(code:'viewer.list.specified.tooltips')}">
+          <img src="${createLinkTo(dir:'images',file:'specified_head.png')}" />
+        </th>
+        <th class="irclog-time" title="${message(code:'viewer.list.time.tooltips')}"><g:message code="irclog.time"/></th>
+        <th class="irclog-channel" title="${message(code:'viewer.list.channel.tooltips')}"><g:message code="irclog.channel"/></th>
+        <th class="irclog-nick"><g:message code="irclog.nick"/></th>
+        <th class="irclog-message"><g:message code="irclog.message"/></th>
+        <th class="irclog-type"><g:message code="irclog.type"/></th>
       </tr>
     </thead>
     <tbody>

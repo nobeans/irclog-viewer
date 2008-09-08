@@ -16,7 +16,11 @@ class MyTagLib {
         params.remove("nick")
         params.remove("message")
 
-        out << """<a href="?${params.collect{"${it.key}=${it.value}"}.join("&amp;")}">${g.message(code:'viewer.list.specified.link')}</a>"""
+        out << """
+            <a href="?${params.collect{"${it.key}=${it.value}"}.join("&amp;")}">
+              <img src="${createLinkTo(dir:'images',file:'specified.png')}" />
+            </a>
+        """
     }
 
     def onedayLink = { attrs ->
