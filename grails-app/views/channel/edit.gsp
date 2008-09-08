@@ -48,10 +48,19 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="isPublic"><g:message code="channel.isPublic" default="Is Public" />:</label>
+                                    <label for="isPrivate"><g:message code="channel.isPrivate" default="Is Private" />:</label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean:channel,field:'isPublic','errors')}">
-                                    <g:checkBox name="isPublic" value="${channel?.isPublic}" ></g:checkBox>
+                                <td valign="top" class="value ${hasErrors(bean:channel,field:'isPrivate','errors')}">
+                                    <g:checkBox name="isPrivate" value="${channel?.isPrivate}" ></g:checkBox>
+                                </td>
+                            </tr> 
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="secretKey"><g:message code="channel.secretKey" default="Secret Key" />:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:channel,field:'secretKey','errors')}">
+                                    <input type="text" id="secretKey" name="secretKey" value="${fieldValue(bean:channel,field:'secretKey')}"/>
                                 </td>
                             </tr> 
                         

@@ -2,12 +2,14 @@ class Channel {
 
     String name
     String description
-    Boolean isPublic
+    Boolean isPrivate
+    String secretKey
 
     static constraints = {
         name(nullable:false, blank:false)
         description(nullable:false, blank:true)
-        isPublic(nullable:false)
+        isPrivate(nullable:false)
+        secretKey(nullable:false, blank:true)
     }
 
 }

@@ -2,15 +2,22 @@ class Person {
 
     String loginName
     String password
-    String nicks // 複数のnicksをカンマ区切りで。
-    String color // ログ表示時の色づけ
+    boolean enabled
 
-    static hasMany = [channels:Channel]
+    String nicks // 複数のnicksをカンマ区切りで。
+    String color // ログ表示時の色づけ(不要かも)
+
+    static hasMany = [channels:Channel, roles:Role]
+
+    static belongsTo = Role
 
     static constraints = {
         loginName(nullable:false, blank:false)
         password(nullable:false, blank:false)
         nicks(nullable:false, blank:true)
         color(nullable:false, blank:true, matches:"#[0-9A-Fa-f]{3}|#[0-9A-Fa-f]{6}")
+        enabled()
+        roles()
+        channels()
     }
 }

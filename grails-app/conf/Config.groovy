@@ -63,8 +63,8 @@ log4j {
             springframework="off"
             hibernate="off"
         }
+        org.'springframework.security'='off,stdout' // Acegi plugin
     }
     additivity.StackTrace=false
 }
-
 

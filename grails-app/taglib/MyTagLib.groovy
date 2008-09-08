@@ -51,7 +51,7 @@ class MyTagLib {
     def calendar = { attrs ->
         out << """
             <input id="${attrs.name}-text" name="${attrs.name}" type="text" value="${attrs.value ?: ''}" maxlength="10" />
-            <img id="${attrs.name}-button" src="${createLinkTo(dir:'images',file:'calendar.png')}" title="${attrs.title ?: ''}" />
+            <img class="button" id="${attrs.name}-button" src="${createLinkTo(dir:'images',file:'calendar.png')}" title="${attrs.title ?: ''}" />
             <span id="${attrs.name}-calendar">${attrs.name}</span>
         """
     }

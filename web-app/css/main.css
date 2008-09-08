@@ -60,13 +60,21 @@ input:focus, select:focus, textarea:focus {
     border: 1px solid #b2d1ff;
 }
 
-input.image, img {
+img {
     vertical-align: middle;
-    cursor: pointer;
     width: 20px;
     height: 20px;
     background-color: transparent;
     border: 0;
+}
+img.button,
+input.image {
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
 }
 
 .body {

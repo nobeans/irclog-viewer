@@ -27,7 +27,9 @@
                         
                    	        <g:sortableColumn property="description" title="Description" titleKey="channel.description" />
                         
-                   	        <g:sortableColumn property="isPublic" title="Is Public" titleKey="channel.isPublic" />
+                   	        <g:sortableColumn property="isPrivate" title="Is Private" titleKey="channel.isPrivate" />
+                        
+                   	        <g:sortableColumn property="secretKey" title="Secret Key" titleKey="channel.secretKey" />
                         
                         </tr>
                     </thead>
@@ -41,7 +43,9 @@
                         
                             <td>${fieldValue(bean:channel, field:'description')}</td>
                         
-                            <td>${fieldValue(bean:channel, field:'isPublic')}</td>
+                            <td>${fieldValue(bean:channel, field:'isPrivate')}</td>
+                        
+                            <td>${fieldValue(bean:channel, field:'secretKey')}</td>
                         
                         </tr>
                     </g:each>

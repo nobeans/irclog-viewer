@@ -1,7 +1,7 @@
 class ChannelService {
 
     def getAccessableChannels() {
-        Channel.findAll('from Channel as c where c.isPublic = true order by c.name')
+        Channel.findAll('from Channel as c where c.isPrivate = false order by c.name')
     }
 
 }

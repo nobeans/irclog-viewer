@@ -43,9 +43,16 @@
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="channel.isPublic" default="Is Public" />:</td>
+                            <td valign="top" class="name"><g:message code="channel.isPrivate" default="Is Private" />:</td>
                             
-                            <td valign="top" class="value">${fieldValue(bean:channel, field:'isPublic')}</td>
+                            <td valign="top" class="value">${fieldValue(bean:channel, field:'isPrivate')}</td>
+                            
+                        </tr>
+                    
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="channel.secretKey" default="Secret Key" />:</td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean:channel, field:'secretKey')}</td>
                             
                         </tr>
                     
