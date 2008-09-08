@@ -6,7 +6,7 @@ class ViewerController {
     def irclogSearchService
     def channelService
 
-    final SELECTABLE_PERIODS = ['hour', 'today', 'oneday', 'week', 'month', 'year', 'all']
+    final SELECTABLE_PERIODS = ['all', 'hour', 'today', 'oneday', 'week', 'month', 'year']
     
     /**
      * ログ一覧を表示する。
@@ -36,7 +36,7 @@ class ViewerController {
     // よって、max/offsetはcriterionとして取り扱わない。
     private parseCriterion(params) {
         def criterion = [
-            period:    params.period ?: 'all',
+            period:    params.period ?: 'today',
             channelId: params.channelId ?: 'all',
             type:      params.type ?: 'all',
             nick:      params.nick,
