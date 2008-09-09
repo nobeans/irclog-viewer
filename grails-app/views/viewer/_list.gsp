@@ -18,7 +18,7 @@
     </thead>
     <tbody>
     <g:each in="${irclogList}" status="i" var="irclog">
-      <% def isSpecified = (irclog.id.toString() == params.specifiedLogId) %>
+      <% def isSpecified = (irclog.id.toString() == params.id) %>
       <tr class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${isSpecified ? 'this' : ''}">
         <td class="irclog-specified">
           <my:specifiedLink id="${irclog.id}" time="${irclog.time}" channel="${irclog.channel}" params="${criterion}" isSpecified="${isSpecified}" />

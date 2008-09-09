@@ -16,7 +16,7 @@ environments {
 			//dbCreate = "create-drop" // one of 'create', 'create-drop','update'
 			dbCreate = "update" // one of 'create', 'create-drop','update'
 			url = "jdbc:postgresql://silver:5432/irclog"
-            logSql = true
+//            logSql = true
 		}
 	}
 	test {

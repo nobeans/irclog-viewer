@@ -68,3 +68,5 @@ log4j {
     additivity.StackTrace=false
 }
 
+// irclog-viewer
+irclogViewer.defaultMax = 50

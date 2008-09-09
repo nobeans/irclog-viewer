@@ -11,25 +11,12 @@ class MyTagLib {
         def onedayDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(attrs.time)
         def time = new java.text.SimpleDateFormat("hh:mm:ss").format(attrs.time)
 
-        // 指定日検索とチャンネルを設定し、また、ニックネームとメッセージ検索を解除する。
-        def params = [
-            *: attrs.params,
-            channelId: attrs.channel.id,
-            period: 'oneday',
-            'period-oneday-date': onedayDate,
-            specifiedLogId: attrs.id
-        ]
-        params.remove("nick")
-        params.remove("message")
-
         if (attrs.isSpecified) {
             out << """<img src="${createLinkTo(dir:'images', file:'specifiedNow.png')}" />"""
         } else {
-            out << """
-                <a href="?${params.collect{"${it.key}=${it.value}"}.join("&amp;")}">
-                  <img src="${createLinkTo(dir:'images', file:'specifiedThis.png')}" />
-                </a>
-            """
+            out << g.link(controller:'viewer', action:'specified', id:attrs.id) {
+                """<img src="${createLinkTo(dir:'images', file:'specifiedThis.png')}" />"""
+            }
         }
     }
 
@@ -41,12 +28,13 @@ class MyTagLib {
         // 指定日検索を設定する。
         def params = [*:attrs.params, period:'oneday', 'period-oneday-date':onedayDate]
 
-        out << """<a href="?${params.collect{"${it.key}=${it.value}"}.join("&amp;")}">${onedayDate}</a>&nbsp;&nbsp;${time}"""
+        out << g.link(controller:'viewer', action:'index', params:params) { "${onedayDate}</a>" }
+        out << """&nbsp;&nbsp;${time}"""
     }
 
     def channelLink = { attrs ->
-        def params = [*:attrs.params, channelId:"${attrs.channel.id}" ]
-        out << """<a href="?${params.collect{"${it.key}=${it.value}"}.join("&amp;")}">${attrs.channel.name}</a>"""
+        def params = [*:attrs.params, channel:"${attrs.channel.id}" ]
+        out << g.link(controller:'viewer', action:'index', params:params) { "${attrs.channel.name}</a>" }
     }
 
     def messageFormat = { attrs ->

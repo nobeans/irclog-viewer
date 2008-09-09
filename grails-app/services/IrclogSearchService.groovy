@@ -37,18 +37,18 @@ class IrclogSearchService {
         query.args << "resolveEndDate_${criterion.period}"(criterion)
 
         // チャンネル
-        assert (criterion.channelId) : '必須'
-        if (criterion.channelId.isLong()) { // 指定された1つのチャンネル
+        assert (criterion.channel) : '必須'
+        if (criterion.channel.isLong()) { // 指定された1つのチャンネル
             // 許可されていない場合は、何事もなかったかのように、とぼける。
-            if (!channelService.getAccessableChannels().any{ it.id.toString() == criterion.channelId }) {
+            if (!channelService.getAccessableChannels().any{ it.id.toString() == criterion.channel }) {
                 query.message = 'viewer.search.error.notFoundChannel'
-                criterion.channelId = null
+                criterion.channel = null
                 query.hql += " and 1 = 0" // 許可されたチャンネルが0件であれば、絶対にヒットさせない
-                return query // channelId未指定の場合は、ヒット件数0件とする(デフォルト挙動)
+                return query // channel未指定の場合は、ヒット件数0件とする(デフォルト挙動)
             }
             query.hql += " and i.channel.id = ?"
-            query.args << criterion.channelId.toLong()
-        } else if (criterion.channelId == 'all') { // 許可されたチャンネルすべて
+            query.args << criterion.channel.toLong()
+        } else if (criterion.channel == 'all') { // 許可されたチャンネルすべて
             def channels = channelService.getAccessableChannels()
             if (channels) {
                 query.hql += " and ( " + channels.collect{"i.channel.id like ?"}.join(" or ") + " )"

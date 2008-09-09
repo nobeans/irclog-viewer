@@ -6,29 +6,35 @@ class ViewerController {
     def irclogSearchService
     def channelService
 
+    final DATE_FORMAT = new java.text.SimpleDateFormat('yyyy-MM-dd')
     final SELECTABLE_PERIODS = ['all', 'hour', 'today', 'oneday', 'week', 'month', 'year']
     
     /**
      * ログ一覧を表示する。
      */
     def index = {
+        showViewer(params)
+    }
+
+    private showViewer(params) {
         // 検索条件をパースする。
         def criterion = parseCriterion(params)
 
         // ページングのために、max/offsetをセットアップする。
-        params.max = params.max?.toInteger() ?: 50
+        params.max = params.max?.toInteger() ?: grailsApplication.config.irclogViewer.defaultMax
         params.offset = params.offset?.toInteger() ?: 0
 
         // モデルを作成して、デフォルトビューへ。
         def searchResult = irclogSearchService.search(criterion, [max:params.max, offset:params.offset])
         if (searchResult.message) flash.message = searchResult.message
-        [
+        def model = [
             irclogList: searchResult.list,
             irclogCount: searchResult.totalCount,
             selectableChannels: getSelectableChannels(),
             selectablePeriods: SELECTABLE_PERIODS,
             criterion: criterion
         ]
+        render(view:'index', model:model)
     }
 
     // paginateタグのparams属性でcriterionを渡すと、リクエストのparamsスコープのmax/offset値が
@@ -37,7 +43,7 @@ class ViewerController {
     private parseCriterion(params) {
         def criterion = [
             period:    params.period ?: 'today',
-            channelId: params.channelId ?: 'all',
+            channel:   params.channel ?: 'all',
             type:      params.type ?: 'all',
             nick:      params.nick,
             message:   params.message
@@ -55,6 +61,18 @@ class ViewerController {
         channels
     }
 
+    /** パーマリンク指定 */
+    def specified = {
+        def irclog = Irclog.get(params.id)
+        if (!irclog) {
+            redirect(action:index)
+        }
+        params.specifiedLogId = irclog.id
+        params.channel = irclog.channel.id.toString()
+        params.period = 'oneday'
+        params['period-oneday-date'] = DATE_FORMAT.format(irclog.time)
+        showViewer(params)
+    }
 
     /** ログの対象行の非表示・表示をトグルする。*/
     def hideOrShow = {

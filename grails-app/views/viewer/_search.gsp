@@ -6,7 +6,7 @@
         <my:calendar name="period-oneday-date" value="${criterion?.'period-oneday-date'}" title="${message(code:'viewer.search.period.oneday.tooltips')}"/>
       </span>
     <label for="search-channel"><g:message code="viewer.search.channel" />:</label>
-      <g:select id="search-channel" name="channelId" from="${selectableChannels}" value="${criterion?.channelId}" optionKey="key" optionValue="value" />
+      <g:select id="search-channel" name="channel" from="${selectableChannels}" value="${criterion?.channel}" optionKey="key" optionValue="value" />
     <label for="search-nick"><g:message code="viewer.search.nick" />:</label>
       <input id="search-nick" type="text" name="nick" value="${criterion?.nick}"></input>
     <label for="search-message"><g:message code="viewer.search.message" />:</label>
