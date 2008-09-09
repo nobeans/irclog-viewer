@@ -365,6 +365,10 @@ th.desc a {
 .viewer .list tr:hover td.irclog-message {
     background: #ddf;
 }
+.viewer .list tr.this td.irclog-message,
+.viewer .list tr.this td {
+    background-color: #ff0;
+}
 
 /*
 div,span { border : 1px dotted red; }

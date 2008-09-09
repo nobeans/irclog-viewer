@@ -18,8 +18,10 @@
     </thead>
     <tbody>
     <g:each in="${irclogList}" status="i" var="irclog">
-      <tr class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type}">
-        <td class="irclog-specified"><my:specifiedLink time="${irclog.time}" channel="${irclog.channel}" params="${criterion}" /></td>
+      <tr class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${(irclog.id.toString() == params.specifiedLogId) ? 'this' : ''}">
+        <td class="irclog-specified">
+          <my:specifiedLink id="${irclog.id}" time="${irclog.time}" channel="${irclog.channel}" params="${criterion}" />
+        </td>
         <td class="irclog-time"><my:onedayLink time="${irclog.time}" params="${criterion}" /></td>
         <td class="irclog-channel"><my:channelLink channel="${irclog.channel}" params="${criterion}" /></td>
         <td class="irclog-nick">${irclog.nick?.encodeAsHTML()}</td>

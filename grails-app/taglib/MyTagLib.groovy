@@ -12,7 +12,13 @@ class MyTagLib {
         def time = new java.text.SimpleDateFormat("hh:mm:ss").format(attrs.time)
 
         // 指定日検索とチャンネルを設定し、また、ニックネームとメッセージ検索を解除する。
-        def params = [*:attrs.params, channelId:"${attrs.channel.id}", period:'oneday', 'period-oneday-date':onedayDate]
+        def params = [
+            *: attrs.params,
+            channelId: attrs.channel.id,
+            period: 'oneday',
+            'period-oneday-date': onedayDate,
+            specifiedLogId: attrs.id
+        ]
         params.remove("nick")
         params.remove("message")
 
