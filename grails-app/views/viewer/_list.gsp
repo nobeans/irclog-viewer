@@ -7,7 +7,7 @@
     <thead>
       <tr>
         <th class="irclog-specified"  title="${message(code:'viewer.list.specified.tooltips')}">
-          <img src="${createLinkTo(dir:'images',file:'specified_head.png')}" />
+          <img src="${createLinkTo(dir:'images',file:'specifiedTitle.png')}" />
         </th>
         <th class="irclog-time" title="${message(code:'viewer.list.time.tooltips')}"><g:message code="irclog.time"/></th>
         <th class="irclog-channel" title="${message(code:'viewer.list.channel.tooltips')}"><g:message code="irclog.channel"/></th>
@@ -18,9 +18,10 @@
     </thead>
     <tbody>
     <g:each in="${irclogList}" status="i" var="irclog">
-      <tr class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${(irclog.id.toString() == params.specifiedLogId) ? 'this' : ''}">
+      <% def isSpecified = (irclog.id.toString() == params.specifiedLogId) %>
+      <tr class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${isSpecified ? 'this' : ''}">
         <td class="irclog-specified">
-          <my:specifiedLink id="${irclog.id}" time="${irclog.time}" channel="${irclog.channel}" params="${criterion}" />
+          <my:specifiedLink id="${irclog.id}" time="${irclog.time}" channel="${irclog.channel}" params="${criterion}" isSpecified="${isSpecified}" />
         </td>
         <td class="irclog-time"><my:onedayLink time="${irclog.time}" params="${criterion}" /></td>
         <td class="irclog-channel"><my:channelLink channel="${irclog.channel}" params="${criterion}" /></td>

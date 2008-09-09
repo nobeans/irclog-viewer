@@ -22,11 +22,15 @@ class MyTagLib {
         params.remove("nick")
         params.remove("message")
 
-        out << """
-            <a href="?${params.collect{"${it.key}=${it.value}"}.join("&amp;")}">
-              <img src="${createLinkTo(dir:'images',file:'specified.png')}" />
-            </a>
-        """
+        if (attrs.isSpecified) {
+            out << """<img src="${createLinkTo(dir:'images', file:'specifiedNow.png')}" />"""
+        } else {
+            out << """
+                <a href="?${params.collect{"${it.key}=${it.value}"}.join("&amp;")}">
+                  <img src="${createLinkTo(dir:'images', file:'specifiedThis.png')}" />
+                </a>
+            """
+        }
     }
 
     def onedayLink = { attrs ->
