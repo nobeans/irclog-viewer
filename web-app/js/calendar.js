@@ -7,6 +7,7 @@
 
     YAHOO.util.Event.addListener(window, "load", initDoc);
     function initDoc() {
+        // カレンダの初期化
         YAHOO.my.calendar = new YAHOO.widget.Calendar("calendar", YAHOO.my.baseId + "-calendar", { title:"日付を選択してください", close:true });
         YAHOO.my.calendar.selectEvent.subscribe(handleSelect, YAHOO.my.calendar, true);
         YAHOO.my.calendar.cfg.setProperty("MDY_YEAR_POSITION",  1);
@@ -22,10 +23,19 @@
         YAHOO.my.calendar.cfg.setProperty("WEEKDAYS_LONG",  YAHOO.my.dayOfWeek);
         YAHOO.my.calendar.render();
 
+        // カレンダ表示ボタンの初期化
         YAHOO.util.Event.addListener(YAHOO.my.baseId + "-button", "click", handleFocus);
     }               
 
     function handleFocus() {
+        // カレンダの表示位置をボタンのちょうど下の部分にする。
+        var button = $(YAHOO.my.baseId + "-button");
+        var buttonOffset = Position.cumulativeOffset(button);
+        var calendar = $(YAHOO.my.baseId + '-calendar');
+        calendar.style.left = buttonOffset[0] - button.getWidth();
+        calendar.style.top = buttonOffset[1] + button.getHeight();
+
+        // 表示する。
         YAHOO.my.calendar.show();
     }               
 
