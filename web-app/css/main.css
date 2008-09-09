@@ -338,7 +338,7 @@ th.desc a {
 .viewer .list .irclog-message {
     width: 80%;
 }
-.viewer .list td.irclog-message strong {
+.viewer .list td strong {
     background-color: yellow;
     color: red;
     font-weight: bold;
