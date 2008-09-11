@@ -46,6 +46,7 @@ input, select, textarea {
     border: 1px solid #ccc;
     margin: 2px 0;
     padding: 2px 4px;
+    vertical-align: middle;
 }
 select {
    padding: 2px 2px 2px 0;
@@ -54,6 +55,9 @@ textarea {
     width: 250px;
     height: 150px;
     vertical-align: top;
+}
+label {
+    vertical-align: middle;
 }
 
 input:focus, select:focus, textarea:focus {
@@ -160,8 +164,10 @@ tr {
 td, th {
     font-family: verdana, arial, helvetica, sans-serif;
     text-align: left;
-    vertical-align: top;
     padding: 3px 6px;
+}
+td {
+    vertical-align: top;
 }
 th {
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
@@ -169,6 +175,7 @@ th {
     font-size: 95%;
     font-weight: bold;
     border-bottom: 1px solid #ccc;
+    vertical-align: middle;
 }
 th.asc a, th.desc a {
     background-position: right;
@@ -195,10 +202,10 @@ th.desc a {
     width: 100%;
 }
 .list th, .list td {
-    border-left: 1px solid #ddd;
+    border-left: 1px solid #ccc;
 }
 .list td {
-    border-bottom: 1px dotted #ddd;
+    border-bottom: 1px dotted #ccc;
 }
 .list tr:hover {
     background: #ddf;
@@ -310,6 +317,38 @@ th.desc a {
     z-index: 999;
 }
 
+/* Header */
+
+.header {
+    position: relative;
+    background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
+    border: 1px solid #ccc;
+    color: #666;
+    padding: 3px;
+    font-size: 95%;
+    margin: 10px 0px;
+}
+.header h1 {
+    margin: 0;
+    padding: 2px 15px;
+    color: #888;
+    font-weight: bold;
+}
+#auth {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
+#auth .logout {
+    padding-left: 5px;
+    vertical-align: middle;
+}
+#auth input#auth-loginName,
+#auth input#auth-password {
+    width: 6em;
+    margin-right: 5px;
+}
+
 /* Viewer */
 
 .viewer .search {
@@ -319,7 +358,7 @@ th.desc a {
     color: #666;
     padding: 3px;
     font-size: 95%;
-    margin: 10px 0px;
+    margin: 0 0 -1px 0;
 }
 .viewer .search label {
     padding-left: 10px;
@@ -329,18 +368,21 @@ th.desc a {
     border: 0;
 }
 
+.viewer .list {
+    margin: 0;
+}
 .viewer .list .irclog-specified {
     width: 12px;
 }
 .viewer .list .irclog-time {
-    width: 12em;
+    white-space: nowrap;
 }
 .viewer .list .irclog-channel {
 }
 .viewer .list .irclog-nick {
 }
 .viewer .list .irclog-message {
-    width: auto;
+    width: 80%;
 }
 .viewer .list .irclog-type {
     width: 5em;

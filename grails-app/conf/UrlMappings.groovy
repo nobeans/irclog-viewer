@@ -1,20 +1,23 @@
 class UrlMappings {
     static mappings = {
 
-        // “Á’èƒƒO‚Ìƒp[ƒ}ƒŠƒ“ƒNURL
+        // Welcome
+        "/"(controller:"top")
+
+        // ç‰¹å®šãƒ­ã‚°ã®ãƒ‘ãƒ¼ãƒãƒªãƒ³ã‚¯URL
         "/viewer/$id"(controller:"viewer", action:"specified") {
             constraints {
                 id(matches:/[0-9]+/)
             }
         }
 
-        // ƒƒOƒrƒ…[ƒA
+        // ãƒ­ã‚°ãƒ“ãƒ¥ãƒ¼ã‚¢
         "/viewer/"(controller:"viewer", action:"index") {
             constraints {
             }
         }
 
-        // ƒfƒtƒHƒ‹ƒg
+        // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆ
         "/$controller/$action?/$id?" {
             constraints {
                // apply constraints here

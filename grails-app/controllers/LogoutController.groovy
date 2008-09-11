@@ -1,10 +1,6 @@
-class LogoutController {
+class LogoutController extends Base {
 
-	/**
-	 * Index action. Redirects to the Spring security logout uri.
-	 */
-	def index = {
-		// TODO  put any pre-logout code here
-		redirect(uri: '/j_spring_security_logout')
-	}
+    def index = {
+        redirect(uri:"/j_spring_security_logout")
+    }
 }

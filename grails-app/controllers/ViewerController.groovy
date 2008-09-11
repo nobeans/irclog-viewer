@@ -1,7 +1,7 @@
 /**
  * IRCログの表示処理のコントローラ。
  */
-class ViewerController {
+class ViewerController extends Base {
 
     def irclogSearchService
     def channelService
@@ -21,7 +21,7 @@ class ViewerController {
         def criterion = parseCriterion(params)
 
         // ページングのために、max/offsetをセットアップする。
-        params.max = params.max?.toInteger() ?: grailsApplication.config.irclogViewer.defaultMax
+        params.max = params.max?.toInteger() ?: config.irclogViewer.defaultMax
         params.offset = params.offset?.toInteger() ?: 0
 
         // モデルを作成して、デフォルトビューへ。

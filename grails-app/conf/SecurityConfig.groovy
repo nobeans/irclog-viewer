@@ -58,4 +58,6 @@ security {
     basicProcessingFilter = false
     /** use switchUserProcessingFilter */
     switchUserProcessingFilter = false
+
+    defaultTargetUrl = "/viewer"
 }
