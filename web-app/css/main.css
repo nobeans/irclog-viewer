@@ -332,11 +332,18 @@ th.desc a {
 .viewer .list .irclog-specified {
     width: 12px;
 }
+.viewer .list .irclog-time {
+    width: 12em;
+}
+.viewer .list .irclog-channel {
+}
 .viewer .list .irclog-nick {
-    text-align: right;
 }
 .viewer .list .irclog-message {
-    width: 80%;
+    width: auto;
+}
+.viewer .list .irclog-type {
+    width: 5em;
 }
 .viewer .list td strong {
     background-color: yellow;
