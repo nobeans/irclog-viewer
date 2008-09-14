@@ -33,6 +33,7 @@
         var buttonOffset = Position.cumulativeOffset(button);
         var calendar = $(YAHOO.my.baseId + '-calendar');
         calendar.style.left = buttonOffset[0] - button.getWidth();
+        calendar.style.top += '24px';
 
         // 表示する。
         YAHOO.my.calendar.show();

@@ -8,11 +8,10 @@
     <yui:stylesheet dir="calendar/assets" file="calendar.css" />
     <g:javascript library="calendar" />
     <g:javascript library="viewer" />
-    <title><g:message code="application.name" /></title>
   </head>
   <body>
     <div class="body viewer">
-      <g:render template="header" />
+      <g:render template="toolbar" />
       <g:if test="${flash.message}">
         <div class="message"><g:message code="${flash.message}" args="${flash.args}" default="${flash.defaultMessage}" /></div>
       </g:if>

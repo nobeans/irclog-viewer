@@ -1,7 +1,7 @@
 <div class="list">
   <div class="paginateButtons top">
     <g:paginate total="${irclogCount}" params="${criterion}" />
-    <span class="info">${Math.min(params.offset + 1, irclogCount)} - ${Math.min(params.offset + params.max, irclogCount)} 件表示 / ${irclogCount} 件中</span>
+    <span class="count">${Math.min(params.offset + 1, irclogCount)} - ${Math.min(params.offset + params.max, irclogCount)} 件表示 / ${irclogCount} 件中</span>
   </div>
   <table>
     <thead>
@@ -34,6 +34,6 @@
   </table>
   <div class="paginateButtons bottom">
     <g:paginate total="${irclogCount}" params="${criterion}" />
-    <span class="info">${Math.min(params.offset + 1, irclogCount)} - ${Math.min(params.offset + params.max, irclogCount)} 件表示 / ${irclogCount} 件中</span>
+    <span class="count">${Math.min(params.offset + 1, irclogCount)} - ${Math.min(params.offset + params.max, irclogCount)} 件表示 / ${irclogCount} 件中</span>
   </div>
 </div>

@@ -1,15 +1,15 @@
 <html>
   <head>
-    <title><g:layoutTitle default="Grails" /></title>
+    <title><g:layoutTitle default="${message(code:'application.name')}" /></title>
     <link rel="stylesheet" href="${createLinkTo(dir:'css',file:'main.css')}" />
     <link rel="shortcut icon" href="${createLinkTo(dir:'images',file:'favicon.png')}" type="image/x-icon" />
     <g:layoutHead />
     <g:javascript library="application" />				
   </head>
   <body>
-    <div id="spinner" class="spinner" style="display:none;">
-      <img src="${createLinkTo(dir:'images',file:'spinner.gif')}" alt="Spinner" />
-    </div>	
-  <g:layoutBody />  
+    <div class="header">
+      <h1><g:layoutTitle default="${message(code:'application.name')}" /></h1>
+    </div>
+    <g:layoutBody />  
   </body>	
 </html>
