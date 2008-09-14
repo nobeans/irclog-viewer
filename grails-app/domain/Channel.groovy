@@ -12,4 +12,7 @@ class Channel {
         secretKey(nullable:false, blank:true)
     }
 
+    static mapping = {
+        description(type:'text')
+    }
 }

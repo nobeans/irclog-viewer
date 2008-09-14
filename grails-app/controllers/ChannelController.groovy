@@ -6,7 +6,8 @@ class ChannelController extends Base {
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
     def list = {
-        if(!params.max) params.max = 10
+        params.max = Channel.count() // 必ず全チャンネルが一度に取得できるように最大件数を設定する。
+        if (!params.sort) params.sort = 'name'
         [ channelList: Channel.list( params ) ]
     }
 

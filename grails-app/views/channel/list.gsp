@@ -14,7 +14,6 @@
         <table>
           <thead>
             <tr>
-              <g:sortableColumn property="id" title="Id" titleKey="channel.id" />
               <g:sortableColumn property="name" title="Name" titleKey="channel.name" />
               <g:sortableColumn property="description" title="Description" titleKey="channel.description" />
               <g:sortableColumn property="isPrivate" title="Is Private" titleKey="channel.isPrivate" />
@@ -23,17 +22,13 @@
           <tbody>
           <g:each in="${channelList}" status="i" var="channel">
             <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-              <td><g:link action="show" id="${channel.id}">${fieldValue(bean:channel, field:'id')}</g:link></td>
-              <td>${fieldValue(bean:channel, field:'name')}</td>
+              <td><g:link action="show" id="${channel.id}">${fieldValue(bean:channel, field:'name')}</g:link></td>
               <td>${fieldValue(bean:channel, field:'description')}</td>
-              <td>${fieldValue(bean:channel, field:'isPrivate')}</td>
+              <td><g:message code="channel.isPrivate.${channel.isPrivate.toString()}" /></td>
             </tr>
           </g:each>
           </tbody>
         </table>
-      </div>
-      <div class="paginateButtons">
-        <g:paginate total="${Channel.count()}" />
       </div>
       <div class="buttons">
         <span class="menuButton"><g:link class="create" action="create"><g:message code="channel.new" /></g:link></span>

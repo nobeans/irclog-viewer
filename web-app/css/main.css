@@ -64,6 +64,11 @@ input:focus, select:focus, textarea:focus {
     border: 1px solid #b2d1ff;
 }
 
+pre {
+    font-family: verdana, arial, helvetica, sans-serif;
+    font-size: 100%;
+}
+
 img {
     vertical-align: middle;
     width: 20px;
@@ -94,11 +99,11 @@ input.image {
 /* NAVIGATION MENU */
 
 .nav {
+    position: relative;
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
     border: 1px solid #ccc;
     border-style: solid none solid none;
-    padding: 5px 12px;
-    position: relative;
+    padding: 3px 12px;
     overflow: hidden;
     color: #666;
 }
@@ -107,27 +112,29 @@ input.image {
     right: 15px;
     padding: 0px 3px;
 }
+* html body .nav #login-info {
+    padding: 4px 3px;
+}
+.nav #login-info img {
+    margin-right: 3px;
+}
 
 .menuButton {
     padding: 0 5px;
 }
 .menuButton a {
-    color: #666;
     padding: 4px 6px;
 }
 .menuButton a.home {
     background: url(../images/skin/house.png) center left no-repeat;
-    color: #666;
     padding-left: 25px;
 }
 .menuButton a.list {
     background: url(../images/skin/database_table.png) center left no-repeat;
-    color: #666;
     padding-left: 25px;
 }
 .menuButton a.create {
     background: url(../images/skin/database_add.png) center left no-repeat;
-    color: #666;
     padding-left: 25px;
 }
 
@@ -176,7 +183,9 @@ tr {
     border: 0;
 }
 td, th {
+    position: relative;
     font-family: verdana, arial, helvetica, sans-serif;
+    line-height: 1.2em;
     text-align: left;
     padding: 3px 6px;
 }
@@ -186,11 +195,14 @@ td {
 th {
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
     color: #666;
-    font-size: 95%;
     font-weight: bold;
-    border-bottom: 1px solid #ccc;
+    line-height: 1.3em;
     vertical-align: baseline;
     white-space: nowrap;
+}
+th a:link, th a:visited, th a:hover {
+    display: block;
+    width: 100%;
 }
 th.asc a, th.desc a {
     background-position: right;
@@ -202,7 +214,6 @@ th.asc a {
 th.desc a {
     background-image: url(../images/skin/sorted_desc.gif);
 }
-
 .odd {
     background: #fff;
 }
@@ -215,16 +226,20 @@ th.desc a {
 .list table {
     position: relative;
     width: 100%;
+    margin: 0;
+    padding: 0;
 }
 * html body .list table {
     width: 97.3%;
     margin-bottom: -1px;
 }
-.list th, .list td {
-    border-left: 1px solid #ccc;
-}
 .list td {
-    border-bottom: 1px dotted #ccc;
+    border-top: 1px dotted #ccc;
+    padding: 3px 5px 3px 5px;
+    vertical-align: baseline;
+}
+.list th {
+    white-space: nowrap;
 }
 .list tr:hover {
     background: #ddf;
@@ -234,19 +249,25 @@ th.desc a {
 
 .paginateButtons {
     position: relative;
-    background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
+    background: transparent url(../images/skin/shadow.jpg) bottom repeat-x;
     border: 1px solid #ccc;
     color: #666;
     overflow: hidden;
     padding: 3px 6px;
+    height: 1.2em;
     font-size: 90%;
-    height: 24px;
+    vertical-align: baseline;
+}
+* html body .paginateButtons {
+    height: 2em;
 }
 .paginateButtons.top {
     margin-bottom: -1px;
 }
+.paginateButtons.bottom {
+    margin-top: -1px;
+}
 .paginateButtons a {
-    background: #fff;
     color: #666;
     margin: 0 3px;
     padding: 0px 3px;
@@ -260,7 +281,6 @@ th.desc a {
     padding: 0px 3px;
     position: absolute;
     right: 4px;
-    vertical-align: middle;
 }
 
 /* DIALOG */
@@ -273,9 +293,12 @@ th.desc a {
     padding: 5px;
 }
 .prop .name {
-    text-align: left;
+    text-align: right;
     width: 15%;
     white-space: nowrap;
+    background: #eee;
+    font-weight: bold;
+    color: #666;
 }
 .prop .value {
     text-align: left;
@@ -289,7 +312,7 @@ th.desc a {
     border: 1px solid #ccc;
     color: #666;
     overflow: hidden;
-    padding: 5px;
+    padding: 3px;
     margin: 10px 0;
 }
 .buttons form {
@@ -376,11 +399,11 @@ th.desc a {
 * html body .viewer .list { /* Hack for IE6 */
     z-index: -1;
 }
-.viewer .list table {
-    width: 100%;
-}
 * html body .viewer .list table {
     width: auto;
+}
+.viewer .list table td {
+    padding: 1px 5px 1px 5px;
 }
 .viewer .list .irclog-specified {
     width: 12px;
