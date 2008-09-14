@@ -13,7 +13,7 @@
         <th class="irclog-channel" title="${message(code:'viewer.list.channel.tooltips')}"><g:message code="irclog.channel"/></th>
         <th class="irclog-nick"><g:message code="irclog.nick"/></th>
         <th class="irclog-message"><g:message code="irclog.message"/></th>
-        <th class="irclog-type"><g:message code="irclog.type"/></th>
+        <th class="irclog-type"><nobr><g:message code="irclog.type"/></nobr></th>
       </tr>
     </thead>
     <tbody>
