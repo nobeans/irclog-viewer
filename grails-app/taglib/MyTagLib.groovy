@@ -54,4 +54,9 @@ class MyTagLib {
         """
     }
 
+    def createNavLinkIfNotCurrent = { attrs ->
+        if (!attrs.action && request['org.codehaus.groovy.grails.CONTROLLER_NAME_ATTRIBUTE'] == attrs.name) return
+        if (attrs.action && request['org.codehaus.groovy.grails.ACTION_NAME_ATTRIBUTE'] == attrs.action) return
+        out << """ <span class="menuButton">${g.link(class:attrs.name, controller:attrs.name) { g.message(code:attrs.name) }}</span> """
+    }
 }

@@ -1,6 +1,6 @@
-class ChannelController {
+class ChannelController extends Base {
     
-    def index = { redirect(action:list,params:params) }
+    def index = { redirect(action:list, params:params) }
 
     // the delete, save and update actions only accept POST requests
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']

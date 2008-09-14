@@ -16,7 +16,6 @@ body {
     background: #fff;
     color: #333;
     font-family: verdana, arial, helvetica, sans-serif;
-    margin: 10px;
 }
 
 a:link, a:visited {
@@ -84,6 +83,12 @@ input.image {
 
 .body {
     position: relative;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.body h1 {
+    font-size: 150%;
+    padding: 15px 0 5px 5px;
 }
 
 /* NAVIGATION MENU */
@@ -92,8 +97,15 @@ input.image {
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
     border: 1px solid #ccc;
     border-style: solid none solid none;
-    margin-top: 5px;
-    padding: 7px 12px;
+    padding: 5px 12px;
+    position: relative;
+    overflow: hidden;
+    color: #666;
+}
+.nav #login-info {
+    position: absolute;
+    right: 15px;
+    padding: 0px 3px;
 }
 
 .menuButton {
@@ -155,6 +167,7 @@ td.errors input {
 /* TABLES */
 
 table {
+    position: relative;
     border: 1px solid #ccc;
     border-collapse: collapse;
     width: 100%
@@ -200,7 +213,12 @@ th.desc a {
 /* LIST */
 
 .list table {
+    position: relative;
     width: 100%;
+}
+* html body .list table {
+    width: 97.3%;
+    margin-bottom: -1px;
 }
 .list th, .list td {
     border-left: 1px solid #ccc;
@@ -225,10 +243,7 @@ th.desc a {
     height: 20;
 }
 .paginateButtons.top {
-    border-bottom: 0;
-}
-.paginateButtons.bottom {
-    border-top: 0;
+    margin-bottom: -1px;
 }
 .paginateButtons a {
     background: #fff;
@@ -274,8 +289,8 @@ th.desc a {
     border: 1px solid #ccc;
     color: #666;
     overflow: hidden;
-    padding: 0;
-    margin: 0;
+    padding: 5px;
+    margin: 10px 0;
 }
 .buttons form {
     display: inline;
@@ -331,43 +346,6 @@ th.desc a {
     margin: 10px 0px;
 }
 
-/* Toolbar */
-
-.toolbar {
-    position: relative;
-    overflow: hidden;
-    color: #666;
-}
-.toolbar .subbar {
-    background-color: #eee;
-    border: 1px solid #ccc;
-    border-top: 0;
-    color: #666;
-    width: auto;
-    padding: 5px;
-}
-.toolbar form {
-    display: inline;
-    margin: 0;
-}
-.toolbar input {
-    margin: 0;
-}
-.toolbar input#loginName,
-.toolbar input#password {
-    width: 8em;
-    margin-right: 5px;
-}
-.toolbar #login-info {
-    position: absolute;
-    top: 5px;
-    right: 15px;
-    padding: 0px 3px;
-    vertical-align: baseline;
-    margin-top: auto;
-    margin-bottom: auto;
-}
-
 /* Viewer */
 
 .viewer .search {
@@ -394,10 +372,15 @@ th.desc a {
 .viewer .list {
     position: relative;
     margin: 0;
-    z-index: -9;
+}
+* html body .viewer .list { /* Hack for IE6 */
+    z-index: -1;
 }
 .viewer .list table {
     width: 100%;
+}
+* html body .viewer .list table {
+    width: auto;
 }
 .viewer .list .irclog-specified {
     width: 12px;
@@ -445,6 +428,23 @@ th.desc a {
 .viewer .list tr.this td.irclog-message,
 .viewer .list tr.this td {
     background-color: #ff0;
+}
+
+/* FOOTER */
+
+.footer {
+    clear: both;
+    margin-top: 15px;
+    padding: 5px 10px 5px 10px;
+    border-top: 1px solid #bbb;
+    background-color: #fff;
+    font-style: italic;
+    color: #666;
+    height: 1.5em;
+    width: auto;
+}
+.footer .poweredBy {
+    float: right;
 }
 
 /*

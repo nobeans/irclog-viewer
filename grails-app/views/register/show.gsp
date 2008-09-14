@@ -6,10 +6,6 @@
     <title>User Profile</title>
   </head>
   <body>
-    <div class="nav">
-      <span class="menuButton"><a href="${createLinkTo(dir:'')}">Home</a></span>
-    </div>
-    
     <div class="body">
       <h1>User Profile</h1>
       <g:if test="${flash.message}">

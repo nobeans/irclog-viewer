@@ -3,13 +3,19 @@
     <title><g:layoutTitle default="${message(code:'application.name')}" /></title>
     <link rel="stylesheet" href="${createLinkTo(dir:'css',file:'main.css')}" />
     <link rel="shortcut icon" href="${createLinkTo(dir:'images',file:'favicon.png')}" type="image/x-icon" />
+    <g:javascript library="prototype" />
     <g:layoutHead />
-    <g:javascript library="application" />				
   </head>
   <body>
     <div class="header">
-      <h1><g:layoutTitle default="${message(code:'application.name')}" /></h1>
+      <h1>${message(code:'application.name')}</h1>
+    </div>
+    <div class="nav">
+      <g:render template="../layouts/nav" />
     </div>
     <g:layoutBody />  
+    <div class="footer">
+      <span class="poweredBy">Powered by Grails</span>
+    </div>
   </body>	
 </html>

@@ -1,16 +1,12 @@
-
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="main" />
-    <title>User Registration</title>         
+    <title>${message(code:'register')}</title>         
   </head>
   <body>
-    <div class="nav">
-      <span class="menuButton"><a href="${createLinkTo(dir:'')}">Home</a></span>
-    </div>
     <div class="body">
-      <h1>User Registration</h1>
+      <h1><g:message code="register" /></h1>
       <g:if test="${flash.message}">
         <div class="message">${flash.message}</div>
       </g:if>

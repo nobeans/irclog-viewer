@@ -5,6 +5,7 @@ class LoginController extends Base {
 
     def index = {
         if (isLoggedIn) {
+            flash.message = null
             redirect(uri: config.irclogViewer.defaultIndexPath)
         }
         else {
@@ -15,6 +16,7 @@ class LoginController extends Base {
     // ログイン画面を表示する。
     def auth = {
         if (isLoggedIn) {
+            flash.message = null
             redirect(uri: config.irclogViewer.defaultIndexPath)
         }
         else {
@@ -46,6 +48,6 @@ class LoginController extends Base {
         }
         flash.message = msg
         flash.loginName = loginName
-        redirect(controller:'viewer')
+        render(view: 'auth')
     }
 }

@@ -7,11 +7,6 @@
         <title><g:message code="channel.show" default="Show Channel" /></title>
     </head>
     <body>
-        <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}"><g:message code="home" default="Home" /></a></span>
-            <span class="menuButton"><g:link class="list" action="list"><g:message code="channel.list" default="Channel List" /></g:link></span>
-            <span class="menuButton"><g:link class="create" action="create"><g:message code="channel.new" default="New Channel" /></g:link></span>
-        </div>
         <div class="body">
             <h1><g:message code="channel.show" default="Show Channel" /></h1>
             <g:if test="${flash.message}">
