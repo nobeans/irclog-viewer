@@ -337,16 +337,15 @@ th.desc a {
 #auth {
     position: absolute;
     bottom: 5px;
-    right: 5px;
-}
-#auth .logout {
-    padding-left: 5px;
-    vertical-align: middle;
+    right: 10px;
 }
 #auth input#auth-loginName,
 #auth input#auth-password {
-    width: 6em;
+    width: 8em;
     margin-right: 5px;
+}
+#auth span {
+    vertical-align: middle;
 }
 
 /* Viewer */
@@ -366,6 +365,12 @@ th.desc a {
 .viewer .search input.image {
     padding-left: 10px;
     border: 0;
+}
+.viewer .search #search-nick {
+    width: 8em;
+}
+.viewer .search #search-message {
+    width: 15em;
 }
 
 .viewer .list {

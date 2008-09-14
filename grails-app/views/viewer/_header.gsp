@@ -3,14 +3,14 @@
   <div id="auth">
     <g:isLoggedIn>
       <div id="auth-info">
-        <g:message code="auth.info" args="${[g.loggedInUserInfo(field:'loginName')]}" />
+        <span><g:message code="auth.info" args="${[g.loggedInUserInfo(field:'loginName')]}" /></span>
         <g:link class="logout" controller="logout">
-          <img src="${createLinkTo(dir:'images', file:'logout.png')}" title="${message(code:'auth.logout.tooltips')}" />
+          <img class="button" src="${createLinkTo(dir:'images', file:'logout.png')}" title="${message(code:'auth.logout.tooltips')}" />
         </g:link>
       </div>
     </g:isLoggedIn>
     <g:isNotLoggedIn>
-      <g:form controller="j_spring_security_check" method="post">
+      <g:form controller="j_spring_security_check" method="get">
         <label for="auth-loginName"><g:message code="person.loginName" />:</label>
           <input id="auth-loginName" type="text" name="j_username" value=""></input>
         <label for="auth-password"><g:message code="person.password" />:</label>
