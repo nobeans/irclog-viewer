@@ -1,6 +1,5 @@
 <div class="search">
   <g:form method="get">
-    <input class="image" type="image" src="${createLinkTo(dir:'images',file:'search.png')}" title="${message(code:'viewer.search.button.tooltips')}" />
     <label for="search-period"><g:message code="viewer.search.period" />:</label>
       <g:select id="search-period" name="period" from="${selectablePeriods}" value="${criterion?.period}" valueMessagePrefix="viewer.search.period" />
       <span id="period-oneday-select" style="display:none">
@@ -14,5 +13,7 @@
       <input id="search-message" type="text" name="message" value="${criterion?.message}"></input>
     <label for="search-type"><g:message code="viewer.search.type" />:</label>
       <g:select id="search-type" name="type" from="${Irclog.typeList}" value="${criterion?.type}" valueMessagePrefix="viewer.search.type" />
+    <input id="search-submit" class="image" type="image" src="${createLinkTo(dir:'images',file:'search.png')}" title="${message(code:'viewer.search.button.tooltips')}" />
+      <label for="search-submit" id="search-submit-label"><g:message code="viewer.search.button" /></label>
   </g:form>
 </div>

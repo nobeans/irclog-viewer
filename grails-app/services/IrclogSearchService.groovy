@@ -88,11 +88,6 @@ class IrclogSearchService {
 
     // ----------------------------------------------
     // 対象期間:〜から
-    private resolveBeginDate_hour(criterion) {
-        def cal = Calendar.getInstance()
-        cal.add(Calendar.HOUR_OF_DAY, -1)
-        cal.getTime()
-    }
     private resolveBeginDate_today(criterion) {
         getCalendarAtZeroHourOfToday().getTime()
     }
@@ -126,9 +121,6 @@ class IrclogSearchService {
 
     // ----------------------------------------------
     // 対象期間:〜まで
-    private resolveEndDate_hour(criterion) {
-        getCalendarAtZeroHourOfToday().getTime()
-    }
     private resolveEndDate_today(criterion) {
         getCalendarAtZeroHourOfToday().getTime()
     }

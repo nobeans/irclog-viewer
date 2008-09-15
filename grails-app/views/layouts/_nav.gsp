@@ -2,8 +2,8 @@
 <g:isNotLoggedIn>
   <my:createNavLinkIfNotCurrent name="viewer" />
   <my:createNavLinkIfNotCurrent name="channel" action="list" />
-  <my:createNavLinkIfNotCurrent name="login" />
   <my:createNavLinkIfNotCurrent name="register" />
+  <my:createNavLinkIfNotCurrent name="login" />
   <span class="floatLeft" id="login-info">
     <img src="${createLinkTo(dir:'images',file:'person.png')}"/><g:message code="login.info.guest" />
   </span>

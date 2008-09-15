@@ -7,7 +7,7 @@ class ViewerController extends Base {
     def channelService
 
     final DATE_FORMAT = new java.text.SimpleDateFormat('yyyy-MM-dd')
-    final SELECTABLE_PERIODS = ['all', 'hour', 'today', 'oneday', 'week', 'month', 'year']
+    final SELECTABLE_PERIODS = ['all', 'year', 'month', 'week', 'today', 'oneday']
     
     /**
      * ログ一覧を表示する。
