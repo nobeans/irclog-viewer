@@ -2,8 +2,8 @@ class IrclogSearchService {
 
     def channelService
 
-    def search(criterion, params) {
-        def query = createQuery(criterion)
+    def search(person, criterion, params) {
+        def query = createQuery(person, criterion)
         [
             list: findAll(query, params),
             totalCount: count(query),
@@ -21,7 +21,7 @@ class IrclogSearchService {
         Irclog.executeQuery("select count(i) " + query.hql, query.args)[0].toInteger()
     }
 
-    private createQuery(criterion) {
+    private createQuery(person, criterion) {
         def query = [
             hql: "from Irclog as i where 1 = 1",
             args: [],
@@ -38,9 +38,10 @@ class IrclogSearchService {
 
         // チャンネル
         assert (criterion.channel) : '必須'
+        def channels = channelService.getAccessibleChannelList(person, criterion)
         if (criterion.channel.isLong()) { // 指定された1つのチャンネル
             // 許可されていない場合は、何事もなかったかのように、とぼける。
-            if (!channelService.getAccessableChannels().any{ it.id.toString() == criterion.channel }) {
+            if (!channels.any{ it.id.toString() == criterion.channel }) {
                 query.message = 'viewer.search.error.notFoundChannel'
                 criterion.channel = null
                 query.hql += " and 1 = 0" // 許可されたチャンネルが0件であれば、絶対にヒットさせない
@@ -49,7 +50,6 @@ class IrclogSearchService {
             query.hql += " and i.channel.id = ?"
             query.args << criterion.channel.toLong()
         } else if (criterion.channel == 'all') { // 許可されたチャンネルすべて
-            def channels = channelService.getAccessableChannels()
             if (channels) {
                 query.hql += " and ( " + channels.collect{"i.channel.id like ?"}.join(" or ") + " )"
                 query.args.addAll(channels.collect{it.id.toLong()})

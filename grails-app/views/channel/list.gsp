@@ -32,7 +32,13 @@
       </div>
       <div class="buttons">
         <span class="menuButton"><g:link class="create" action="create"><g:message code="channel.new" /></g:link></span>
-        <span class="menuButton"><g:link class="join" action="join"><g:message code="channel.join" /></g:link></span>
+        <span class="menuButton"><a href="javascript:void(0);" onclick="$('joinToSecretChannel').toggle()"><g:message code="channel.join" /></a></span>
+      </div>
+      <div id="joinToSecretChannel" style="display:none">
+        <h3><g:message code="channel.join" /></h3>
+        <div class="buttons">
+          <span class="menuButton"><g:link class="join" action="join"><g:message code="channel.join" /></g:link></span>
+        </div>
       </div>
     </div>
   </body>

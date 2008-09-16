@@ -1,14 +1,14 @@
 class ChannelController extends Base {
+
+    def allowedMethods = [delete:'POST', save:'POST', update:'POST']
+    def channelService
     
     def index = { redirect(action:list, params:params) }
 
-    // the delete, save and update actions only accept POST requests
-    def allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
     def list = {
-        params.max = Channel.count() // 必ず全チャンネルが一度に取得できるように最大件数を設定する。
-        if (!params.sort) params.sort = 'name'
-        [ channelList: Channel.list( params ) ]
+        println channelService.getAccessibleChannelList(loginUserDomain, params) 
+        [ channelList:channelService.getAccessibleChannelList(loginUserDomain, params) ]
     }
 
     def show = {

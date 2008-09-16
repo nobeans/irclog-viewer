@@ -25,7 +25,7 @@ class ViewerController extends Base {
         params.offset = params.offset?.toInteger() ?: 0
 
         // モデルを作成して、デフォルトビューへ。
-        def searchResult = irclogSearchService.search(criterion, [max:params.max, offset:params.offset])
+        def searchResult = irclogSearchService.search(loginUserDomain, criterion, [max:params.max, offset:params.offset])
         if (searchResult.message) flash.message = searchResult.message
         def model = [
             irclogList: searchResult.list,
@@ -57,7 +57,7 @@ class ViewerController extends Base {
     private getSelectableChannels() {
         def channels = [:]
         channels['all'] = message(code:'viewer.search.channel.all')
-        channelService.getAccessableChannels().each { channels[it.id] = it.name }
+        channelService.getAccessibleChannelList(loginUserDomain, params).each { channels[it.id] = it.name }
         channels
     }
 

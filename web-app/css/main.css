@@ -455,6 +455,11 @@ th.desc a {
     background-color: #ff0;
 }
 
+/* CHANNEL */
+#joinToSecretChannel {
+    border: 1px solid #ccc;
+}
+
 /* FOOTER */
 
 .footer {
