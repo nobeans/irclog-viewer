@@ -307,7 +307,7 @@ th.desc a {
     color: #666;
     overflow: hidden;
     padding: 3px;
-    margin: 10px 0;
+    margin: 10px 0 0 0;
 }
 .buttons form {
     display: inline;
@@ -458,6 +458,10 @@ th.desc a {
 /* CHANNEL */
 #joinToSecretChannel {
     border: 1px solid #ccc;
+    margin: 0 0 15px 0;
+    padding: 10px;
+    background-color: #eee;
+    float: left;
 }
 
 /* FOOTER */

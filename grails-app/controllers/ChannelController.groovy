@@ -13,7 +13,6 @@ class ChannelController extends Base {
 
     def show = {
         def channel = Channel.get( params.id )
-
         if(!channel) {
             flash.message = "channel.not.found"
             flash.args = [params.id]
@@ -93,5 +92,16 @@ class ChannelController extends Base {
         else {
             render(view:'create',model:[channel:channel])
         }
+    }
+
+    def join = {
+        def channel = Channel.findByNameAndSecretKey(params.channelName, params.secretKey)
+        if (channel) {
+            Person.get(loginUserDomain.id).addToChannels(channel)
+            flash.message = "channel.joined"
+        } else {
+            flash.message = "channel.not.found"
+        }
+        redirect(action:list)
     }
 }
