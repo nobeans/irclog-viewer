@@ -4,7 +4,7 @@ class ChannelService {
     def getAccessibleChannelList(person, params) {
         params.max = Channel.count() // 必ず全チャンネルが一度に取得できるように最大件数を設定する。
         if (!params.sort || !Channel.constraints.keySet().contains(params.sort)) params.sort = 'name'
-        if (!params.order || params.order !=~ /asc|desc/) params.order = 'asc'
+        if (!params.order || !['asc', 'desc'].contains(params.order)) params.order = 'asc'
         if (person) {
             return Person.executeQuery("""
                 select

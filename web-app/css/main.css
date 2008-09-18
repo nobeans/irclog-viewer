@@ -1,5 +1,11 @@
 html * {
     margin: 0;
+    font-size: 100%; /* IEでのフォントサイズが不安定になる事象を抑止するため */
+}
+
+html {
+    position: relative;
+    width: 100%;
     /*padding: 0; SELECT NOT DISPLAYED CORRECTLY IN FIREFOX */
 }
 
@@ -10,6 +16,11 @@ body {
     background: #fff;
     color: #333;
     font-family: verdana, arial, helvetica, sans-serif;
+    width: 100%;
+    text-align: center;
+}
+body * {
+    text-align: left;
 }
 
 a:link, a:visited {
@@ -27,6 +38,7 @@ h1 {
     padding: 2px 15px;
     color: #888;
     font-weight: bold;
+    font-size: 200%;
 }
 
 ul {
@@ -35,7 +47,6 @@ ul {
 
 input, select, textarea {
     font-family: verdana, arial, helvetica, sans-serif;
-    font-size: 100%;
     background-color: #fcfcfc;
     border: 1px solid #ccc;
     margin: 0;
@@ -60,7 +71,6 @@ input:focus, select:focus, textarea:focus {
 
 pre {
     font-family: verdana, arial, helvetica, sans-serif;
-    font-size: 100%;
 }
 
 img {
@@ -82,12 +92,14 @@ input.image {
 
 .body {
     position: relative;
-    padding-left: 15px;
-    padding-right: 15px;
+    margin: 0 auto 0 auto;
+    padding: 0;
+    width: 97%;
 }
 .body h1 {
-    font-size: 150%;
-    padding: 15px 0 5px 5px;
+    font-size: 140%;
+    margin: 15px 0 5px 0;
+    padding: 0;
 }
 
 /* NAVIGATION MENU */
@@ -138,7 +150,7 @@ input.image {
     background: #f3f8fc url(../images/skin/information.png) 8px 50% no-repeat;
     border: 1px solid #b2d1ff;
     color: #006dba;
-    margin: -2px 0 10px 0;
+    margin: 10px 0;
     padding: 5px 5px 5px 30px
 }
 
@@ -219,12 +231,10 @@ th.desc a {
 
 .list table {
     position: relative;
-    width: 100%;
     margin: 0;
     padding: 0;
 }
 * html body .list table {
-    width: 97.3%;
     margin-bottom: -1px;
 }
 .list td {
@@ -306,8 +316,8 @@ th.desc a {
     border: 1px solid #ccc;
     color: #666;
     overflow: hidden;
-    padding: 3px;
     margin: 10px 0 0 0;
+    padding: 2px;
 }
 .buttons form {
     display: inline;
@@ -319,9 +329,7 @@ th.desc a {
     color: #666;
     cursor: pointer;
     font-weight: bold;
-    margin-left: 3px;
     overflow: visible;
-    padding: 2px 6px;
 }
 .buttons input.delete {
     background: transparent url(../images/skin/database_delete.png) 5px 50% no-repeat;
@@ -335,12 +343,11 @@ th.desc a {
     background: transparent url(../images/skin/database_save.png) 5px 50% no-repeat;
     padding-left: 28px;
 }
-
 .button input {
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
     cursor: pointer;
     font-weight: bold;
-    padding: 2px 6px;
+    padding: 0px 6px;
     color: #666;
 }
 
@@ -352,7 +359,7 @@ th.desc a {
 #period-oneday-date-calendar {
     display: none;
     position: absolute;
-    width: 200px;
+    width: 240px;
     z-index: 9;
 }
 
@@ -400,9 +407,6 @@ th.desc a {
 }
 * html body .viewer .list { /* Hack for IE6 */
     z-index: -1;
-}
-* html body .viewer .list table {
-    width: auto;
 }
 .viewer .list table td {
     padding: 1px 5px 1px 5px;
@@ -475,10 +479,15 @@ th.desc a {
     font-style: italic;
     color: #666;
     height: 1.5em;
-    width: auto;
 }
 .footer .poweredBy {
     float: right;
+}
+
+/* ETC */
+.caption {
+    margin: 5px 0 10px 20px;
+    color: #555;
 }
 
 /*

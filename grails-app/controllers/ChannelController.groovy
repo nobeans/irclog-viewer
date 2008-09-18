@@ -99,8 +99,10 @@ class ChannelController extends Base {
         if (channel) {
             Person.get(loginUserDomain.id).addToChannels(channel)
             flash.message = "channel.joined"
+            flash.args = [params.channelName]
         } else {
             flash.message = "channel.not.found"
+            flash.args = [params.channelName]
         }
         redirect(action:list)
     }

@@ -59,4 +59,10 @@ class MyTagLib {
         if (attrs.action && request['org.codehaus.groovy.grails.ACTION_NAME_ATTRIBUTE'] == attrs.action) return
         out << """ <span class="menuButton">${g.link(class:attrs.name, controller:attrs.name) { g.message(code:attrs.name) }}</span> """
     }
+
+    def flashMessage = { attrs ->
+        if (flash.message) {
+            out << """<div class="message">${g.message(code:flash.message, args:flash.args, default:flash.defaultMessage)}</div>"""
+        }
+    }
 }
