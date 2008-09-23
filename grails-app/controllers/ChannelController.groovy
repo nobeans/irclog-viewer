@@ -7,7 +7,6 @@ class ChannelController extends Base {
 
 
     def list = {
-        println channelService.getAccessibleChannelList(loginUserDomain, params) 
         [ channelList:channelService.getAccessibleChannelList(loginUserDomain, params) ]
     }
 

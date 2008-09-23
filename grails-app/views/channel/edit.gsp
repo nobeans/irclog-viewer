@@ -6,15 +6,8 @@
   </head>
   <body>
     <div class="body">
+      <my:flashMessage bean="${channel}" />
       <h1><g:message code="channel.edit" default="Edit Channel" /></h1>
-      <g:if test="${flash.message}">
-      <div class="message"><g:message code="${flash.message}" args="${flash.args}" default="${flash.defaultMessage}" /></div>
-      </g:if>
-      <g:hasErrors bean="${channel}">
-      <div class="errors">
-        <g:renderErrors bean="${channel}" as="list" />
-      </div>
-      </g:hasErrors>
       <g:form method="post" >
         <input type="hidden" name="id" value="${channel?.id}" />
         <div class="dialog">

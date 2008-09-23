@@ -48,7 +48,7 @@ ul {
 input, select, textarea {
     font-family: verdana, arial, helvetica, sans-serif;
     background-color: #fcfcfc;
-    border: 1px solid #ccc;
+    border: 1px solid #bbb;
     margin: 0;
     padding: 2px 4px;
     vertical-align: middle;
@@ -107,7 +107,7 @@ input.image {
 .nav {
     position: relative;
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
-    border: 1px solid #ccc;
+    border: 1px solid #bbb;
     border-style: solid none solid none;
     padding: 3px 12px;
     overflow: hidden;
@@ -119,7 +119,7 @@ input.image {
     padding: 0px 3px;
 }
 * html body .nav #login-info {
-    padding: 4px 3px;
+    padding: 1px 3px;
 }
 .nav #login-info img {
     margin-right: 3px;
@@ -148,18 +148,22 @@ input.image {
 
 .message {
     background: #f3f8fc url(../images/skin/information.png) 8px 50% no-repeat;
-    border: 1px solid #b2d1ff;
-    color: #006dba;
-    margin: 10px 0;
+    border-left: 1px solid #b2d1ff;
+    border-right: 2px solid #b2d1ff;
+    border-bottom: 2px solid #b2d1ff;
+    margin: 0 0 10px 0;
     padding: 5px 5px 5px 30px
+    color: #006dba;
 }
 
 div.errors {
     background: #fff3f3;
-    border: 1px solid red;
+    border-left: 1px solid #f55;
+    border-right: 2px solid #f55;
+    border-bottom: 2px solid #f55;
+    margin: 0 0 10px 0;
+    padding: 5px 5px 5px 30px;
     color: #cc0000;
-    margin: 10px 0 5px 0;
-    padding: 5px 0 5px 0;
 }
 div.errors ul {
     list-style: none;
@@ -181,7 +185,7 @@ td.errors input {
 
 table {
     position: relative;
-    border: 1px solid #ccc;
+    border: 1px solid #bbb;
     border-collapse: collapse;
     width: 100%
 }
@@ -238,12 +242,13 @@ th.desc a {
     margin-bottom: -1px;
 }
 .list td {
-    border-top: 1px dotted #ccc;
+    border-top: 1px dotted #bbb;
     padding: 3px 5px 3px 5px;
-    vertical-align: baseline;
+    vertical-align: middle;
 }
 .list th {
     white-space: nowrap;
+    vertical-align: middle;
 }
 .list tr:hover {
     background: #ddf;
@@ -254,7 +259,7 @@ th.desc a {
 .paginateButtons {
     position: relative;
     background: transparent url(../images/skin/shadow.jpg) bottom repeat-x;
-    border: 1px solid #ccc;
+    border: 1px solid #bbb;
     color: #666;
     overflow: hidden;
     padding: 3px 6px;
@@ -313,7 +318,7 @@ th.desc a {
 
 .buttons {
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
-    border: 1px solid #ccc;
+    border: 1px solid #bbb;
     color: #666;
     overflow: hidden;
     margin: 10px 0 0 0;
@@ -375,7 +380,7 @@ th.desc a {
 .viewer .search {
     position: relative;
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
-    border: 1px solid #ccc;
+    border: 1px solid #bbb;
     color: #666;
     font-size: 95%;
     margin: 15px 0;
@@ -461,7 +466,10 @@ th.desc a {
 
 /* CHANNEL */
 #joinToSecretChannel {
-    border: 1px solid #ccc;
+    position: absolute;
+    border-left: 1px solid #bbb;
+    border-right: 2px solid #aaa;
+    border-bottom: 2px solid #aaa;
     margin: 0 0 15px 0;
     padding: 10px;
     background-color: #eee;

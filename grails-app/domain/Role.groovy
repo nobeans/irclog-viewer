@@ -9,4 +9,8 @@ class Role {
 		name(blank:false)
 		description()
 	}
+
+    String toString() {
+        name
+    }
 }

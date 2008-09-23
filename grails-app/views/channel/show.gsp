@@ -6,10 +6,8 @@
   </head>
   <body>
     <div class="body">
+      <my:flashMessage />
       <h1><g:message code="channel.show" default="Show Channel" /></h1>
-      <g:if test="${flash.message}">
-      <div class="message"><g:message code="${flash.message}" args="${flash.args}" default="${flash.defaultMessage}" /></div>
-      </g:if>
       <div class="dialog">
         <table>
           <tbody>
@@ -32,13 +30,15 @@
           </tbody>
         </table>
       </div>
-      <div class="buttons">
-        <g:form>
-          <input type="hidden" name="id" value="${channel?.id}" />
-          <span class="button"><g:actionSubmit class="edit" action="Edit" value="${message(code:'edit', 'default':'Edit')}" /></span>
-          <span class="button"><g:actionSubmit class="delete" onclick="return confirm('${message(code:'delete.confirm', 'default':'Are you sure?')}');" action="Delete" value="${message(code:'delete', 'default':'Delete')}" /></span>
-        </g:form>
-      </div>
+      <g:isLoggedIn>
+        <div class="buttons">
+          <g:form>
+            <input type="hidden" name="id" value="${channel?.id}" />
+            <span class="button"><g:actionSubmit class="edit" action="Edit" value="${message(code:'edit', 'default':'Edit')}" /></span>
+            <span class="button"><g:actionSubmit class="delete" onclick="return confirm('${message(code:'delete.confirm', 'default':'Are you sure?')}');" action="Delete" value="${message(code:'delete', 'default':'Delete')}" /></span>
+          </g:form>
+        </div>
+      </g:isLoggedIn>
     </div>
   </body>
 </html>

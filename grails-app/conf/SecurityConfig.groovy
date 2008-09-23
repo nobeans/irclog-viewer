@@ -39,6 +39,10 @@ security {
         PATTERN_TYPE_APACHE_ANT
 
         /**=IS_AUTHENTICATED_ANONYMOUSLY
+        /channel/delete/**=ROLE_ADMIN
+        /channel/create/**=IS_AUTHENTICATED_FULLY
+        /channel/edit/**=IS_AUTHENTICATED_FULLY
+        /channel/join/**=IS_AUTHENTICATED_FULLY
     """
 
     /**

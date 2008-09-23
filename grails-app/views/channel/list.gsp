@@ -6,8 +6,8 @@
   </head>
   <body>
     <div class="body">
-      <h1><g:message code="channel.list" default="Channel List" /></h1>
       <my:flashMessage />
+      <h1><g:message code="channel.list" default="Channel List" /></h1>
       <div class="caption">
       <g:isLoggedIn><g:message code="channel.list.caption.isLoggedIn" /></g:isLoggedIn>
       <g:isNotLoggedIn><g:message code="channel.list.caption.isNotLoggedIn" /></g:isNotLoggedIn>
@@ -39,12 +39,12 @@
         </div>
         <div id="joinToSecretChannel" style="display:none">
           <g:form action="join" method="post">
-            <label for="channelName"><g:message code="channel.name" /></label>
+            <label for="channelName"><g:message code="channel.name" />:</label>
             <input id="channelName" type="text" name="channelName" value=""/>
-            <label for="secretKey"><g:message code="channel.secretKey" /></label>
+            <label for="secretKey"><g:message code="channel.secretKey" />:</label>
             <input id="secretKey" type="password" name="secretKey" value=""/>
             <div class="buttons">
-              <span class="menuButton"><input type="submit" value="${message(code:"channel.join")}" /></span>
+              <span class="button"><input type="submit" value="${message(code:"channel.join")}" /></span>
             </div>
           </g:form>
         </div>
