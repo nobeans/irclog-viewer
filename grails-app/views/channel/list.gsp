@@ -34,7 +34,7 @@
       </div>
       <g:isLoggedIn>
         <div class="buttons">
-          <span class="menuButton"><g:link class="create" action="create"><g:message code="channel.new" /></g:link></span>
+          <span class="menuButton"><g:link class="create" action="create"><g:message code="channel.create" /></g:link></span>
           <span class="menuButton"><a href="javascript:void(0);" onclick="$('joinToSecretChannel').toggle()"><g:message code="channel.join" />...</a></span>
         </div>
         <div id="joinToSecretChannel" style="display:none">

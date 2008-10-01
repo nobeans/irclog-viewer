@@ -1,67 +1,64 @@
-
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="main" />
-    <title>Edit Profile</title>
+    <title>${message(code:'register.edit')}</title>
   </head>
   <body>
     <div class="body">
-      <h1>Edit Profile</h1>
-      <g:if test="${flash.message}">
-        <div class="message">${flash.message}</div>
-      </g:if>
-      <g:hasErrors bean="${person}">
-        <div class="errors">
-          <g:renderErrors bean="${person}" as="list" />
-        </div>
-      </g:hasErrors>
-
-      <g:form controller="register" method="post" >
-        <input type="hidden" name="id" value="${person?.id}" />
+      <my:flashMessage bean="${person}" />
+      <h1><g:message code="register.edit" /></h1>
+      <g:form action="update" method="post" >
         <div class="dialog">
           <table>
             <tbody>
-                <tr class='prop'>
-                  <td valign='top' class='name'>
-                    <label for='loginName'>Login Name:</label>
-                  </td>
-                  <td valign='top'
-                    class='value ${hasErrors(bean:person,field:'loginName','errors')}'>
-                  <input type="hidden" name='loginName'
-                    value="${person?.loginName?.encodeAsHTML()}"/>
-                    <div style="margin:3px">${person?.loginName?.encodeAsHTML()}</div>
-                  </td>
-                </tr>
-                <tr class='prop'>
-                  <td valign='top' class='name'>
-                    <label for='password'>Password:</label>
-                  </td>
-                  <td valign='top'
-                    class='value ${hasErrors(bean:person,field:'password','errors')}'>
-                    <input type="password" name='password' value=""/>
-                  </td>
-                </tr>
-                <tr class='prop'>
-                  <td valign='top' class='name'>
-                    <label for='enabled'>Confirm Password:</label>
-                  </td>
-                  <td valign='top'
-                    class='value ${hasErrors(bean:person,field:'password','errors')}'>
-                    <input type="password" name='repassword'
-                      value=""/>
-                  </td>
-                </tr>
+              <tr class='prop'>
+                <td valign='top' class='name'>
+                  <label for='loginName'><g:message code="person.loginName" />:</label>
+                </td>
+                <td valign='top' class='value ${hasErrors(bean:person,field:'loginName','errors')}'>
+                  <div>${person?.loginName?.encodeAsHTML()}</div>
+                </td>
+              </tr>
+              <tr class='prop'>
+                <td valign='top' class='name'>
+                  <label for='password'><g:message code="person.password" />:</label>
+                </td>
+                <td valign='top' class='value ${hasErrors(bean:person,field:'password','errors')}'>
+                  <input type="password" name='password' value="${person?.password?.encodeAsHTML()}"/>
+                </td>
+              </tr>
+              <tr class='prop'>
+                <td valign='top' class='name'>
+                  <label for='repassword'><g:message code="person.repassword" />:</label>
+                </td>
+                <td valign='top' class='value ${hasErrors(bean:person,field:'password','errors')}'>
+                  <input type="password" name='repassword' value="${person?.password?.encodeAsHTML()}"/>
+                </td>
+              </tr>
+              <tr class='prop'>
+                <td valign='top' class='name'>
+                  <label for='nicks'><g:message code="person.nicks" />:</label>
+                </td>
+                <td valign='top' class='value ${hasErrors(bean:person,field:'nicks','errors')}'>
+                  <input type="nicks" name='nicks' value="${person?.nicks?.encodeAsHTML()}"/>
+                </td>
+              </tr>
+              <tr class='prop'>
+                <td valign='top' class='name'>
+                  <label for='color'><g:message code="person.color" />:</label>
+                </td>
+                <td valign='top' class='value ${hasErrors(bean:person,field:'color','errors')}'>
+                  <input type="color" name='color' value="${person?.color?.encodeAsHTML()}"/>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
-
         <div class="buttons">
-          <span class="button"><g:actionSubmit value="Update" /></span>
+          <span class="button"><input type="submit" class="edit" value="${message(code:'update')}" /></span>
         </div>
-
       </g:form>
-
     </div>
   </body>
 </html>

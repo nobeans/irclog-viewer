@@ -1,5 +1,7 @@
 class Irclog {
 
+    private static final TYPE_LIST = ['all', 'PRIVMSG', 'NOTICE', 'JOIN', 'NICK', 'QUIT', 'PART', 'KICK', 'MODE', 'TOPIC', 'SYSTEM', 'OTHER', 'SIMPLE']
+
     Date time
     String type
     String message
@@ -7,17 +9,16 @@ class Irclog {
     Boolean isHidden
 
     Channel channel
+
     static belongsTo = Channel
 
-    static constraints  = {
-        time     nullable:false
-        type     nullable:false, inList:typeList
-        message  nullable:false, blank:false
-        nick     nullable:false, blank:true
-        isHidden nullable:false
-        channel  nullable:false
+    static constraints = {
+        time()
+        type(inList:TYPE_LIST)
+        message(blank:false)
+        nick()
+        isHidden()
+        channel()
     }
-
-    static final typeList = ['all', 'PRIVMSG', 'NOTICE', 'JOIN', 'NICK', 'QUIT', 'PART', 'KICK', 'MODE', 'TOPIC', 'SYSTEM', 'OTHER', 'SIMPLE']
  
 }

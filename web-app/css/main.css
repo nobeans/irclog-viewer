@@ -131,15 +131,15 @@ input.image {
 .menuButton a {
     padding: 4px 6px;
 }
-.menuButton a.home {
+.menuButton .home {
     background: url(../images/skin/house.png) center left no-repeat;
     padding-left: 25px;
 }
-.menuButton a.list {
+.menuButton .list {
     background: url(../images/skin/database_table.png) center left no-repeat;
     padding-left: 25px;
 }
-.menuButton a.create {
+.menuButton .create {
     background: url(../images/skin/database_add.png) center left no-repeat;
     padding-left: 25px;
 }
@@ -303,6 +303,7 @@ th.desc a {
 }
 .prop .name {
     text-align: right;
+    vertical-align: middle;
     width: 15%;
     white-space: nowrap;
     background: #eee;
@@ -311,6 +312,7 @@ th.desc a {
 }
 .prop .value {
     text-align: left;
+    vertical-align: middle;
     width: 85%;
 }
 

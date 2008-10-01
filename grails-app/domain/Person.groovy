@@ -12,10 +12,10 @@ class Person {
     static belongsTo = Role
 
     static constraints = {
-        loginName(nullable:false, blank:false)
-        password(nullable:false, blank:false)
-        nicks(nullable:false, blank:true)
-        color(nullable:false, blank:true, matches:"#[0-9A-Fa-f]{3}|#[0-9A-Fa-f]{6}")
+        loginName(blank:false, minSize:4)
+        password(blank:false) // ハッシュが入るためここにサイズ指定しても無駄
+        nicks()
+        color(matches:"#[0-9A-Fa-f]{3}|#[0-9A-Fa-f]{6}")
         enabled()
         roles()
         channels()

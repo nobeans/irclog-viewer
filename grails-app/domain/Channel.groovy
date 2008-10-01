@@ -6,10 +6,10 @@ class Channel {
     String secretKey
 
     static constraints = {
-        name(nullable:false, blank:false)
-        description(nullable:false, blank:true)
-        isPrivate(nullable:false)
-        secretKey(nullable:false, blank:true)
+        name(blank:false)
+        description()
+        isPrivate()
+        secretKey()
     }
 
     static mapping = {

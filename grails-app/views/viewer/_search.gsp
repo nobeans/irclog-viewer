@@ -12,7 +12,7 @@
     <label for="search-message"><g:message code="viewer.search.message" />:</label>
       <input id="search-message" type="text" name="message" value="${criterion?.message}"></input>
     <label for="search-type"><g:message code="viewer.search.type" />:</label>
-      <g:select id="search-type" name="type" from="${Irclog.typeList}" value="${criterion?.type}" valueMessagePrefix="viewer.search.type" />
+      <g:select id="search-type" name="type" from="${Irclog.TYPE_LIST}" value="${criterion?.type}" valueMessagePrefix="viewer.search.type" />
     <input id="search-submit" class="image" type="image" src="${createLinkTo(dir:'images',file:'search.png')}" title="${message(code:'viewer.search.button.tooltips')}" />
       <label for="search-submit" id="search-submit-label"><g:message code="viewer.search.button" /></label>
   </g:form>

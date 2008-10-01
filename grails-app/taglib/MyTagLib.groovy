@@ -55,17 +55,18 @@ class MyTagLib {
     }
 
     def createNavLinkIfNotCurrent = { attrs ->
-        if (!attrs.action && request['org.codehaus.groovy.grails.CONTROLLER_NAME_ATTRIBUTE'] == attrs.name) return
+        if (!attrs.action && request['org.codehaus.groovy.grails.CONTROLLER_NAME_ATTRIBUTE'] == attrs.controller) return
         if (attrs.action && request['org.codehaus.groovy.grails.ACTION_NAME_ATTRIBUTE'] == attrs.action) return
-        out << """ <span class="menuButton">${g.link(class:attrs.name, controller:attrs.name) { g.message(code:attrs.name) }}</span> """
+        def key = attrs.controller + (attrs.action ? ".${attrs.action}" : '')
+        out << """ <span class="menuButton">${g.link(class:key, controller:attrs.controller, action:attrs.action) { g.message(code:key) }}</span> """
     }
 
     def flashMessage = { attrs ->
         if (flash.message) {
             out << """<div class="message">${g.message(code:flash.message, args:flash.args, default:flash.defaultMessage)}</div>"""
         }
-        if (attrs.bean && attrs.bean.hasErrors) {
-            out << """<div class="errors">${g.renderErrors(bean:attrs.bean, as:list)}</div>"""
+        if (attrs.bean && attrs.bean.hasErrors()) {
+            out << """<div class="errors">${g.renderErrors(bean:attrs.bean, as:'list')}</div>"""
         }
     }
 }

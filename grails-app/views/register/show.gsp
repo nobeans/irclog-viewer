@@ -3,52 +3,48 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="main" />
-    <title>User Profile</title>
+    <title>${message(code:'register.show')}</title>
   </head>
   <body>
     <div class="body">
-      <h1>User Profile</h1>
-      <g:if test="${flash.message}">
-        <div class="message">${flash.message}</div>
-      </g:if>
+      <my:flashMessage bean="${person}" />
+      <h1><g:message code="register.show" /></h1>
       <div class="dialog">
         <table>
           <tbody>
-
             <tr class="prop">
-              <td valign="top" class="name">Login Name:</td>
+              <td valign='top' class='name'>
+                <g:message code="person.loginName" />:
+              </td>
               <td valign="top" class="value">
               	${person.loginName?.encodeAsHTML()}
               </td>
             </tr>
             <tr class="prop">
-              <td valign="top" class="name">Enabled:</td>
+              <td valign="top" class="name">
+                <g:message code="person.nicks" />:
+              </td>
               <td valign="top" class="value">
-                ${person.enabled?.encodeAsHTML()}
+                ${person.nicks?.encodeAsHTML()}
               </td>
             </tr>
             <tr class="prop">
-              <td valign="top" class="name">Roles:</td>
+              <td valign="top" class="name">
+                <g:message code="person.color" />:
+              </td>
               <td valign="top" class="value">
-                <ul>
-                <g:collect in="${person.roles}" expr="${it.name}">
-                  <li>${it?.substring(5)?.toLowerCase()}</li>
-                </g:collect>
-                </ul>
+                ${person.color?.encodeAsHTML()}
               </td>
             </tr>
-                   
           </tbody>
         </table>
       </div>
-      
       <div class="buttons">
-        <g:form controller="register">
+        <g:form action="edit">
           <input type="hidden" name="id" value="${person?.id}" />
-          <span class="button"><g:actionSubmit value="Edit" /></span>
+          <span class="button"><input type="submit" class="edit" value="${message(code:'edit')}" /></span>
         </g:form>
       </div>
-      
     </div>
   </body>
 </html>
