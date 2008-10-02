@@ -33,7 +33,7 @@
                   <label for='repassword'><g:message code="person.repassword" />:</label>
                 </td>
                 <td valign='top' class='value ${hasErrors(bean:person,field:'password','errors')}'>
-                  <input type="password" name='repassword' value="${person?.password?.encodeAsHTML()}"/>
+                  <input type="password" name='repassword' value="${person?.repassword?.encodeAsHTML()}"/>
                 </td>
               </tr>
               <tr class='prop'>

@@ -6,9 +6,13 @@ class Role {
 	static hasMany = [persons: Person]
 
 	static constraints = {
-		name(blank:false)
+		name(blank:false, unique:true)
 		description()
 	}
+
+    static mapping = {
+		description(type:'text')
+    }
 
     String toString() {
         name

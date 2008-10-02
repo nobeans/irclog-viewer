@@ -19,6 +19,8 @@ class RegisterController extends Base {
  
     def edit = {
         withLoginPerson { person ->
+            person.password = ''    // パスワードの重複エンコードを防止するための一番手抜きな方法
+            person.repassword = ''
             [person:person]
         }
     }
@@ -26,25 +28,19 @@ class RegisterController extends Base {
     def update = {
         withLoginPerson { person ->
             person.properties = params
-
-            // if user want to change password. leave password field blank, password will not change.
-            if (params.password && params.password.length() > 0 && params.repassword && params.repassword.length() > 0) {
-                if (params.password == params.repassword) {
-                    person.password = authenticateService.passwordEncoder(params.password)
-                }
-                else {
-                    person.password = ''
-                    flash.errors = ['The passwords you entered do not match.']
-                    render(view:'edit', model:[person: person])
-                    return
-                }
-            }
             if (person.save()) {
-                redirect(action:'show', id:person.id)
+                // 素のパスワード文字列に対してバリデーションはOK.
+                person.password = authenticateService.passwordEncoder(params.password)
+                if (person.save(validate:false)) { // バリデーションをOFFにして変換されたパスワードを保存する。
+                    flash.message = "person.updated"
+                    redirect(action:'show', id:person.id)
+                    return // 成功した場合
+                }
             }
-            else {
-                render(view:'edit', model:[person:person])
-            }
+            // 失敗した場合
+            person.password = ''    // パスワードの重複エンコードを防止するための一番手抜きな方法
+            person.repassword = ''
+            render(view:'edit', model:[person:person])
         }
     }
 
@@ -53,51 +49,50 @@ class RegisterController extends Base {
     }
 
     def save = {
+        // 未ログインかどうか。
         if (isLoggedIn) {
-            log.info("${authenticateService.userDomain()} user hit the register page")
-            redirect(action: 'show')
+            log.info('ログイン済みのため、ユーザ情報参照にリダイレクトします。')
+            redirect(action:'show')
             return
         }
 
-        def person = new Person(params)
-
+        // デフォルトロールを取得する。
         def role = Role.findByName(authenticateService.securityConfig.security.defaultRole)
         if (!role) {
             person.password = ''
-            flash.message = 'Default Role not found.'
+            flash.message = 'register.defaultRoleNotFound.'
             redirect(controller:'top')
             return 
         }
 
-        if (params.password != params.repassword) {
-            person.password = ''
-            flash.message = 'The passwords you entered do not match.'
-            redirect(action:'create', person:person)
-            return
-        }
-
-        def pass = authenticateService.passwordEncoder(params.password)
-        person.password = pass
+        def person = new Person(params)
         person.enabled = true
+        role.addToPersons(person)
         if (person.save()) {
-            role.addToPersons(person)
-            person.save(flush: true)
+            // 素のパスワード文字列に対してバリデーションはOK.
+            person.password = authenticateService.passwordEncoder(params.password)
+            if (person.save(validate:false)) { // バリデーションをOFFにして変換されたパスワードを保存する。
+                // 新規登録に成功した場合は、そのままログインする。
+                def authtoken = daoAuthenticationProvider.authenticate(new AuthToken(person.loginName, params.password))
+                SCH.context.authentication = authtoken
 
-            def auth = new AuthToken(person.loginName, params.password)
-            def authtoken = daoAuthenticationProvider.authenticate(auth)
-            SCH.context.authentication = authtoken
-            redirect(controller:'top')
+                flash.message = "person.created"
+                redirect(controller:'top')
+                return // 成功した場合
+            }
         }
-        else {
-            person.password = ''
-            redirect(action:'create', person:person)
-        }
+        // 失敗した場合
+        person.password = ''    // パスワードの重複エンコードを防止するための一番手抜きな方法
+        person.repassword = ''
+        render(view:'create', model:[person:person])
     }
 
     private withLoginPerson(closure) {
-        def person = Person.get(loginUserDomain?.id)
+        def personId = loginUserDomain?.id
+        def person = Person.get(personId)
         if (!person) {
-            flash.message = "[Illegal Access] User not found with id ${params.id}"
+            flash.message = "person.not.found"
+            flash.args = [personId]
             redirect(controller:'top')
             return
         }

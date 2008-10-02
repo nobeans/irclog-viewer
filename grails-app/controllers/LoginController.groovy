@@ -4,23 +4,18 @@ import org.springframework.security.ui.webapp.AuthenticationProcessingFilter as 
 class LoginController extends Base {
 
     def index = {
-        if (isLoggedIn) {
-            flash.message = null
-            redirect(uri: config.irclogViewer.defaultIndexPath)
-        }
-        else {
-            redirect(action: auth, params: params)
-        }
+        redirect(action:auth, params:params)
     }
 
     /** ログイン画面を表示する。 */
     def auth = {
         if (isLoggedIn) {
             flash.message = null
+            flash.errors = null
             redirect(uri: config.irclogViewer.defaultIndexPath)
         }
         else {
-            render(view: 'auth')
+            render(view:'auth', params:params)
         }
     }
 

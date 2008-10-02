@@ -6,7 +6,7 @@ class Channel {
     String secretKey
 
     static constraints = {
-        name(blank:false)
+        name(blank:false, unique:true)
         description()
         isPrivate()
         secretKey()

@@ -2,8 +2,8 @@ class Person {
 
     String loginName
     String password
-    boolean enabled
-
+    String repassword // 確認用(DBには保存しない)
+    boolean enabled   // ユーザの有効/無効
     String nicks // 複数のnicksをカンマ区切りで。
     String color // ログ表示時の色づけ(不要かも)
 
@@ -11,13 +11,16 @@ class Person {
 
     static belongsTo = Role
 
+    static transients = ['repassword']
+
     static constraints = {
-        loginName(blank:false, minSize:4)
-        password(blank:false) // ハッシュが入るためここにサイズ指定しても無駄
+        loginName(blank:false, matches:"[a-zA-Z0-9_-]{6,}+", unique:true)
+        password(blank:false, minSize:6, validator:{ val, obj -> obj.repassword == val })
         nicks()
         color(matches:"#[0-9A-Fa-f]{3}|#[0-9A-Fa-f]{6}")
         enabled()
         roles()
         channels()
     }
+
 }

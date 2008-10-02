@@ -152,15 +152,15 @@ input.image {
     border-right: 2px solid #b2d1ff;
     border-bottom: 2px solid #b2d1ff;
     margin: 0 0 10px 0;
-    padding: 5px 5px 5px 30px
+    padding: 5px 5px 5px 30px;
     color: #006dba;
 }
 
 div.errors {
     background: #fff3f3;
-    border-left: 1px solid #f55;
-    border-right: 2px solid #f55;
-    border-bottom: 2px solid #f55;
+    border-left: 1px solid #f88;
+    border-right: 2px solid #f88;
+    border-bottom: 2px solid #f88;
     margin: 0 0 10px 0;
     padding: 5px 5px 5px 30px;
     color: #cc0000;
@@ -171,14 +171,16 @@ div.errors ul {
 }
 div.errors li {
     background: url(../images/skin/exclamation.png) 8px 0% no-repeat;
+    vertical-align: middle;
     padding-left: 30px;
+    line-height: 1.5em;
 }
 
 td.errors select {
-    border: 1px solid red;
+    border: 1px solid #f88;
 }
 td.errors input {
-    border: 1px solid red;
+    border: 1px solid #f88;
 }
 
 /* TABLES */
