@@ -1,3 +1,4 @@
+import org.grails.plugins.springsecurity.service.AuthenticateService
 import org.springframework.security.providers.UsernamePasswordAuthenticationToken as AuthToken
 import org.springframework.security.context.SecurityContextHolder as SCH
 
@@ -6,7 +7,7 @@ import org.springframework.security.context.SecurityContextHolder as SCH
  */
 class RegisterController extends Base {
 
-    def authenticateService
+	AuthenticateService authenticateService
     def daoAuthenticationProvider
 
     def allowedMethods = [save:'POST', update:'POST']
