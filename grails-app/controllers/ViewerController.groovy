@@ -21,7 +21,7 @@ class ViewerController extends Base {
         def criterion = parseCriterion(params)
 
         // ページングのために、max/offsetをセットアップする。
-        params.max = params.max?.toInteger() ?: config.irclogViewer.defaultMax
+        params.max = params.max?.toInteger() ?: config.irclog.viewer.defaultMax
         params.offset = params.offset?.toInteger() ?: 0
 
         // モデルを作成して、デフォルトビューへ。

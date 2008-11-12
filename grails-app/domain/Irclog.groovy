@@ -8,7 +8,8 @@ class Irclog {
     String nick
     Boolean isHidden
 
-    Channel channel
+    String channelName // インポート時にログからそのまま格納する
+    Channel channel    // チャンネルが登録済みの場合は関連として保持する
 
     static belongsTo = Channel
 
@@ -16,9 +17,14 @@ class Irclog {
         time()
         type(inList:TYPE_LIST)
         message(blank:false)
-        nick()
+        nick(blank:false)
         isHidden()
-        channel()
+        channel(blank:false)
+        channel(nullable:true)
     }
  
+    public String toString() {
+        def str = "[${DateUtils.format(time)}] ${type?.toUpperCase()} <${nick}:${channel}> ${message} "
+        (isHidden) ? "(${str})" : str
+    }
 }

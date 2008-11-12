@@ -69,4 +69,7 @@ log4j {
 }
 
 // irclog-viewer
-irclogViewer.defaultMax = 50
+irclog {
+    viewer.defaultMax = 50
+    importer.targetDirPath = "./work"
+}
