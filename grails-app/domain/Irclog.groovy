@@ -16,15 +16,21 @@ class Irclog {
     static constraints = {
         time()
         type(inList:TYPE_LIST)
-        message(blank:false)
+        message()
         nick(blank:false)
         isHidden()
-        channel(blank:false)
+        channelName(blank:false)
         channel(nullable:true)
     }
  
     public String toString() {
-        def str = "[${DateUtils.format(time)}] ${type?.toUpperCase()} <${nick}:${channel}> ${message} "
+        def str = "[${DateUtils.format(time)}] ${type?.toUpperCase()} <${nick}:${channelName}> ${message} "
         (isHidden) ? "(${str})" : str
     }
+
+    // チャンネルが登録済みの場合は関連づける
+    def beforeUpdate = {
+        channel = Channel.findByName(channelName)
+    }
+    def beforeInsert = beforeUpdate
 }
