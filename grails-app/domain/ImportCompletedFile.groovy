@@ -1,9 +1,9 @@
 class ImportCompletedFile {
 
-    String logFilePath
+    String filePath
 
     static constraints = {
-        logFilePath(blank:false, unique:true) // 手っ取り早くIndexを効かせるためにuniqueをつける
+        filePath(blank:false, unique:true) // 手っ取り早くIndexを効かせるためにuniqueをつける
     }
 
 }
