@@ -11,11 +11,12 @@ class LogFileFinder {
         def targets = []
         irclogDir.eachFile { channelDir ->
             channelDir.eachFile { file ->
-                // .logファイルのみ対象
+                // .logファイル以外は無視する。
                 if (!(file.name ==~ /.*\.log/)) return
 
-                // TODO:ディレクトリパスやファイル名からすでにコンプリートしたログかどうか判別。
-                // TODO:コンプリート済みの場合、無視して次のループへ。
+                // すでにコンプリートしたログは無視する。
+                if (ImportCompletedFile.countByLogFilePath(file.canonicalPath) > 0) return
+
                 targets << file
             }
         }
