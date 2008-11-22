@@ -6,8 +6,11 @@ class IrclogImporter {
     def importAll(File irclogDir, def parser) {
         if (!irclogDir.isDirectory()) throw new RuntimeException("Irclog directory not found.")
         findAll(irclogDir).each { file ->
-            parser.parse(file).each { log ->
-                if (!isCompleted(log)) log.save()
+            parser.parse(file).each { irclog ->
+                if (isCompleted(irclog)) return
+                if (!irclog.save()) {
+                    throw new RuntimeException('Import Error: ' + irclog)
+                }
             }
             handleCompleted(file)
         }
@@ -27,10 +30,10 @@ class IrclogImporter {
     }
 
     /** インポート完了済みファイルかどうかチェックする。*/
-    private boolean isCompleted(Irclog log) {
+    private boolean isCompleted(Irclog irclog) {
         return Irclog.executeQuery(
-            "select count(*) from Irclog as log where log.time = ? and log.type = ? and log.message = ? and log.nick = ? and log.channelName = ?",
-            [log.time, log.type, log.message, log.nick, log.channelName]
+            'select count(*) from Irclog as l where l.time = ? and l.type = ? and l.message = ? and l.nick = ? and l.channelName = ?',
+            [irclog.time, irclog.type, irclog.message, irclog.nick, irclog.channelName]
         )[0] > 0
     }
 

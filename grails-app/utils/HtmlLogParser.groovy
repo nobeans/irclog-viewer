@@ -1,3 +1,5 @@
+import org.apache.commons.logging.*
+
 /**
  * 以下の形式のIRCログをパースする。
  *
@@ -15,7 +17,8 @@ class HtmlLogParser {
  */
 class HtmlLogIterator implements Iterator {
 
-    private static final LINE_REGEXP = '^<div class="message"><span class="time">([0-9:]{8})</span><span class="([a-zA-Z-_]+) ([a-z]+)">(?:(?:&lt;|\\{)\\2(?:&gt;|\\}) )?([^<]*)</span></div>$'
+    private static final LINE_REGEXP = '^<div class="message"><span class="time">([0-9:]{8})</span><span class="([0-9a-zA-Z-_]+) ([a-z]+)">(?:(?:&lt;|\\{)\\2(?:&gt;|\\}) )?(.*)</span></div>$'
+    private final log = LogFactory.getLog(this.class.name)
 
     private Iterator lineIterator
     private String date
@@ -32,28 +35,39 @@ class HtmlLogIterator implements Iterator {
     }
 
     public Object next() {
-        def line = lineIterator.next()
-        println line
-        def log = parseLine(line)
-        println log
-        log
+        try {
+            def line = lineIterator.next()
+            def irclog = parseLine(line)
+            return irclog
+        } catch (RuntimeException e) {
+            log.error(e)
+            return next() // とりあえずログを出して、次の行に進む
+        }
     }
 
     public void remove() {
-        throw new UnsupportedOperationException('unnecessary')
+        throw new UnsupportedOperationException('Unnecessary')
     }
 
     private parseLine(line) {
         def irclog
         (line =~ LINE_REGEXP).each { all, time, nick, type, message ->
-            def datetime = DateUtils.parse(date + ' ' + time)
-            irclog = new Irclog(time:datetime, nick:nick, type:type.toUpperCase(), message:decodeAsHTML(message), channelName:channelName, isHidden:false)
+            irclog = new Irclog(
+                time:DateUtils.parse(date + ' ' + time),
+                nick:nick,
+                type:type.toUpperCase(),
+                message:decodeAsHTML(message),
+                channelName:channelName,
+                isHidden:false
+            )
+            irclog.rawString = line // インポート時のエラー処理用
         }
+        if (!irclog) throw new RuntimeException('Parse error: ' + line)
         irclog
     }
 
     private decodeAsHTML(text) {
-        // FIXME:統合した暁には単にEncodeを使う。
+        // FIXME:単にEncodeでやりたい。
         text.replaceAll("&gt;", ">").
              replaceAll("&lt;", "<").
              replaceAll("&quot;", '"').

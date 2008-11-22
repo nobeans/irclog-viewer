@@ -11,6 +11,10 @@ class Irclog {
     String channelName // インポート時にログからそのまま格納する
     Channel channel    // チャンネルが登録済みの場合は関連として保持する
 
+    // インポート時に一時的にログファイルの1行の文字列をそのまま保持しておくために使用する
+    String rawString
+    static transients = ['rawString']
+
     static belongsTo = Channel
 
     static constraints = {
