@@ -1,8 +1,7 @@
 class ChannelService {
 
-    // アクセス可能な全チャンネルを取得する。
+    // 繧｢繧ｯ繧ｻ繧ｹ蜿ｯ閭ｽ縺ｪ蜈ｨ繝√Ε繝ｳ繝阪Ν繧貞叙蠕励☆繧九�
     def getAccessibleChannelList(person, params) {
-        params.max = Channel.count() // 必ず全チャンネルが一度に取得できるように最大件数を設定する。
         if (!params.sort || !Channel.constraints.keySet().contains(params.sort)) params.sort = 'name'
         if (!params.order || !['asc', 'desc'].contains(params.order)) params.order = 'asc'
         if (person) {
