@@ -6,7 +6,6 @@ class ViewerController extends Base {
     def irclogSearchService
     def channelService
 
-    final DATE_FORMAT = new java.text.SimpleDateFormat('yyyy-MM-dd')
     final SELECTABLE_PERIODS = ['all', 'year', 'month', 'week', 'today', 'oneday']
     
     /**
@@ -37,6 +36,7 @@ class ViewerController extends Base {
         render(view:'index', model:model)
     }
 
+    // MEMO:
     // paginateタグのparams属性でcriterionを渡すと、リクエストのparamsスコープのmax/offset値が
     // params属性で渡したcriterion中のmax/offsetで上書きされてしまい、戻るボタンのページ遷移がおかしくなる。
     // よって、max/offsetはcriterionとして取り扱わない。
@@ -70,7 +70,7 @@ class ViewerController extends Base {
         params.specifiedLogId = irclog.id
         params.channel = irclog.channel.id.toString()
         params.period = 'oneday'
-        params['period-oneday-date'] = DATE_FORMAT.format(irclog.time)
+        params['period-oneday-date'] = new java.text.SimpleDateFormat('yyyy-MM-dd').format(irclog.time)
         showViewer(params)
     }
 
