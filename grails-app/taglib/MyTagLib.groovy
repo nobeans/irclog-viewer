@@ -28,13 +28,13 @@ class MyTagLib {
         // 指定日検索を設定する。
         def params = [*:attrs.params, period:'oneday', 'period-oneday-date':onedayDate]
 
-        out << g.link(controller:'viewer', action:'index', params:params) { "${onedayDate}</a>" }
+        out << g.link(controller:'viewer', action:'index', params:params) { "${onedayDate}" }
         out << """&nbsp;&nbsp;${time}"""
     }
 
     def channelLink = { attrs ->
         def params = [*:attrs.params, channel:"${attrs.channel.id}" ]
-        out << g.link(controller:'viewer', action:'index', params:params) { "${attrs.channel.name}</a>" }
+        out << g.link(controller:'viewer', action:'index', params:params) { "${attrs.channel.name}" }
     }
 
     def messageFormat = { attrs ->
