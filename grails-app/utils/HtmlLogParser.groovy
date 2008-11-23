@@ -53,7 +53,7 @@ class HtmlLogIterator implements Iterator {
         def irclog
         (line =~ LINE_REGEXP).each { all, time, nick, type, message ->
             irclog = new Irclog(
-                time:DateUtils.parse(date + ' ' + time),
+                time:new java.text.SimpleDateFormat('yyyy-MM-dd hh:mm:ss').parse(date + ' ' + time),
                 nick:nick,
                 type:type.toUpperCase(),
                 message:decodeAsHTML(message),
@@ -76,7 +76,7 @@ class HtmlLogIterator implements Iterator {
     }
 
     private resolveDate(file) {
-        file.name.replaceFirst(/([0-9]{2})([0-9]{2})([0-9]{2}).log$/, '20$1/$2/$3')
+        file.name.replaceFirst(/([0-9]{2})([0-9]{2})([0-9]{2}).log$/, '20$1-$2-$3')
     }
 
     private String resolveChannelName(file) {
