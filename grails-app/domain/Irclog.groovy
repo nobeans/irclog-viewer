@@ -28,13 +28,13 @@ class Irclog {
     }
  
     public String toString() {
-        def str = "[${new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(time)}] ${type?.toUpperCase()} <${nick}:${channelName}> ${message} "
+        def str = "[${new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(time)}] ${type?.toUpperCase()} <${nick}:${channelName}> ${message}"
         (isHidden) ? "(${str})" : str
     }
 
     // チャンネルが登録済みの場合は関連づける
-    def beforeUpdate = {
+    // 更新時は、StackOverFlowが発生してしまうため、beforeUpdateは使わずに実現する。
+    def beforeInsert = {
         channel = Channel.findByName(channelName)
     }
-    def beforeInsert = beforeUpdate
 }

@@ -60,6 +60,7 @@ class ChannelController extends Base {
                 flash.message = "channel.updated"
                 flash.args = [params.id]
                 flash.defaultMessage = "Channel ${params.id} updated"
+                channelService.updateChannelOfIrclog(channel) // インポート済みログに対して取りこぼしがあれば関連づける
                 redirect(action:show,id:channel.id)
             }
             else {
@@ -86,6 +87,7 @@ class ChannelController extends Base {
             flash.message = "channel.created"
             flash.args = ["${channel.id}"]
             flash.defaultMessage = "Channel ${channel.id} created"
+            channelService.updateChannelOfIrclog(channel) // インポート済みログに対して取りこぼしがあれば関連づける
             redirect(action:show,id:channel.id)
         }
         else {
