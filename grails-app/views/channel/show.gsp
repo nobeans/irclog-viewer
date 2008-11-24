@@ -12,20 +12,20 @@
         <table>
           <tbody>
             <tr class="prop">
-              <td valign="top" class="name"><g:message code="channel.name" default="Name" />:</td>
+              <th valign="top" class="name"><g:message code="channel.name" default="Name" />:</th>
               <td valign="top" class="value">${fieldValue(bean:channel, field:'name')}</td>
             </tr>
             <tr class="prop">
-              <td valign="top" class="name"><g:message code="channel.description" default="Description" />:</td>
+              <th valign="top" class="name"><g:message code="channel.description" default="Description" />:</th>
               <td valign="top" class="value"><pre>${fieldValue(bean:channel, field:'description')}</pre></td>
             </tr>
             <tr class="prop">
-              <td valign="top" class="name"><g:message code="channel.isPrivate" default="Is Private" />:</td>
+              <th valign="top" class="name"><g:message code="channel.isPrivate" default="Is Private" />:</th>
               <td valign="top" class="value"><g:message code="channel.isPrivate.${channel.isPrivate.toString()}" /></td>
             </tr>
             <tr class="prop">
-              <td valign="top" class="name"><g:message code="channel.secretKey" default="Secret Key" />:</td>
-              <td valign="top" class="value">${channel.secretKey.empty ? '' : '****'}</td>
+              <th valign="top" class="name"><g:message code="channel.secretKey" default="Secret Key" />:</th>
+              <td valign="top" class="value">${channel.secretKey ? '****' : ''}</td>
             </tr>
           </tbody>
         </table>

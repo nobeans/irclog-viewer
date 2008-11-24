@@ -13,33 +13,34 @@
           <table>
             <tbody>
               <tr class="prop">
-                <td valign="top" class="name">
+                <th valign="top" class="name">
                   <label for="name"><g:message code="channel.name" default="Name" />:</label>
-                </td>
+                </th>
                 <td valign="top" class="value ${hasErrors(bean:channel,field:'name','errors')}">
                   <input type="text" id="name" name="name" value="${fieldValue(bean:channel,field:'name')}"/>
                 </td>
               </tr> 
               <tr class="prop">
-                <td valign="top" class="name">
+                <th valign="top" class="name">
                   <label for="description"><g:message code="channel.description" default="Description" />:</label>
-                </td>
+                </th>
                 <td valign="top" class="value ${hasErrors(bean:channel,field:'description','errors')}">
                   <input type="text" id="description" name="description" value="${fieldValue(bean:channel,field:'description')}"/>
                 </td>
               </tr> 
               <tr class="prop">
-                <td valign="top" class="name">
+                <th valign="top" class="name">
                   <label for="isPrivate"><g:message code="channel.isPrivate" default="Is Private" />:</label>
-                </td>
+                </th>
                 <td valign="top" class="value ${hasErrors(bean:channel,field:'isPrivate','errors')}">
-                  <g:checkBox name="isPrivate" value="${channel?.isPrivate}" ></g:checkBox>
+                  <g:checkBox name="isPrivate" value="${channel?.isPrivate}" ></g:checkBox><br/>
+                  <g:message code="channel.isPrivate.editCaption" />
                 </td>
               </tr> 
               <tr class="prop">
-                <td valign="top" class="name">
+                <th valign="top" class="name">
                   <label for="secretKey"><g:message code="channel.secretKey" default="Secret Key" />:</label>
-                </td>
+                </th>
                 <td valign="top" class="value ${hasErrors(bean:channel,field:'secretKey','errors')}">
                   <input type="text" id="secretKey" name="secretKey" value="${fieldValue(bean:channel,field:'secretKey')}"/>
                 </td>
