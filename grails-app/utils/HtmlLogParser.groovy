@@ -53,7 +53,7 @@ class HtmlLogIterator implements Iterator {
         def irclog
         (line =~ LINE_REGEXP).each { all, time, nick, type, message ->
             irclog = new Irclog(
-                time:new java.text.SimpleDateFormat('yyyy-MM-dd hh:mm:ss').parse(date + ' ' + time),
+                time:new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').parse(date + ' ' + time),
                 nick:nick,
                 type:type.toUpperCase(),
                 message:decodeAsHTML(message),

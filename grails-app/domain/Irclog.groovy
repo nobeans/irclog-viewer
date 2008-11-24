@@ -28,7 +28,7 @@ class Irclog {
     }
  
     public String toString() {
-        def str = "[${new java.text.SimpleDateFormat('yyyy-MM-dd hh:mm:ss').format(time)}] ${type?.toUpperCase()} <${nick}:${channelName}> ${message} "
+        def str = "[${new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(time)}] ${type?.toUpperCase()} <${nick}:${channelName}> ${message} "
         (isHidden) ? "(${str})" : str
     }
 

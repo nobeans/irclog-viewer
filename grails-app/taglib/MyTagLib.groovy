@@ -9,7 +9,7 @@ class MyTagLib {
     def specifiedLink = { attrs ->
         // 指定日部分と時間部分をフォーマットする。
         def onedayDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(attrs.time)
-        def time = new java.text.SimpleDateFormat("hh:mm:ss").format(attrs.time)
+        def time = new java.text.SimpleDateFormat("HH:mm:ss").format(attrs.time)
 
         if (attrs.isSpecified) {
             out << """<img src="${createLinkTo(dir:'images', file:'specifiedNow.png')}" />"""
@@ -23,7 +23,7 @@ class MyTagLib {
     def onedayLink = { attrs ->
         // 指定日部分と時間部分をフォーマットする。
         def onedayDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(attrs.time)
-        def time = new java.text.SimpleDateFormat("hh:mm:ss").format(attrs.time)
+        def time = new java.text.SimpleDateFormat("HH:mm:ss").format(attrs.time)
 
         // 指定日検索を設定する。
         def params = [*:attrs.params, period:'oneday', 'period-oneday-date':onedayDate]
