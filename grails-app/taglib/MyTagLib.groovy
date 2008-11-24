@@ -29,7 +29,7 @@ class MyTagLib {
         def params = [*:attrs.params, period:'oneday', 'period-oneday-date':onedayDate]
 
         out << g.link(controller:'viewer', action:'index', params:params) { "${onedayDate}" }
-        out << """&nbsp;&nbsp;${time}"""
+        out << """&nbsp;${time}"""
     }
 
     def channelLink = { attrs ->
@@ -69,4 +69,11 @@ class MyTagLib {
             out << """<div class="errors">${g.renderErrors(bean:attrs.bean, as:'list')}</div>"""
         }
     }
+
+    def ifTypeVisible = { attrs, body ->
+        if (org.codehaus.groovy.grails.commons.ApplicationHolder.application.config.irclog.viewer.typeVisible == true) {
+            out << body()
+        }
+    }
+
 }

@@ -13,7 +13,7 @@
         <th class="irclog-channel" title="${message(code:'viewer.list.channel.tooltips')}"><g:message code="irclog.channel"/></th>
         <th class="irclog-nick"><g:message code="irclog.nick"/></th>
         <th class="irclog-message"><g:message code="irclog.message"/></th>
-        <th class="irclog-type"><nobr><g:message code="irclog.type"/></nobr></th>
+        <my:ifTypeVisible><th class="irclog-type"><nobr><g:message code="irclog.type"/></nobr></th></my:ifTypeVisible>
       </tr>
     </thead>
     <tbody>
@@ -27,7 +27,7 @@
         <td class="irclog-channel"><my:channelLink channel="${irclog.channel}" params="${criterion}" /></td>
         <td class="irclog-nick">${irclog.nick?.encodeAsHTML()}</td>
         <td class="irclog-message"><my:messageFormat value="${irclog.message}" /></td>
-        <td class="irclog-type">${irclog.type}</td>
+        <my:ifTypeVisible><td class="irclog-type">${irclog.type}</td></my:ifTypeVisible>
       </tr>
     </g:each>
     </tbody>

@@ -1,6 +1,9 @@
+@charset "utf-8";
+
 html * {
     margin: 0;
     font-size: 100%; /* IEでのフォントサイズが不安定になる事象を抑止するため */
+    font-size: 14px; /* FIXME:微調整 */
 }
 
 html {
@@ -112,6 +115,7 @@ input.image {
     padding: 3px 12px;
     overflow: hidden;
     color: #666;
+    font-size: 90%;
 }
 .nav #login-info {
     position: absolute;
@@ -418,7 +422,7 @@ th.desc a {
     z-index: -1;
 }
 .viewer .list table td {
-    padding: 1px 5px 1px 5px;
+    padding: 1px 10px 1px 5px;
 }
 .viewer .list .irclog-specified {
     width: 12px;
@@ -429,6 +433,7 @@ th.desc a {
 .viewer .list .irclog-channel {
 }
 .viewer .list .irclog-nick {
+    text-align: right;
 }
 .viewer .list .irclog-message {
     width: 80%;
@@ -441,21 +446,33 @@ th.desc a {
     color: red;
     font-weight: bold;
 }
-.viewer .list td.irclog-message {
-    color: #888;
-    font-style: italic;
-    background-color: #e8e8e8;
-}
 .viewer .list .PRIVMSG td.irclog-message {
     color: #333;
     font-style: normal;
     background-color: transparent;
+    text-align: left;
 }
 .viewer .list .NOTICE td.irclog-message {
     color: #333;
     font-style: italic;
     padding-left: 3em;
     background-color: #eed;
+    text-align: left;
+}
+.viewer .list .JOIN td.irclog-message,
+.viewer .list .NICK td.irclog-message,
+.viewer .list .QUIT td.irclog-message,
+.viewer .list .PART td.irclog-message,
+.viewer .list .KICK td.irclog-message,
+.viewer .list .MODE td.irclog-message,
+.viewer .list .TOPIC td.irclog-message,
+.viewer .list .SYSTEM td.irclog-message,
+.viewer .list .OTHER td.irclog-message,
+.viewer .list .SIMPLE td.irclog-message {
+    color: #888;
+    font-style: italic;
+    background-color: #efefef;
+    text-align: right;
 }
 .viewer .list .KICK td.irclog-message {
     color: red;

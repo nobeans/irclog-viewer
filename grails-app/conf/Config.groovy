@@ -71,5 +71,6 @@ log4j {
 // irclog-viewer
 irclog {
     viewer.defaultMax = 100
+    viewer.typeVisible = false
     importer.targetDirPath = "./work"
 }
