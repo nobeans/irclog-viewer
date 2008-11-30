@@ -33,7 +33,7 @@
     <div id='login'>
       <div class='inner'>
         <g:if test='${flash.message}'>
-          <div class='login_message'>${flash.message}</div>
+          <div class='login_message'>${g.message(code:flash.message, args:flash.args, default:flash.defaultMessage)}</div>
         </g:if>
         <form action='${request.contextPath}/j_spring_security_check' method='POST' id='loginForm' class='cssform'>
           <p>

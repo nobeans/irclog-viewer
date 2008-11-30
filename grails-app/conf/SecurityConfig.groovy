@@ -63,5 +63,9 @@ security {
     /** use switchUserProcessingFilter */
     switchUserProcessingFilter = false
 
-    defaultTargetUrl = "/viewer"
+    /** redirect URL when auth is success */
+    // MEMO:
+    // 認証処理の一環としてflashをクリアしてから、トップページに遷移させたいためここでは認証コントローラのURLとしている。
+    // どちらかというと、Acegiのフィルタのバグであるような気がするのだが・・・。
+    defaultTargetUrl = "/login/auth"
 }

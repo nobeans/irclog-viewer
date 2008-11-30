@@ -12,7 +12,7 @@ class LoginController extends Base {
         if (isLoggedIn) {
             flash.message = null
             flash.errors = null
-            redirect(uri: config.irclogViewer.defaultIndexPath)
+            redirect(uri: config.irclog.viewer.defaultTargetUrl)
         }
         else {
             render(view:'auth', params:params)
@@ -30,13 +30,13 @@ class LoginController extends Base {
         def exception = session[APF.SPRING_SECURITY_LAST_EXCEPTION_KEY]
         if (exception) {
             if (exception instanceof DisabledException) {
-                flash.message = "このアカウントは現在使用できません。"
+                flash.message = "login.loginName.disabled.error"
             }
             else {
                 if (loginName == "") {
-                    flash.message = "ログインIDを入力してください。"
+                    flash.message = "login.loginName.empty.error"
                 } else {
-                    flash.message = "ログインIDかパスワードが誤っています。"
+                    flash.message = "login.loginName.invalid.error"
                 }
             }
         }
