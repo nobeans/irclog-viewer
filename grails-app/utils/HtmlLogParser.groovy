@@ -80,6 +80,6 @@ class HtmlLogIterator implements Iterator {
     }
 
     private String resolveChannelName(file) {
-        file.toString().replaceAll('^.*/([^/]+)/[^/]+$', '#$1')
+        file.toString().replaceAll('^.*/html-CS-([^/]+)/[^/]+$', '#$1')
     }
 }
