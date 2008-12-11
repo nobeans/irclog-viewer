@@ -50,7 +50,7 @@ class IrclogSearchService {
             query.args << criterion.channel.toLong()
         } else if (criterion.channel == 'all') { // 許可されたチャンネルすべて
             if (channels) {
-                query.hql += " and ( " + channels.collect{"i.channel.id like ?"}.join(" or ") + " )"
+                query.hql += " and ( " + channels.collect{"i.channel.id = ?"}.join(" or ") + " )"
                 query.args.addAll(channels.collect{it.id.toLong()})
             } else {
                 query.hql += " and 1 = 0" // 許可されたチャンネルが0件であれば、絶対にヒットさせない
