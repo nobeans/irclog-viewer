@@ -9,6 +9,10 @@ class HtmlLogParser {
     Iterator parse(File logFile) {
         new HtmlLogIterator(logFile)
     }
+
+    boolean isTarget(File logFile) {
+        (logFile.path ==~ '.*/html-CS-([^/]+)/[^/]+.log$')
+    }
 }
 
 /**
@@ -21,11 +25,13 @@ class HtmlLogIterator implements Iterator {
     private final log = LogFactory.getLog(this.class.name)
 
     private Iterator lineIterator
+    private File logFile
     private String date
     private String channelName
 
     HtmlLogIterator(File logFile) {
         this.lineIterator = logFile.readLines().iterator()
+        this.logFile = logFile
         this.date = resolveDate(logFile)
         this.channelName = resolveChannelName(logFile)
     }
@@ -35,13 +41,14 @@ class HtmlLogIterator implements Iterator {
     }
 
     public Object next() {
-        try {
-            def line = lineIterator.next()
-            def irclog = parseLine(line)
-            return irclog
-        } catch (RuntimeException e) {
-            log.error(e)
-            return next() // とりあえずログを出して、次の行に進む
+        while (true) {
+            try {
+                def line = lineIterator.next()
+                return parseLine(line)
+            } catch (RuntimeException e) {
+                log.warn("${e.message} in ${logFile.path}")
+            }
+            if (!hasNext()) return null
         }
     }
 
@@ -80,6 +87,6 @@ class HtmlLogIterator implements Iterator {
     }
 
     private String resolveChannelName(file) {
-        file.toString().replaceAll('^.*/html-CS-([^/]+)/[^/]+$', '#$1')
+        file.toString().replaceAll('^.*/html-CS-([^/]+)/[^/]+.log$', '#$1')
     }
 }

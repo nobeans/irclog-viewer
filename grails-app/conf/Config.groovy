@@ -65,6 +65,7 @@ log4j {
         }
         org.'springframework.security'='off,stdout' // Acegi plugin
     }
+    logger.'IrclogImporter'='debug'
     additivity.StackTrace=false
 }
 
