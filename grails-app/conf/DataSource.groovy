@@ -13,9 +13,9 @@ hibernate {
 environments {
 	development {
 		dataSource {
-			//dbCreate = "create-drop" // one of 'create', 'create-drop','update'
-			dbCreate = "update" // one of 'create', 'create-drop','update'
-			url = "jdbc:postgresql://silver:5432/irclog"
+			dbCreate = "create-drop" // one of 'create', 'create-drop','update'
+			//dbCreate = "update"
+			url = "jdbc:postgresql://localhost:5432/irclog"
             //logSql = true
 		}
 	}
