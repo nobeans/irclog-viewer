@@ -3,21 +3,23 @@ import org.apache.commons.logging.LogFactory
 /**
  * IRCログをファイルからインポートする。
  */
-class IrclogImporter {
+class IrclogImportService {
 
-    private log = LogFactory.getLog("IrclogImporter")
+    boolean transactional = false
 
     def importAll(File irclogDir, def parser) {
         if (!irclogDir.isDirectory()) throw new RuntimeException("Irclog directory not found.")
         findAll(irclogDir, parser).each { file ->
-            log.info("Parsing... -> ${file.path}")
-            parser.parse(file).each { irclog ->
-                if (isImportedLogRecord(irclog)) return
-                if (!irclog.save()) {
-                    throw new RuntimeException('Import Error: ' + irclog)
+            Irclog.withTransaction { status ->
+                log.info("Parsing... -> ${file.path}")
+                parser.parse(file).each { irclog ->
+                    if (isImportedLogRecord(irclog)) return
+                    if (!irclog.save()) {
+                        log.error('Import Error: ' + irclog)
+                    }
                 }
+                handleCompleted(file)
             }
-            handleCompleted(file)
         }
     }
 

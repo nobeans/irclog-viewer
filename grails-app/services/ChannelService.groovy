@@ -1,5 +1,7 @@
 class ChannelService {
 
+    boolean transactional = true
+
     /** アクセス可能な全チャンネルを取得する。 */
     def getAccessibleChannelList(person, params) {
         if (!params.sort || !Channel.constraints.keySet().contains(params.sort)) params.sort = 'name'

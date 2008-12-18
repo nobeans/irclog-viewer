@@ -1,5 +1,7 @@
 class IrclogSearchService {
 
+    boolean transactional = false
+
     def channelService
 
     def search(person, criterion, params) {
