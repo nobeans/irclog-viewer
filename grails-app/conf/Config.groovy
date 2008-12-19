@@ -42,14 +42,14 @@ environments {
 log4j {
     appender.stdout = "org.apache.log4j.ConsoleAppender"
     appender.'stdout.layout'="org.apache.log4j.PatternLayout"
-    appender.'stdout.layout.ConversionPattern'='[%r] %c{2} %m%n'
+    appender.'stdout.layout.ConversionPattern'='%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n'
     appender.stacktraceLog = "org.apache.log4j.FileAppender"
     appender.'stacktraceLog.layout'="org.apache.log4j.PatternLayout"
-    appender.'stacktraceLog.layout.ConversionPattern'='[%r] %c{2} %m%n'
+    appender.'stacktraceLog.layout.ConversionPattern'='%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n'
     appender.'stacktraceLog.File'="log/stacktrace.log"
-    rootLogger="error,stdout"
+    rootLogger="info,stdout"
     logger {
-        grails="error"
+        grails="info"
         StackTrace="error,stacktraceLog"
         org {
             codehaus.groovy.grails.web.servlet="error"  //  controllers
