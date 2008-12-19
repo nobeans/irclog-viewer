@@ -14,6 +14,7 @@ class IrclogImportService {
                 log.info("Parsing... -> ${file.path}")
                 parser.parse(file).each { irclog ->
                     if (isImportedLogRecord(irclog)) return
+                    irclog.channel = Channel.findByName(irclog.channelName) // Channelが存在すれば設定する
                     if (!irclog.save()) {
                         log.error('Import Error: ' + irclog)
                     }
