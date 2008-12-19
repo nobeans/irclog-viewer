@@ -42,7 +42,7 @@ class ChannelService {
         // FIXME: 生SQLのUPDATE文であれば一発で良いのだが・・・。
         def channels = Channel.list()
         def irclogs = Irclog.findAll("from Irclog as i where i.channel is null")
-        irclogs.each { irclog -> irclog.channel = channels.find{it.name = irclog.channelName} }
+        irclogs.each { irclog -> irclog.channel = channels.find{it.name == irclog.channelName} }
     }
 
     /** 
