@@ -56,7 +56,7 @@ class IrclogImportService {
                 targets << file
             }
         }
-        targets
+        return targets.sort() // できるだけチャンネル・日付順にIDが振られるようにファイル名(パス)でソートする
     }
 
     /** インポート完了済みログファイルかどうかチェックする。*/
