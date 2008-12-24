@@ -139,6 +139,9 @@ but is made simpler by the coding by convention paradigm.
                     quartzScheduler.triggerJob(jobName, jobGroup, params ? new JobDataMap(params) : null)
                 }
             }
+            mc.'static'.removeJob = {
+                quartzScheduler.deleteJob(jobName, jobGroup)
+            }
         }
     }
 
@@ -251,7 +254,7 @@ but is made simpler by the coding by convention paradigm.
             "${name}Trigger"(trigger.clazz) {
                 jobDetail = ref("${fullName}JobDetail")
                 trigger.properties.findAll {it.key != 'clazz'}.each {
-                    this["${it.key}"] = it.value
+                    delegate["${it.key}"] = it.value
                 }
             }
         }
