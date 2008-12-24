@@ -7,11 +7,23 @@ class IrclogImportService {
 
     boolean transactional = false
 
-    def importAll(File irclogDir, def parser) {
+    /**
+     * 全ファイルを対象にインポートを実行する。
+     * 同一のファイルに対して処理を実行しないように、他のスレッド/Jobとの排他制御をする。
+     * FIXME:別ファイルに対して並列実行出来るように排他制御できるとよいが、
+     * ここでは単にメソッドレベルでsynchronizedとして、シーケンシャルに実行制御するようにした。
+     */
+    def synchronized importAll(File irclogDir, def parser) {
         if (!irclogDir.isDirectory()) throw new RuntimeException("Irclog directory not found.")
         findAll(irclogDir, parser).each { file ->
             Irclog.withTransaction { status ->
-                log.info("Parsing... -> ${file.path}")
+                if (isCompetedFile(file)) {
+                    log.debug("This file was completed to import. -> ${file.path}")
+                    return
+                }
+
+                // ファイルからインポートする。
+                log.info("Begin parsing -> ${file.path}")
                 parser.parse(file).each { irclog ->
                     if (isImportedLogRecord(irclog)) return
                     irclog.channel = Channel.findByName(irclog.channelName) // Channelが存在すれば設定する
@@ -19,7 +31,14 @@ class IrclogImportService {
                         log.error('Import Error: ' + irclog)
                     }
                 }
-                handleCompleted(file)
+                log.info("End parsing   -> ${file.path}")
+
+                // ファイル最終更新日時が1日以上前のファイルは現役ログではないため、インポート完了ファイルとして登録する。
+                // ファイル内のログレコードのインポート状況には依存しないことに注意すること。
+                if (isFreezedFile(file)) {
+                    log.info("Completed to import (because this file has been freezed). -> ${file.path}")
+                    new ImportCompletedFile(filePath:file.canonicalPath).save()
+                }
             }
         }
     }
@@ -32,10 +51,6 @@ class IrclogImportService {
             channelDir.eachFile { file ->
                 if (!parser.isTarget(file)) {
                     log.debug("This file is not target. -> ${file.path}")
-                    return
-                }
-                if (isCompetedFile(file)) {
-                    log.debug("This file was completed to import. -> ${file.path}")
                     return
                 }
                 targets << file
@@ -58,13 +73,13 @@ class IrclogImportService {
     }
 
     /**
-     * ファイル最終更新日時が1日以上前のファイルは現役ログではないため、インポート完了ファイルとして登録する。
-     * ファイル内のログレコードのインポート状況には依存しないことに注意すること。
+     * 更新が停止したログファイルかどうかチェックする。
+     * ファイル最終更新日時が1日以上前のファイルは現役ログではない、と判断する。
      */
-    private void handleCompleted(file) {
+    private boolean isFreezedFile(file) {
         def lastModified = new Date(file.lastModified())
         def yesterday = new Date() - 1
-        if (lastModified <= yesterday) new ImportCompletedFile(filePath:file.canonicalPath).save()
+        return (lastModified <= yesterday)
     }
 
 }
