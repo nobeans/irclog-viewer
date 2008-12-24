@@ -13,7 +13,10 @@ class ImportLogJob {
     def irclogImportService // ServiceはDI対象
 
     def execute() {
+        def cal = Calendar.getInstance()
+        log.info("Begin job of importing log. [started at ${cal.getTime()}](${cal.hashCode()})")
         irclogImportService.importAll(irclogDir, parser)
+        log.info("End job of importing log. [started at ${cal.getTime()}](${cal.hashCode()})")
     }
 
 }
