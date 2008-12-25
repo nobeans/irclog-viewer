@@ -6,16 +6,19 @@ import org.codehaus.groovy.grails.commons.ApplicationHolder
  */
 class ImportLogJob {
 
-    def irclogDir = new File(ApplicationHolder.application.config.irclog.importer.targetDirPath)
+    def name = "ImportLogJob"
     def timeout = 60 * 1000 + 1 // msec
 
-    def parser = new HtmlLogParser() // 異なるフォーマットのログファイルをインポートする場合はここを変更すればOK
-    def irclogImportService // ServiceはDI対象
+    def irclogDir = new File(ApplicationHolder.application.config.irclog.importer.targetDirPath)
+
+    // for DI
+    def logParser
+    def irclogImportService
 
     def execute() {
         def cal = Calendar.getInstance()
         log.info("Begin job of importing log. [started at ${cal.getTime()}](${cal.hashCode()})")
-        irclogImportService.importAll(irclogDir, parser)
+        irclogImportService.importAll(irclogDir, logParser)
         log.info("End job of importing log. [started at ${cal.getTime()}](${cal.hashCode()})")
     }
 
