@@ -26,6 +26,10 @@ class Irclog {
         channelName(blank:false)
         channel(nullable:true)
     }
+
+    static mapping = {
+        message(type:'text')
+    }
  
     public String toString() {
         def str = "[${new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(time)}] ${type?.toUpperCase()} <${nick}:${channelName}> ${message}"
