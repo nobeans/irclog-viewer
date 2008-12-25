@@ -28,6 +28,7 @@ class Irclog {
     }
 
     static mapping = {
+        version(false)
         message(type:'text')
     }
  

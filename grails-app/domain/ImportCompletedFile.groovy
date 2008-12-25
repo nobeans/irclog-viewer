@@ -6,4 +6,7 @@ class ImportCompletedFile {
         filePath(blank:false, unique:true) // 手っ取り早くIndexを効かせるためにuniqueをつける
     }
 
+    static mapping = {
+        version(false)
+    }
 }
