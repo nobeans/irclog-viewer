@@ -7,6 +7,7 @@ class Irclog {
     String message
     String nick
     Boolean isHidden
+    String permaId // パーマID (パーマリンクに使用する)
 
     String channelName // インポート時にログからそのまま格納する
     Channel channel    // チャンネルが登録済みの場合は関連として保持する
@@ -19,6 +20,7 @@ class Irclog {
         message()
         nick(blank:false)
         isHidden()
+        permaId(unique:true)
         channelName(blank:false)
         channel(nullable:true)
     }
