@@ -74,5 +74,4 @@ irclog {
     viewer.defaultMax = 100
     viewer.typeVisible = false
     viewer.defaultTargetUrl = "/viewer"
-    importer.targetDirPath = "./work"
 }
