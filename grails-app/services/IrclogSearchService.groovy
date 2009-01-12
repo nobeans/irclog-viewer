@@ -123,7 +123,7 @@ class IrclogSearchService {
     // ----------------------------------------------
     // 対象期間:〜まで
     private resolveEndDate_today(criterion) {
-        getCalendarAtZeroHourOfToday().getTime()
+        getCalendarAtZeroHourOfTomorrow().getTime()
     }
     private resolveEndDate_oneday(criterion) {
         try {
@@ -137,16 +137,16 @@ class IrclogSearchService {
         }
     }
     private resolveEndDate_week(criterion) {
-        getCalendarAtZeroHourOfToday().getTime()
+        getCalendarAtZeroHourOfTomorrow().getTime()
     }
     private resolveEndDate_month(criterion) {
-        getCalendarAtZeroHourOfToday().getTime()
+        getCalendarAtZeroHourOfTomorrow().getTime()
     }
     private resolveEndDate_year(criterion) {
-        getCalendarAtZeroHourOfToday().getTime()
+        getCalendarAtZeroHourOfTomorrow().getTime()
     }
     private resolveEndDate_all(criterion) {
-        getCalendarAtZeroHourOfToday().getTime()
+        getCalendarAtZeroHourOfTomorrow().getTime()
     }
 
     private getCalendarAtZeroHourOfToday(cal = Calendar.getInstance()) {
@@ -154,6 +154,11 @@ class IrclogSearchService {
         cal.set(Calendar.MINUTE, 0)
         cal.set(Calendar.SECOND, 0)
         cal.set(Calendar.MILLISECOND, 0)
+        cal
+    }
+    private getCalendarAtZeroHourOfTomorrow() {
+        def cal = getCalendarAtZeroHourOfToday()
+        cal.add(Calendar.DATE, 1) // 翌日
         cal
     }
 
