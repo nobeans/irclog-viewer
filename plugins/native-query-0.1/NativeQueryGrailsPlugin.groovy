@@ -76,7 +76,7 @@ test
 		GroovyClassLoader classLoader = application.classLoader
 		def Class domainClassType = dc.clazz
 
-		def executeNativeQueryMethod = new ExecuteNativeQueryPersistentMethod(sessionFactory,classLoader)
+		def executeNativeQueryMethod = new ExecuteNativeQueryPersistentMethod(sessionFactory,classLoader,true)
 		metaClass.'static'.executeNativeQuery = {String query ->
 			executeNativeQueryMethod.invoke(domainClassType, "executeNativeQuery", [query] as Object[])
 		}
@@ -99,6 +99,31 @@ test
 
 		metaClass.'static'.executeNativeQuery = {String query,Map entityParams, Map namedParams, Map paginateParams ->
 			executeNativeQueryMethod.invoke(domainClassType, "executeNativeQuery", [query, entityParams, namedParams, paginateParams] as Object[])
+		}
+
+		def executeUpdateNativeQueryMethod = new ExecuteNativeQueryPersistentMethod(sessionFactory,classLoader,false)
+		metaClass.'static'.executeUpdateNativeQuery = {String query ->
+			executeUpdateNativeQueryMethod.invoke(domainClassType, "executeUpdateNativeQuery", [query] as Object[])
+		}
+
+		metaClass.'static'.executeUpdateNativeQuery = {String query,Map entityParams ->
+			executeUpdateNativeQueryMethod.invoke(domainClassType, "executeUpdateNativeQuery", [query, entityParams] as Object[])
+		}
+
+		metaClass.'static'.executeUpdateNativeQuery = {String query,Map entityParams, Collection positionalParams ->
+			executeUpdateNativeQueryMethod.invoke(domainClassType, "executeUpdateNativeQuery", [query, entityParams, positionalParams] as Object[])
+		}
+
+		metaClass.'static'.executeUpdateNativeQuery = {String query,Map entityParams, Map namedParams ->
+			executeUpdateNativeQueryMethod.invoke(domainClassType, "executeUpdateNativeQuery", [query, entityParams, namedParams] as Object[])
+		}
+
+		metaClass.'static'.executeUpdateNativeQuery = {String query,Map entityParams, Collection positionalParams, Map paginateParams ->
+			executeUpdateNativeQueryMethod.invoke(domainClassType, "executeUpdateNativeQuery", [query, entityParams, positionalParams, paginateParams] as Object[])
+		}
+
+		metaClass.'static'.executeUpdateNativeQuery = {String query,Map entityParams, Map namedParams, Map paginateParams ->
+			executeUpdateNativeQueryMethod.invoke(domainClassType, "executeUpdateNativeQuery", [query, entityParams, namedParams, paginateParams] as Object[])
 		}
 	}
 

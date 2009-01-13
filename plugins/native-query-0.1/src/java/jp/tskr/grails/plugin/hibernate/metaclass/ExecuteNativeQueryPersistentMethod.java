@@ -49,16 +49,17 @@ public class ExecuteNativeQueryPersistentMethod
 
     private static final String METHOD_SIGNATURE = "executeNativeQuery";
     private static final Pattern METHOD_PATTERN = Pattern.compile( "^executeNativeQuery$" );
+    private final boolean isFindQuery;
 
-    public ExecuteNativeQueryPersistentMethod( SessionFactory sessionFactory,
-                                         ClassLoader classLoader ) {
+    public ExecuteNativeQueryPersistentMethod( SessionFactory sessionFactory, ClassLoader classLoader, boolean isFindQuery ) {
         super( sessionFactory, classLoader, METHOD_PATTERN );
+        this.isFindQuery = isFindQuery;
     }
 
     protected Object doInvokeInternal( Class clazz, String methodName, Object[] arguments ) {
         checkMethodSignature( clazz, methodName, arguments );
 
-	final Class finalizedClazz=clazz;
+        final Class finalizedClazz=clazz;
         final String query = arguments[0].toString();
         final Map entityParams = extractEntityParams( arguments,clazz );
         final Map paginateParams = extractPaginateParams( arguments );
@@ -67,25 +68,27 @@ public class ExecuteNativeQueryPersistentMethod
 
         return getHibernateTemplate().executeFind( new HibernateCallback() {
             public Object doInHibernate( Session session ) throws HibernateException, SQLException {
-		SQLQuery q=session.createSQLQuery(query);
-		for(Iterator iter=entityParams.entrySet().iterator();iter.hasNext();){
-			Map.Entry entry = (Map.Entry) iter.next();
-			if( !( entry.getKey() instanceof String ) )
-				throw new GrailsQueryException( "entity parameter's name must be of type String" );
-			String parameterName = (String) entry.getKey();
-			Object parameterValue = entry.getValue();
-			if(!(parameterValue instanceof Class)){
-				throw new GrailsQueryException( "entity parameter's name value must be of type Class" );
-			}
-			q.addEntity(parameterName,(Class)parameterValue);
-		}
+                SQLQuery q=session.createSQLQuery(query);
+                for(Iterator iter=entityParams.entrySet().iterator();iter.hasNext();){
+                        Map.Entry entry = (Map.Entry) iter.next();
+                        if( !( entry.getKey() instanceof String ) )
+                                throw new GrailsQueryException( "entity parameter's name must be of type String" );
+                        String parameterName = (String) entry.getKey();
+                        Object parameterValue = entry.getValue();
+                        if(!(parameterValue instanceof Class)){
+                                throw new GrailsQueryException( "entity parameter's name value must be of type Class" );
+                        }
+                        q.addEntity(parameterName,(Class)parameterValue);
+                }
 
                 // process paginate params
-                if( paginateParams.containsKey( GrailsHibernateUtil.ARGUMENT_MAX ) ) {
-                    q.setMaxResults( ((Number)paginateParams.get( GrailsHibernateUtil.ARGUMENT_MAX ) ).intValue() );
-                }
-                if( paginateParams.containsKey( GrailsHibernateUtil.ARGUMENT_OFFSET ) ) {
-                    q.setFirstResult( ((Number)paginateParams.remove( GrailsHibernateUtil.ARGUMENT_OFFSET )).intValue() );
+                if (isFindQuery) {
+                    if( paginateParams.containsKey( GrailsHibernateUtil.ARGUMENT_MAX ) ) {
+                        q.setMaxResults( ((Number)paginateParams.get( GrailsHibernateUtil.ARGUMENT_MAX ) ).intValue() );
+                    }
+                    if( paginateParams.containsKey( GrailsHibernateUtil.ARGUMENT_OFFSET ) ) {
+                        q.setFirstResult( ((Number)paginateParams.remove( GrailsHibernateUtil.ARGUMENT_OFFSET )).intValue() );
+                    }
                 }
                 // process positional SQL params
                 int index = 0;
@@ -110,24 +113,29 @@ public class ExecuteNativeQueryPersistentMethod
                         q.setParameter( parameterName, parameterValue );
                     }
                 }
-                return q.list();
+                if (isFindQuery) {
+                    return q.list();
+                } else {
+                    int count = q.executeUpdate();
+                    return Arrays.asList(count); // 強引に第1要素として返す。
+                }
             }
         } );
     }
 
 /*
 Parameter Matrix
-Arg Number	:0	1	2	3	
-Type 1		:String				:Query
-Type 2		:String	Map			:Query,EntityMap
-Type 3		:String	Map	List		:Query,EntityMap,ParamList
-Type 4		:String	Map	Map		:Query,EntityMap,NamedMap
-Type 5		:String	Map	List	Map	:Query,EntityMap,ParamList,PageMap
-Type 6		:String	Map	Map	Map	:Query,EntityMap,NamedMap,PageMap
+Arg Number    :0       1    2     3        
+Type 1        :String                  :Query
+Type 2        :String  Map             :Query,EntityMap
+Type 3        :String  Map  List       :Query,EntityMap,ParamList
+Type 4        :String  Map  Map        :Query,EntityMap,NamedMap
+Type 5        :String  Map  List  Map  :Query,EntityMap,ParamList,PageMap
+Type 6        :String  Map  Map   Map  :Query,EntityMap,NamedMap,PageMap
 
 [Enhancement]
-Type 7		:String	List	Map		:Query,ParamList,PageMap
-Type 8		:String	Map	Map		:Query,NamedMap,PageMap
+Type 7        :String  List Map        :Query,ParamList,PageMap
+Type 8        :String  Map  Map        :Query,NamedMap,PageMap
 */
     private void checkMethodSignature( Class clazz, String methodName, Object[] arguments ) {
         boolean valid = true;
