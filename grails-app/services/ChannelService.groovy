@@ -38,19 +38,18 @@ class ChannelService {
     /** 
      * 現在のチャンネル定義を元に、まだチャンネルに関連付けできていないIrclogの関連更新を試みる。
      */
-    def updateAllChannelOfIrclog() {
-        // FIXME: 生SQLのUPDATE文であれば一発で良いのだが・・・。
-        def channels = Channel.list()
-        def irclogs = Irclog.findAll("from Irclog as i where i.channel is null")
-        irclogs.each { irclog -> irclog.channel = channels.find{it.name == irclog.channelName} }
-    }
-
-    /** 
-     * 現在のチャンネル定義を元に、まだチャンネルに関連付けできていないIrclogの関連更新を試みる。
-     */
     def updateChannelOfIrclog(channel) {
-        def irclogs = Irclog.findAll("from Irclog as i where i.channel is null and i.channelName = ?", [channel.name])
-        irclogs.each { irclog -> irclog.channel = channel }
+        def query = """
+            update
+                irclog as i
+            set
+                channel_id = (select id from channel where name = :channelName)
+            where
+                i.channel_id is null
+            and
+                i.channel_name = :channelName
+        """
+        Irclog.executeUpdateNativeQuery(query, null, [channelName:channel.name]) // native-sql plugin (modified)
     }
 
 }
