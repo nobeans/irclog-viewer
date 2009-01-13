@@ -1,0 +1,12 @@
+<plugin name='native-query' version='0.1'>
+  <author>Tatsuya Anno</author>
+  <authorEmail>taapps@gmail.com</authorEmail>
+  <title>Add new query method called executeNativeQuery</title>
+  <description>test
+</description>
+  <documentation>http://grails.org/NativeQuery+Plugin</documentation>
+  <resources>
+    <resource>UrlMappings</resource>
+    <resource>DataSource</resource>
+  </resources>
+</plugin>
