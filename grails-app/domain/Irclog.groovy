@@ -6,7 +6,6 @@ class Irclog {
     String type
     String message
     String nick
-    Boolean isHidden
     String permaId // パーマID (パーマリンクに使用する)
 
     String channelName // インポート時にログからそのまま格納する
@@ -19,7 +18,6 @@ class Irclog {
         type(inList:TYPE_LIST)
         message()
         nick(blank:false)
-        isHidden()
         permaId(unique:true)
         channelName(blank:false)
         channel(nullable:true)
@@ -32,6 +30,5 @@ class Irclog {
  
     public String toString() {
         def str = "[${new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(time)}] ${type?.toUpperCase()} <${nick}:${channelName}> ${message}"
-        (isHidden) ? "(${str})" : str
     }
 }
