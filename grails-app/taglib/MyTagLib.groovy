@@ -6,19 +6,23 @@ class MyTagLib {
         out << new java.text.SimpleDateFormat(attrs.format).format(attrs.value)
     }
 
-    def specifiedLink = { attrs ->
-        // 指定日部分と時間部分をフォーマットする。
-        def onedayDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(attrs.time)
-        def time = new java.text.SimpleDateFormat("HH:mm:ss").format(attrs.time)
-
-        if (attrs.isSpecified) {
-            out << """<img src="${createLinkTo(dir:'images', file:'specifiedNow.png')}" />"""
-        } else {
-            out << g.link(controller:'viewer', action:'specified', id:attrs.id) {
-                """<img src="${createLinkTo(dir:'images', file:'specifiedThis.png')}" />"""
-            }
+    def singleLink = { attrs ->
+        if (!attrs.channelName || !attrs.time) return
+        def shortDate = new java.text.SimpleDateFormat("yyyyMMdd").format(attrs.time)
+        def fullDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(attrs.time)
+        def anchor = attrs.permaId ? '#' + attrs.permaId : ''
+        out << g.link(url:"/irclog/the/${attrs.channelName.substring(1)}/${shortDate}${anchor}", title:fullDate) {
+            """<img src="${createLinkTo(dir:'images', file:attrs.image)}" />"""
         }
     }
+
+    def selectChannelForSingle = { attrs ->
+        out << g.select(id:'select-single', name:'channel', from:attrs.from, value:attrs.value,
+                 optionKey:'key', optionValue:'value',
+                 onchange:"document.location='/irclog/the/'+this.options[selectedIndex].value.substring(1)+'/${attrs.date.replaceAll('-', '')}'"
+        )
+    }
+
 
     def onedayLink = { attrs ->
         // 指定日部分と時間部分をフォーマットする。

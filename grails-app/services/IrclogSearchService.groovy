@@ -4,19 +4,19 @@ class IrclogSearchService {
 
     def channelService
 
-    def search(person, criterion, params) {
+    def search(person, criterion, params, direction = 'desc') {
         def query = createQuery(person, criterion)
         [
-            list: findAll(query, params),
+            list: findAll(query, params, direction),
             totalCount: count(query),
             message: query.message
         ]
     }
 
-    private findAll(query, params) {
+    private findAll(query, params, direction) {
         // ソート条件(固定)
         // 時系列ですべての許可されたログをソートする。チャンネル別にしないところがポイント。
-        Irclog.findAll(query.hql + " order by i.time desc", query.args, params)
+        Irclog.findAll(query.hql + " order by i.time ${direction}", query.args, params)
     }
 
     private count(query) {
@@ -39,31 +39,31 @@ class IrclogSearchService {
 
         // チャンネル
         assert (criterion.channel) : '必須'
-        def channels = channelService.getAccessibleChannelList(person, criterion)
-        if (criterion.channel.isLong()) { // 指定された1つのチャンネル
-            // 許可されていない場合は、何事もなかったかのように、とぼける。
-            if (!channels.any{ it.id.toString() == criterion.channel }) {
+        def accesibleChannels = channelService.getAccessibleChannelList(person, criterion)
+        if (criterion.channel == 'all') { // 許可されたチャンネルすべて
+            if (accesibleChannels) {
+                query.hql += " and ( " + accesibleChannels.collect{"i.channel.id = ?"}.join(" or ") + " )"
+                query.args.addAll(accesibleChannels.collect{it.id})
+            } else {
+                query.hql += " and 1 = 0" // 許可されたチャンネルが0件であれば、絶対にヒットさせない
+            }
+        } else { // 指定された1つのチャンネル
+            def channel = accesibleChannels.find{ it.name == criterion.channel }
+            if (!channel) {
+                // 許可されていない場合は、何事もなかったかのように、とぼける。
                 query.message = 'viewer.search.error.notFoundChannel'
-                criterion.channel = null
                 query.hql += " and 1 = 0" // 許可されたチャンネルが0件であれば、絶対にヒットさせない
                 return query // channel未指定の場合は、ヒット件数0件とする(デフォルト挙動)
             }
             query.hql += " and i.channel.id = ?"
-            query.args << criterion.channel.toLong()
-        } else if (criterion.channel == 'all') { // 許可されたチャンネルすべて
-            if (channels) {
-                query.hql += " and ( " + channels.collect{"i.channel.id = ?"}.join(" or ") + " )"
-                query.args.addAll(channels.collect{it.id.toLong()})
-            } else {
-                query.hql += " and 1 = 0" // 許可されたチャンネルが0件であれば、絶対にヒットさせない
-            }
+            query.args << channel.id
         }
 
         // 種別
         assert (criterion.type) : '必須'
         if (criterion.type != 'all') { // すべての種別でなければ限定条件を追加する。
-          query.hql += " and i.type = ?"
-          query.args << criterion.type
+            query.hql += " and i.type = ?"
+            query.args << criterion.type
         }
 
         // ニックネーム

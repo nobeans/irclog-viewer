@@ -385,6 +385,10 @@ th.desc a {
 
 /* Viewer */
 
+.viewer caption {
+    font-size: 1.5em;
+}
+
 .viewer .search {
     position: relative;
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
@@ -424,9 +428,6 @@ th.desc a {
 .viewer .list table td {
     padding: 1px 10px 1px 5px;
 }
-.viewer .list .irclog-specified {
-    width: 12px;
-}
 .viewer .list .irclog-time {
     white-space: nowrap;
 }
@@ -436,7 +437,7 @@ th.desc a {
     text-align: right;
 }
 .viewer .list .irclog-message {
-    width: 80%;
+    width: 90%;
 }
 .viewer .list .irclog-type {
     width: 5em;
@@ -513,10 +514,18 @@ th.desc a {
     float: right;
 }
 
-/* ETC */
+/* etc */
+caption,
 .caption {
-    margin: 5px 0 10px 20px;
+    margin: 15px 0 5px 0px;
     color: #555;
+}
+caption img {
+    vertical-align: middle;
+}
+
+.clickable {
+    cursor: pointer;
 }
 
 /*

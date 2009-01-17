@@ -1,5 +1,5 @@
 /**
- * IRCログの表示処理のコントローラ。
+ * IRCログのミックス表示モード用コントローラ。
  */
 class ViewerController extends Base {
 
@@ -12,10 +12,6 @@ class ViewerController extends Base {
      * ログ一覧を表示する。
      */
     def index = {
-        showViewer(params)
-    }
-
-    private showViewer(params) {
         // 検索条件をパースする。
         def criterion = parseCriterion(params)
 
@@ -57,35 +53,8 @@ class ViewerController extends Base {
     private getSelectableChannels() {
         def channels = [:]
         channels['all'] = message(code:'viewer.search.channel.all')
-        channelService.getAccessibleChannelList(loginUserDomain, params).each { channels[it.id] = it.name }
+        channelService.getAccessibleChannelList(loginUserDomain, params).each { channels[it.name] = it.name }
         channels
-    }
-
-    /** パーマリンク指定 */
-    def specified = {
-        def irclog = Irclog.get(params.id)
-        if (!irclog) {
-            redirect(action:index)
-        }
-        params.specifiedLogId = irclog.id
-        params.channel = irclog.channel.id.toString()
-        params.period = 'oneday'
-        params['period-oneday-date'] = new java.text.SimpleDateFormat('yyyy-MM-dd').format(irclog.time)
-        showViewer(params)
-    }
-
-    /** ログの対象行の非表示・表示をトグルする。*/
-    def hideOrShow = {
-        def irclog = Irclog.get(params.id)
-        if (irclog) {
-            irclog.isHidden = !irclog.isHidden  // トグル
-            if (!irclog.hasErrors() && irclog.save()) {
-                flash.message = "ログレコードを表示にしました。"
-                flash.args = [params.id]
-                flash.defaultMessage = "Irclog ${params.id} updated"
-            }
-        }
-        redirect(action:show, id:irclog.id)
     }
 
 }

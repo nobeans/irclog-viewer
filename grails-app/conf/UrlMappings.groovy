@@ -4,16 +4,21 @@ class UrlMappings {
         // Welcome
         "/"(controller:"top")
 
-        // 特定ログのパーマリンクURL
-        "/viewer/$id"(controller:"viewer", action:"specified") {
+        // Mixed viewer
+        "/mixed/"(controller:"viewer", action:"index") {
             constraints {
-                id(matches:/[0-9]+/)
+            }
+        }
+        "/viewer/"(controller:"viewer", action:"index") {
+            constraints {
             }
         }
 
-        // ログビューア
-        "/viewer/"(controller:"viewer", action:"index") {
+        // Single viewer
+        "/the/$channel/$date"(controller:"singleViewer", action:"index") {
             constraints {
+                channel(matches:/\w+/)
+                date(matches:/\d{8}/)
             }
         }
 
