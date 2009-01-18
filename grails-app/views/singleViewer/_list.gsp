@@ -8,8 +8,8 @@
       <my:singleLink time="${afterDate}" channelName="${criterion.channel}" image="singleAfter.png" />
     </caption>
     <thead class="clickable" onclick="focusMessage('');document.location='#'">
-      <tr>
-        <th class="irclog-time" title="${message(code:'viewer.list.time.tooltips')}"><g:message code="irclog.time"/></th>
+      <tr title="${message(code:'singleViewer.list.header.tooltips')}">
+        <th class="irclog-time"><g:message code="irclog.time"/></th>
         <th class="irclog-nick"><g:message code="irclog.nick"/></th>
         <th class="irclog-message"><g:message code="irclog.message"/></th>
       </tr>

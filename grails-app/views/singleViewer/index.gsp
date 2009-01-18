@@ -5,7 +5,7 @@
     <title><g:message code="singleViewer" args="${[criterion?.channel +'@'+ criterion['period-oneday-date']]}" /></title>
   </head>
   <body>
-    <div class="body viewer single">
+    <div class="body viewer singleViewer">
       <my:flashMessage />
       <g:render template="list" />
     </div>

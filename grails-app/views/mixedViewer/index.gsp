@@ -6,11 +6,11 @@
     <yui:javascript dir="calendar" file="calendar.js" />
     <yui:stylesheet dir="calendar/assets" file="calendar.css" />
     <g:javascript library="calendar" />
-    <g:javascript library="viewer" />
-    <title><g:message code="viewer" /></title>
+    <g:javascript library="mixedViewer" />
+    <title><g:message code="mixedViewer" /></title>
   </head>
   <body>
-    <div class="body viewer mixed">
+    <div class="body viewer mixedViewer">
       <my:flashMessage />
       <g:render template="search" />
       <g:render template="list" />

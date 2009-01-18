@@ -1,7 +1,7 @@
 /**
  * IRCログのミックス表示モード用コントローラ。
  */
-class ViewerController extends Base {
+class MixedViewerController extends Base {
 
     def irclogSearchService
     def channelService
@@ -57,7 +57,7 @@ class ViewerController extends Base {
 
     private getSelectableChannels() {
         def channels = [:]
-        channels['all'] = message(code:'viewer.search.channel.all')
+        channels['all'] = message(code:'mixedViewer.search.channel.all')
         channelService.getAccessibleChannelList(loginUserDomain, params).each { channels[it.name] = it.name }
         channels
     }

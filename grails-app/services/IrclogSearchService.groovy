@@ -51,7 +51,7 @@ class IrclogSearchService {
             def channel = accesibleChannels.find{ it.name == criterion.channel }
             if (!channel) {
                 // 許可されていない場合は、何事もなかったかのように、とぼける。
-                query.message = 'viewer.search.error.notFoundChannel'
+                query.message = 'mixedViewer.search.error.notFoundChannel'
                 query.hql += " and 1 = 0" // 許可されたチャンネルが0件であれば、絶対にヒットさせない
                 return query // channel未指定の場合は、ヒット件数0件とする(デフォルト挙動)
             }

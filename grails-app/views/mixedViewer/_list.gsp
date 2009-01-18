@@ -6,11 +6,11 @@
   <table>
     <thead>
       <tr>
-        <th class="irclog-single"  title="${message(code:'viewer.list.single.tooltips')}">
+        <th class="irclog-single"  title="${message(code:'mixedViewer.list.single.tooltips')}">
           <img src="${createLinkTo(dir:'images',file:'singleTitle.png')}" />
         </th>
-        <th class="irclog-time" title="${message(code:'viewer.list.time.tooltips')}"><g:message code="irclog.time"/></th>
-        <th class="irclog-channel" title="${message(code:'viewer.list.channel.tooltips')}"><g:message code="irclog.channel"/></th>
+        <th class="irclog-time" title="${message(code:'mixedViewer.list.time.tooltips')}"><g:message code="irclog.time"/></th>
+        <th class="irclog-channel" title="${message(code:'mixedViewer.list.channel.tooltips')}"><g:message code="irclog.channel"/></th>
         <th class="irclog-nick"><g:message code="irclog.nick"/></th>
         <th class="irclog-message"><g:message code="irclog.message"/></th>
         <my:ifTypeVisible><th class="irclog-type"><nobr><g:message code="irclog.type"/></nobr></th></my:ifTypeVisible>
