@@ -32,6 +32,19 @@ security {
     authorityDomainClass = "Role"
     authorityField = 'name'
 
+	/** rememberMeServices */
+	cookieName = 'grails_remember_me' 
+	alwaysRemember = true
+	tokenValiditySeconds = 1209600 //14 days
+	parameter = '_spring_security_remember_me'
+	rememberMeKey = 'grailsRocks'
+
+	/** LoggerListener 
+	 * ( add 'log4j.logger.org.springframework.security=info,stdout'
+	 * to log4j.*.properties to see logs )
+	 */
+	useLogger = true
+
     /** use RequestMap from DomainClass */
     useRequestMapDomainClass = false
     requestMapString = """

@@ -12,6 +12,10 @@ class LoginController extends Base {
         if (isLoggedIn) {
             flash.message = null
             flash.errors = null
+
+            // セッション有効期間をカスタマイズ
+            session.maxInactiveInterval = config.irclog.session.maxInactiveInterval
+
             redirect(uri: config.irclog.viewer.defaultTargetUrl)
         }
         else {

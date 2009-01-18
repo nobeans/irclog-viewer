@@ -44,7 +44,7 @@
             <label for='j_password'><g:message code="person.password" /></label>
             <input type='password' class='text_' name='j_password' id='j_password' />
           </p>
-          <%--
+          <%-- セッション有効期間を長くしたため、これは不要と言うことで。
           <p>
             <input type='checkbox' class='chk' id='remember_me' name='_spring_security_remember_me' />
             <label for='remember_me'><g:message code="login.rememberMe" /></label>

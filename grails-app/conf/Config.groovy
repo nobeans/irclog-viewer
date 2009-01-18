@@ -63,7 +63,7 @@ log4j {
             springframework="off"
             hibernate="off"
         }
-        org.'springframework.security'='off,stdout' // Acegi plugin
+        org.'springframework.security'='info,stdout' // Acegi plugin
     }
     additivity.StackTrace=false
 }
@@ -73,4 +73,6 @@ irclog {
     viewer.defaultMax = 100
     viewer.typeVisible = false
     viewer.defaultTargetUrl = "/viewer"
+    session.maxInactiveInterval = 24 * 60 * 60 // [sec] => 1day
 }
+
