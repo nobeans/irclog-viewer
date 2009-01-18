@@ -15,27 +15,6 @@
       </tr>
     </thead>
     <tbody>
-    <script language="javascript">
-      // ★リファクタリングする！スクリプトファイルに抽出！★
-      var currentMessageId = null;
-      function focusMessage(newMessageId) {
-          removeStyleClass(currentMessageId, 'this');
-          addStyleClass(newMessageId, 'this');
-          currentMessageId = newMessageId;
-      }
-      function addStyleClass(elementId, className) {
-          var ele = $(elementId);
-          if (ele) ele.addClassName(className);
-      }
-      function removeStyleClass(elementId, className) {
-          var ele = $(elementId);
-          if (ele) ele.removeClassName(className);
-      }
-
-      Event.observe(window, 'load', function() {
-          focusMessage(location.hash.replace('#',''))
-      });
-    </script>
     <g:each in="${irclogList}" status="i" var="irclog">
       <tr id="${irclog.permaId}" class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} clickable" onclick="focusMessage('${irclog.permaId}');document.location='#${irclog.permaId}'">
         <td class="irclog-time"><my:dateFormat value="${irclog.time}" format="HH:mm:ss" /></td>
