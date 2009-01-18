@@ -123,15 +123,15 @@ input.image {
 }
 .nav #login-info img {
     margin-right: 3px;
+    vertical-align: bottom;
 }
-
-.menuBar {
+.nav ul {
     display: inline;
     list-style-type: none;
 }
+
 .menuButton {
     display: inline;
-    padding: 0 5px;
     font-weight: bold;
     padding: 4px 8px;
 }
@@ -379,7 +379,13 @@ th.desc a {
 
 .header {
     position: relative;
-    margin: 10px 0px;
+    margin: 10px 0 5px 0;
+}
+.header h1 {
+    font-size: 3.8em;
+}
+.header img.badge {
+    vertical-align: top;
 }
 
 /* Viewer */

@@ -1,6 +1,6 @@
 <%-- 未ログイン --%>
 <g:isNotLoggedIn>
-  <ul class="menuBar">
+  <ul>
     <my:createNavLinkIfNotCurrent controller="login" />
     <my:createNavLinkIfNotCurrent controller="register" action="create" />
     <my:createNavLinkIfNotCurrent controller="channel" action="list" />
@@ -13,7 +13,7 @@
 
 <%-- ログイン中 --%>
 <g:isLoggedIn>
-  <ul class="menuBar">
+  <ul>
     <my:createNavLinkIfNotCurrent controller="logout" />
     <my:createNavLinkIfNotCurrent controller="register" action="show" />
     <my:createNavLinkIfNotCurrent controller="channel" action="list" />

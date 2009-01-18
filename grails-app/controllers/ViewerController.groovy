@@ -12,12 +12,11 @@ class ViewerController extends Base {
      * ログ一覧を表示する。
      */
     def index = {
+        // パラメータを正規化する。
+        normalizeParams(params)
+
         // 検索条件をパースする。
         def criterion = parseCriterion(params)
-
-        // ページングのために、max/offsetをセットアップする。
-        params.max = params.max?.toInteger() ?: config.irclog.viewer.defaultMax
-        params.offset = params.offset?.toInteger() ?: 0
 
         // モデルを作成して、デフォルトビューへ。
         def searchResult = irclogSearchService.search(loginUserDomain, criterion, [max:params.max, offset:params.offset])
@@ -30,6 +29,12 @@ class ViewerController extends Base {
             criterion: criterion
         ]
         render(view:'index', model:model)
+    }
+
+    private normalizeParams(params) {
+        // ページングのために、max/offsetをセットアップする。
+        params.max = params.max?.toInteger() ? Math.min(params.max?.toInteger(), config.irclog.viewer.defaultMax) : config.irclog.viewer.defaultMax
+        params.offset = params.offset?.toInteger() ?: 0
     }
 
     // MEMO:

@@ -23,7 +23,6 @@ class MyTagLib {
         )
     }
 
-
     def onedayLink = { attrs ->
         // 指定日部分と時間部分をフォーマットする。
         def onedayDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(attrs.time)
