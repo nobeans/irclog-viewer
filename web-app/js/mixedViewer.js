@@ -14,7 +14,7 @@
     function highlightSearchedWord(type) {
         var searchKey = $('search-' + type).value;
         if (!searchKey) return;
-        var pattern = new RegExp("(" + searchKey.replace(/\s+/g, '|') + ")", 'g');
+        var pattern = new RegExp("(" + searchKey.replace(/\s+/g, '|') + ")", 'gi');
         $$('td.irclog-' + type).each(function(td) {
             td.innerHTML = $A(td.childNodes).inject('', function(resultHTML, child) {
                 if (child.tagName == 'A') {
