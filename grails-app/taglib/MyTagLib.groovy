@@ -36,7 +36,7 @@ class MyTagLib {
     }
 
     def channelLink = { attrs ->
-        def params = [*:attrs.params, channel:"${attrs.channel.id}" ]
+        def params = [*:attrs.params, channel:"${attrs.channel.name}" ]
         out << g.link(controller:'mixedViewer', action:'index', params:params) { "${attrs.channel.name}" }
     }
 

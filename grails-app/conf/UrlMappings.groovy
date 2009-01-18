@@ -5,7 +5,7 @@ class UrlMappings {
         "/"(controller:"top")
 
         // Mixed viewer
-        "/viewer/"(controller:"mixedViewer", action:"index") {
+        "/viewer/index?"(controller:"mixedViewer", action:"index") {
             constraints {
             }
         }

@@ -18,6 +18,13 @@ class MixedViewerController extends Base {
         // 検索条件をパースする。
         def criterion = parseCriterion(params)
 
+        // いったん別の画面から戻ってきた場合などのために、検索条件をセッションに待避する。
+        // もし、今回検索条件が未指定の場合は、セッション上の検索条件を適用する。
+        if (!params.period && session['IRCLOG_VIEWER_CRITERION']) {
+            criterion = session['IRCLOG_VIEWER_CRITERION']
+        }
+        session['IRCLOG_VIEWER_CRITERION'] = criterion
+
         // モデルを作成して、デフォルトビューへ。
         def searchResult = irclogSearchService.search(loginUserDomain, criterion, [max:params.max, offset:params.offset])
         if (searchResult.message) flash.message = searchResult.message
