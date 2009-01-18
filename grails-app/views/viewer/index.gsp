@@ -7,9 +7,10 @@
     <yui:stylesheet dir="calendar/assets" file="calendar.css" />
     <g:javascript library="calendar" />
     <g:javascript library="viewer" />
+    <title><g:message code="viewer" /></title>
   </head>
   <body>
-    <div class="body viewer">
+    <div class="body viewer mixed">
       <my:flashMessage />
       <g:render template="search" />
       <g:render template="list" />

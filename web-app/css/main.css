@@ -17,7 +17,7 @@ html {
 body {
     position: relative;
     background: #fff;
-    color: #333;
+    color: #555;
     font-family: verdana, arial, helvetica, sans-serif;
     width: 100%;
     text-align: center;
@@ -55,6 +55,7 @@ input, select, textarea {
     margin: 0;
     padding: 2px 4px;
     vertical-align: middle;
+    color: #555;
 }
 select {
    padding: 2px 2px 2px 0;
@@ -78,16 +79,12 @@ pre {
 
 img {
     vertical-align: middle;
-    width: 20px;
-    height: 20px;
     background-color: transparent;
     border: 0;
 }
 img.button,
 input.image {
     vertical-align: middle;
-    width: 20px;
-    height: 20px;
     background-color: transparent;
     border: 0;
     cursor: pointer;
@@ -114,7 +111,6 @@ input.image {
     border-style: solid none solid none;
     padding: 3px 12px;
     overflow: hidden;
-    color: #666;
     font-size: 90%;
 }
 .nav #login-info {
@@ -129,11 +125,15 @@ input.image {
     margin-right: 3px;
 }
 
-.menuButton {
-    padding: 0 5px;
+.menuBar {
+    display: inline;
+    list-style-type: none;
 }
-.menuButton a {
-    padding: 4px 6px;
+.menuButton {
+    display: inline;
+    padding: 0 5px;
+    font-weight: bold;
+    padding: 4px 8px;
 }
 .menuButton .home {
     background: url(../images/skin/house.png) center left no-repeat;
@@ -146,6 +146,9 @@ input.image {
 .menuButton .create {
     background: url(../images/skin/database_add.png) center left no-repeat;
     padding-left: 25px;
+}
+.menuButton.active {
+    background-color: #ddd;
 }
 
 /* MESSAGES AND ERRORS */
@@ -193,22 +196,21 @@ table {
     position: relative;
     border: 1px solid #bbb;
     border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
     width: 100%
 }
 tr {
     border: 0;
 }
 td {
-    position: relative;
     font-family: verdana, arial, helvetica, sans-serif;
     line-height: 1.2em;
     text-align: left;
     padding: 3px 6px;
-    vertical-align: top;
 }
 th {
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
-    color: #666;
     font-weight: bold;
     line-height: 1.3em;
     text-align: left;
@@ -249,10 +251,13 @@ th.desc a {
 }
 .list td {
     border-top: 1px dotted #bbb;
+    border-bottom: 1px dotted #bbb;
     padding: 3px 5px 3px 5px;
     vertical-align: middle;
 }
 .list th {
+    border-top: 1px solid #bbb;
+    border-bottom: 1px solid #bbb;
     white-space: nowrap;
     vertical-align: middle;
 }
@@ -266,7 +271,6 @@ th.desc a {
     position: relative;
     background: transparent url(../images/skin/shadow.jpg) bottom repeat-x;
     border: 1px solid #bbb;
-    color: #666;
     overflow: hidden;
     padding: 3px 6px;
     height: 1.2em;
@@ -283,13 +287,12 @@ th.desc a {
     margin-top: -1px;
 }
 .paginateButtons a {
-    color: #666;
     margin: 0 3px;
     padding: 0px 3px;
 }
 .paginateButtons .currentStep {
     padding: 0px 5px;
-    color: #F60;
+    color: #f60;
     font-weight: bold;
 }
 .paginateButtons .count {
@@ -314,7 +317,6 @@ th.desc a {
     white-space: nowrap;
     background: #eee;
     font-weight: bold;
-    color: #666;
 }
 .prop .value {
     text-align: left;
@@ -327,7 +329,6 @@ th.desc a {
 .buttons {
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
     border: 1px solid #bbb;
-    color: #666;
     overflow: hidden;
     margin: 10px 0 0 0;
     padding: 2px;
@@ -339,7 +340,6 @@ th.desc a {
 .buttons input {
     background: transparent;
     border: 0;
-    color: #666;
     cursor: pointer;
     font-weight: bold;
     overflow: visible;
@@ -361,7 +361,6 @@ th.desc a {
     cursor: pointer;
     font-weight: bold;
     padding: 0px 6px;
-    color: #666;
 }
 
 /* Yahoo UI */
@@ -388,12 +387,16 @@ th.desc a {
 .viewer caption {
     font-size: 1.5em;
 }
+.viewer caption select,
+.viewer caption option {
+    font-size: 1em;
+    vertical-align: baseline;
+}
 
 .viewer .search {
     position: relative;
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
     border: 1px solid #bbb;
-    color: #666;
     font-size: 95%;
     margin: 15px 0;
     padding: 2px 10px;
@@ -456,9 +459,12 @@ th.desc a {
 .viewer .list .NOTICE td.irclog-message {
     color: #333;
     font-style: italic;
-    padding-left: 3em;
-    background-color: #eed;
     text-align: left;
+    background-color: #ffe;
+    padding-left: 4em;
+}
+.viewer .list tr.this.NOTICE td.irclog-message {
+    background-color: #fe8;
 }
 .viewer .list .JOIN td.irclog-message,
 .viewer .list .NICK td.irclog-message,
@@ -472,8 +478,20 @@ th.desc a {
 .viewer .list .SIMPLE td.irclog-message {
     color: #888;
     font-style: italic;
-    background-color: #efefef;
     text-align: right;
+    background-color: #efefef;
+}
+.viewer .list tr.this.JOIN td.irclog-message,
+.viewer .list tr.this.NICK td.irclog-message,
+.viewer .list tr.this.QUIT td.irclog-message,
+.viewer .list tr.this.PART td.irclog-message,
+.viewer .list tr.this.KICK td.irclog-message,
+.viewer .list tr.this.MODE td.irclog-message,
+.viewer .list tr.this.TOPIC td.irclog-message,
+.viewer .list tr.this.SYSTEM td.irclog-message,
+.viewer .list tr.this.OTHER td.irclog-message,
+.viewer .list tr.this.SIMPLE td.irclog-message {
+    background-color: #ee4;
 }
 .viewer .list .KICK td.irclog-message {
     color: red;
@@ -487,6 +505,7 @@ th.desc a {
 }
 
 /* CHANNEL */
+
 #joinToSecretChannel {
     position: absolute;
     border-left: 1px solid #bbb;
@@ -507,18 +526,17 @@ th.desc a {
     border-top: 1px solid #bbb;
     background-color: #fff;
     font-style: italic;
-    color: #666;
     height: 1.5em;
 }
 .footer .poweredBy {
     float: right;
 }
 
-/* etc */
+/* etc. */
+
 caption,
 .caption {
     margin: 15px 0 5px 0px;
-    color: #555;
 }
 caption img {
     vertical-align: middle;

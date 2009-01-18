@@ -11,7 +11,7 @@ class MyTagLib {
         def shortDate = new java.text.SimpleDateFormat("yyyyMMdd").format(attrs.time)
         def fullDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(attrs.time)
         def anchor = attrs.permaId ? '#' + attrs.permaId : ''
-        out << g.link(url:"/irclog/the/${attrs.channelName.substring(1)}/${shortDate}${anchor}", title:fullDate) {
+        out << g.link(url:"/irclog/the/${attrs.channelName.substring(1)}/${shortDate}${anchor}", title:"${attrs.channelName}@${fullDate}") {
             """<img src="${createLinkTo(dir:'images', file:attrs.image)}" />"""
         }
     }
@@ -59,10 +59,14 @@ class MyTagLib {
     }
 
     def createNavLinkIfNotCurrent = { attrs ->
-        if (!attrs.action && request['org.codehaus.groovy.grails.CONTROLLER_NAME_ATTRIBUTE'] == attrs.controller) return
-        if (attrs.action && request['org.codehaus.groovy.grails.ACTION_NAME_ATTRIBUTE'] == attrs.action) return
+        def active = (!attrs.action && request['org.codehaus.groovy.grails.CONTROLLER_NAME_ATTRIBUTE'] == attrs.controller) ||
+                      (attrs.action && request['org.codehaus.groovy.grails.ACTION_NAME_ATTRIBUTE'] == attrs.action)
         def key = attrs.controller + (attrs.action ? ".${attrs.action}" : '')
-        out << """ <span class="menuButton">${g.link(class:key, controller:attrs.controller, action:attrs.action) { g.message(code:key) }}</span> """
+        if (active) {
+            out << """ <li class="menuButton active">${g.message(code:key)}</li> """
+        } else {
+            out << """ <li class="menuButton">${g.link(class:key, controller:attrs.controller, action:attrs.action) { g.message(code:key) }}</li> """
+        }
     }
 
     def flashMessage = { attrs ->

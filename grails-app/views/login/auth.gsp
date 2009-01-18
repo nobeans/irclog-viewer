@@ -2,7 +2,7 @@
   <head>
     <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
     <meta name='layout' content='main' />
-    <title>Login</title>
+    <title><g:message code="login" /></title>
 <style type='text/css' media='screen'>
 #login {
   margin:15px 0px; padding:0px;

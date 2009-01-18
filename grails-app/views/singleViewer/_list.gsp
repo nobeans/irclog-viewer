@@ -1,7 +1,6 @@
 <div class="list">
   <table>
     <caption>
-      The
       <my:selectChannelForSingle from="${selectableChannels}" value="${criterion?.channel}" date="${criterion['period-oneday-date']}" />
       at
       <my:singleLink time="${beforeDate}" channelName="${criterion.channel}" image="singleBefore.png" />
