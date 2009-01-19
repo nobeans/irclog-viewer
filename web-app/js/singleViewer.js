@@ -1,16 +1,17 @@
-// Public Functions
-var focusMessage;
+// プライベート名前空間としてのグローバルオブジェクトを定義
+var IRCLOG;
+if (!IRCLOG) IRCLOG = {};
 
 (function() {
 
     // Initialize
     Event.observe(window, 'load', function() {
-        focusMessage(location.hash.replace('#',''))
+        IRCLOG.focusMessage(location.hash.replace('#',''))
     });
 
     var currentMessageId = null;
 
-    focusMessage = function (newMessageId) {
+    IRCLOG.focusMessage = function (newMessageId) {
         removeStyleClass(currentMessageId, 'this');
         addStyleClass(newMessageId, 'this');
         currentMessageId = newMessageId;
@@ -26,4 +27,4 @@ var focusMessage;
         if (ele) ele.removeClassName(className);
     }
 
-})()
+})();
