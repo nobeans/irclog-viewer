@@ -34,10 +34,7 @@
     <% def mandatoryTypeList = ['PRIVMSG', 'NOTICE'] %>
     <g:each in="${irclogList}" status="i" var="irclog">
       <tr id="${irclog.permaId}"
-          class="${(i % 2) == 0 ? 'odd' : 'even'}
-                 ${irclog.type}
-                 ${mandatoryTypeList.contains(irclog.type) ? 'mandatoryType' : 'optionType'}
-                 clickable"
+          class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${mandatoryTypeList.contains(irclog.type) ? 'mandatoryType' : 'optionType'} clickable"
                  onclick="IRCLOG.highlightLine('${irclog.permaId}');document.location='#${irclog.permaId}'">
         <td class="irclog-time"><my:dateFormat value="${irclog.time}" format="HH:mm:ss" /></td>
         <td class="irclog-nick">${irclog.nick?.encodeAsHTML()}</td>

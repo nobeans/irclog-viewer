@@ -31,7 +31,7 @@ if (!IRCLOG) IRCLOG = {};
     //
     // すべての種別を表示する。
     IRCLOG.showAllType = (function () {
-        function showIt(it) { it.show() }
+        var showIt = function (it) { it.show() }
         return function () {
             $$('tr.optionType').each(showIt);
             $('toggleTypeFilter-all').hide();
@@ -40,7 +40,7 @@ if (!IRCLOG) IRCLOG = {};
     })();
     // PRIVMSGとNOTICEのみを表示する。
     IRCLOG.hideControlType = (function () {
-        function hideIt(it) { it.hide() }
+        var hideIt = function (it) { it.hide() };
         return function () {
             $$('tr.optionType').each(hideIt);
             $('toggleTypeFilter-all').show();
