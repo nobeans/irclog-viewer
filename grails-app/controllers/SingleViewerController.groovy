@@ -13,18 +13,23 @@ class SingleViewerController extends Base {
         // 検索条件をパースする。
         def criterion = parseCriterion(params)
 
-        // モデルを作成して、デフォルトビューへ。
+        // ログ一覧を取得する。
         def searchResult = irclogSearchService.search(loginUserDomain, criterion, [:], 'asc')
         flash.message = null
         if (searchResult.totalCount == 0) {
             flash.message = 'singleViewer.search.error.empty'
         }
+
+        // アクセス可能なチャンネルを取得する。
+        def selectableChannels = getSelectableChannels()
+
+        // モデルを作成して、デフォルトビューへ。
         def model = [
             irclogList: searchResult.list,
-            selectableChannels: getSelectableChannels(),
+            selectableChannels: selectableChannels,
             criterion: criterion,
-            beforeDate: getBeforeDate(params),
-            afterDate: getAfterDate(params)
+            beforeDate: getBeforeDate(params, selectableChannels),
+            afterDate: getAfterDate(params, selectableChannels)
         ]
         render(view:'index', model:model)
     }
@@ -40,10 +45,15 @@ class SingleViewerController extends Base {
         date.replaceAll(/(\d{4})(\d{2})(\d{2})/, "\$1-\$2-\$3")
     }
 
-    private getBeforeDate(params) {
+    /** 現在の日付よりも前で、ログが存在する日付を取得する。 */
+    private getBeforeDate(params, selectableChannels) {
+        if (!selectableChannels.keySet().contains(params.channel)) return null
+        
         def dates = Irclog.executeNativeQuery("""
             select
-                {tbl.*} from irclog as {tbl}
+                {tbl.*}
+            from
+                irclog as {tbl}
             where
                 time < '${params.date} 00:00:00'
             and
@@ -54,10 +64,14 @@ class SingleViewerController extends Base {
         """)
         CollectionUtils.getFirstOrNull(dates)?.time
     }
-    private getAfterDate(params) {
+    /** 現在の日付よりも後で、ログが存在する日付を取得する。*/
+    private getAfterDate(params, selectableChannels) {
+        if (!selectableChannels.keySet().contains(params.channel)) return null
         def dates = Irclog.executeNativeQuery("""
             select
-                {tbl.*} from irclog as {tbl}
+                {tbl.*}
+            from
+                irclog as {tbl}
             where
                 time > '${params.date} 23:59:59'
             and
