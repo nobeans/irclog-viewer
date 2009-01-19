@@ -6,25 +6,46 @@ if (!IRCLOG) IRCLOG = {};
 
     // Initialize
     Event.observe(window, 'load', function() {
-        IRCLOG.focusMessage(location.hash.replace('#',''))
+        IRCLOG.highlightLine(location.hash.replace('#',''))
     });
 
-    var currentMessageId = null;
+    // 1行すべてハイライトする。
+    // 対象要素が存在しないIDを指定した場合は、ハイライトを解除する。
+    IRCLOG.highlightLine = (function () {
+        var currentElement = null;
+        return function (newElementId) {
+            // ハイライト行の世代交代をする。
+            var newElement = $(newElementId);
+            if (currentElement) currentElement.removeClassName('this');
+            if (newElement) newElement.addClassName('this');
+            currentElement = newElement;
 
-    IRCLOG.focusMessage = function (newMessageId) {
-        removeStyleClass(currentMessageId, 'this');
-        addStyleClass(newMessageId, 'this');
-        currentMessageId = newMessageId;
-    }
+            // ハイライト状態の時だけ、選択解除ボタンを有効にする。
+            $('clearHighlight').disabled = (!newElement);
+        };
+    })();
 
-    function addStyleClass(elementId, className) {
-        var ele = $(elementId);
-        if (ele) ele.addClassName(className);
-    }
-
-    function removeStyleClass(elementId, className) {
-        var ele = $(elementId);
-        if (ele) ele.removeClassName(className);
-    }
+    // PRIVMSGとNOTICEのみを表示するモードと
+    // その他の種別も表示するモードをトグルで切り替える。
+    // 初期状態：すべて表示
+    //
+    // すべての種別を表示する。
+    IRCLOG.showAllType = (function () {
+        function showIt(it) { it.show() }
+        return function () {
+            $$('tr.optionType').each(showIt);
+            $('toggleTypeFilter-all').hide();
+            $('toggleTypeFilter-filtered').show();
+        };
+    })();
+    // PRIVMSGとNOTICEのみを表示する。
+    IRCLOG.hideControlType = (function () {
+        function hideIt(it) { it.hide() }
+        return function () {
+            $$('tr.optionType').each(hideIt);
+            $('toggleTypeFilter-all').show();
+            $('toggleTypeFilter-filtered').hide();
+        };
+    })();
 
 })();

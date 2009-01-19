@@ -456,6 +456,15 @@ th.desc a {
     font-size: 1em;
     vertical-align: baseline;
 }
+.singleViewer .optionButtons {
+    position: absolute;
+    right: 4px;
+}
+.singleViewer .optionButtons button {
+    font-size: .8em;
+    vertical-align: top;
+    cursor: pointer;
+}
 
 /* Viewer (Mixed/Single) */
 
