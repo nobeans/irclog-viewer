@@ -11,40 +11,37 @@ class ChannelController extends Base {
     }
 
     def show = {
-        def channel = Channel.get( params.id )
+        def channel = Channel.get(params.id)
         if(!channel) {
             flash.message = "channel.not.found"
             flash.args = [params.id]
-            flash.defaultMessage = "Channel not found with id ${params.id}"
             redirect(action:list)
         }
-        else { return [ channel : channel ] }
+        else {
+            return [ channel : channel ]
+        }
     }
 
     def delete = {
-        def channel = Channel.get( params.id )
-        if(channel) {
-            channel.delete()
+        def channel = Channel.get(params.id)
+        if (channel) {
+            channelService.deleteChannel(channel)
             flash.message = "channel.deleted"
             flash.args = [params.id]
-            flash.defaultMessage = "Channel ${params.id} deleted"
             redirect(action:list)
         }
         else {
             flash.message = "channel.not.found"
             flash.args = [params.id]
-            flash.defaultMessage = "Channel not found with id ${params.id}"
             redirect(action:list)
         }
     }
 
     def edit = {
-        def channel = Channel.get( params.id )
-
-        if(!channel) {
+        def channel = Channel.get(params.id)
+        if (!channel) {
             flash.message = "channel.not.found"
             flash.args = [params.id]
-            flash.defaultMessage = "Channel not found with id ${params.id}"
             redirect(action:list)
         }
         else {
@@ -53,14 +50,24 @@ class ChannelController extends Base {
     }
 
     def update = {
-        def channel = Channel.get( params.id )
-        if(channel) {
+        def channel = Channel.get(params.id)
+        if (channel) {
             channel.properties = params
-            if(!channel.hasErrors() && channel.save()) {
+            if (!channel.hasErrors() && channel.save()) {
                 flash.message = "channel.updated"
                 flash.args = [params.id]
-                flash.defaultMessage = "Channel ${params.id} updated"
-                channelService.updateChannelOfIrclog(channel) // インポート済みログに対して取りこぼしがあれば関連づける
+
+                // インポート済みログに対して取りこぼしがあれば関連づける
+                channelService.relateToIrclog(channel)
+
+                // 非公開チャンネルの場合、今のユーザを自動的に関連づける(上書き可)
+                // 公開チャンネルの場合、対象チャンネルに対する全関連付けを削除しても良いが、
+                // 間違って非公開→公開→非公開とすると、関連付けが全部クリアされてしまい
+                // 運用上困るかもしれないため、関連付けはそのまま残す。
+                if (channel.isPrivate) {
+                    Person.get(loginUserDomain.id).addToChannels(channel)
+                }
+
                 redirect(action:show,id:channel.id)
             }
             else {
@@ -70,7 +77,6 @@ class ChannelController extends Base {
         else {
             flash.message = "channel.not.found"
             flash.args = [params.id]
-            flash.defaultMessage = "Channel not found with id ${params.id}"
             redirect(action:edit,id:params.id)
         }
     }
@@ -83,11 +89,21 @@ class ChannelController extends Base {
 
     def save = {
         def channel = new Channel(params)
-        if(!channel.hasErrors() && channel.save()) {
+        if (!channel.hasErrors() && channel.save()) {
             flash.message = "channel.created"
             flash.args = ["${channel.id}"]
-            flash.defaultMessage = "Channel ${channel.id} created"
-            channelService.updateChannelOfIrclog(channel) // インポート済みログに対して取りこぼしがあれば関連づける
+
+            // インポート済みログに対して取りこぼしがあれば関連づける
+            channelService.relateToIrclog(channel)
+
+            // 非公開チャンネルの場合、今のユーザを自動的に関連づける
+            // 公開チャンネルの場合、対象チャンネルに対する全関連付けを削除しても良いが、
+            // 間違って非公開→公開→非公開とすると、関連付けが全部クリアされてしまい
+            // 運用上困るかもしれないため、関連付けはそのまま残す。
+            if (channel.isPrivate) {
+                Person.get(loginUserDomain.id).addToChannels(channel)
+            }
+
             redirect(action:show,id:channel.id)
         }
         else {

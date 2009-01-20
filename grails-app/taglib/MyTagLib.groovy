@@ -58,10 +58,11 @@ class MyTagLib {
     }
 
     def createNavLinkIfNotCurrent = { attrs ->
-        def active = (!attrs.action && request['org.codehaus.groovy.grails.CONTROLLER_NAME_ATTRIBUTE'] == attrs.controller) ||
-                      (attrs.action && request['org.codehaus.groovy.grails.ACTION_NAME_ATTRIBUTE'] == attrs.action)
-        def key = attrs.controller + (attrs.action ? ".${attrs.action}" : '')
-        if (active) {
+        def controlName = request['org.codehaus.groovy.grails.CONTROLLER_NAME_ATTRIBUTE']
+        def actionName  = request['org.codehaus.groovy.grails.ACTION_NAME_ATTRIBUTE']
+        def actualKey = controlName + (attrs.action ? '.' + actionName : '')
+        def key = attrs.controller + (attrs.action ? '.' + attrs.action : '')
+        if (actualKey == key) {
             out << """ <li class="menuButton active">${g.message(code:key)}</li> """
         } else {
             out << """ <li class="menuButton">${g.link(class:key, controller:attrs.controller, action:attrs.action) { g.message(code:key) }}</li> """

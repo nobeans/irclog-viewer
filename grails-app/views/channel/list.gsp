@@ -9,8 +9,8 @@
       <my:flashMessage />
       <h1><g:message code="channel.list" default="Channel List" /></h1>
       <div class="caption">
-      <g:isLoggedIn><g:message code="channel.list.caption.isLoggedIn" /></g:isLoggedIn>
-      <g:isNotLoggedIn><g:message code="channel.list.caption.isNotLoggedIn" /></g:isNotLoggedIn>
+        <g:isLoggedIn><g:message code="channel.list.caption.isLoggedIn" /></g:isLoggedIn>
+        <g:isNotLoggedIn><g:message code="channel.list.caption.isNotLoggedIn" /></g:isNotLoggedIn>
       </div>
       <div class="list">
         <table>

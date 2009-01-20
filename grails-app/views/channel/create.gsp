@@ -8,6 +8,9 @@
     <div class="body">
       <my:flashMessage bean="${channel}" />
       <h1><g:message code="channel.create" default="Create Channel" /></h1>
+      <div class="caption">
+        <g:message code="channel.create.caption" />
+      </div>
       <g:form action="save" method="post" >
         <div class="dialog">
           <table>
@@ -25,7 +28,7 @@
                   <label for="description"><g:message code="channel.description" default="Description" />:</label>
                 </th>
                 <td valign="top" class="value ${hasErrors(bean:channel,field:'description','errors')}">
-                  <input type="text" id="description" name="description" value="${fieldValue(bean:channel,field:'description')}"/>
+                  <textarea id="description" name="description">${fieldValue(bean:channel,field:'description')}</textarea>
                 </td>
               </tr> 
               <tr class="prop">
@@ -42,7 +45,7 @@
                   <label for="secretKey"><g:message code="channel.secretKey" default="Secret Key" />:</label>
                 </th>
                 <td valign="top" class="value ${hasErrors(bean:channel,field:'secretKey','errors')}">
-                  <input type="text" id="secretKey" name="secretKey" value="${fieldValue(bean:channel,field:'secretKey')}"/>
+                  <input type="password" id="secretKey" name="secretKey" value="${fieldValue(bean:channel,field:'secretKey')}"/>
                 </td>
               </tr> 
             </tbody>

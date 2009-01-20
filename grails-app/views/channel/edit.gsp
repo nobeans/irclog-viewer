@@ -8,6 +8,9 @@
     <div class="body">
       <my:flashMessage bean="${channel}" />
       <h1><g:message code="channel.edit" default="Edit Channel" /></h1>
+      <div class="caption">
+        <g:message code="channel.edit.caption" />
+      </div>
       <g:form method="post" >
         <input type="hidden" name="id" value="${channel?.id}" />
         <div class="dialog">

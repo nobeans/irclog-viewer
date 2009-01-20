@@ -38,7 +38,7 @@ class ChannelService {
     /** 
      * 現在のチャンネル定義を元に、まだチャンネルに関連付けできていないIrclogの関連更新を試みる。
      */
-    def updateChannelOfIrclog(channel) {
+    def relateToIrclog(channel) {
         def query = """
             update
                 irclog as i
@@ -50,6 +50,24 @@ class ChannelService {
                 i.channel_name = :channelName
         """
         Irclog.executeUpdateNativeQuery(query, null, [channelName:channel.name]) // native-sql plugin (modified)
+    }
+
+
+    /** 
+     * 指定のチャンネルを削除する。
+     * 各種の関連付けを適切に削除する。
+     */
+    def deleteChannel(channel) {
+        // チャンネルとユーザの関連付けを削除する。
+        // 関連付けレコード自体を削除する。
+        Irclog.executeUpdateNativeQuery("delete from person_channel where channel_id = :channelId", null, [channelId:channel.id])
+
+        // チャンネルとログの関連付けを削除する。
+        // nullで更新するだけで、ログレコードの削除はしない。
+        Irclog.executeUpdateNativeQuery("update irclog set channel_id = null where channel_id = :channelId", null, [channelId:channel.id])
+
+        // チャンネルを削除する。
+        channel.delete()
     }
 
 }
