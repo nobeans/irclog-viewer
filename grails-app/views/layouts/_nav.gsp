@@ -23,5 +23,3 @@
     <img src="${createLinkTo(dir:'images',file:'person.png')}"/><g:message code="login.info" args="${[g.loggedInUserInfo(field:'loginName')]}" />
   </span>
 </g:isLoggedIn>
-
-&nbsp;
