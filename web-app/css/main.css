@@ -403,9 +403,15 @@ th.desc a {
     background-color: #fff;
     font-style: italic;
     height: 1.5em;
+    position: relative;
 }
-.footer .poweredBy {
-    float: right;
+.footer #linkToTop {
+    position: absolute;
+    left: 1em;
+}
+.footer #poweredBy {
+    position: absolute;
+    right: 1em;
 }
 
 /* MixedViewer */

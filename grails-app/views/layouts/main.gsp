@@ -15,7 +15,8 @@
     </div>
     <g:layoutBody />  
     <div class="footer">
-      <span class="poweredBy">Powered by Grails</span>
+      <a id="linkeToTop" href="#"><img src="${createLinkTo(dir:'images',file:'top.png')}" title="${message(code:"footer.linkToTop.tooltips")}" /></a>
+      <span id="poweredBy"><g:message code="footer.poweredBy" /></span>
     </div>
   </body>	
 </html>
