@@ -5,7 +5,7 @@
     <title><g:message code="channel.show" default="Show Channel" /></title>
   </head>
   <body>
-    <div class="body">
+    <div class="body channel">
       <my:flashMessage />
       <h1><g:message code="channel.show" default="Show Channel" /></h1>
       <div class="dialog">

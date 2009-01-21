@@ -5,7 +5,7 @@
     <title><g:message code="channel.edit" default="Edit Channel" /></title>
   </head>
   <body>
-    <div class="body">
+    <div class="body channel">
       <my:flashMessage bean="${channel}" />
       <h1><g:message code="channel.edit" default="Edit Channel" /></h1>
       <div class="caption">

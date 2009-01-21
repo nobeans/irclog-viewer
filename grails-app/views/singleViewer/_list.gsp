@@ -1,12 +1,12 @@
+<div class="caption">
+  <my:selectChannelForSingle from="${selectableChannels}" value="${criterion?.channel}" date="${criterion['period-oneday-date']}" />
+  at
+  <my:singleLink time="${beforeDate}" channelName="${criterion.channel}" image="singleBefore.png" />
+  ${criterion['period-oneday-date']}
+  <my:singleLink time="${afterDate}" channelName="${criterion.channel}" image="singleAfter.png" />
+</div>
 <div class="list">
   <table>
-    <caption>
-      <my:selectChannelForSingle from="${selectableChannels}" value="${criterion?.channel}" date="${criterion['period-oneday-date']}" />
-      at
-      <my:singleLink time="${beforeDate}" channelName="${criterion.channel}" image="singleBefore.png" />
-      ${criterion['period-oneday-date']}
-      <my:singleLink time="${afterDate}" channelName="${criterion.channel}" image="singleAfter.png" />
-    </caption>
     <thead>
       <tr>
         <th class="irclog-time"><g:message code="irclog.time"/></th>

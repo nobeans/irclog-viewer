@@ -102,15 +102,6 @@ input.image {
     padding: 0;
 }
 
-caption,
-.caption {
-    padding: 5px 0 10px 0;
-    line-height: 1.5em;
-}
-caption img {
-    vertical-align: middle;
-}
-
 .clickable {
     cursor: pointer;
 }
@@ -449,13 +440,18 @@ th.desc a {
 
 /* SingleViewer */
 
-.singleViewer caption {
+.singleViewer .caption {
+    padding: 15px 0 5px 0;
+    line-height: 1.5em;
     font-size: 1.5em;
 }
-.singleViewer caption select,
-.singleViewer caption option {
+.singleViewer .caption select,
+.singleViewer .caption option {
     font-size: 1em;
     vertical-align: baseline;
+}
+.singleViewer .caption img {
+    vertical-align: middle;
 }
 .singleViewer .optionButtons {
     position: absolute;
@@ -554,6 +550,10 @@ th.desc a {
 
 /* Channel */
 
+.channel .caption {
+    padding: 5px 0 8px 0;
+    line-height: 1.5em;
+}
 #joinToSecretChannel {
     position: absolute;
     border-left: 1px solid #bbb;
