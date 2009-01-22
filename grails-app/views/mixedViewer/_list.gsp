@@ -22,7 +22,7 @@
         <td class="irclog-single"><my:singleLink permaId="${irclog.permaId}" time="${irclog.time}" channelName="${irclog.channel.name}" image="single.gif"/></td>
         <td class="irclog-time"><my:onedayLink time="${irclog.time}" params="${criterion}" /></td>
         <td class="irclog-channel"><my:channelLink channel="${irclog.channel}" params="${criterion}" /></td>
-        <td class="irclog-nick">${irclog.nick?.encodeAsHTML()}</td>
+        <td class="irclog-nick ${irclog.nick?.encodeAsHTML()}">${irclog.nick?.encodeAsHTML()}</td>
         <td class="irclog-message"><my:messageFormat value="${irclog.message}" /></td>
         <my:ifTypeVisible><td class="irclog-type">${irclog.type}</td></my:ifTypeVisible>
       </tr>

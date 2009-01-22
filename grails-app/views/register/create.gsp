@@ -18,6 +18,7 @@
                 </td>
                 <td valign='top' class='value ${hasErrors(bean:person,field:'loginName','errors')}'>
                   <input type="text" name='loginName' value="${person?.loginName?.encodeAsHTML()}"/>
+                  <span class="caption"><g:message code="person.loginName.caption" /></span>
                 </td>
               </tr>
               <tr class='prop'>
@@ -42,6 +43,7 @@
                 </td>
                 <td valign='top' class='value ${hasErrors(bean:person,field:'nicks','errors')}'>
                   <input type="nicks" name='nicks' value="${person?.nicks?.encodeAsHTML()}"/>
+                  <span class="caption"><g:message code="person.nicks.caption" /></span>
                 </td>
               </tr>
               <tr class='prop'>
@@ -50,6 +52,7 @@
                 </td>
                 <td valign='top' class='value ${hasErrors(bean:person,field:'color','errors')}'>
                   <input type="color" name='color' value="${person?.color?.encodeAsHTML()}"/>
+                  <span class="caption"><g:message code="person.color.caption" /></span>
                 </td>
               </tr>
             </tbody>

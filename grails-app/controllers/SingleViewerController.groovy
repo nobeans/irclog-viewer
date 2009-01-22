@@ -29,7 +29,8 @@ class SingleViewerController extends Base {
             selectableChannels: selectableChannels,
             criterion: criterion,
             beforeDate: getBeforeDate(params, selectableChannels),
-            afterDate: getAfterDate(params, selectableChannels)
+            afterDate: getAfterDate(params, selectableChannels),
+            nickPersonList: getNickPersonList()
         ]
         render(view:'index', model:model)
     }
@@ -97,5 +98,10 @@ class SingleViewerController extends Base {
         def channels = [:]
         channelService.getAccessibleChannelList(loginUserDomain, params).each { channels[it.name] = it.name }
         channels
+    }
+
+    private getNickPersonList() {
+        // FIXME:対象chに関連するユーザだけに絞った方がもっと軽くなる
+        Person.findAll("from Person as p where p.nicks <> '' and p.color <> ''")
     }
 }

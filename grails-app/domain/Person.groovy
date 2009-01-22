@@ -16,7 +16,7 @@ class Person {
     static constraints = {
         loginName(blank:false, matches:"[a-zA-Z0-9_-]{6,}+", unique:true)
         password(blank:false, minSize:6, validator:{ val, obj -> obj.repassword == val })
-        nicks()
+        nicks(matches:"[ 0-9a-zA-Z_-]*", validator:{ val, obj -> val.split(/ +/).every{ it.startsWith(obj.loginName) } })
         color(matches:"#[0-9A-Fa-f]{3}|#[0-9A-Fa-f]{6}")
         enabled()
         roles()

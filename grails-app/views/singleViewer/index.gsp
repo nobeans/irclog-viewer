@@ -4,6 +4,7 @@
     <meta name="layout" content="main" />
     <g:javascript library="singleViewer" />
     <title><g:message code="singleViewer" args="${[criterion?.channel +'@'+ criterion['period-oneday-date']]}" /></title>
+    <my:nickStyle persons="${nickPersonList}" />
   </head>
   <body>
     <div class="body viewer singleViewer">

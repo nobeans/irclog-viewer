@@ -33,7 +33,8 @@ class MixedViewerController extends Base {
             irclogCount: searchResult.totalCount,
             selectableChannels: getSelectableChannels(),
             selectablePeriods: SELECTABLE_PERIODS,
-            criterion: criterion
+            criterion: criterion,
+            nickPersonList: getNickPersonList()
         ]
         render(view:'index', model:model)
     }
@@ -69,4 +70,7 @@ class MixedViewerController extends Base {
         channels
     }
 
+    private getNickPersonList() {
+        Person.findAll("from Person as p where p.nicks <> '' and p.color <> ''")
+    }
 }

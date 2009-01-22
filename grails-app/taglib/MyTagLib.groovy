@@ -84,4 +84,14 @@ class MyTagLib {
         }
     }
 
+    def nickStyle = { attrs  ->
+        out << """<style type="text/css">"""
+        attrs.persons.each{ person ->
+            if (person) person.nicks.split(/\s+/).each { nick ->
+                if (nick) out << ".irclog-nick.${nick} { color: ${person.color} }"
+            }
+        }
+        out << """</style>"""
+    }
+
 }
