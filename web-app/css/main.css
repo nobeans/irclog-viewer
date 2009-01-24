@@ -392,6 +392,22 @@ th.desc a {
 .header img.badge {
     vertical-align: top;
 }
+.header #analog {
+    display: none;
+}
+* html .header #analog {
+    position: absolute;
+    top: .5em;
+    right: .5em;
+    display: block;  
+    background: #ddd;  
+    padding: 8px 10px;  
+    border: 1px solid #555;  
+    font-size: 15px;  
+    font-weight: bold;  
+    color: #555;  
+    filter:progid:DXImageTransform.Microsoft.Alpha(Enabled=1,Style=0,Opacity=60);   
+}
 
 /* Footer */
 

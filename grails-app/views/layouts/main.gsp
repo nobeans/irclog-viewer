@@ -8,7 +8,8 @@
   </head>
   <body>
     <div class="header">
-      <h1>${message(code:'application.name')}<img class="badge" src="${createLinkTo(dir:'images', file:'beta.png')}" /></h1>
+      <h1><g:message code="application.name" /><img class="badge" src="${createLinkTo(dir:'images', file:'beta.png')}" /></h1>
+      <div id="analog"><g:message code="header.analog" /></div>
     </div>
     <div class="nav">
       <g:render template="../layouts/nav" />
