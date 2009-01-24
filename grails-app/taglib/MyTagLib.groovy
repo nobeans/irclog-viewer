@@ -78,12 +78,6 @@ class MyTagLib {
         }
     }
 
-    def ifTypeVisible = { attrs, body ->
-        if (org.codehaus.groovy.grails.commons.ApplicationHolder.application.config.irclog.viewer.typeVisible == true) {
-            out << body()
-        }
-    }
-
     def nickStyle = { attrs  ->
         out << """<style type="text/css">"""
         attrs.persons.each{ person ->

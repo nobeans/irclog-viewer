@@ -435,7 +435,7 @@ th.desc a {
     width: 14em;
 }
 .mixedViewer .search #search-submit {
-    margin: 0;
+    margin: 0 0 0 1em;
     padding: 0;
 }
 .mixedViewer .search #search-submit-label {

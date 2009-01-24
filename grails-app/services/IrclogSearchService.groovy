@@ -8,8 +8,7 @@ class IrclogSearchService {
         def query = createQuery(person, criterion)
         [
             list: findAll(query, params, direction),
-            totalCount: count(query),
-            message: query.message
+            totalCount: count(query)
         ]
     }
 
@@ -26,8 +25,7 @@ class IrclogSearchService {
     private createQuery(person, criterion) {
         def query = [
             hql: "from Irclog as i where 1 = 1",
-            args: [],
-            message: []
+            args: []
         ]
 
         // 対象期間
@@ -51,7 +49,6 @@ class IrclogSearchService {
             def channel = accesibleChannels.find{ it.name == criterion.channel }
             if (!channel) {
                 // 許可されていない場合は、何事もなかったかのように、とぼける。
-                query.message = 'mixedViewer.search.error.notFoundChannel'
                 query.hql += " and 1 = 0" // 許可されたチャンネルが0件であれば、絶対にヒットさせない
                 return query // channel未指定の場合は、ヒット件数0件とする(デフォルト挙動)
             }
@@ -62,8 +59,7 @@ class IrclogSearchService {
         // 種別
         assert (criterion.type) : '必須'
         if (criterion.type != 'all') { // すべての種別でなければ限定条件を追加する。
-            query.hql += " and i.type = ?"
-            query.args << criterion.type
+            query.hql += " and i.type in ('PRIVMSG', 'NOTICE')"
         }
 
         // ニックネーム

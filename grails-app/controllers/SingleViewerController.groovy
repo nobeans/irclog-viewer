@@ -8,10 +8,10 @@ class SingleViewerController extends Base {
 
     def index = {
         // パラメータを正規化する。
-        normalizeParams(params)
+        normalizeParams()
 
         // 検索条件をパースする。
-        def criterion = parseCriterion(params)
+        def criterion = parseCriterion()
 
         // ログ一覧を取得する。
         def searchResult = irclogSearchService.search(loginUserDomain, criterion, [:], 'asc')
@@ -28,16 +28,18 @@ class SingleViewerController extends Base {
             irclogList: searchResult.list,
             selectableChannels: selectableChannels,
             criterion: criterion,
-            beforeDate: getBeforeDate(params, selectableChannels),
-            afterDate: getAfterDate(params, selectableChannels),
+            beforeDate: getBeforeDate(selectableChannels),
+            afterDate: getAfterDate(selectableChannels),
             nickPersonList: getNickPersonList()
         ]
         render(view:'index', model:model)
     }
 
-    private normalizeParams(params) {
+    private normalizeParams() {
+        log.debug "Original params: " + params
         params.channel = normalizeChannelName(params.channel)
         params.date = normalizeDate(params.date)
+        log.debug "Normalized params: " + params
     }
     private normalizeChannelName(channelName) {
         channelName.startsWith('#') ? channelName : '#' + channelName
@@ -47,7 +49,7 @@ class SingleViewerController extends Base {
     }
 
     /** 現在の日付よりも前で、ログが存在する日付を取得する。 */
-    private getBeforeDate(params, selectableChannels) {
+    private getBeforeDate(selectableChannels) {
         if (!selectableChannels.keySet().contains(params.channel)) return null
         
         def dates = Irclog.executeNativeQuery("""
@@ -66,7 +68,7 @@ class SingleViewerController extends Base {
         CollectionUtils.getFirstOrNull(dates)?.time
     }
     /** 現在の日付よりも後で、ログが存在する日付を取得する。*/
-    private getAfterDate(params, selectableChannels) {
+    private getAfterDate(selectableChannels) {
         if (!selectableChannels.keySet().contains(params.channel)) return null
         def dates = Irclog.executeNativeQuery("""
             select
@@ -84,14 +86,17 @@ class SingleViewerController extends Base {
         CollectionUtils.getFirstOrNull(dates)?.time
     }
 
-    private parseCriterion(params) {
+    private parseCriterion() {
         def criterion = [
-            period:    'oneday',
-            channel:   normalizeChannelName(params.channel),
-            type:      params.type ?: 'all'
+            period:      'oneday',
+            channel:     normalizeChannelName(params.channel),
+            type:        'all',
+            currentType: session['IRCLOG_VIEWER_CRITERION']?.type ?: 'filtered' // mixed側での現在のtype条件
         ]
         criterion['period-oneday-date'] = params.date
-        criterion.findAll{ it.value }
+        criterion.remove('') // 値が空のものを除外
+        log.debug "Criterion: " + criterion
+        criterion
     }
 
     private getSelectableChannels() {
