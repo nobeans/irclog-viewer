@@ -434,6 +434,9 @@ th.desc a {
 .mixedViewer .search #search-message {
     width: 14em;
 }
+.mixedViewer .search #search-type {
+    margin-right: 2px;
+}
 .mixedViewer .search #search-submit {
     margin: 0 0 0 1em;
     padding: 0;
