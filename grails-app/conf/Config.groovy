@@ -40,16 +40,32 @@ environments {
 
 // log4j configuration
 log4j {
+    // for Debug
     appender.stdout = "org.apache.log4j.ConsoleAppender"
     appender.'stdout.layout'="org.apache.log4j.PatternLayout"
     appender.'stdout.layout.ConversionPattern'='%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n'
+
+    // for Error
     appender.stacktraceLog = "org.apache.log4j.FileAppender"
     appender.'stacktraceLog.layout'="org.apache.log4j.PatternLayout"
     appender.'stacktraceLog.layout.ConversionPattern'='%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n'
     appender.'stacktraceLog.File'="log/stacktrace.log"
-    rootLogger="info,stdout"
+
+    // Default
+    rootLogger="error,stdout"
+
     logger {
-        grails="info"
+        // for My application
+        grails {
+            app {
+                controller {
+                    SingleViewerController='info'
+                    MixedViewerController='info'
+                }
+            }
+        }
+
+        // for others library / framework
         StackTrace="error,stacktraceLog"
         org {
             codehaus.groovy.grails.web.servlet="error"  //  controllers
@@ -63,15 +79,18 @@ log4j {
             springframework="off"
             hibernate="off"
         }
-        org.'springframework.security'='info,stdout' // Acegi plugin
+        org.'springframework.security'='info' // Acegi plugin
     }
-    additivity.StackTrace=false
+
+    additivity {
+        StackTrace=false
+    }
 }
 
 // irclog-viewer
 irclog {
     viewer.defaultMax = 100
-    viewer.typeVisible = false
+    viewer.typeVisible = true
     viewer.defaultTargetUrl = "/viewer"
     session.maxInactiveInterval = 24 * 60 * 60 // [sec] => 1day
 }
