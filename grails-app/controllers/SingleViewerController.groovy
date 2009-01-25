@@ -61,6 +61,10 @@ class SingleViewerController extends Base {
                 time < '${params.date} 00:00:00'
             and
                 channel_name = '${params.channel}'
+        """ + ((getCurrentTypeInMixed() != 'all') ? """
+            and
+                type in ('PRIVMSG', 'NOTICE')
+        """ : '') + """
             order by
                 time desc
             limit 1
@@ -79,6 +83,10 @@ class SingleViewerController extends Base {
                 time > '${params.date} 23:59:59'
             and
                 channel_name = '${params.channel}'
+        """ + ((getCurrentTypeInMixed() != 'all') ? """
+            and
+                type in ('PRIVMSG', 'NOTICE')
+        """ : '') + """
             order by
                 time asc
             limit 1
@@ -91,7 +99,7 @@ class SingleViewerController extends Base {
             period:      'oneday',
             channel:     normalizeChannelName(params.channel),
             type:        'all',
-            currentType: session['IRCLOG_VIEWER_CRITERION']?.type ?: 'filtered' // mixed側での現在のtype条件
+            currentType: getCurrentTypeInMixed()
         ]
         criterion['period-oneday-date'] = params.date
         criterion.remove('') // 値が空のものを除外
@@ -108,5 +116,10 @@ class SingleViewerController extends Base {
     private getNickPersonList() {
         // FIXME:対象chに関連するユーザだけに絞った方がもっと軽くなる
         Person.findAll("from Person as p where p.nicks <> '' and p.color <> ''")
+    }
+
+    /** mixed側での現在のtype条件がallかどうか。*/
+    private getCurrentTypeInMixed() {
+        session['IRCLOG_VIEWER_CRITERION']?.type ?: 'filtered'
     }
 }
