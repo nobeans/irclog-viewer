@@ -1,3 +1,6 @@
+/**
+ * チャンネル管理コントローラ
+ */
 class ChannelController extends Base {
 
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
@@ -5,14 +8,16 @@ class ChannelController extends Base {
     
     def index = { redirect(action:list, params:params) }
 
-
     def list = {
-        [ channelList:channelService.getAccessibleChannelList(loginUserDomain, params) ]
+        [
+            channelList: channelService.getAccessibleChannelList(loginUserDomain, params),
+            allJoinedPersons: channelService.getAllJoinedPersons()
+        ]
     }
 
     def show = {
         def channel = Channel.get(params.id)
-        if(!channel) {
+        if (!channel) {
             flash.message = "channel.not.found"
             flash.args = [params.id]
             redirect(action:list)

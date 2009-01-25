@@ -35,6 +35,18 @@ class ChannelService {
         }
     }
 
+    /**
+     * すべてのチャンネルに対する関連付け済みのユーザを取得する。
+     * @return キー=Channel, 値=[Person...] のMap
+     */
+    def getAllJoinedPersons() {
+        def result = [:]
+        Channel.list().each { ch ->
+            result[ch] = Person.executeQuery("select p from Person as p join p.channels as c where c = ?", ch)
+        }
+        result
+    }
+
     /** 
      * 現在のチャンネル定義を元に、まだチャンネルに関連付けできていないIrclogの関連更新を試みる。
      */
