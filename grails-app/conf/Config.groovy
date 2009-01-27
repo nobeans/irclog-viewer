@@ -58,8 +58,7 @@ log4j {
         // for My application
         grails {
             app {
-                controller.SingleViewerController='info'
-                controller.MixedViewerController='info'
+                controller='info'
             }
         }
 
