@@ -20,28 +20,31 @@ class RegisterController extends Base {
  
     def edit = {
         withLoginPerson { person ->
-            person.password = ''    // パスワードの重複エンコードを防止するための一番手抜きな方法
-            person.repassword = ''
+            // DB上にはrepasswordは存在しないので、画面上の初期表示のためにpasswordからコピーする。
+            person.repassword = person.password
+
             [person:person]
         }
     }
  
     def update = {
         withLoginPerson { person ->
+            def currentEncodedPassword = person.password
             person.properties = params
             if (person.save()) {
-                // 素のパスワード文字列に対してバリデーションはOK.
-                person.password = authenticateService.passwordEncoder(params.password)
-                if (person.save(validate:false)) { // バリデーションをOFFにして変換されたパスワードを保存する。
-                    flash.message = "person.updated"
-                    redirect(action:'show', id:person.id)
-                    return // 成功した場合
+                // 素のパスワード文字列に対してバリデーションはOKなので、ハッシュに変換する。
+                if (currentEncodedPassword != person.password) {
+                    person.password = authenticateService.passwordEncoder(params.password)
                 }
+
+                // 更新に成功した場合は、セッション上のユーザ情報を更新する。
+                // FIXME:Acegiの作法がわからなかったため、かなり強引な方法で実装している。
+                SCH.context.authentication.principal.domainClass.realName = person.realName
+
+                redirect(action:'show', id:person.id)
+            } else {
+                render(view:'edit', model:[person:person])
             }
-            // 失敗した場合
-            person.password = ''    // パスワードの重複エンコードを防止するための一番手抜きな方法
-            person.repassword = ''
-            render(view:'edit', model:[person:person])
         }
     }
 
@@ -60,7 +63,6 @@ class RegisterController extends Base {
         // デフォルトロールを取得する。
         def role = Role.findByName(authenticateService.securityConfig.security.defaultRole)
         if (!role) {
-            person.password = ''
             flash.message = 'register.defaultRoleNotFound.'
             redirect(controller:'top')
             return 
@@ -70,22 +72,18 @@ class RegisterController extends Base {
         person.enabled = true
         role.addToPersons(person)
         if (person.save()) {
-            // 素のパスワード文字列に対してバリデーションはOK.
+            // 素のパスワード文字列に対してバリデーションはOKなので、ハッシュに変換する。
             person.password = authenticateService.passwordEncoder(params.password)
-            if (person.save(validate:false)) { // バリデーションをOFFにして変換されたパスワードを保存する。
-                // 新規登録に成功した場合は、そのままログインする。
-                def authtoken = daoAuthenticationProvider.authenticate(new AuthToken(person.loginName, params.password))
-                SCH.context.authentication = authtoken
 
-                flash.message = "person.created"
-                redirect(controller:'top')
-                return // 成功した場合
-            }
+            // 新規登録に成功した場合は、そのままログインする。
+            def authtoken = daoAuthenticationProvider.authenticate(new AuthToken(person.loginName, params.password))
+            SCH.context.authentication = authtoken
+
+            flash.message = "person.created"
+            redirect(action:'show')
+        } else {
+            render(view:'create', model:[person:person])
         }
-        // 失敗した場合
-        person.password = ''    // パスワードの重複エンコードを防止するための一番手抜きな方法
-        person.repassword = ''
-        render(view:'create', model:[person:person])
     }
 
     private withLoginPerson(closure) {

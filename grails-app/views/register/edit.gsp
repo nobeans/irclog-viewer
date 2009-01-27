@@ -22,6 +22,15 @@
               </tr>
               <tr class='prop'>
                 <td valign='top' class='name'>
+                  <label for='realName'><g:message code="person.realName" />:</label>
+                </td>
+                <td valign='top' class='value ${hasErrors(bean:person,field:'realName','errors')}'>
+                  <input type="text" name='realName' value="${person?.realName?.encodeAsHTML()}"/>
+                  <span class="caption"><g:message code="person.realName.caption" /></span>
+                </td>
+              </tr>
+              <tr class='prop'>
+                <td valign='top' class='name'>
                   <label for='password'><g:message code="person.password" />:</label>
                 </td>
                 <td valign='top' class='value ${hasErrors(bean:person,field:'password','errors')}'>
@@ -33,7 +42,7 @@
                   <label for='repassword'><g:message code="person.repassword" />:</label>
                 </td>
                 <td valign='top' class='value ${hasErrors(bean:person,field:'password','errors')}'>
-                  <input type="password" name='repassword' value="${person?.password?.encodeAsHTML()}"/>
+                  <input type="password" name='repassword' value="${person?.repassword?.encodeAsHTML()}"/>
                 </td>
               </tr>
               <tr class='prop'>
@@ -42,6 +51,7 @@
                 </td>
                 <td valign='top' class='value ${hasErrors(bean:person,field:'nicks','errors')}'>
                   <input type="nicks" name='nicks' value="${person?.nicks?.encodeAsHTML()}"/>
+                  <span class="caption"><g:message code="person.nicks.caption" /></span>
                 </td>
               </tr>
               <tr class='prop'>
@@ -50,6 +60,7 @@
                 </td>
                 <td valign='top' class='value ${hasErrors(bean:person,field:'color','errors')}'>
                   <input type="color" name='color' value="${person?.color?.encodeAsHTML()}"/>
+                  <span class="caption"><g:message code="person.color.caption" /></span>
                 </td>
               </tr>
             </tbody>

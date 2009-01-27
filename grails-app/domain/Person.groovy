@@ -1,6 +1,7 @@
 class Person {
 
     String loginName
+    String realName
     String password
     String repassword // 確認用(DBには保存しない)
     boolean enabled   // ユーザの有効/無効
@@ -14,7 +15,8 @@ class Person {
     static transients = ['repassword']
 
     static constraints = {
-        loginName(blank:false, matches:"[a-zA-Z0-9_-]{6,}+", unique:true)
+        loginName(blank:false, matches:"[a-zA-Z0-9_-]{3,}+", unique:true)
+        realName(blank:false, unique:true, maxSize:100)
         password(blank:false, minSize:6, validator:{ val, obj -> obj.repassword == val })
         nicks(matches:"[ 0-9a-zA-Z_-]*", validator:{ val, obj -> val.split(/ +/).every{ it.startsWith(obj.loginName) } })
         color(matches:"#[0-9A-Fa-f]{3}|#[0-9A-Fa-f]{6}")

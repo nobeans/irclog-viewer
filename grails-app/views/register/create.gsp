@@ -23,6 +23,15 @@
               </tr>
               <tr class='prop'>
                 <td valign='top' class='name'>
+                  <label for='realName'><g:message code="person.realName" />:</label>
+                </td>
+                <td valign='top' class='value ${hasErrors(bean:person,field:'realName','errors')}'>
+                  <input type="text" name='realName' value="${person?.realName?.encodeAsHTML()}"/>
+                  <span class="caption"><g:message code="person.realName.caption" /></span>
+                </td>
+              </tr>
+              <tr class='prop'>
+                <td valign='top' class='name'>
                   <label for='password'><g:message code="person.password" />:</label>
                 </td>
                 <td valign='top' class='value ${hasErrors(bean:person,field:'password','errors')}'>

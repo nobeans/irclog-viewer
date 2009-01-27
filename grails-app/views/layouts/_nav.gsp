@@ -20,6 +20,6 @@
     <my:createNavLinkIfNotCurrent controller="mixedViewer" />
   </ul>
   <span class="floatLeft" id="login-info">
-    <img src="${createLinkTo(dir:'images',file:'person.png')}"/><g:message code="login.info" args="${[g.loggedInUserInfo(field:'loginName')]}" />
+    <img src="${createLinkTo(dir:'images',file:'person.png')}"/><g:message code="login.info" args="${[g.loggedInUserInfo(field:'realName'), g.loggedInUserInfo(field:'loginName')]}" />
   </span>
 </g:isLoggedIn>

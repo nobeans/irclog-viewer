@@ -21,6 +21,14 @@
               </td>
             </tr>
             <tr class="prop">
+              <td valign='top' class='name'>
+                <g:message code="person.realName" />:
+              </td>
+              <td valign="top" class="value">
+              	${person.realName?.encodeAsHTML()}
+              </td>
+            </tr>
+            <tr class="prop">
               <td valign="top" class="name">
                 <g:message code="person.nicks" />:
               </td>
