@@ -518,58 +518,66 @@ th.desc a {
     color: red;
     font-weight: bold;
 }
+
+.viewer .list .this {
+    background-color: #ff0;
+}
+.viewer .list tr:hover.this {
+    background-color: #dbf;
+}
+
 .viewer .list .PRIVMSG td.irclog-message {
-    color: #333;
     font-style: normal;
     background-color: transparent;
-    text-align: left;
 }
 .viewer .list .NOTICE td.irclog-message {
-    color: #333;
     font-style: italic;
-    text-align: left;
     background-color: #ffe;
     padding-left: 4em;
 }
-.viewer .list tr.this.NOTICE td.irclog-message {
-    background-color: #fe8;
+.viewer .list .TOPIC td.irclog-message {
+    color: #c33;
+    font-weight: bold;
+    background-color: #fdd;
 }
-.viewer .list .JOIN td.irclog-message,
-.viewer .list .NICK td.irclog-message,
-.viewer .list .QUIT td.irclog-message,
-.viewer .list .PART td.irclog-message,
-.viewer .list .KICK td.irclog-message,
-.viewer .list .MODE td.irclog-message,
-.viewer .list .TOPIC td.irclog-message,
-.viewer .list .SYSTEM td.irclog-message,
-.viewer .list .OTHER td.irclog-message,
-.viewer .list .SIMPLE td.irclog-message {
+.viewer .list .optionType td.irclog-message {
     color: #888;
     font-style: italic;
     text-align: right;
     background-color: #efefef;
 }
-.viewer .list tr.this.JOIN td.irclog-message,
-.viewer .list tr.this.NICK td.irclog-message,
-.viewer .list tr.this.QUIT td.irclog-message,
-.viewer .list tr.this.PART td.irclog-message,
-.viewer .list tr.this.KICK td.irclog-message,
-.viewer .list tr.this.MODE td.irclog-message,
-.viewer .list tr.this.TOPIC td.irclog-message,
-.viewer .list tr.this.SYSTEM td.irclog-message,
-.viewer .list tr.this.OTHER td.irclog-message,
-.viewer .list tr.this.SIMPLE td.irclog-message {
-    background-color: #ee4;
-}
 .viewer .list .KICK td.irclog-message {
     color: red;
 }
-.viewer .list tr:hover td.irclog-message {
-    background: #ddf;
+
+.viewer .list .this.NOTICE td.irclog-message {
+    background-color: #fe8;
 }
-.viewer .list tr.this td.irclog-message,
-.viewer .list tr.this td {
-    background-color: #ff0;
+.viewer .list .this.TOPIC td.irclog-message {
+    background-color: #fb7;
+}
+.viewer .list .this.optionType td.irclog-message {
+    background-color: #ee9;
+}
+
+.viewer .list tr:hover.NOTICE td.irclog-message {
+    background: #dcf;
+}
+.viewer .list tr:hover.TOPIC td.irclog-message {
+    background: #baf;
+}
+.viewer .list tr:hover.optionType td.irclog-message {
+    background: #dde;
+}
+
+.viewer .list tr:hover.this.NOTICE td.irclog-message {
+    background-color: #bad;
+}
+.viewer .list tr:hover.this.TOPIC td.irclog-message {
+    background-color: #98d;
+}
+.viewer .list tr:hover.this.optionType td.irclog-message {
+    background-color: #ccd;
 }
 
 /* Channel */

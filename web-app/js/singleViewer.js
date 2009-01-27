@@ -25,7 +25,7 @@ if (!IRCLOG) IRCLOG = {};
         };
     })();
 
-    // PRIVMSGとNOTICEのみを表示するモードと
+    // PRIVMSGとNOTICEとTOPICのみを表示するモードと
     // その他の種別も表示するモードをトグルで切り替える。
     // 初期状態：すべて表示
     //
@@ -38,7 +38,7 @@ if (!IRCLOG) IRCLOG = {};
             $('toggleTypeFilter-filtered').show();
         };
     })();
-    // PRIVMSGとNOTICEのみを表示する。
+    // PRIVMSGとNOTICEとTOPICのみを表示する。
     IRCLOG.hideControlType = (function () {
         var hideIt = function (it) { it.hide() };
         return function () {

@@ -16,15 +16,16 @@
       </tr>
     </thead>
     <tbody>
-    <g:each in="${irclogList}" status="i" var="irclog">
-      <tr class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type}">
-        <td class="irclog-single"><my:singleLink permaId="${irclog.permaId}" time="${irclog.time}" channelName="${irclog.channel.name}" image="single.gif"/></td>
-        <td class="irclog-time"><my:onedayLink time="${irclog.time}" params="${criterion}" /></td>
-        <td class="irclog-channel"><my:channelLink channel="${irclog.channel}" params="${criterion}" /></td>
-        <td class="irclog-nick ${irclog.nick?.encodeAsHTML()}">${irclog.nick?.encodeAsHTML()}</td>
-        <td class="irclog-message"><my:messageFormat value="${irclog.message}" /></td>
-      </tr>
-    </g:each>
+      <% def isMandatoryType = { type -> ['PRIVMSG', 'NOTICE', 'TOPIC'].contains(type) } %>
+      <g:each in="${irclogList}" status="i" var="irclog">
+        <tr class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${isMandatoryType(irclog.type) ? 'mandatoryType' : 'optionType'}">
+          <td class="irclog-single"><my:singleLink permaId="${irclog.permaId}" time="${irclog.time}" channelName="${irclog.channel.name}" image="single.gif"/></td>
+          <td class="irclog-time"><my:onedayLink time="${irclog.time}" params="${criterion}" /></td>
+          <td class="irclog-channel"><my:channelLink channel="${irclog.channel}" params="${criterion}" /></td>
+          <td class="irclog-nick ${irclog.nick?.encodeAsHTML()}">${irclog.nick?.encodeAsHTML()}</td>
+          <td class="irclog-message"><my:messageFormat value="${irclog.message}" /></td>
+        </tr>
+      </g:each>
     </tbody>
   </table>
   <div class="paginateButtons bottom">

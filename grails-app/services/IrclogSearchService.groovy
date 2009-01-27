@@ -59,7 +59,7 @@ class IrclogSearchService {
         // 種別
         assert (criterion.type) : '必須'
         if (criterion.type != 'all') { // すべての種別でなければ限定条件を追加する。
-            query.hql += " and i.type in ('PRIVMSG', 'NOTICE')"
+            query.hql += " and i.type in ('PRIVMSG', 'NOTICE', 'TOPIC')"
         }
 
         // ニックネーム

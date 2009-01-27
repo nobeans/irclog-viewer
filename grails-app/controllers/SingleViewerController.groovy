@@ -63,7 +63,7 @@ class SingleViewerController extends Base {
                 channel_name = '${params.channel}'
         """ + ((getCurrentTypeInMixed() != 'all') ? """
             and
-                type in ('PRIVMSG', 'NOTICE')
+                type in ('PRIVMSG', 'NOTICE', 'TOPIC')
         """ : '') + """
             order by
                 time desc
@@ -85,7 +85,7 @@ class SingleViewerController extends Base {
                 channel_name = '${params.channel}'
         """ + ((getCurrentTypeInMixed() != 'all') ? """
             and
-                type in ('PRIVMSG', 'NOTICE')
+                type in ('PRIVMSG', 'NOTICE', 'TOPIC')
         """ : '') + """
             order by
                 time asc

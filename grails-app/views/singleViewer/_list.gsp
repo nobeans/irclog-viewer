@@ -36,7 +36,7 @@
       </tr>
     </thead>
     <tbody>
-      <% def isMandatoryType = { type -> ['PRIVMSG', 'NOTICE'].contains(type) } %>
+      <% def isMandatoryType = { type -> ['PRIVMSG', 'NOTICE', 'TOPIC'].contains(type) } %>
       <% def isDefaultHiddenType = { type -> !isCurrentTypeEqualsAll && !isMandatoryType(type) } %>
       <g:each in="${irclogList}" status="i" var="irclog">
         <tr id="${irclog.permaId}"
