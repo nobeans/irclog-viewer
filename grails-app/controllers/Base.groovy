@@ -40,7 +40,7 @@ abstract class Base {
         /* for DEBUG */
         if (System.getProperty("grails.env") == "development") {
             startTime = System.currentTimeMillis()
-            log.error("BEGIN Request " + ">"*30)
+            log.info("BEGIN Request " + ">"*30)
         }
 
         if (requestAllowed != null && !authenticateService.ifAnyGranted(requestAllowed)) {
@@ -103,7 +103,7 @@ abstract class Base {
         /* for DEBUG */
         if (System.getProperty("grails.env") == "development") {
             def time = (System.currentTimeMillis() - startTime) / 1000.0
-            log.error("END Request " + "<"*30 + " (control time: ${time}[sec])")
+            log.info("END Request " + "<"*30 + " (control time: ${time}[sec])")
         }
     }
 
