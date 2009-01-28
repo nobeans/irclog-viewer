@@ -30,7 +30,6 @@ class IrclogSearchService {
 
         // 対象期間
         assert (criterion.period) : '必須'
-        if (!criterion.period) criterion.period = 'hour' // デフォルトは1時間以内
         query.hql += " and i.time >= ? and i.time < ?"
         query.args << "resolveBeginDate_${criterion.period}"(criterion)
         query.args << "resolveEndDate_${criterion.period}"(criterion)
