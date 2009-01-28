@@ -6,10 +6,16 @@ class Channel {
     String secretKey
 
     static constraints = {
-        name(blank:false, unique:true)
+        name(blank:false, unique:true, maxSize:100, matches:"^#.*")
         description()
         isPrivate()
-        secretKey()
+        secretKey(maxSize:100, validator:{ val, obj ->
+            if (obj.isPrivate) {
+                return val != ''
+            } else {
+                return val == ''
+            }
+        })
     }
 
     static mapping = {
