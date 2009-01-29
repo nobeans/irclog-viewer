@@ -60,7 +60,7 @@ class SingleViewerController extends Base {
             where
                 time < '${params.date} 00:00:00'
             and
-                channel_name = '${params.channel}'
+                channel_id = '${Channel.findByName(params.channel).id}'
         """ + ((getCurrentTypeInMixed() != 'all') ? """
             and
                 type in ('PRIVMSG', 'NOTICE', 'TOPIC')
@@ -82,7 +82,7 @@ class SingleViewerController extends Base {
             where
                 time > '${params.date} 23:59:59'
             and
-                channel_name = '${params.channel}'
+                channel_id = '${Channel.findByName(params.channel).id}'
         """ + ((getCurrentTypeInMixed() != 'all') ? """
             and
                 type in ('PRIVMSG', 'NOTICE', 'TOPIC')
