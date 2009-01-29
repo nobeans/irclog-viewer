@@ -532,7 +532,7 @@ th.desc a {
 }
 .viewer .list .NOTICE td.irclog-message {
     font-style: italic;
-    background-color: #ffe;
+    background-color: #ffd;
     padding-left: 4em;
 }
 .viewer .list .TOPIC td.irclog-message {
