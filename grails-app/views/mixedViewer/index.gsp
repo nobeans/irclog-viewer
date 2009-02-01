@@ -8,6 +8,7 @@
     <yui:javascript dir="calendar" file="calendar.js" />
     <g:javascript library="calendar" />
     <g:javascript library="mixedViewer" />
+    <g:javascript library="wordBreak" />
     <title><g:message code="mixedViewer" /></title>
   </head>
   <body>

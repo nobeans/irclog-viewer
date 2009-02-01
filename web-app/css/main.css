@@ -106,6 +106,10 @@ input.image {
     cursor: pointer;
 }
 
+.wordBreak {
+    word-break: break-all;
+}
+
 /* Navigation Menu */
 
 .nav {

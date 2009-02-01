@@ -3,6 +3,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="main" />
     <g:javascript library="singleViewer" />
+    <g:javascript library="wordBreak" />
     <title><g:message code="singleViewer" args="${[criterion?.channel +'@'+ criterion['period-oneday-date']]}" /></title>
     <my:nickStyle persons="${nickPersonList}" />
   </head>

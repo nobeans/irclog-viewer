@@ -23,7 +23,7 @@
           <td class="irclog-time"><my:onedayLink time="${irclog.time}" params="${criterion}" /></td>
           <td class="irclog-channel"><my:channelLink channel="${irclog.channel}" params="${criterion}" /></td>
           <td class="irclog-nick ${irclog.nick?.encodeAsHTML()}">${irclog.nick?.encodeAsHTML()}</td>
-          <td class="irclog-message"><my:messageFormat value="${irclog.message}" /></td>
+          <td class="irclog-message wordBreak"><my:messageFormat value="${irclog.message}" /></td>
         </tr>
       </g:each>
     </tbody>
