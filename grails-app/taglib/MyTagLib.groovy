@@ -16,6 +16,17 @@ class MyTagLib {
         }
     }
 
+    def singleTodayLink = { attrs ->
+        // AfterDateが存在して、更にそれが「今日」でない場合に、一気に「今日」に勧める追加リンクを表示する。
+        if (!attrs.time) return
+        def today = new Date()
+        def shortToday = new java.text.SimpleDateFormat("yyyyMMdd").format(today)
+        def shortDate = new java.text.SimpleDateFormat("yyyyMMdd").format(attrs.time)
+        if (shortToday == shortDate) return
+        attrs.time = today
+        out << singleLink([*:attrs, time:today])
+    }
+
     def selectChannelForSingle = { attrs ->
         out << g.select(id:'select-single', name:'channel', from:attrs.from, value:attrs.value,
                  optionKey:'key', optionValue:'value',

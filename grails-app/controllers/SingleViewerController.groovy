@@ -30,6 +30,7 @@ class SingleViewerController extends Base {
             criterion: criterion,
             beforeDate: getBeforeDate(selectableChannels),
             afterDate: getAfterDate(selectableChannels),
+            latestDate: getLatestDate(selectableChannels),
             nickPersonList: getNickPersonList()
         ]
         render(view:'index', model:model)
@@ -89,6 +90,28 @@ class SingleViewerController extends Base {
         """ : '') + """
             order by
                 time asc
+            limit 1
+        """)
+        CollectionUtils.getFirstOrNull(dates)?.time
+    }
+    /** 現在の日付よりも後で、ログが存在する最新日付を取得する。*/
+    private getLatestDate(selectableChannels) {
+        if (!selectableChannels.keySet().contains(params.channel)) return null
+        def dates = Irclog.executeNativeQuery("""
+            select
+                {tbl.*}
+            from
+                irclog as {tbl}
+            where
+                time > '${params.date} 23:59:59'
+            and
+                channel_id = '${Channel.findByName(params.channel).id}'
+        """ + ((getCurrentTypeInMixed() != 'all') ? """
+            and
+                type in ('PRIVMSG', 'NOTICE', 'TOPIC')
+        """ : '') + """
+            order by
+                time desc
             limit 1
         """)
         CollectionUtils.getFirstOrNull(dates)?.time

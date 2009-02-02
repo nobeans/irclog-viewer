@@ -480,6 +480,7 @@ th.desc a {
 }
 .singleViewer .caption img {
     vertical-align: middle;
+    margin: 0 -2px;
 }
 .singleViewer .optionButtons {
     position: absolute;

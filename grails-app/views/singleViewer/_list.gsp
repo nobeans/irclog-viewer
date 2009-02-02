@@ -4,6 +4,7 @@
   <my:singleLink time="${beforeDate}" channelName="${criterion.channel}" image="singleBefore.png" />
   ${criterion['period-oneday-date']}
   <my:singleLink time="${afterDate}" channelName="${criterion.channel}" image="singleAfter.png" />
+  <my:singleLink time="${latestDate}" channelName="${criterion.channel}" image="singleToday.png" />
 </div>
 <div class="list">
   <table>
