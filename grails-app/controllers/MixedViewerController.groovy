@@ -29,7 +29,8 @@ class MixedViewerController extends Base {
             selectableChannels: getSelectableChannels(),
             selectablePeriods: SELECTABLE_PERIODS,
             criterion: criterion,
-            nickPersonList: getNickPersonList()
+            nickPersonList: getNickPersonList(),
+            getPersonByNick: createGetPersonByNickClosure()
         ]
         render(view:'index', model:model)
     }
@@ -83,6 +84,21 @@ class MixedViewerController extends Base {
     }
 
     private getNickPersonList() {
-        Person.findAll("from Person as p where p.nicks <> '' and p.color <> ''")
+        // FIXME:対象chに関連するユーザだけに絞った方がもっと軽くなる。
+        //       が、せいぜい数十人規模であれば最適化する必要性も薄い。
+        Person.list()
+    }
+
+    private createGetPersonByNickClosure() {
+        def cache = [:] // ↓で作られるクロージャに対するグローバル的な変数
+        return { nick ->
+            if (cache.containsKey(nick)) {
+                return cache[nick]
+            } else {
+                def person = nickPersonList.find{ (it.nicks.split(/\s+/) as List).contains(nick) }
+                cache[nick] = person
+                return person
+            }
+        }
     }
 }

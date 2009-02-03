@@ -21,8 +21,8 @@
         <tr class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${isMandatoryType(irclog.type) ? 'mandatoryType' : 'optionType'}">
           <td class="irclog-single"><my:singleLink permaId="${irclog.permaId}" time="${irclog.time}" channelName="${irclog.channel.name}" image="single.gif"/></td>
           <td class="irclog-time"><my:onedayLink time="${irclog.time}" params="${criterion}" /></td>
-          <td class="irclog-channel"><my:channelLink channel="${irclog.channel}" params="${criterion}" /></td>
-          <td class="irclog-nick ${irclog.nick?.encodeAsHTML()}">${irclog.nick?.encodeAsHTML()}</td>
+          <td class="irclog-channel" title="${irclog.channel.description}"><my:channelLink channel="${irclog.channel}" params="${criterion}" /></td>
+          <td class="irclog-nick ${irclog.nick?.encodeAsHTML()}" title="${getPersonByNick(irclog.nick)?.realName.encodeAsHTML()}">${irclog.nick?.encodeAsHTML()}</td>
           <td class="irclog-message wordBreak"><my:messageFormat value="${irclog.message}" /></td>
         </tr>
       </g:each>
