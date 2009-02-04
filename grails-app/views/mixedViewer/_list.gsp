@@ -1,7 +1,10 @@
 <div class="list">
   <div class="paginateButtons top">
     <g:paginate total="${irclogCount}" params="${criterion}" />
-    <span class="count">${Math.min(params.offset + 1, irclogCount)} - ${Math.min(params.offset + params.max, irclogCount)} 件表示 / ${irclogCount} 件中</span>
+    <% def beginIndex = Math.min(params.offset + 1, irclogCount) %>
+    <% def endIndex = Math.min(params.offset + params.max, irclogCount) %>
+    <% def totalCount = irclogCount %>
+    <span class="count"><g:message code="mixedViewer.count" args="${[beginIndex, endIndex, totalCount]}"/></span>
   </div>
   <table>
     <thead>
@@ -30,6 +33,6 @@
   </table>
   <div class="paginateButtons bottom">
     <g:paginate total="${irclogCount}" params="${criterion}" />
-    <span class="count">${Math.min(params.offset + 1, irclogCount)} - ${Math.min(params.offset + params.max, irclogCount)} 件表示 / ${irclogCount} 件中</span>
+    <span class="count"><g:message code="mixedViewer.count" args="${[beginIndex, endIndex, totalCount]}"/></span>
   </div>
 </div>
