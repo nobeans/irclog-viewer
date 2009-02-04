@@ -7,6 +7,11 @@
   <my:singleLink time="${latestDate}" channelName="${criterion.channel}" image="singleToday.png" />
 </div>
 <div class="list">
+  <div class="paginateButtons top">
+    <% def totalCount = irclogList.size() %>
+    <% def essentialTypeCount = irclogList.findAll{(['PRIVMSG', 'NOTICE', 'TOPIC'] as List).contains(it.type)}.size() %>
+    <span class="count"><g:message code="singleViewer.count" args="${[totalCount, essentialTypeCount]}"/></span>
+  </div>
   <table>
     <thead>
       <tr>
@@ -41,7 +46,7 @@
       <% def isDefaultHiddenType = { type -> !isCurrentTypeEqualsAll && !isMandatoryType(type) } %>
       <g:each in="${irclogList}" status="i" var="irclog">
         <tr id="${irclog.permaId}"
-            class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${isMandatoryType(irclog.type) ? 'mandatoryType' : 'optionType'} clickable"
+            class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${isMandatoryType(irclog.type) ? 'essentialType' : 'optionType'} clickable"
             style="${isDefaultHiddenType(irclog.type) ? 'display:none' : ''}"
             onclick="IRCLOG.highlightLine('${irclog.permaId}');document.location='#${irclog.permaId}'">
           <td class="irclog-time"><my:dateFormat value="${irclog.time}" format="HH:mm:ss" /></td>

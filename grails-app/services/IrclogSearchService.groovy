@@ -17,7 +17,6 @@ class IrclogSearchService {
         // 時系列ですべての許可されたログをソートする。チャンネル別にしないところがポイント。
         Irclog.findAll(query.hql + " order by i.time ${direction}", query.args, params)
     }
-
     private count(query) {
         Irclog.executeQuery("select count(i) " + query.hql, query.args)[0].toInteger()
     }
