@@ -51,11 +51,14 @@ security {
         CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
         PATTERN_TYPE_APACHE_ANT
 
+        /channel/index/**=IS_AUTHENTICATED_ANONYMOUSLY
+        /channel/list/**=IS_AUTHENTICATED_ANONYMOUSLY
+        /channel/show/**=IS_AUTHENTICATED_ANONYMOUSLY
+        /channel/**=IS_AUTHENTICATED_FULLY
+        /register/create/**=IS_AUTHENTICATED_ANONYMOUSLY
+        /register/save/**=IS_AUTHENTICATED_ANONYMOUSLY
+        /register/**=IS_AUTHENTICATED_FULLY
         /**=IS_AUTHENTICATED_ANONYMOUSLY
-        /channel/delete/**=ROLE_ADMIN
-        /channel/create/**=IS_AUTHENTICATED_FULLY
-        /channel/edit/**=IS_AUTHENTICATED_FULLY
-        /channel/join/**=IS_AUTHENTICATED_FULLY
     """
 
     /**
