@@ -21,7 +21,6 @@
                 font-family:courier;
             }
     </style>
-    <meta name="layout" content="main" />
   </head>
   <body>
     <div class="body">

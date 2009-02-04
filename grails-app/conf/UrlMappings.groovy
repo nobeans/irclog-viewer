@@ -25,6 +25,8 @@ class UrlMappings {
             }
         }
 
-        "500"(view:'/error')
+        "404"(view:'/error/404')
+        "405"(view:'/error/405')
+        "500"(view:'/error/500')
 	}
 }
