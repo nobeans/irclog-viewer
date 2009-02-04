@@ -28,7 +28,7 @@
               <td><g:link action="show" id="${channel.id}">${fieldValue(bean:channel, field:'name')}</g:link></td>
               <td>${fieldValue(bean:channel, field:'description')}</td>
               <td><g:message code="channel.isPrivate.${channel.isPrivate.toString()}" /></td>
-              <td><%= allJoinedPersons[channel].collect({it.loginName}).join(", ") %></td>
+              <td><%= allJoinedPersons[channel].collect{"""<span title="${it.realName.encodeAsHTML()}">${it.loginName.encodeAsHTML()}</span>"""}.join(", ") %></td>
             </tr>
           </g:each>
           </tbody>
