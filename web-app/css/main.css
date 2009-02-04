@@ -514,6 +514,7 @@ th.desc a {
 }
 .viewer .list .irclog-message {
     width: 90%;
+    white-space: pre;
 }
 .viewer .list .irclog-type {
     width: 5em;
