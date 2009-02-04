@@ -34,7 +34,7 @@ security {
 
 	/** rememberMeServices */
 	cookieName = 'grails_remember_me' 
-	alwaysRemember = true
+	alwaysRemember = false
 	tokenValiditySeconds = 1209600 //14 days
 	parameter = '_spring_security_remember_me'
 	rememberMeKey = 'grailsRocks'
