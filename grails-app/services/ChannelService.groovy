@@ -8,7 +8,7 @@ class ChannelService {
         if (!params.order || !['asc', 'desc'].contains(params.order)) params.order = 'asc'
         if (person) {
             return Person.executeQuery("""
-                select
+                select distinct
                     ch
                 from
                     Person as p
@@ -17,7 +17,7 @@ class ChannelService {
                 where
                     p.id = ?
                 or
-                    (ch.isPrivate = false and p is null)
+                    ch.isPrivate = false
                 order by
                     ch.${params.sort} ${params.order}
             """, person.id)

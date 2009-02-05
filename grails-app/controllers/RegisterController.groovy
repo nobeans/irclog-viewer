@@ -90,7 +90,7 @@ class RegisterController extends Base {
         def personId = loginUserDomain?.id
         def person = Person.get(personId)
         if (!person) {
-            flash.message = "person.not.found"
+            flash.errors = ["person.not.found"]
             flash.args = [personId]
             redirect(controller:'top')
             return

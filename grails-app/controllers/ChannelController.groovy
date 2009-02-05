@@ -17,8 +17,8 @@ class ChannelController extends Base {
 
     def show = {
         def channel = Channel.get(params.id)
-        if (!channel) {
-            flash.message = "channel.not.found"
+        if (!channel || !isAccessibleChannel(channel)) {
+            flash.errors = ["channel.not.found"]
             flash.args = [params.id]
             redirect(action:list)
         }
@@ -29,14 +29,14 @@ class ChannelController extends Base {
 
     def delete = {
         def channel = Channel.get(params.id)
-        if (channel) {
-            channelService.deleteChannel(channel)
-            flash.message = "channel.deleted"
+        if (!channel || !isAccessibleChannel(channel)) {
+            flash.errors = ["channel.not.found"]
             flash.args = [params.id]
             redirect(action:list)
         }
         else {
-            flash.message = "channel.not.found"
+            channelService.deleteChannel(channel)
+            flash.errors = ["channel.not.found"]
             flash.args = [params.id]
             redirect(action:list)
         }
@@ -44,8 +44,8 @@ class ChannelController extends Base {
 
     def edit = {
         def channel = Channel.get(params.id)
-        if (!channel) {
-            flash.message = "channel.not.found"
+        if (!channel || !isAccessibleChannel(channel)) {
+            flash.errors = ["channel.not.found"]
             flash.args = [params.id]
             redirect(action:list)
         }
@@ -56,7 +56,12 @@ class ChannelController extends Base {
 
     def update = {
         def channel = Channel.get(params.id)
-        if (channel) {
+        if (!channel || !isAccessibleChannel(channel)) {
+            flash.errors = ["channel.not.found"]
+            flash.args = [params.id]
+            redirect(action:edit,id:params.id)
+        }
+        else {
             channel.properties = params
             if (!channel.hasErrors() && channel.save()) {
                 flash.message = "channel.updated"
@@ -79,16 +84,11 @@ class ChannelController extends Base {
                 render(view:'edit',model:[channel:channel])
             }
         }
-        else {
-            flash.message = "channel.not.found"
-            flash.args = [params.id]
-            redirect(action:edit,id:params.id)
-        }
     }
 
     def create = {
         def channel = new Channel()
-        channel.properties = params
+        channel.isPrivate = true // デフォルトは安全サイドに。
         return ['channel':channel]
     }
 
@@ -118,14 +118,18 @@ class ChannelController extends Base {
 
     def join = {
         def channel = Channel.findByNameAndSecretKey(params.channelName, params.secretKey)
-        if (channel) {
+        if (!channel || !isAccessibleChannel(channel)) {
+            flash.errors = ["channel.join.error"]
+            flash.args = [params.channelName]
+        } else {
             Person.get(loginUserDomain.id).addToChannels(channel)
             flash.message = "channel.joined"
             flash.args = [params.channelName]
-        } else {
-            flash.message = "channel.not.found"
-            flash.args = [params.channelName]
         }
         redirect(action:list)
+    }
+    
+    private isAccessibleChannel(channel) {
+        channelService.getAccessibleChannelList(loginUserDomain, params).contains(channel)
     }
 }

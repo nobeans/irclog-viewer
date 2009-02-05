@@ -85,6 +85,11 @@ class MyTagLib {
         if (flash.message) {
             out << """<div class="message">${g.message(code:flash.message, args:flash.args, default:flash.defaultMessage)}</div>"""
         }
+        if (flash.errors) {
+            out << """<div class="errors"><ul>"""
+            out << flash.errors.collect{ """<li>${g.message(code:it, args:flash.args)}</li>"""}.join("")
+            out << """</ul></div>"""
+        }
         if (attrs.bean && attrs.bean.hasErrors()) {
             out << """<div class="errors">${g.renderErrors(bean:attrs.bean, as:'list')}</div>"""
         }
