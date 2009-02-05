@@ -56,7 +56,7 @@ class MyTagLib {
         def value = attrs.value?.encodeAsHTML() ?: ''
 
         // http/httpsをリンクにする。
-        value = value.replaceAll('(https?:\\/\\/[-_.!~*\'()a-zA-Z0-9;/?:@&=+$,%#]+)', '<a href="$1">$1</a>')
+        value = value.replaceAll('(https?:\\/\\/[-_.!~*\'()a-zA-Z0-9;/?:@&=+$,%#]+)', '<a href="$1" onclick="return IRCLOG.openLink(this)" target="_blank">$1</a>')
 
         out << value
     }

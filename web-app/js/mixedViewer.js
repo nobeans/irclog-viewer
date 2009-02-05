@@ -19,16 +19,16 @@
             td.innerHTML = $A(td.childNodes).inject('', function(resultHTML, child) {
                 if (child.tagName == 'A') {
                     var replaced = replaceToStrong(child.firstChild.nodeValue, pattern);
-                    return resultHTML + '<a href="' + child.href + '">' + replaced + '</a>';
+                    return resultHTML + '<a href="' + child.href + '" onclick="return IRCLOG.openLink(this)" target="_blank">' + replaced + '</a>';
                 } else {
                     return resultHTML + replaceToStrong(child.nodeValue, pattern);
                 }
             });
         });
-    }
+    };
     function replaceToStrong(targetValue, pattern) {
         return (targetValue.match(pattern)) ? targetValue.replace(pattern, "<strong>$1</strong>") : targetValue;
-    }
+    };
 
     function handleChangePeriod(event) {
         // イベントから取得したいが、load時にも実行したい。
@@ -45,6 +45,6 @@
             $('period-oneday-select').hide();
             $('period-oneday-date-text').disabled = true;
         }
-    }
+    };
 
 })()
