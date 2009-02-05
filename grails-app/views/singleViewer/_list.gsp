@@ -22,13 +22,13 @@
           <span class="optionButtons">
             <% def isCurrentTypeEqualsAll = (criterion?.currentType == 'all') %>
             <button id="toggleTypeFilter-all" onclick="IRCLOG.showAllType()"
-              style="${isCurrentTypeEqualsAll ? 'display:none' : ''}"
+              ${isCurrentTypeEqualsAll ? 'style="display:none"' : ''}
               ${irclogList.empty ? 'disabled="disabled"' : ''}
               title="${message(code:'singleViewer.toggleTypeFilter.button.tooltips.all')}">
               <g:message code="singleViewer.toggleTypeFilter.button.all" />
             </button>
             <button id="toggleTypeFilter-filtered" onclick="IRCLOG.hideControlType()"
-              style="${isCurrentTypeEqualsAll ? '' : 'display:none'}"
+              ${isCurrentTypeEqualsAll ? '' : 'style="display:none"'}
               ${irclogList.empty ? 'disabled="disabled"' : ''}
               title="${message(code:'singleViewer.toggleTypeFilter.button.tooltips.filtered')}">
               <g:message code="singleViewer.toggleTypeFilter.button.filtered" />
@@ -45,10 +45,10 @@
       <% def isMandatoryType = { type -> ['PRIVMSG', 'NOTICE', 'TOPIC'].contains(type) } %>
       <% def isDefaultHiddenType = { type -> !isCurrentTypeEqualsAll && !isMandatoryType(type) } %>
       <g:each in="${irclogList}" status="i" var="irclog">
-        <tr id="${irclog.permaId}"
+        <tr id="ID-${irclog.permaId}"
             class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${isMandatoryType(irclog.type) ? 'essentialType' : 'optionType'} clickable"
-            style="${isDefaultHiddenType(irclog.type) ? 'display:none' : ''}"
-            onclick="IRCLOG.highlightLine('${irclog.permaId}');document.location='#${irclog.permaId}'">
+            ${isDefaultHiddenType(irclog.type) ? 'style="display:none"' : ''}
+            onclick="IRCLOG.highlightLine('ID-${irclog.permaId}');document.location='#${irclog.permaId}'">
           <td class="irclog-time"><my:dateFormat value="${irclog.time}" format="HH:mm:ss" /></td>
           <td class="irclog-nick ${irclog.nick?.encodeAsHTML()}" title="${getPersonByNick(irclog.nick)?.realName?.encodeAsHTML() ?: ''}">${irclog.nick?.encodeAsHTML()}</td>
           <td class="irclog-message wordBreak"><my:messageFormat value="${irclog.message}" /></td>

@@ -35,7 +35,7 @@
         <g:if test='${flash.message}'>
           <div class='login_message'>${g.message(code:flash.message, args:flash.args, default:flash.defaultMessage)}</div>
         </g:if>
-        <form action='${request.contextPath}/j_spring_security_check' method='POST' id='loginForm' class='cssform'>
+        <form action='${request.contextPath}/j_spring_security_check' method='post' id='loginForm' class='cssform'>
           <p>
             <label for='j_username'><g:message code="person.loginName" /></label>
             <input type='text' class='text_' name='j_username' id='j_username'  />

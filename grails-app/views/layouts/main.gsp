@@ -1,5 +1,8 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
+    <meta http-equiv="Content-Style-Type" content="text/css"></meta>
+    <meta http-equiv="Content-Script-Type" content="text/javascript"></meta>
     <title><g:layoutTitle default="${message(code:'application.name')}" /></title>
     <link rel="stylesheet" href="${createLinkTo(dir:'css',file:'main.css')}" />
     <link rel="shortcut icon" href="${createLinkTo(dir:'images',file:'favicon.png')}" type="image/x-icon" />
@@ -8,7 +11,7 @@
   </head>
   <body>
     <div class="header">
-      <h1><g:message code="application.name" /><img class="badge" src="${createLinkTo(dir:'images', file:'beta.png')}" /></h1>
+      <h1><g:message code="application.name" /><img class="badge" src="${createLinkTo(dir:'images', file:'beta.png')}" alt="Beta" /></h1>
       <div id="analog"><g:message code="header.analog" /></div>
     </div>
     <div class="nav">
@@ -16,7 +19,7 @@
     </div>
     <g:layoutBody />  
     <div class="footer">
-      <a id="linkeToTop" href="#"><img src="${createLinkTo(dir:'images',file:'top.png')}" title="${message(code:"footer.linkToTop.tooltips")}" /></a>
+      <a id="linkeToTop" href="#"><img src="${createLinkTo(dir:'images',file:'top.png')}" title="${message(code:"footer.linkToTop.tooltips")}" alt="To top" /></a>
       <span id="poweredBy"><g:message code="footer.poweredBy" /></span>
     </div>
   </body>	
