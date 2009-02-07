@@ -10,7 +10,7 @@ class MyTagLib {
         if (!attrs.channelName || !attrs.time) return
         def shortDate = new java.text.SimpleDateFormat("yyyyMMdd").format(attrs.time)
         def fullDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(attrs.time)
-        def anchor = attrs.permaId ? '#' + attrs.permaId : ''
+        def anchor = attrs.permaId ? '#pid-' + attrs.permaId : ''
         def title = "${attrs.channelName}@${fullDate}"
         out << g.link(url:"/irclog/the/${attrs.channelName.substring(1)}/${shortDate}/${anchor}", title:"${title}") {
             """<img src="${createLinkTo(dir:'images', file:attrs.image)}" alt="Link to ${title}" />"""

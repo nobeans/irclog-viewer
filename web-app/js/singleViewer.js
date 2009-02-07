@@ -6,7 +6,7 @@ if (!IRCLOG) IRCLOG = {};
 
     // Initialize
     Event.observe(window, 'load', function() {
-        IRCLOG.highlightLine(location.hash.replace('#','ID-'))
+        IRCLOG.highlightLine(location.hash.replace('#',''))
     });
 
     // 1行すべてハイライトする。
