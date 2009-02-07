@@ -158,6 +158,13 @@ input.image {
 .menuButton.active {
     background-color: #ddd;
 }
+.menuButton a,
+.menuButton input {
+    color: #555;
+}
+.menuButton a:hover {
+    text-decoration: none;
+}
 
 /* Messages and Errors */
 
@@ -591,6 +598,9 @@ th.desc a {
 .channel .caption {
     padding: 5px 0 8px 0;
     line-height: 1.5em;
+}
+.channel .searchAllLogs {
+    width: 1em;
 }
 #joinToSecretChannel {
     position: absolute;

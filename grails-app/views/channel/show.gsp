@@ -30,15 +30,16 @@
           </tbody>
         </table>
       </div>
-      <g:isLoggedIn>
-        <div class="buttons">
-          <g:form>
-            <input type="hidden" name="id" value="${channel?.id}" />
-            <span class="button"><g:actionSubmit class="edit" action="Edit" value="${message(code:'edit', 'default':'Edit')}" /></span>
-            <span class="button"><g:actionSubmit class="delete" onclick="return confirm('${message(code:'delete.confirm', 'default':'Are you sure?')}');" action="Delete" value="${message(code:'delete', 'default':'Delete')}" /></span>
-          </g:form>
-        </div>
-      </g:isLoggedIn>
+      <div class="buttons">
+        <g:form>
+          <span class="button clickable"><img src="${createLinkTo(dir:'images', file:'search.png')}" alt="Search all logs" onclick="document.location='${my.searchAllLogsLink(channel:channel)}'" /><input type="button" onclick="document.location='${my.searchAllLogsLink(channel:channel)}'" value="${message(code:'channel.searchAllLogs')}" /></span>
+          <input type="hidden" name="id" value="${channel?.id}" />
+          <g:isLoggedIn>
+            <span class="button"><g:actionSubmit class="edit" action="edit" value="${message(code:'edit', 'default':'Edit')}" /></span>
+            <span class="button"><g:actionSubmit class="delete" action="delete" value="${message(code:'delete', 'default':'Delete')}" onclick="return confirm('${message(code:'delete.confirm', 'default':'Are you sure?')}');" /></span>
+          </g:isLoggedIn>
+        </g:form>
+      </div>
     </div>
   </body>
 </html>

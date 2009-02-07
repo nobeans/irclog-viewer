@@ -105,4 +105,7 @@ class MyTagLib {
         out << """</style>"""
     }
 
+    def searchAllLogsLink = { attrs ->
+        out << "/irclog/viewer?channel=${attrs.channel.name.replace(/#/, '%23')}&period=all&nick=&message=&_type="
+    }
 }
