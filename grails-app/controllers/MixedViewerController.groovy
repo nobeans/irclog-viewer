@@ -35,6 +35,14 @@ class MixedViewerController extends Base {
         render(view:'index', model:model)
     }
 
+    /** 
+     * セッション上の検索条件を削除して、リダイレクトする。
+     */
+    def clearCriterion = {
+        session.removeAttribute('IRCLOG_VIEWER_CRITERION')
+        redirect(action:index)
+    }
+
     private normalizeParams() {
         log.debug "Original params: " + params
 

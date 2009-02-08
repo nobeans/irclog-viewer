@@ -472,6 +472,13 @@ th.desc a {
     padding: 0;
     cursor: pointer;
 }
+.mixedViewer .search #search-clear {
+    margin: 0 1em;
+    padding: 0;
+    cursor: pointer;
+    border: 0;
+    background: transparent;
+}
 
 /* SingleViewer */
 
