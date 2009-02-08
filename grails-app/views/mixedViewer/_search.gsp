@@ -2,7 +2,7 @@
   <g:form method="get">
     <label for="search-period"><g:message code="mixedViewer.search.period" />:</label>
       <g:select id="search-period" name="period" from="${selectablePeriods}" value="${criterion?.period}" valueMessagePrefix="mixedViewer.search.period" />
-      <span id="period-oneday-select" style="display:none">
+      <span id="period-oneday-select" ${(criterion?.period == 'oneday') ? '' : 'style="display:none"'}>
         <my:calendar name="period-oneday-date" value="${criterion?.'period-oneday-date'}" title="${message(code:'mixedViewer.search.period.oneday.tooltips')}"/>
       </span>
     <label for="search-channel"><g:message code="mixedViewer.search.channel" />:</label>
