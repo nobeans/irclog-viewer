@@ -450,34 +450,25 @@ th.desc a {
     margin: 15px 0;
     padding: 2px 10px;
 }
-.mixedViewer .search input,
-.mixedViewer .search select {
-    margin-right: 8px;
+.mixedViewer .search .searchItem {
+    margin-left: .8em;
+}
+.mixedViewer .search #period-oneday-date-text {
+    width: 6em;
 }
 .mixedViewer .search #search-nick {
-    width: 8em;
+    width: 6em;
 }
 .mixedViewer .search #search-message {
     width: 14em;
 }
-.mixedViewer .search #search-type {
-    margin-right: 2px;
-}
-.mixedViewer .search #search-submit {
-    margin: 0 0 0 1em;
-    padding: 0;
-}
 .mixedViewer .search #search-submit-label {
-    margin: 0;
-    padding: 0;
     cursor: pointer;
 }
 .mixedViewer .search #search-clear {
-    margin: 0 1em;
-    padding: 0;
+    background: transparent;
     cursor: pointer;
     border: 0;
-    background: transparent;
 }
 
 /* SingleViewer */
