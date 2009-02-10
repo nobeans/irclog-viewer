@@ -1,5 +1,5 @@
 <div class="search">
-  <g:form method="get">
+  <g:form method="get" name="search">
     <label for="search-period"><g:message code="mixedViewer.search.period" />:</label>
       <g:select id="search-period" name="period" from="${selectablePeriods}" value="${criterion?.period}" valueMessagePrefix="mixedViewer.search.period" />
       <span id="period-oneday-select" ${(criterion?.period == 'oneday') ? '' : 'style="display:none"'}>
