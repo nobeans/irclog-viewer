@@ -6,9 +6,9 @@
     <my:createNavLinkIfNotCurrent controller="channel" action="list" />
     <my:createNavLinkIfNotCurrent controller="mixedViewer" />
   </ul>
-  <span class="floatLeft" id="login-info">
+  <ul id="login-info">
     <img src="${createLinkTo(dir:'images',file:'guest.png')}" alt="Guest user" /><g:message code="login.info.guest" />
-  </span>
+  </ul>
 </g:isNotLoggedIn>
 
 <%-- ログイン中 --%>
@@ -19,7 +19,8 @@
     <my:createNavLinkIfNotCurrent controller="channel" action="list" />
     <my:createNavLinkIfNotCurrent controller="mixedViewer" />
   </ul>
-  <span class="floatLeft" id="login-info">
-    <img src="${createLinkTo(dir:'images',file:'person.png')}" alt="Logged-in user" /><g:message code="login.info" args="${[g.loggedInUserInfo(field:'realName'), g.loggedInUserInfo(field:'loginName')]}" />
-  </span>
+  <ul id="login-info">
+    <li><img src="${createLinkTo(dir:'images',file:'person.png')}" alt="Logged-in user" /></li>
+    <li><g:message code="login.info" args="${[g.loggedInUserInfo(field:'realName'), g.loggedInUserInfo(field:'loginName')]}" /></li>
+  </ul>
 </g:isLoggedIn>

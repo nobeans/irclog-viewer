@@ -4,14 +4,15 @@
 
 html * {
     margin: 0;
-    font-size: 100%; /* IEでのフォントサイズが不安定になる事象を抑止するため */
-    font-size: 14px; /* FIXME:微調整 */
-}
+    text-align: left;
 
+    /* 全要素の基本フォントサイズを統一して、扱いやすくする。 */
+    /* IEでのフォントサイズが不安定になる事象を抑止する効果もある。 */
+    font-size: 100%;
+}
 html {
     position: relative;
     width: 100%;
-    /*padding: 0; SELECT NOT DISPLAYED CORRECTLY IN FIREFOX */
 }
 
 body {
@@ -21,9 +22,6 @@ body {
     font-family: verdana, arial, helvetica, sans-serif;
     width: 100%;
     text-align: center;
-}
-body * {
-    text-align: left;
 }
 
 a:link, a:visited {
@@ -41,7 +39,7 @@ h1 {
     padding: 2px 15px;
     color: #888;
     font-weight: bold;
-    font-size: 200%;
+    font-size: 2em;
 }
 
 ul {
@@ -65,12 +63,11 @@ textarea {
     height: 100px;
     vertical-align: top;
 }
-label {
-    vertical-align: middle;
-}
-
 input:focus, select:focus, textarea:focus {
     border: 1px solid #b2d1ff;
+}
+label {
+    vertical-align: middle;
 }
 
 pre {
@@ -97,7 +94,7 @@ input.image {
     width: 95%;
 }
 .body h1 {
-    font-size: 140%;
+    font-size: 1.5em;
     margin: 15px 0 5px 0;
     padding: 0;
 }
@@ -119,23 +116,26 @@ input.image {
     border-style: solid none solid none;
     padding: 3px 12px;
     overflow: hidden;
-    font-size: 90%;
+    vertical-align: middle;
 }
-.nav #login-info {
-    position: absolute;
-    right: 15px;
-    padding: 0px 3px;
-}
-* html body .nav #login-info {
-    padding: 1px 3px;
-}
-.nav #login-info img {
-    margin-right: 3px;
-    vertical-align: bottom;
+.nav * {
+    font-size: .98em;
+    display: inline;
 }
 .nav ul {
     display: inline;
     list-style-type: none;
+}
+.nav #login-info {
+    position: absolute;
+    right: 2em;
+    height: 100%;
+}
+* html .nav #login-info {
+    padding: 1px 3px;
+}
+.nav #login-info img {
+    vertical-align: top;
 }
 
 .menuButton {
@@ -212,15 +212,13 @@ table {
     border: 1px solid #bbb;
     border-collapse: collapse;
     border-spacing: 0;
+    padding: 5px;
     empty-cells: show;
     width: 100%
 }
-tr {
-    border: 0;
-}
 td {
     font-family: verdana, arial, helvetica, sans-serif;
-    line-height: 1.2em;
+    line-height: 1.05em;
     text-align: left;
     padding: 3px 6px;
 }
@@ -247,12 +245,14 @@ th.asc a {
 th.desc a {
     background-image: url(../images/skin/sorted_desc.gif);
 }
+/*
 .odd {
     background: #fff;
 }
 .even {
     background: #fff;
 }
+*/
 
 /* List */
 
@@ -261,7 +261,7 @@ th.desc a {
     margin: 0;
     padding: 0;
 }
-* html body .list table {
+* html .list table {
     margin-bottom: -1px;
 }
 .list td {
@@ -275,6 +275,7 @@ th.desc a {
     border-bottom: 1px solid #bbb;
     white-space: nowrap;
     vertical-align: middle;
+    font-size: .9em;
 }
 .list tr:hover {
     background: #ddf;
@@ -283,16 +284,17 @@ th.desc a {
 /* Pagination */
 
 .paginateButtons {
-    position: relative;
     background: transparent url(../images/skin/shadow.jpg) bottom repeat-x;
     border: 1px solid #bbb;
-    overflow: hidden;
     padding: 3px 6px;
-    height: 1.2em;
-    font-size: 90%;
+    height: 1em;
     vertical-align: baseline;
+    margin-left: -1px;
 }
-* html body .paginateButtons {
+.paginateButtons * {
+    font-size: .85em;
+}
+* html .paginateButtons {
     height: 2em;
 }
 .paginateButtons.top {
@@ -338,6 +340,10 @@ th.desc a {
     vertical-align: middle;
     width: 85%;
 }
+.prop .caption {
+    font-size: .9em;
+    margin-left: .5em;
+}
 
 /* Action Buttons */
 
@@ -347,6 +353,7 @@ th.desc a {
     overflow: hidden;
     margin: 10px 0 0 0;
     padding: 2px;
+    font-size: .98em;
 }
 .buttons form {
     display: inline;
@@ -410,14 +417,14 @@ th.desc a {
     position: absolute;
     top: .5em;
     right: .5em;
-    display: block;  
-    background: #ddd;  
+    display: block;
+    background: #ddd;
     padding: 8px 10px 5px 10px;
-    border: 1px solid #555;  
-    font-size: 15px;  
-    font-weight: bold;  
-    color: #555;  
-    filter:progid:DXImageTransform.Microsoft.Alpha(Enabled=1,Style=0,Opacity=60);   
+    border: 1px solid #555;
+    font-size: 15px;
+    font-weight: bold;
+    color: #555;
+    filter:progid:DXImageTransform.Microsoft.Alpha(Enabled=1,Style=0,Opacity=60);
 }
 
 /* Footer */
@@ -446,15 +453,17 @@ th.desc a {
     position: relative;
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
     border: 1px solid #bbb;
-    font-size: 95%;
     margin: 15px 0;
     padding: 2px 10px;
+}
+.mixedViewer .search * {
+    font-size: .96em;
 }
 .mixedViewer .search .searchItem {
     margin-left: .8em;
 }
 .mixedViewer .search #period-oneday-date-text {
-    width: 8em;
+    width: 7em;
 }
 .mixedViewer .search #search-nick {
     width: 6em;
@@ -511,7 +520,7 @@ th.desc a {
     position: relative;
     margin: 0;
 }
-* html body .viewer .list { /* Hack for IE6 */
+* html .viewer .list { /* Hack for IE6 */
     z-index: -1;
 }
 .viewer .list table td {
