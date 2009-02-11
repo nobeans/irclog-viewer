@@ -1,6 +1,8 @@
 class Irclog {
 
-    private static final TYPE_LIST = ['all', 'PRIVMSG', 'NOTICE', 'JOIN', 'NICK', 'QUIT', 'PART', 'KICK', 'MODE', 'TOPIC', 'SYSTEM', 'OTHER', 'SIMPLE']
+    public static final MANDATORY_TYPES = ['PRIVMSG', 'NOTICE', 'TOPIC']
+    public static final OPTION_TYPES = ['JOIN', 'NICK', 'QUIT', 'PART', 'KICK', 'MODE', 'SYSTEM', 'OTHER', 'SIMPLE']
+    public static final ALL_TYPES = MANDATORY_TYPES + OPTION_TYPES
 
     Date time
     String type
@@ -15,7 +17,7 @@ class Irclog {
 
     static constraints = {
         time()
-        type(inList:TYPE_LIST)
+        type(inList:['all'] + ALL_TYPES) // UI上の選択肢として「すべて」を先頭に追加
         message()
         nick(blank:false)
         permaId(unique:true)
