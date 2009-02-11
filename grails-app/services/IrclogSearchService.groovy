@@ -1,5 +1,8 @@
 class IrclogSearchService {
 
+    /** 基本種別をIN句で使うための文字列 */
+    private static final String IN_ESSENTIAL_TYPES = "(" + Irclog.ESSENTIAL_TYPES.collect{"'${it}'"}.join(', ') + ")"
+
     boolean transactional = false
 
     def channelService
@@ -57,7 +60,7 @@ class IrclogSearchService {
         // 種別
         assert (criterion.type) : '必須'
         if (criterion.type != 'all') { // すべての種別でなければ限定条件を追加する。
-            query.hql += " and i.type in ('PRIVMSG', 'NOTICE', 'TOPIC')"
+            query.hql += " and i.type in " + IN_ESSENTIAL_TYPES
         }
 
         // ニックネーム

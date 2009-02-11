@@ -17,7 +17,7 @@ class Irclog {
 
     static constraints = {
         time()
-        type(inList:['all'] + ALL_TYPES) // UI上の選択肢として「すべて」を先頭に追加
+        type(inList:ALL_TYPES)
         message()
         nick(blank:false)
         permaId(unique:true)

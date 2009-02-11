@@ -23,14 +23,15 @@ class SingleViewerController extends Base {
         // アクセス可能なチャンネルを取得する。
         def selectableChannels = getSelectableChannels()
 
+        // リンク用の関連日付を取得する。
+        def relatedDates = channelService.getRelatedDates(selectableChannels, params.date, Channel.findByName(params.channel), criterion.isIgnoredOptionType)
+
         // モデルを作成して、デフォルトビューへ。
         def model = [
             irclogList: searchResult.list,
             selectableChannels: selectableChannels,
             criterion: criterion,
-            beforeDate: getBeforeDate(selectableChannels),
-            afterDate: getAfterDate(selectableChannels),
-            latestDate: getLatestDate(selectableChannels),
+            relatedDates: relatedDates,
             nickPersonList: getNickPersonList(),
             getPersonByNick: createGetPersonByNickClosure()
         ]
@@ -50,80 +51,12 @@ class SingleViewerController extends Base {
         date.replaceAll(/(\d{4})(\d{2})(\d{2})/, "\$1-\$2-\$3")
     }
 
-    /** 現在の日付よりも前で、ログが存在する日付を取得する。 */
-    private getBeforeDate(selectableChannels) {
-        if (!selectableChannels.keySet().contains(params.channel)) return null
-        
-        def dates = Irclog.executeNativeQuery("""
-            select
-                {tbl.*}
-            from
-                irclog as {tbl}
-            where
-                time < '${params.date} 00:00:00'
-            and
-                channel_id = '${Channel.findByName(params.channel).id}'
-        """ + ((getCurrentTypeInMixed() != 'all') ? """
-            and
-                type in ('PRIVMSG', 'NOTICE', 'TOPIC')
-        """ : '') + """
-            order by
-                time desc
-            limit 1
-        """)
-        CollectionUtils.getFirstOrNull(dates)?.time
-    }
-    /** 現在の日付よりも後で、ログが存在する日付を取得する。*/
-    private getAfterDate(selectableChannels) {
-        if (!selectableChannels.keySet().contains(params.channel)) return null
-        def dates = Irclog.executeNativeQuery("""
-            select
-                {tbl.*}
-            from
-                irclog as {tbl}
-            where
-                time > '${params.date} 23:59:59'
-            and
-                channel_id = '${Channel.findByName(params.channel).id}'
-        """ + ((getCurrentTypeInMixed() != 'all') ? """
-            and
-                type in ('PRIVMSG', 'NOTICE', 'TOPIC')
-        """ : '') + """
-            order by
-                time asc
-            limit 1
-        """)
-        CollectionUtils.getFirstOrNull(dates)?.time
-    }
-    /** 現在の日付よりも後で、ログが存在する最新日付を取得する。*/
-    private getLatestDate(selectableChannels) {
-        if (!selectableChannels.keySet().contains(params.channel)) return null
-        def dates = Irclog.executeNativeQuery("""
-            select
-                {tbl.*}
-            from
-                irclog as {tbl}
-            where
-                time > '${params.date} 23:59:59'
-            and
-                channel_id = '${Channel.findByName(params.channel).id}'
-        """ + ((getCurrentTypeInMixed() != 'all') ? """
-            and
-                type in ('PRIVMSG', 'NOTICE', 'TOPIC')
-        """ : '') + """
-            order by
-                time desc
-            limit 1
-        """)
-        CollectionUtils.getFirstOrNull(dates)?.time
-    }
-
     private parseCriterion() {
         def criterion = [
             period:      'oneday',
             channel:     normalizeChannelName(params.channel),
             type:        'all',
-            currentType: getCurrentTypeInMixed()
+            isIgnoredOptionType: getCurrentTypeInMixed() != 'all'
         ]
         criterion['period-oneday-date'] = params.date
         criterion.remove('') // 値が空のものを除外

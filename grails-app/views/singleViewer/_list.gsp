@@ -1,15 +1,15 @@
 <div class="caption">
-  <my:selectChannelForSingle from="${selectableChannels}" value="${criterion?.channel}" date="${criterion['period-oneday-date']}" />
+  <my:selectChannelForSingle from="${selectableChannels}" value="${criterion.channel}" date="${criterion['period-oneday-date']}" />
   at
-  <my:singleLink time="${beforeDate}" channelName="${criterion.channel}" image="singleBefore.png" />
+  <my:singleLink time="${relatedDates.before}" channelName="${criterion.channel}" image="singleBefore.png" />
   ${criterion['period-oneday-date']}
-  <my:singleLink time="${afterDate}" channelName="${criterion.channel}" image="singleAfter.png" />
-  <my:singleLink time="${latestDate}" channelName="${criterion.channel}" image="singleToday.png" />
+  <my:singleLink time="${relatedDates.after}" channelName="${criterion.channel}" image="singleAfter.png" />
+  <my:singleLink time="${relatedDates.latest}" channelName="${criterion.channel}" image="singleToday.png" />
 </div>
 <div class="list">
   <div class="paginateButtons top">
     <% def totalCount = irclogList.size() %>
-    <% def essentialTypeCount = irclogList.findAll{(['PRIVMSG', 'NOTICE', 'TOPIC'] as List).contains(it.type)}.size() %>
+    <% def essentialTypeCount = irclogList.findAll{Irclog.ESSENTIAL_TYPES.contains(it.type)}.size() %>
     <span class="count"><g:message code="singleViewer.count" args="${[totalCount, essentialTypeCount]}"/></span>
   </div>
   <table>
@@ -20,20 +20,20 @@
         <th class="irclog-message">
           <span><g:message code="irclog.message"/></span>
           <span class="optionButtons">
-            <% def isCurrentTypeEqualsAll = (criterion?.currentType == 'all') %>
             <button id="toggleTypeFilter-all" onclick="IRCLOG.showAllType()"
-              ${isCurrentTypeEqualsAll ? 'style="display:none"' : ''}
+              ${criterion.isIgnoredOptionType ? '' : 'style="display:none"'}
               ${irclogList.empty ? 'disabled="disabled"' : ''}
               title="${message(code:'singleViewer.toggleTypeFilter.button.tooltips.all')}">
               <g:message code="singleViewer.toggleTypeFilter.button.all" />
             </button>
             <button id="toggleTypeFilter-filtered" onclick="IRCLOG.hideControlType()"
-              ${isCurrentTypeEqualsAll ? '' : 'style="display:none"'}
+              ${criterion.isIgnoredOptionType ? 'style="display:none"': ''}
               ${irclogList.empty ? 'disabled="disabled"' : ''}
               title="${message(code:'singleViewer.toggleTypeFilter.button.tooltips.filtered')}">
               <g:message code="singleViewer.toggleTypeFilter.button.filtered" />
             </button>
             <button id="clearHighlight" onclick="IRCLOG.highlightLine('');document.location='#'"
+              disabled="disabled"
               title="${message(code:'singleViewer.clearHighlight.button.tooltips')}">
               <g:message code="singleViewer.clearHighlight.button" />
             </button>
@@ -42,8 +42,8 @@
       </tr>
     </thead>
     <tbody>
-      <% def isEssentialType = { type -> ['PRIVMSG', 'NOTICE', 'TOPIC'].contains(type) } %>
-      <% def isDefaultHiddenType = { type -> !isCurrentTypeEqualsAll && !isEssentialType(type) } %>
+      <% def isEssentialType = { type -> Irclog.ESSENTIAL_TYPES.contains(type) } %>
+      <% def isDefaultHiddenType = { type -> criterion.isIgnoredOptionType && !isEssentialType(type) } %>
       <g:each in="${irclogList}" status="i" var="irclog">
         <tr id="pid-${irclog.permaId}"
             class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${isEssentialType(irclog.type) ? 'essentialType' : 'optionType'} clickable"
