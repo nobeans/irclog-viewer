@@ -393,8 +393,11 @@ th.desc a {
 #period-oneday-date-calendar {
     display: none;
     position: absolute;
-    width: 240px;
+    width: 230px;
     z-index: 9;
+}
+#period-oneday-date-calendar .yui-calendar {
+    font-size: 1.3em;
 }
 
 /* Header */

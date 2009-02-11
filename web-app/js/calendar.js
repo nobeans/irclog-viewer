@@ -37,12 +37,6 @@
     function handleFocus() {
         var calendar = YAHOO.my.calendar;
 
-        // カレンダの表示位置をボタンのちょうど下の部分にする。
-        var button = $(YAHOO.my.buttonId);
-        var buttonOffset = Position.cumulativeOffset(button);
-        var calendarSpan = $(YAHOO.my.calendarId);
-        calendarSpan.style.left = buttonOffset[0] - button.getWidth();
-
         // 入力済みの日付を取得
         var textField = document.getElementById(YAHOO.my.textId);
         var val = textField.value.split('-');
@@ -59,6 +53,9 @@
         calendar.cfg.setProperty("pagedate", pagedate); // 表示する年月
         calendar.cfg.setProperty("selected", selected); // 選択状態の日付
         calendar.render();
+
+        // カレンダの表示位置を日付テキストフィールドの真下にする。
+        $(YAHOO.my.calendarId).style.left = (textField.offsetLeft) + "px";
 
         // 表示する。
         calendar.show();
