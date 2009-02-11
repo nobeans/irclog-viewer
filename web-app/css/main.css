@@ -495,6 +495,14 @@ th.desc a {
     font-size: .8em;
     vertical-align: top;
     cursor: pointer;
+    border: 1px solid #aaa;
+    background-color: #ddd;
+    color: #333;
+    font-weight: bold;
+}
+.singleViewer .optionButtons button:disabled {
+    background-color: #ddd;
+    color: #999;
 }
 
 /* Viewer (Mixed/Single) */
