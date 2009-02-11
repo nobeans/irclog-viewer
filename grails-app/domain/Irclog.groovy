@@ -1,8 +1,8 @@
 class Irclog {
 
-    public static final MANDATORY_TYPES = ['PRIVMSG', 'NOTICE', 'TOPIC']
+    public static final ESSENTIAL_TYPES = ['PRIVMSG', 'NOTICE', 'TOPIC']
     public static final OPTION_TYPES = ['JOIN', 'NICK', 'QUIT', 'PART', 'KICK', 'MODE', 'SYSTEM', 'OTHER', 'SIMPLE']
-    public static final ALL_TYPES = MANDATORY_TYPES + OPTION_TYPES
+    public static final ALL_TYPES = ESSENTIAL_TYPES + OPTION_TYPES
 
     Date time
     String type

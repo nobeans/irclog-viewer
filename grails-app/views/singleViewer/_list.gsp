@@ -42,11 +42,11 @@
       </tr>
     </thead>
     <tbody>
-      <% def isMandatoryType = { type -> ['PRIVMSG', 'NOTICE', 'TOPIC'].contains(type) } %>
-      <% def isDefaultHiddenType = { type -> !isCurrentTypeEqualsAll && !isMandatoryType(type) } %>
+      <% def isEssentialType = { type -> ['PRIVMSG', 'NOTICE', 'TOPIC'].contains(type) } %>
+      <% def isDefaultHiddenType = { type -> !isCurrentTypeEqualsAll && !isEssentialType(type) } %>
       <g:each in="${irclogList}" status="i" var="irclog">
         <tr id="pid-${irclog.permaId}"
-            class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${isMandatoryType(irclog.type) ? 'essentialType' : 'optionType'} clickable"
+            class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${isEssentialType(irclog.type) ? 'essentialType' : 'optionType'} clickable"
             ${isDefaultHiddenType(irclog.type) ? 'style="display:none"' : ''}
             onclick="IRCLOG.highlightLine('pid-${irclog.permaId}');document.location='#pid-${irclog.permaId}'">
           <td class="irclog-time"><my:dateFormat value="${irclog.time}" format="HH:mm:ss" /></td>
