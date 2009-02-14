@@ -64,8 +64,8 @@ test
 		}
 	}
 
-	private d={
-		println("***DEBUG*** $it")
+	private d = {
+		//println("***DEBUG*** $it")
 	}
 
 	private registerNewStaticMethod(GrailsDomainClass dc, GrailsApplication application, ApplicationContext ctx)
