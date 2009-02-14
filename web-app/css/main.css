@@ -296,7 +296,7 @@ th.desc a {
     font-size: .85em;
 }
 * html .paginateButtons {
-    height: 2em;
+    margin-left: 0px;
 }
 .paginateButtons.top {
     margin-bottom: -1px;
@@ -483,6 +483,9 @@ th.desc a {
     cursor: pointer;
     border: 0;
 }
+* html .mixedViewer .search #search-clear {
+    width: 7em;
+}
 
 /* SingleViewer */
 
@@ -511,7 +514,6 @@ th.desc a {
     border: 1px solid #aaa;
     background-color: #ddd;
     color: #333;
-    font-weight: bold;
 }
 .singleViewer .optionButtons button:disabled {
     background-color: #ddd;
