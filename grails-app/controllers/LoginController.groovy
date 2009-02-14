@@ -25,7 +25,7 @@ class LoginController extends Base {
 
     /** ログイン不許可画面を表示する。 */
     def denied = {
-        redirect(uri: config.irclogViewer.defaultIndexPath)
+        redirect(uri: config.irclog.viewer.defaultTargetUrl)
     }
 
     /** ログイン失敗 */

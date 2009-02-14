@@ -18,6 +18,9 @@
     <my:createNavLinkIfNotCurrent controller="register" action="show" />
     <my:createNavLinkIfNotCurrent controller="channel" action="list" />
     <my:createNavLinkIfNotCurrent controller="mixedViewer" />
+    <g:ifAnyGranted role="ROLE_ADMIN">
+      <my:createNavLinkIfNotCurrent controller="person" action="list" />
+    </g:ifAnyGranted>
   </ul>
   <ul id="login-info">
     <li><img src="${createLinkTo(dir:'images',file:'person.png')}" alt="Logged-in user" /></li>

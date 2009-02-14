@@ -69,7 +69,7 @@ class RegisterController extends Base {
         }
 
         def person = new Person(params)
-        person.enabled = true
+        person.enabled = true // 自分で登録したときは即有効
         role.addToPersons(person)
         if (person.save()) {
             // 素のパスワード文字列に対してバリデーションはOKなので、ハッシュに変換する。

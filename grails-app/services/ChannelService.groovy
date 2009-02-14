@@ -39,6 +39,14 @@ class ChannelService {
     }
 
     /**
+     * 指定されたチャンネルに対する関連付け済みのユーザを取得する。
+     * @return キー=Channel, 値=[Person...] のMap
+     */
+    public List<Person> getJoinedPersons(Channel ch) {
+        Person.executeQuery("select p from Person as p join p.channels as c where c = ?", ch)
+    }
+
+    /**
      * すべてのチャンネルに対する関連付け済みのユーザを取得する。
      * @return キー=Channel, 値=[Person...] のMap
      */

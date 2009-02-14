@@ -290,6 +290,7 @@ th.desc a {
     height: 1em;
     vertical-align: baseline;
     margin-left: -1px;
+    margin-top: -1px;
 }
 .paginateButtons * {
     font-size: .85em;

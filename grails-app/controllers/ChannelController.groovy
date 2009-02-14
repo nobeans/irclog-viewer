@@ -23,7 +23,10 @@ class ChannelController extends Base {
             redirect(action:list)
         }
         else {
-            return [ channel : channel ]
+            return [
+                channel: channel,
+                joinedPersons: channelService.getJoinedPersons(channel)
+            ]
         }
     }
 

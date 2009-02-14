@@ -58,6 +58,7 @@ security {
         /register/create/**=IS_AUTHENTICATED_ANONYMOUSLY
         /register/save/**=IS_AUTHENTICATED_ANONYMOUSLY
         /register/**=IS_AUTHENTICATED_FULLY
+        /person/**=ROLE_ADMIN
         /**=IS_AUTHENTICATED_ANONYMOUSLY
     """
 
