@@ -40,7 +40,7 @@
               <td valign="top" class="name">
                 <g:message code="person.color" />:
               </td>
-              <td valign="top" class="value">
+              <td valign="top" class="value" style="color:${person.color?.encodeAsHTML()}">
                 ${person.color?.encodeAsHTML()}
               </td>
             </tr>

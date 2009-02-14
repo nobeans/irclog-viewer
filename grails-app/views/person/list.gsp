@@ -24,7 +24,7 @@
                 <td><g:link action="show" id="${person.id}">${fieldValue(bean:person, field:'loginName')}</g:link></td>
                 <td>${fieldValue(bean:person, field:'realName')}</td>
                 <td>${fieldValue(bean:person, field:'nicks')}</td>
-                <td>${fieldValue(bean:person, field:'color')}</td>
+                <td style="color:${fieldValue(bean:person, field:'color')}">${fieldValue(bean:person, field:'color')}</td>
               </tr>
             </g:each>
           </tbody>

@@ -25,7 +25,7 @@
             </tr>
             <tr class="prop">
               <td valign="top" class="name"><g:message code="person.color" default="Color" />:</td>
-              <td valign="top" class="value">${fieldValue(bean:person, field:'color')}</td>
+              <td valign="top" class="value" style="color:${fieldValue(bean:person, field:'color')}">${fieldValue(bean:person, field:'color')}</td>
             </tr>
             <tr class="prop">
               <td valign="top" class="name"><g:message code="person.enabled" default="Enabled" />:</td>
