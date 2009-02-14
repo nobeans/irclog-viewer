@@ -72,14 +72,14 @@ class ChannelService {
             and
                 i.channel_name = :channelName
         """
-        Irclog.executeUpdateNativeQuery(query, null, [channelName:channel.name]) // native-sql plugin (modified)
+        Irclog.executeUpdateNativeQuery(query, null, [channelName:channel.name])[0] // native-sql plugin (modified)
     }
 
     /**
      * 指定のチャンネルを削除する。
      * 各種の関連付けを適切に削除する。
      */
-    public int deleteChannel(channel) {
+    public void deleteChannel(channel) {
         // チャンネルとユーザの関連付けを削除する。
         // 関連付けレコード自体を削除する。
         Irclog.executeUpdateNativeQuery("delete from person_channel where channel_id = :channelId", null, [channelId:channel.id])
