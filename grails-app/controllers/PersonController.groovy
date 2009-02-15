@@ -13,9 +13,10 @@ class PersonController extends Base {
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
     def list = {
-        // ページングのために、max/offsetをセットアップする。
-        params.max = params.max?.toInteger() ? Math.min(params.max?.toInteger(), config.irclog.viewer.defaultMax) : config.irclog.viewer.defaultMax
+        params.max    = params.max?.toInteger() ? Math.min(params.max?.toInteger(), config.irclog.viewer.defaultMax) : config.irclog.viewer.defaultMax
         params.offset = params.offset?.toInteger() ?: 0
+        params.sort   = params.sort ?: "loginName"
+        params.order  = params.order ?: "asc"
         [
             personList: Person.list(params),
             personCount: Person.count()
