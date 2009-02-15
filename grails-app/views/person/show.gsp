@@ -48,7 +48,7 @@
                   </g:each>
                 </ul>
                 <% if (person.channels.empty) { %>
-                  <g:message code="person.channels.empty" />
+                  <g:message code="empty" />
                 <% } %>
               </td>
             </tr>

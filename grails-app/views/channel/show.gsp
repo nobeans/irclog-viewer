@@ -35,6 +35,9 @@
                     <li title="${p.realName.encodeAsHTML()}"><g:link controller="person" action="show" id="${p.id}">${p.loginName.encodeAsHTML()}</g:link></li>
                   </g:each>
                 </ul>
+                <% if (joinedPersons.empty) { %>
+                  <g:message code="empty" />
+                <% } %>
               </td>
             </tr>
           </tbody>

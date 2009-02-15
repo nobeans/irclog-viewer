@@ -38,9 +38,6 @@
                   <g:each var="c" in="${person.channels.sort{it.name}}">
                     <g:link controller="channel" action="show" id="${c.id}" title="${c.description}">${c.name.encodeAsHTML()}</g:link>
                   </g:each>
-                  <% if (person.channels.empty) { %>
-                    <g:message code="person.channels.empty" />
-                  <% } %>
                 </td>
               </tr>
             </g:each>
