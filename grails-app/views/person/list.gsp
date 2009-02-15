@@ -38,7 +38,8 @@
         <span class="count"><g:message code="paginate.count" args="${[beginIndex, endIndex, totalCount]}"/></span>
       </div>
       <div class="buttons">
-        <span class="menuButton"><g:link class="create" action="create"><g:message code="person.create" default="New Person" /></g:link></span>
+        <span class="menuButton"><g:link class="create" action="create"><g:message code="create" default="New Person" /></g:link></span>
+        <span class="menuButton"><my:createNavLinkIfNotCurrent controller="register" action="show" /></span>
       </div>
     </div>
   </body>
