@@ -108,6 +108,30 @@ class ChannelController extends Base {
         redirect(action:list)
     }
 
+    def part = {
+        withChannel(params.id) { channel ->
+            Person.get(loginUserDomain.id).removeFromChannels(channel)
+            flash.message = "channel.parted"
+            redirect(action:show, id:channel.id)
+        }
+    }
+
+    def kick = {
+        withChannel(params.id) { channel ->
+            def person = Person.get(params.personId)
+            if (!person) {
+                flash.errors = ["person.not.found"]
+                flash.args = [personId]
+                redirect(action:list)
+                return
+            }
+            person.removeFromChannels(channel)
+            flash.message = "channel.kicked"
+            flash.args = [person.loginName]
+            redirect(action:show, id:channel.id)
+        }
+    }
+
     private withChannel(channelId, closure) {
         def channel = Channel.get(channelId)
         if (!channel || !isAccessibleChannel(channel)) {

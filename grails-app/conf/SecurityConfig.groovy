@@ -54,6 +54,7 @@ security {
         /channel/index/**=IS_AUTHENTICATED_ANONYMOUSLY
         /channel/list/**=IS_AUTHENTICATED_ANONYMOUSLY
         /channel/show/**=IS_AUTHENTICATED_ANONYMOUSLY
+        /channel/kick/**=ROLE_ADMIN
         /channel/**=IS_AUTHENTICATED_FULLY
         /register/create/**=IS_AUTHENTICATED_ANONYMOUSLY
         /register/save/**=IS_AUTHENTICATED_ANONYMOUSLY

@@ -32,7 +32,17 @@
               <td  valign="top" style="text-align:left;" class="value">
                 <ul>
                   <g:each var="p" in="${joinedPersons.sort{it.loginName}}">
-                    <li title="${p.realName.encodeAsHTML()}"><g:link controller="person" action="show" id="${p.id}">${p.loginName.encodeAsHTML()}</g:link></li>
+                    <li title="${p.realName.encodeAsHTML()}">
+                      <g:ifAnyGranted role="ROLE_ADMIN">
+                        <g:link controller="person" action="show" id="${p.id}">${p.loginName.encodeAsHTML()}</g:link>
+                        &gt;&gt; <g:link controller="channel" action="kick" id="${channel.id}" params="[personId:p.id]" onclick="return confirm('${message(code:'channel.kick.confirm')}');">
+                            <g:message code="channel.kick" />
+                        </g:link>
+                      </g:ifAnyGranted>
+                      <g:ifNotGranted role="ROLE_ADMIN">
+                        ${p.loginName.encodeAsHTML()}
+                      </g:ifNotGranted>
+                    </li>
                   </g:each>
                 </ul>
                 <% if (joinedPersons.empty) { %>
@@ -48,8 +58,11 @@
           <span class="button clickable"><img src="${createLinkTo(dir:'images', file:'search.png')}" alt="Search all logs" onclick="document.location='${my.searchAllLogsLink(channel:channel)}'" /><input type="button" onclick="document.location='${my.searchAllLogsLink(channel:channel)}'" value="${message(code:'channel.searchAllLogs')}" /></span>
           <input type="hidden" name="id" value="${channel?.id}" />
           <g:isLoggedIn>
-            <span class="button"><g:actionSubmit class="edit" action="edit" value="${message(code:'edit', 'default':'Edit')}" /></span>
-            <span class="button"><g:actionSubmit class="delete" action="delete" value="${message(code:'delete', 'default':'Delete')}" onclick="return confirm('${message(code:'delete.confirm', 'default':'Are you sure?')}');" /></span>
+            <span class="button"><g:actionSubmit class="edit" action="edit" value="${message(code:'edit')}" /></span>
+            <span class="button"><g:actionSubmit class="delete" action="delete" value="${message(code:'delete')}" onclick="return confirm('${message(code:'delete.confirm')}');" /></span>
+            <% if (joinedPersons.find{it.loginName == loginUserName} != null) { %>
+              <span class="button"><g:actionSubmit class="part" action="part" value="${message(code:'channel.part')}" onclick="return confirm('${message(code:'channel.part.confirm')}');" /></span>
+            <% } %>
           </g:isLoggedIn>
         </g:form>
       </div>
