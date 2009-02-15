@@ -10,6 +10,11 @@ class ChannelService {
         if (!params.sort || !Channel.constraints.keySet().contains(params.sort)) params.sort = 'name'
         if (!params.order || !['asc', 'desc'].contains(params.order)) params.order = 'asc'
         if (person) {
+            // 管理者ロールの場合は、全チャンネルにアクセス可能
+            if (person.isAdmin()) {
+                return Channel.list(params)
+            }
+            // 利用者ロールの場合は、公開チャンネル＋関連付け有りの非公開チャンネル
             return Person.executeQuery("""
                 select distinct
                     ch
@@ -24,18 +29,18 @@ class ChannelService {
                 order by
                     ch.${params.sort} ${params.order}
             """, person.id)
-        } else {
-            return Channel.executeQuery("""
-                select
-                    ch
-                from
-                    Channel as ch
-                where
-                    ch.isPrivate = false
-                order by
-                    ch.${params.sort} ${params.order}
-            """)
         }
+        // 未ログインユーザの場合は、公開チャンネルのみ
+        return Channel.executeQuery("""
+            select
+                ch
+            from
+                Channel as ch
+            where
+                ch.isPrivate = false
+            order by
+                ch.${params.sort} ${params.order}
+        """)
     }
 
     /**
