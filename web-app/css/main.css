@@ -468,13 +468,16 @@ th.desc a {
     margin-left: .8em;
 }
 .mixedViewer .search #period-oneday-date-text {
-    width: 7em;
+    width: 6em;
+}
+.mixedViewer .search #search-channel {
+    width: 6em;
 }
 .mixedViewer .search #search-nick {
     width: 6em;
 }
 .mixedViewer .search #search-message {
-    width: 14em;
+    width: 12em;
 }
 .mixedViewer .search #search-submit-label {
     cursor: pointer;
