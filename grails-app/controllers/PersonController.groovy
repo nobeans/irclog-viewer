@@ -115,6 +115,13 @@ class PersonController extends Base {
 
     def toUser = {
         withPerson(params.id) { person ->
+            if (person.id == loginUserDomain?.id) {
+                flash.message = "person.toUser.loggedInUser.error"
+                flash.args = [params.id]
+                redirect(action:show, id:person.id)
+                return
+            }
+
             Role.list().each { role ->
                 if (role.name == "ROLE_USER") {
                     role.addToPersons(person)
