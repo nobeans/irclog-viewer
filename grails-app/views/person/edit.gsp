@@ -77,11 +77,6 @@
                   <g:each var="r" in="${person.roles}">
                     <g:message code="person.roles.${r}" />
                   </g:each>
-                  <% if (person.isAdmin()) { %>
-                    &gt; <g:link id="${person?.id}" action="toUser"><g:message code="person.toUser" /></g:link></li>
-                  <% } else { %>
-                    &gt; <g:link id="${person?.id}" action="toAdmin"><g:message code="person.toAdmin" /></g:link></li>
-                  <% } %>
                 </td>
               </tr> 
             </tbody>
