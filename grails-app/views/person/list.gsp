@@ -16,6 +16,9 @@
               <g:sortableColumn property="realName" title="Real Name" titleKey="person.realName" />
               <g:sortableColumn property="nicks" title="Nicks" titleKey="person.nicks" />
               <g:sortableColumn property="color" title="Color" titleKey="person.color" />
+              <g:sortableColumn property="enabled" title="Enabled" titleKey="person.enabled" />
+              <th><g:message code="person.roles" /></th>
+              <th><g:message code="person.channels" /></th>
             </tr>
           </thead>
           <tbody>
@@ -25,6 +28,20 @@
                 <td>${fieldValue(bean:person, field:'realName')}</td>
                 <td>${fieldValue(bean:person, field:'nicks')}</td>
                 <td style="color:${fieldValue(bean:person, field:'color')}">${fieldValue(bean:person, field:'color')}</td>
+                <td><g:message code="person.enabled.${fieldValue(bean:person, field:'enabled')}" /></td>
+                <td>
+                  <g:each var="r" in="${person.roles}">
+                    <nobr><g:message code="person.roles.${r}" /></nobr>
+                  </g:each>
+                </td>
+                <td>
+                  <g:each var="c" in="${person.channels.sort{it.name}}">
+                    <g:link controller="channel" action="show" id="${c.id}" title="${c.description}">${c.name.encodeAsHTML()}</g:link>
+                  </g:each>
+                  <% if (person.channels.empty) { %>
+                    <g:message code="person.channels.empty" />
+                  <% } %>
+                </td>
               </tr>
             </g:each>
           </tbody>

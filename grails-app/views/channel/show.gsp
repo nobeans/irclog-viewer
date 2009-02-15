@@ -32,7 +32,7 @@
               <td  valign="top" style="text-align:left;" class="value">
                 <ul>
                   <g:each var="p" in="${joinedPersons.sort{it.loginName}}">
-                    <li><g:link controller="person" action="show" id="${p.id}">${p.loginName.encodeAsHTML()}</g:link></li>
+                    <li title="${p.realName.encodeAsHTML()}"><g:link controller="person" action="show" id="${p.id}">${p.loginName.encodeAsHTML()}</g:link></li>
                   </g:each>
                 </ul>
               </td>
