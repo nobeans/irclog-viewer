@@ -407,13 +407,11 @@ th.desc a {
 .header {
     position: relative;
     margin: 0;
-    padding: 10px;
+    padding: 0;
 }
 .header h1 {
-    font-size: 3.8em;
-}
-.header img.badge {
-    vertical-align: top;
+    margin: 0;
+    padding: 0;
 }
 .header #analog {
     display: none;
@@ -424,6 +422,7 @@ th.desc a {
     right: .5em;
     display: block;
     background: #ddd;
+    margin: 10px;
     padding: 8px 10px 5px 10px;
     border: 1px solid #555;
     font-size: 15px;

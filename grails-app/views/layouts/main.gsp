@@ -11,7 +11,7 @@
   </head>
   <body>
     <div class="header">
-      <h1><g:message code="application.name" /><img class="badge" src="${createLinkTo(dir:'images', file:'beta.png')}" alt="Beta" /></h1>
+      <h1><img class="title" src="${createLinkTo(dir:'images', file:'headerTitle.png')}" alt="${message(code:"application.name")}" /></h1>
       <div id="analog"><g:message code="header.analog" /></div>
     </div>
     <div class="nav">
