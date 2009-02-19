@@ -171,8 +171,8 @@ input.image {
 .message {
     background: #f3f8fc url(../images/skin/information.png) 8px 50% no-repeat;
     border-left: 1px solid #b2d1ff;
-    border-right: 2px solid #b2d1ff;
-    border-bottom: 2px solid #b2d1ff;
+    border-right: 1px solid #b2d1ff;
+    border-bottom: 1px solid #b2d1ff;
     margin: 0 0 10px 0;
     padding: 5px 5px 5px 30px;
     color: #006dba;
@@ -181,8 +181,8 @@ input.image {
 div.errors {
     background: #fff3f3;
     border-left: 1px solid #f88;
-    border-right: 2px solid #f88;
-    border-bottom: 2px solid #f88;
+    border-right: 1px solid #f88;
+    border-bottom: 1px solid #f88;
     margin: 0 0 10px 0;
     padding: 5px 5px 5px 30px;
     color: #cc0000;
@@ -324,6 +324,7 @@ th.desc a {
 
 .dialog table {
     padding: 5px 0;
+    background: #fff url(../images/slash.png) repeat;
 }
 
 .prop {
@@ -334,13 +335,14 @@ th.desc a {
     vertical-align: middle;
     width: 15%;
     white-space: nowrap;
-    background: #eee;
     font-weight: bold;
+    background: transparent;
 }
 .prop .value {
     text-align: left;
     vertical-align: middle;
     width: 85%;
+    background: #fff;
 }
 .prop .caption {
     font-size: .9em;
