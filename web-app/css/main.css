@@ -482,12 +482,12 @@ th.desc a {
 .mixedViewer .search #search-submit-label {
     cursor: pointer;
 }
-.mixedViewer .search #search-clear {
+.mixedViewer .search #search-clear-label {
     background: transparent;
     cursor: pointer;
     border: 0;
 }
-* html .mixedViewer .search #search-clear {
+* html .mixedViewer .search #search-clear-label {
     width: 7em;
 }
 
