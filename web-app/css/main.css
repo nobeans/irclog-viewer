@@ -479,6 +479,9 @@ th.desc a {
 .mixedViewer .search #search-message {
     width: 12em;
 }
+.mixedViewer .search #search-type-label {
+    margin-left: 4px;
+}
 .mixedViewer .search #search-submit-label {
     cursor: pointer;
 }
