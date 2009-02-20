@@ -3,36 +3,6 @@
     <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
     <meta name='layout' content='main' />
     <title><g:message code="login" /></title>
-    <style type='text/css' media='screen'>
-    #login {
-      margin: 15px 0px; padding:0px;
-      text-align: center;
-      font-size: 2em;
-    }
-    #login .inner {
-      width: 500px;
-      text-align: left;
-      padding: 10px;
-      border:1px solid #ccc;
-      background: #fff url(../images/slash.png) repeat;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    #login .inner .cssform p {
-      clear: left;
-      padding: 5px 0 5px 10px;
-      margin: .4em;
-    }
-    #login .inner .cssform label {
-      font-weight: bold;
-    }
-    #login .inner .cssform .button {
-      text-align: center;
-    }
-    #login .inner .login_message {color:red;}
-    #login .inner .text_ {width: 8em;}
-    #login .inner .chk {height:12px;}
-    </style>
   </head>
   <body>
     <div id='login'>
