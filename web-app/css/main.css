@@ -140,7 +140,6 @@ input.image {
 
 .menuButton {
     display: inline;
-    font-weight: bold;
     padding: 4px 8px;
 }
 .menuButton .home {
@@ -156,7 +155,8 @@ input.image {
     padding-left: 25px;
 }
 .menuButton.active {
-    background-color: #ddd;
+    background-color: #888;
+    color: #fff;
 }
 .menuButton a,
 .menuButton input {
@@ -224,7 +224,6 @@ td {
 }
 th {
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
-    font-weight: bold;
     line-height: 1.3em;
     text-align: left;
     padding: 3px 6px;
