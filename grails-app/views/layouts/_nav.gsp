@@ -7,7 +7,7 @@
     <my:createNavLinkIfNotCurrent controller="login" />
   </ul>
   <ul id="login-info">
-    <img src="${createLinkTo(dir:'images',file:'guest.png')}" alt="Guest user" /><g:message code="login.info.guest" />
+    <li><img src="${createLinkTo(dir:'images',file:'guest.png')}" alt="Guest user" /><g:message code="login.info.guest" /></li>
   </ul>
 </g:isNotLoggedIn>
 
