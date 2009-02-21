@@ -25,7 +25,6 @@
     <my:createNavLinkIfNotCurrent controller="logout" />
   </ul>
   <ul id="login-info">
-    <li><img src="${createLinkTo(dir:'images',file:'person.png')}" alt="Logged-in user" /></li>
-    <li><g:message code="login.info" args="${[g.loggedInUserInfo(field:'realName'), g.loggedInUserInfo(field:'loginName')]}" /></li>
+    <li><img src="${createLinkTo(dir:'images',file:'person.png')}" alt="Logged-in user" /><g:message code="login.info" args="${[g.loggedInUserInfo(field:'realName'), g.loggedInUserInfo(field:'loginName')]}" /></li>
   </ul>
 </g:isLoggedIn>

@@ -2,7 +2,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="main" />
-    <title>${message(code:'register.create')}</title>
+    <title><g:message code='register.create' /></title>
   </head>
   <body>
     <div class="body">
@@ -68,7 +68,7 @@
           </table>
         </div>
         <div class="buttons">
-          <span class="button"><input type="submit" class="save" value="${message(code:'create')}" /></span>
+          <span class="button"><input class="save" type="submit" value="${message(code:'create')}" /></span>
         </div>
       </g:form>
     </div>

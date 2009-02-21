@@ -93,8 +93,7 @@ input.image {
 .body {
     position: relative;
     margin: 0 auto 0 auto;
-    padding: 0;
-    width: 95%;
+    padding: 0 2em;
 }
 .body h1 {
     font-size: 1.5em;
@@ -117,28 +116,35 @@ input.image {
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
     border: 1px solid #bbb;
     border-style: solid none solid none;
-    padding: 3px 12px;
+    padding: 3px 18px;
     overflow: hidden;
-    vertical-align: middle;
 }
 .nav * {
     font-size: .98em;
-    display: inline;
 }
 .nav ul {
     display: inline;
     list-style-type: none;
 }
+.nav li {
+    margin: 0;
+    padding: 8px;
+}
 .nav #login-info {
     position: absolute;
+    top: 3px;
     right: 2em;
-    height: 100%;
 }
-* html .nav #login-info {
-    padding: 1px 3px;
+.nav #login-info li {
+    margin: 0;
+    padding: 0;
 }
 .nav #login-info img {
-    vertical-align: top;
+    margin: -2px 4px 0 0;
+}
+* html .nav #login-info img,
+*:first-child+html .nav #login-info img {
+    margin: 2px 4px 0 0;
 }
 
 .menuButton {
@@ -270,7 +276,8 @@ th.desc a {
     margin: 0;
     padding: 0;
 }
-* html .list table {
+* html .list table,
+*:first-child+html .list table {
     margin-bottom: -1px;
 }
 .list td {
@@ -293,6 +300,7 @@ th.desc a {
 /* Pagination */
 
 .paginateButtons {
+    position: relative;
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
     border: 1px solid #bbb;
     padding: 3px 6px;
@@ -304,7 +312,8 @@ th.desc a {
 .paginateButtons * {
     font-size: .85em;
 }
-* html .paginateButtons {
+* html .paginateButtons,
+*:first-child+html .paginateButtons {
     margin-left: 0px;
 }
 .paginateButtons.top {
@@ -349,7 +358,7 @@ th.desc a {
 .prop .value {
     text-align: left;
     vertical-align: middle;
-    width: 85%;
+    width: auto;
     background: #fff;
 }
 .prop .caption {
@@ -377,18 +386,25 @@ th.desc a {
     background: transparent;
     border: 0;
     cursor: pointer;
+    font-weight: bold;
 }
 .buttons input.delete {
     background: transparent url(../images/skin/database_delete.png) 5px 50% no-repeat;
-    padding-left: 28px;
+    padding-left: 1.5em;
 }
 .buttons input.edit {
     background: transparent url(../images/skin/database_edit.png) 5px 50% no-repeat;
-    padding-left: 28px;
+    padding-left: 1.5em;
 }
 .buttons input.save {
     background: transparent url(../images/skin/database_save.png) 5px 50% no-repeat;
-    padding-left: 28px;
+    padding-left: 1.5em;
+}
+.button input {
+    text-align: center;
+    padding: 2px;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 /* Yahoo UI */
@@ -420,7 +436,8 @@ th.desc a {
 .header #analog {
     display: none;
 }
-* html .header #analog {
+* html .header #analog,
+*:first-child+html .header #analog {
     position: absolute;
     top: .5em;
     right: .5em;
@@ -493,7 +510,8 @@ th.desc a {
     cursor: pointer;
     border: 0;
 }
-* html .mixedViewer .search #search-clear-label {
+* html .mixedViewer .search #search-clear-label,
+*:first-child+html .mixedViewer .search #search-clear-label {
     width: 7em;
 }
 
@@ -516,6 +534,7 @@ th.desc a {
 .singleViewer .optionButtons {
     position: absolute;
     right: 4px;
+    line-height: .9em;
 }
 .singleViewer .optionButtons button {
     font-size: .8em;
@@ -523,11 +542,17 @@ th.desc a {
     cursor: pointer;
     border: 1px solid #aaa;
     background-color: #ddd;
+    margin: 0 2px;
+    text-align: center;
     color: #333;
 }
 .singleViewer .optionButtons button:disabled {
     background-color: #ddd;
     color: #999;
+}
+* html .singleViewer .optionButtons button,
+*:first-child+html.singleViewer .optionButtons button {
+    width: 1em;
 }
 
 /* Viewer (Mixed/Single) */
@@ -536,7 +561,8 @@ th.desc a {
     position: relative;
     margin: 0;
 }
-* html .viewer .list { /* Hack for IE6 */
+* html .viewer .list,
+*:first-child+html .viewer .list {
     z-index: -1;
 }
 .viewer .list table td {
@@ -646,6 +672,7 @@ th.desc a {
 }
 
 /* Login */
+
 #login {
     margin: 15px 0px; padding:0px;
     text-align: center;
@@ -683,4 +710,3 @@ th.desc a {
 #login .inner .button input {
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
 }
-
