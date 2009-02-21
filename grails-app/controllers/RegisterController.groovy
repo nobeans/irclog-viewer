@@ -41,6 +41,7 @@ class RegisterController extends Base {
                 // FIXME:Acegiの作法がわからなかったため、かなり強引な方法で実装している。
                 SCH.context.authentication.principal.domainClass.realName = person.realName
 
+                flash.message = 'register.updated'
                 redirect(action:'show', id:person.id)
             } else {
                 render(view:'edit', model:[person:person])
@@ -63,7 +64,7 @@ class RegisterController extends Base {
         // デフォルトロールを取得する。
         def role = Role.findByName(authenticateService.securityConfig.security.defaultRole)
         if (!role) {
-            flash.message = 'register.defaultRoleNotFound.'
+            flash.message = 'register.defaultRoleNotFound'
             redirect(controller:'top')
             return 
         }
@@ -79,7 +80,7 @@ class RegisterController extends Base {
             def authtoken = daoAuthenticationProvider.authenticate(new AuthToken(person.loginName, params.password))
             SCH.context.authentication = authtoken
 
-            flash.message = "person.created"
+            flash.message = "register.created"
             redirect(action:'show')
         } else {
             render(view:'create', model:[person:person])
@@ -90,7 +91,7 @@ class RegisterController extends Base {
         def personId = loginUserDomain?.id
         def person = Person.get(personId)
         if (!person) {
-            flash.errors = ["person.not.found"]
+            flash.errors = ["register.not.found"]
             flash.args = [personId]
             redirect(controller:'top')
             return
