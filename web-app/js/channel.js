@@ -16,7 +16,10 @@ if (!IRCLOG) IRCLOG = {};
         pane.style.left = button.offsetLeft + 'px';
         pane.toggle();
 
-        $('channelName').focus();
+        // 非表示でなければ、フォーカスを当てる。
+        if (pane.style.display !== 'none') {
+            $('channelName').focus();
+        }
     }
 
 })()
