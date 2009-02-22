@@ -93,6 +93,7 @@ input.image {
     position: relative;
     margin: 0 auto 0 auto;
     padding: 0 2em;
+    z-index: 5;
 }
 .body h1 {
     font-size: 1.5em;
@@ -463,6 +464,7 @@ html>/**/body .list tr:hover {
     background-color: #fff;
     font-style: italic;
     height: 1.5em;
+    z-index: 1;
 }
 .footer #linkToTop {
     position: absolute;
@@ -484,6 +486,7 @@ html>/**/body .list tr:hover {
     padding: 3px 10px;
     background: #eee url(../images/slash.png) repeat;
     border: 1px solid #ccc;
+    z-index: 1;
 }
 .mixedViewer .search * {
     font-size: .96em;
@@ -676,6 +679,7 @@ html>/**/body .viewer .list tr:hover.highlight.optionType td.irclog-message {
     border-bottom: 1px solid #aaa;
     padding: .5em 1em;
     background: #eee url(../images/slash.png) repeat;
+    z-index: 9999;
 }
 #joinToSecretChannel .button input {
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
