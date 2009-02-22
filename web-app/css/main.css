@@ -285,7 +285,7 @@ th.desc a {
     vertical-align: middle;
     font-size: .9em;
 }
-.list tr:hover {
+html>/**/body .list tr:hover {
     background: #ddf;
 }
 
@@ -562,15 +562,19 @@ th.desc a {
 /* Viewer (Mixed/Single) */
 
 .viewer .list {
-    position: relative;
     margin: 0;
 }
 * html .viewer .list,
 *:first-child+html .viewer .list {
     z-index: -1;
 }
-.viewer .list table td {
+.viewer .list td {
     padding: 1px 10px 1px 5px;
+}
+.viewer .list td strong {
+    background-color: yellow;
+    color: red;
+    font-weight: bold;
 }
 .viewer .list td.irclog-time {
     white-space: nowrap;
@@ -584,15 +588,6 @@ th.desc a {
     width: 90%;
     white-space: pre-wrap;
 }
-.viewer .list td.irclog-type {
-    width: 5em;
-}
-.viewer .list td strong {
-    background-color: yellow;
-    color: red;
-    font-weight: bold;
-}
-
 .viewer .list tr.PRIVMSG td.irclog-message {
     font-style: normal;
     background-color: transparent;
@@ -633,35 +628,35 @@ th.desc a {
     background-color: #ee9;
 }
 
-.viewer .list tr:hover {
+html>/**/body .viewer .list tr:hover {
     background: #ddf;
 }
-.viewer .list tr:hover.PRIVMSG td.irclog-message {
+html>/**/body .viewer .list tr:hover.PRIVMSG td.irclog-message {
     background: #ddf;
 }
-.viewer .list tr:hover.NOTICE td.irclog-message {
+html>/**/body .viewer .list tr:hover.NOTICE td.irclog-message {
     background: #dcf;
 }
-.viewer .list tr:hover.TOPIC td.irclog-message {
+html>/**/body .viewer .list tr:hover.TOPIC td.irclog-message {
     background: #baf;
 }
-.viewer .list tr:hover.optionType td.irclog-message {
+html>/**/body .viewer .list tr:hover.optionType td.irclog-message {
     background: #dde;
 }
 
-.viewer .list tr:hover.highlight {
+html>/**/body .viewer .list tr:hover.highlight {
     background-color: #dbf;
 }
-.viewer .list tr:hover.highlight.PRIVMSG td.irclog-message {
+html>/**/body .viewer .list tr:hover.highlight.PRIVMSG td.irclog-message {
     background-color: #dbf;
 }
-.viewer .list tr:hover.highlight.NOTICE td.irclog-message {
+html>/**/body .viewer .list tr:hover.highlight.NOTICE td.irclog-message {
     background-color: #bad;
 }
-.viewer .list tr:hover.highlight.TOPIC td.irclog-message {
+html>/**/body .viewer .list tr:hover.highlight.TOPIC td.irclog-message {
     background-color: #98d;
 }
-.viewer .list tr:hover.highlight.optionType td.irclog-message {
+html>/**/body .viewer .list tr:hover.highlight.optionType td.irclog-message {
     background-color: #ccd;
 }
 
