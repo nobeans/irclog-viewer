@@ -16,8 +16,8 @@ if (!IRCLOG) IRCLOG = {};
         return function (newElementId) {
             // ハイライト行の世代交代をする。
             var newElement = $(newElementId);
-            if (currentElement) currentElement.removeClassName('this');
-            if (newElement) newElement.addClassName('this');
+            if (currentElement) currentElement.removeClassName('highlight');
+            if (newElement) newElement.addClassName('highlight');
             currentElement = newElement;
 
             // ハイライト状態の時だけ、選択解除ボタンを有効にする。
