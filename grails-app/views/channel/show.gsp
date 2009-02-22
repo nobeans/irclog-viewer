@@ -2,6 +2,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="main" />
+    <g:javascript library="channel" />
     <title><g:message code="channel.show" default="Show Channel" /></title>
   </head>
   <body>
@@ -55,8 +56,8 @@
       </div>
       <div class="buttons">
         <g:form>
-          <span class="button clickable"><img src="${createLinkTo(dir:'images', file:'search.png')}" alt="Search all logs" onclick="document.location='${my.searchAllLogsLink(channel:channel)}'" /><input type="button" onclick="document.location='${my.searchAllLogsLink(channel:channel)}'" value="${message(code:'channel.searchAllLogs')}" /></span>
           <input type="hidden" name="id" value="${channel?.id}" />
+          <span class="button"><input type="button" class="search" onclick="IRCLOG.goto('${my.searchAllLogsLink(channel:channel).encodeAsHTML()}')" value="${message(code:'channel.searchAllLogs')}" /></span>
           <g:isLoggedIn>
             <span class="button"><g:actionSubmit class="edit" action="edit" value="${message(code:'edit')}" /></span>
             <span class="button"><g:actionSubmit class="delete" action="delete" value="${message(code:'delete')}" onclick="return confirm('${message(code:'delete.confirm')}');" /></span>

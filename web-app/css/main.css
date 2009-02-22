@@ -375,6 +375,10 @@ th.desc a {
     margin: -1px 0 0 -1px;
     padding: 2px;
 }
+* html .buttons,
+*:first-child+html .buttons {
+    margin-left: 0;
+}
 .buttons * {
     font-size: .96em;
 }
@@ -399,6 +403,11 @@ th.desc a {
 .buttons input.save {
     background: transparent url(../images/skin/database_save.png) 5px 50% no-repeat;
     padding-left: 1.5em;
+}
+.buttons input.search {
+    background: transparent url(../images/search.png) 5px 50% no-repeat;
+    padding-left: 1.5em;
+    width: 15em;
 }
 .button input {
     text-align: center;
