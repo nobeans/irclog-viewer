@@ -18,11 +18,10 @@ html {
 
 body {
     position: relative;
+    width: 100%;
     background: #fff;
     color: #555;
     font-family: verdana, arial, helvetica, sans-serif;
-    width: 100%;
-    text-align: center;
 }
 
 a:link, a:visited {
@@ -464,7 +463,7 @@ th.desc a {
 /* Footer */
 
 .footer {
-    clear: both;
+    position: relative;
     margin-top: 15px;
     padding: 5px 10px 5px 10px;
     border-top: 1px solid #bbb;
@@ -475,10 +474,13 @@ th.desc a {
 .footer #linkToTop {
     position: absolute;
     left: 1em;
+    width: 5em;
 }
 .footer #poweredBy {
     position: absolute;
+    text-align: right;
     right: 1em;
+    width: 20em;
 }
 
 /* MixedViewer */
@@ -697,7 +699,6 @@ th.desc a {
     margin-right: auto;
 }
 #login .inner .cssform p {
-    clear: left;
     padding: 5px 0 5px 10px;
     margin: .4em;
 }
