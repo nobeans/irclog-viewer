@@ -105,6 +105,10 @@ input.image {
     cursor: pointer;
 }
 
+.print {
+    display: none;
+}
+
 .wordBreak {
     word-break: break-all;
 }

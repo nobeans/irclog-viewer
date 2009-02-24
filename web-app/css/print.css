@@ -1,0 +1,35 @@
+@charset "utf-8";
+
+html * {
+    font-size: 12px !important;
+    font-weight: normal !important;
+    border-collapse: collapse !important;
+    border: 0 !important;
+    color: #000 !important;
+}
+img, form, input, select, textarea {
+    display: none !important;
+}
+a {
+    font-weight: normal !important;
+}
+h1 {
+    font-size: 2em !important;
+    margin-bottom: .5em !important;
+}
+table {
+    border-top: 2px solid !important;
+    border-bottom: 2px solid !important;
+}
+thead tr {
+    border-bottom: 2px solid !important;
+}
+tbody tr {
+    border-bottom: 1px solid !important;
+}
+.caption, .header, .nav, .paginateButtons, .optionButtons, .footer {
+    display: none !important;
+}
+.print {
+    display: block !important;
+}
