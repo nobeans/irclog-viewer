@@ -128,7 +128,7 @@ input.image {
 }
 .nav li {
     margin: 0;
-    padding: 8px;
+    padding: 4px 8px;
 }
 .nav #login-info {
     position: absolute;
@@ -142,7 +142,12 @@ input.image {
 .nav #login-info img {
     margin: -2px 4px 0 0;
 }
-* html .nav #login-info img,
+* html .nav #login-info {
+    top: 10px;
+}
+* html .nav #login-info img {
+    margin: 2px 4px 0 0;
+}
 *:first-child+html .nav #login-info img {
     margin: 2px 4px 0 0;
 }
@@ -269,7 +274,9 @@ th.desc a {
     margin: 0;
     padding: 0;
 }
-* html .list table,
+* html .list table {
+    margin-bottom: -1px;
+}
 *:first-child+html .list table {
     margin-bottom: -1px;
 }
@@ -305,7 +312,9 @@ html>/**/body .list tr:hover {
 .paginateButtons * {
     font-size: .85em;
 }
-* html .paginateButtons,
+* html .paginateButtons {
+    margin-left: 0px;
+}
 *:first-child+html .paginateButtons {
     margin-left: 0px;
 }
@@ -368,7 +377,9 @@ html>/**/body .list tr:hover {
     margin: -1px 0 0 -1px;
     padding: 2px;
 }
-* html .buttons,
+* html .buttons {
+    margin-left: 0;
+}
 *:first-child+html .buttons {
     margin-left: 0;
 }
@@ -438,8 +449,7 @@ html>/**/body .list tr:hover {
 .header #analog {
     display: none;
 }
-* html .header #analog,
-*:first-child+html .header #analog {
+* html .header #analog {
     position: absolute;
     top: .5em;
     right: .5em;
@@ -517,7 +527,9 @@ html>/**/body .list tr:hover {
     cursor: pointer;
     border: 0;
 }
-* html .mixedViewer .search #search-clear-label,
+* html .mixedViewer .search #search-clear-label {
+    width: 7em;
+}
 *:first-child+html .mixedViewer .search #search-clear-label {
     width: 7em;
 }
@@ -540,7 +552,7 @@ html>/**/body .list tr:hover {
 }
 .singleViewer .optionButtons {
     position: absolute;
-    right: 4px;
+    right: 3em;
     line-height: .9em;
 }
 .singleViewer .optionButtons button {
@@ -557,7 +569,9 @@ html>/**/body .list tr:hover {
     background-color: #ddd;
     color: #999;
 }
-* html .singleViewer .optionButtons button,
+* html .singleViewer .optionButtons button {
+    width: 1em;
+}
 *:first-child+html.singleViewer .optionButtons button {
     width: 1em;
 }
@@ -567,7 +581,9 @@ html>/**/body .list tr:hover {
 .viewer .list {
     margin: 0;
 }
-* html .viewer .list,
+* html .viewer .list {
+    z-index: -1;
+}
 *:first-child+html .viewer .list {
     z-index: -1;
 }
@@ -618,16 +634,16 @@ html>/**/body .list tr:hover {
 .viewer .list tr.highlight {
     background-color: #ff0;
 }
-.viewer .list tr.highlight.PRIVMSG td.irclog-message {
+.viewer .list tr.PRIVMSG.highlight td.irclog-message {
     background-color: #ff0;
 }
-.viewer .list tr.highlight.NOTICE td.irclog-message {
+.viewer .list tr.NOTICE.highlight td.irclog-message {
     background-color: #fe8;
 }
-.viewer .list tr.highlight.TOPIC td.irclog-message {
+.viewer .list tr.TOPIC.highlight td.irclog-message {
     background-color: #fb7;
 }
-.viewer .list tr.highlight.optionType td.irclog-message {
+.viewer .list tr.optionType.highlight td.irclog-message {
     background-color: #ee9;
 }
 
