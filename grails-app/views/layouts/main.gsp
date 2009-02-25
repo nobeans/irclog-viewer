@@ -4,7 +4,8 @@
     <meta http-equiv="Content-Style-Type" content="text/css"></meta>
     <meta http-equiv="Content-Script-Type" content="text/javascript"></meta>
     <title><g:layoutTitle default="${message(code:'application.name')}" /></title>
-    <link rel="stylesheet" href="${createLinkTo(dir:'css',file:'main.css')}" />
+    <link rel="stylesheet" href="${createLinkTo(dir:'css',file:'main.css')}" media="all" />
+    <link rel="stylesheet" href="${createLinkTo(dir:'css', file:'print.css')}" media="print" />
     <link rel="shortcut icon" href="${createLinkTo(dir:'images',file:'favicon.png')}" type="image/x-icon" />
     <g:javascript library="prototype" />
     <g:layoutHead />

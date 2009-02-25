@@ -599,12 +599,14 @@ html>/**/body .list tr:hover {
     color: red;
     font-weight: bold;
 }
-.viewer .list td.irclog-time {
+.viewer .list .irclog-time {
     white-space: nowrap;
 }
-.viewer .list td.irclog-channel {
+.viewer .list .irclog-channel {
+    white-space: nowrap;
 }
-.viewer .list td.irclog-nick {
+.viewer .list .irclog-nick {
+    white-space: nowrap;
     text-align: right;
 }
 .viewer .list td.irclog-message {

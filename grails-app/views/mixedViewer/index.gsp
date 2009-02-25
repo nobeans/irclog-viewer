@@ -12,6 +12,7 @@
     <title><g:message code="mixedViewer" /></title>
   </head>
   <body>
+    <h2 class="print"><g:message code="mixedViewer" /></h2>
     <div class="body viewer mixedViewer">
       <my:flashMessage />
       <g:render template="search" />
