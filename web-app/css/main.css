@@ -718,12 +718,13 @@ html>/**/body .viewer .list tr:hover.highlight.optionType td.irclog-message {
     width: 500px;
     text-align: left;
     padding: 10px;
-    border:1px solid #ccc;
+    border: 1px solid #ccc;
     background: #eee url(../images/slash.png) repeat;
     margin-left: auto;
     margin-right: auto;
 }
 #login .inner .cssform p {
+    text-align: center;
     padding: 5px 0 5px 10px;
     margin: .4em;
 }
@@ -734,14 +735,16 @@ html>/**/body .viewer .list tr:hover.highlight.optionType td.irclog-message {
     text-align: center;
 }
 #login .inner .login_message {
-    color:red;
+    color: red;
 }
 #login .inner .text_ {
     width: 8em;
 }
-#login .inner .chk {
-    height:12px;
+#login .inner .rememberMe {
+    height: 12px;
+    font-size: .6em;
 }
 #login .inner .button input {
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
+    padding: 0 .3em;
 }

@@ -19,12 +19,10 @@
             <label for='j_password'><g:message code="person.password" />:</label>
             <input type='password' class='text_' name='j_password' id='j_password' />
           </p>
-          <%--
-          <p>
-            <input type='checkbox' class='chk' id='remember_me' name='_spring_security_remember_me' />
+          <p class="rememberMe">
+            <input type='checkbox' id='remember_me' name='_spring_security_remember_me' />
             <label for='remember_me'><g:message code="login.rememberMe" /></label>
           </p>
-          --%>
           <p class="button">
             <input type='submit' value="${message(code:'login')}" />
           </p>
