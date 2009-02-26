@@ -2,10 +2,14 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="main" />
+    <yui:stylesheet dir="calendar/assets" file="calendar.css" />
+    <my:nickStyle persons="${nickPersonList}" />
+    <g:javascript library="yui" />
+    <yui:javascript dir="calendar" file="calendar.js" />
     <g:javascript library="common" />
     <g:javascript library="singleViewer" />
+    <g:javascript library="singleCalendar" />
     <title><g:message code="singleViewer" args="${[criterion?.channel +'@'+ criterion['period-oneday-date']]}" /></title>
-    <my:nickStyle persons="${nickPersonList}" />
   </head>
   <body>
     <h2 class="print"><g:message code="singleViewer" args="${[criterion?.channel +'@'+ criterion['period-oneday-date']]}" /></h2>

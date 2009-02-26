@@ -2,9 +2,10 @@
   <my:selectChannelForSingle from="${selectableChannels}" value="${criterion.channel}" date="${criterion['period-oneday-date']}" />
   at
   <my:singleLink time="${relatedDates.before}" channelName="${criterion.channel}" image="singleBefore.png" />
-  ${criterion['period-oneday-date']}
+  <span id="currentDate">${criterion['period-oneday-date']}</span>
   <my:singleLink time="${relatedDates.after}" channelName="${criterion.channel}" image="singleAfter.png" />
   <my:singleLink time="${relatedDates.latest}" channelName="${criterion.channel}" image="singleToday.png" />
+  <my:singleCalendar channel="${channel}" title="${message(code:'singleViewer.calendar.tooltips')}"/>
 </div>
 <div class="list">
   <div class="paginateButtons top">

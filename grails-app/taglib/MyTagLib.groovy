@@ -68,6 +68,14 @@ class MyTagLib {
             <span id="${attrs.name}-calendar">${attrs.name}</span>
         """
     }
+    def singleCalendar = { attrs ->
+        out << """
+            <span id="singleCalendar">
+              <img class="button" id="singleCalendar-button" src="${createLinkTo(dir:'images', file:'calendar.png')}" title="${attrs.title ?: ''}" alt="Calendar" />
+              <span id="singleCalendar-calendar"></span>
+            </span>
+        """
+    }
 
     def createNavLinkIfNotCurrent = { attrs ->
         def controlName = request['org.codehaus.groovy.grails.CONTROLLER_NAME_ATTRIBUTE']

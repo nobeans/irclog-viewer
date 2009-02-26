@@ -432,11 +432,20 @@ html>/**/body .list tr:hover {
 #period-oneday-date-calendar {
     display: none;
     position: absolute;
-    width: 230px;
+    width: 250px;
+    font-size: 20px;
     z-index: 9;
 }
-#period-oneday-date-calendar .yui-calendar {
-    font-size: 1.3em;
+.yui-calcontainer .title {
+    font-size: 15px !important;
+    padding: 3px;
+}
+#singleCalendar-calendar {
+    display: none;
+    position: absolute;
+    width: 250px;
+    font-size: 20px;
+    z-index: 9;
 }
 
 /* Header */
