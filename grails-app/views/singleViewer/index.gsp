@@ -7,8 +7,8 @@
     <g:javascript library="yui" />
     <yui:javascript dir="calendar" file="calendar.js" />
     <g:javascript library="common" />
+    <g:javascript library="calendar" />
     <g:javascript library="singleViewer" />
-    <g:javascript library="singleCalendar" />
     <title><g:message code="singleViewer" args="${[criterion?.channel +'@'+ criterion['period-oneday-date']]}" /></title>
   </head>
   <body>
