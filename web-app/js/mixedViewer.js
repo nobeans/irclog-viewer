@@ -125,7 +125,7 @@ if (!IRCLOG) IRCLOG = {};
                 var date = args[0];
                 var date = date[0];
                 var year = date[0], month = date[1], day = date[2];
-                var textField = document.getElementById(textId);
+                var textField = $(textId);
                 textField.value = year + "-" + (month < 10 ? "0" + month : month) + "-" + (day < 10 ? "0" + day : day);
                 calendar.hide();
             }

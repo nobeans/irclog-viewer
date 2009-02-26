@@ -35,7 +35,7 @@ if (!IRCLOG) IRCLOG = {};
         var prepareOfShow = function() {
             // 入力済みの日付を取得
             var val = getDateValueFunc().split('-');
-            var y = parseInt(val[0]), m = parseInt(val[1]), d = parseInt(val[2]);
+            var y = parseInt(val[0], 10), m = parseInt(val[1], 10), d = parseInt(val[2], 10);
             var shown = new Date(y, m - 1, d);
 
             // 表示設定

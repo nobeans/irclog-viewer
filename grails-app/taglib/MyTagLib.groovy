@@ -61,22 +61,6 @@ class MyTagLib {
         out << value
     }
 
-    def calendar = { attrs ->
-        out << """
-            <input id="${attrs.name}-text" name="${attrs.name}" type="text" value="${attrs.value ?: ''}" maxlength="10" />
-            <img class="button" id="${attrs.name}-button" src="${createLinkTo(dir:'images',file:'calendar.png')}" title="${attrs.title ?: ''}" alt="Calendar" />
-            <span id="${attrs.name}-calendar">${attrs.name}</span>
-        """
-    }
-    def singleCalendar = { attrs ->
-        out << """
-            <span id="singleCalendar">
-              <img class="button" id="singleCalendar-button" src="${createLinkTo(dir:'images', file:'calendar.png')}" title="${attrs.title ?: ''}" alt="Calendar" />
-              <span id="singleCalendar-calendar"></span>
-            </span>
-        """
-    }
-
     def createNavLinkIfNotCurrent = { attrs ->
         def controlName = request['org.codehaus.groovy.grails.CONTROLLER_NAME_ATTRIBUTE']
         def actionName  = request['org.codehaus.groovy.grails.ACTION_NAME_ATTRIBUTE']
