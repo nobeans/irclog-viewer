@@ -426,26 +426,24 @@ html>/**/body .list tr:hover {
 
 /* Yahoo UI */
 
-#period-oneday-date-text {
-    width: 7em;
-}
-#period-oneday-date-calendar {
+.yui-calcontainer {
     display: none;
-    position: absolute;
-    width: 250px;
-    font-size: 20px;
-    z-index: 9;
+    position: absolute !important;
+    width: 250px !important;
+    font-size: 18px !important;
+    z-index: 9 !important;
 }
 .yui-calcontainer .title {
     font-size: 15px !important;
     padding: 3px;
 }
-#singleCalendar-calendar {
-    display: none;
-    position: absolute;
-    width: 250px;
-    font-size: 20px;
-    z-index: 9;
+.yui-calendar .calheader,
+.yui-calendar .calweekdaycell {
+    font-size: 15px !important;
+}
+.yui-calendar .calcell a {
+    font-size: 18px;
+    line-height: 24px;
 }
 
 /* Header */
@@ -518,7 +516,7 @@ html>/**/body .list tr:hover {
     margin-left: .8em;
 }
 .mixedViewer .search #period-oneday-date-text {
-    width: 6em;
+    width: 6.5em;
 }
 .mixedViewer .search #search-channel {
     width: 6em;
