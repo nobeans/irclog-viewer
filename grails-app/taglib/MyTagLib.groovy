@@ -97,8 +97,10 @@ class MyTagLib {
     def nickStyle = { attrs  ->
         out << """<style type="text/css">"""
         attrs.persons.each{ person ->
-            if (person && person.color && person.nicks) {
-                out << person.nicks.split(/\s+/).collect{ "${attrs.classPrefix ?: ''}.${it}" }.join(",") + "{color:${person.color} !important} "
+            if (person && person.color) {
+                def nicks = [person.loginName] as Set // 重複除外のためSetに
+                nicks.addAll(person.nicks.split(/\s+/)*.trim().findAll{it})
+                out << nicks.sort().collect{ "${attrs.classPrefix ?: ''}.${it}" }.join(",") + "{color:${person.color} !important} "
             }
         }
         out << """</style>"""
