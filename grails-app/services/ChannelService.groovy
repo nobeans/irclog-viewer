@@ -77,7 +77,7 @@ class ChannelService {
             and
                 i.channel_name = :channelName
         """
-        Irclog.executeUpdateNativeQuery(query, null, [channelName:channel.name])[0] // native-sql plugin (modified)
+        Irclog.executeUpdateNativeQuery(query, null, [channelName:channel.name]) // native-sql plugin (modified)
     }
 
     /**
