@@ -6,12 +6,24 @@ class SummaryService {
     private static final String IN_ESSENTIAL_TYPES = "(" + Irclog.ESSENTIAL_TYPES.collect{"'${it}'"}.join(', ') + ")"
 
     boolean transactional = false
+    def irclogSearchService
+
+    /** アクセス可能な全チャンネルのトピック情報を取得する。*/
+    public List<Irclog> getAccessibleTopicList(person) {
+        // FIXME:count()も実行しているため、性能的に無駄な気がする。直接検索した方が速そう。
+        def criterion = [
+            period:      'week',
+            channel:     'all',
+            type:        'TOPIC',
+            isIgnoredOptionType: true
+        ]
+        return irclogSearchService.search(person, criterion, [:], 'desc').list
+    }
 
     /** アクセス可能な全チャンネルのサマリ情報を取得する。 */
     public List<Summary> getAccessibleSummaryList(params, accessibleChannelList) {
         // 全てのサマリを取得して、アクセス可能な範囲に絞り込む
-        def summaryList = getAllSummaryList(params)
-        summaryList.findAll{it.channel in accessibleChannelList}
+        def summaryList = getAllSummaryList(params).findAll{it.channel in accessibleChannelList}
 
         // FIXME: 単に表示しない、というだけで良い気がする。後で削除するかも。
         // 何らかの原因でサマリが存在しないチャンネルがある場合、ダミーサマリを登録

@@ -59,8 +59,13 @@ class IrclogSearchService {
 
         // 種別
         assert (criterion.type) : '必須'
-        if (criterion.type != 'all') { // すべての種別でなければ限定条件を追加する。
-            query.hql += " and i.type in " + IN_ESSENTIAL_TYPES
+        if (criterion.type != 'all') { // すべての種別であれば条件なし
+            if (criterion.type == 'filtered') { // 限定条件を追加する。
+                query.hql += " and i.type in " + IN_ESSENTIAL_TYPES
+            }
+            else {
+                query.hql += " and i.type = '${criterion.type}'"
+            }
         }
 
         // ニックネーム

@@ -765,26 +765,29 @@ html>/**/body .viewer .list tr:hover.highlight.optionType td.irclog-message {
     padding: 5px 0 8px 0;
     line-height: 1.5em;
 }
-.summary .searchAllLogs {
+.summary .summary-topic ul {
+    margin-left: 1em;
+}
+.summary .summary-statement .searchAllLogs {
     width: 1em;
 }
-.summary .channel {
+.summary .summary-statement .channel {
     width: auto;
 }
-.summary .count {
+.summary .summary-statement .count {
     text-align: right;
 }
-.summary td.count {
+.summary .summary-statement td.count {
     padding-right: 1em;
 }
-.summary .totalCount {
+.summary .summary-statement .totalCount {
     text-align: right;
     width: 4em;
 }
-.summary .latestIrclog {
+.summary .summary-statement .latestIrclog {
     padding-left: 2em;
 }
-.summary .latestIrclog .time {
+.summary .summary-statement .latestIrclog .time {
     padding-right: .4em;
     white-space: nowrap;
 }

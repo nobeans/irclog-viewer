@@ -1,4 +1,4 @@
-// ╩╤┤╣д╬д┐дсд╬ецб╝е╞егеъе╞егепеще╣
+// хдЙцПЫуБоуБЯуВБуБоуГжуГ╝уГЖуВгуГкуГЖуВгуВпуГйуВ╣
 class ConvertUtils {
 
     static toInteger(value, defaultValue=null) {
