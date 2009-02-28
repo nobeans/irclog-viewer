@@ -511,6 +511,7 @@ html>/**/body .list tr:hover {
 }
 .mixedViewer .search * {
     font-size: .96em;
+    vertical-align: middle;
 }
 .mixedViewer .search .searchItem {
     margin-left: .8em;
