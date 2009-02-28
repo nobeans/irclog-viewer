@@ -5,7 +5,8 @@ class SummaryService {
     /** 基本種別をIN句で使うための文字列 */
     private static final String IN_ESSENTIAL_TYPES = "(" + Irclog.ESSENTIAL_TYPES.collect{"'${it}'"}.join(', ') + ")"
 
-    boolean transactional = false
+    boolean transactional = true
+
     def irclogSearchService
 
     /** アクセス可能な全チャンネルのトピック情報(1週間以内の上位5件)を取得する。*/
@@ -142,6 +143,9 @@ class SummaryService {
     public void updateAllSummary() {
         def baseDate = new Date()
         def df = new SimpleDateFormat("yyyy-MM-dd")
+
+        // タイミングによっては重複したINSERTが実行されることもありうるため、排他的テーブルロックを取得する。
+        Summary.executeUpdateNativeQuery("lock table summary in exclusive mode")
         int resultDeleted = Summary.executeUpdateNativeQuery("delete from summary")
         int resultInserted = Summary.executeUpdateNativeQuery("""
             insert into summary
