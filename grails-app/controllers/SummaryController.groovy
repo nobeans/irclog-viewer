@@ -8,7 +8,7 @@ class SummaryController extends Base {
         [
             summaryList: summaryService.getAccessibleSummaryList(params, channelList),
             nickPersonList: Person.list(),
-            topicList: summaryService.getAccessibleTopicList(loginUserDomain)
+            topicList: summaryService.getAccessibleTopicList(loginUserDomain, channelList)
         ]
     }
 

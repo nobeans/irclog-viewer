@@ -8,16 +8,27 @@ class SummaryService {
     boolean transactional = false
     def irclogSearchService
 
-    /** アクセス可能な全チャンネルのトピック情報を取得する。*/
-    public List<Irclog> getAccessibleTopicList(person) {
-        // FIXME:count()も実行しているため、性能的に無駄な気がする。直接検索した方が速そう。
-        def criterion = [
-            period:      'week',
-            channel:     'all',
-            type:        'TOPIC',
-            isIgnoredOptionType: true
-        ]
-        return irclogSearchService.search(person, criterion, [:], 'desc').list
+    /** アクセス可能な全チャンネルのトピック情報(1週間以内の上位5件)を取得する。*/
+    public List<Irclog> getAccessibleTopicList(person, accessibleChannelList) {
+        def baseDate = new Date()
+        //def df = new SimpleDateFormat("yyyy-MM-dd")
+        def df = new SimpleDateFormat("yyyy-MM-dd")
+        def baseDateFormatted = df.format(baseDate)
+        Irclog.executeNativeQuery("""
+            select
+                *
+            from
+                irclog
+            where
+                channel_id in ( ${accessibleChannelList.collect{it.id}.join(", ")} )
+            and
+                type = 'TOPIC'
+            and
+                time >= timestamp '${baseDateFormatted}' - interval '6 day'
+            order by
+                time desc
+            limit 5
+        """)
     }
 
     /** アクセス可能な全チャンネルのサマリ情報を取得する。 */
