@@ -742,6 +742,9 @@ html>/**/body .viewer .list tr:hover.highlight.optionType td.irclog-message {
 }
 #login .inner .login_message {
     color: red;
+    font-size: .7em;
+    text-align: center;
+    padding: 8px 0;
 }
 #login .inner .text_ {
     width: 8em;
@@ -766,6 +769,10 @@ html>/**/body .viewer .list tr:hover.highlight.optionType td.irclog-message {
 .summary .count {
     text-align: right;
     width: 3em;
+}
+.summary .totalCount {
+    text-align: right;
+    width: 4em;
 }
 .summary .latestIrclog {
     padding-left: 2em;

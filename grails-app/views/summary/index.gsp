@@ -24,7 +24,7 @@
               <th class="count"><g:message code="summary.fourDaysAgo" /></th>
               <th class="count"><g:message code="summary.fiveDaysAgo" /></th>
               <th class="count"><g:message code="summary.sixDaysAgo" /></th>
-              <th class="count"><g:message code="summary.total" /></th>
+              <th class="totalCount"><g:message code="summary.total" /></th>
               <th class="latestIrclog"><g:message code="summary.latestIrclog" /></th>
             </tr>
           </thead>
@@ -46,7 +46,7 @@
                 <td class="count"><my:summaryLink count="${summary.fourDaysAgo}"  channelName="${channel.name}" time="${summary.lastUpdated - 4}" /></td>
                 <td class="count"><my:summaryLink count="${summary.fiveDaysAgo}"  channelName="${channel.name}" time="${summary.lastUpdated - 5}" /></td>
                 <td class="count"><my:summaryLink count="${summary.sixDaysAgo}"   channelName="${channel.name}" time="${summary.lastUpdated - 6}" /></td>
-                <td class="count">${summary.total()}</td>
+                <td class="totalCount">${summary.total()}</td>
                 <td class="latestIrclog" title="${summary?.latestIrclog.message.encodeAsHTML() ?: ''}">
                   <span class="time"><my:dateFormat format="yyyy-MM-dd HH:mm:ss" value="${summary?.latestIrclog.time}" /></span>
                   by <span class="${summary.latestIrclog.nick?.encodeAsHTML()}">${summary?.latestIrclog.nick.encodeAsHTML() ?: ''}</span>
@@ -60,7 +60,7 @@
                 <td class="count">0</td>
                 <td class="count">0</td>
                 <td class="count">0</td>
-                <td class="count">0</td>
+                <td class="totalCount">0</td>
                 <td class="latestIrclog"></td>
               </g:else>
             </tr>

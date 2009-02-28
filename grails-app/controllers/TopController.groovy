@@ -1,7 +1,8 @@
-class TopController {
+class TopController extends Base {
 
     def index = {
-        flash.message = flash.message // メッセージがあった場合は引き継ぐ
-        redirect(url:'/irclog/viewer')
+        flash.message = flash.message // 繝｡繝�繧ｻ繝ｼ繧ｸ縺後≠縺｣縺溷ｴ蜷医�ｯ蠑輔″邯吶＄
+        //redirect(url:'/irclog/viewer')
+        redirect(uri: config.irclog.viewer.defaultTargetUrl)
     }
 }

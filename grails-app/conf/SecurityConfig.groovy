@@ -11,7 +11,7 @@ security {
     algorithm = 'MD5' 
     //use Base64 text ( true or false )
     encodeHashAsBase64 = false
-    errorPage = '/viewer/index'
+    errorPage = '/summary/index'
 
     /** login user domain class name and fields */
     loginUserDomainClass = "Person"
