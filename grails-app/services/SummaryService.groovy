@@ -7,10 +7,73 @@ class SummaryService {
 
     boolean transactional = false
 
+    /** アクセス可能な全チャンネルのサマリ情報を取得する。 */
+    public List<Summary> getAccessibleSummaryList(params, accessibleChannelList) {
+        // 全てのサマリを取得して、アクセス可能な範囲に絞り込む
+        def summaryList = getAllSummaryList(params)
+        summaryList.findAll{it.channel in accessibleChannelList}
+
+        // FIXME: 単に表示しない、というだけで良い気がする。後で削除するかも。
+        // 何らかの原因でサマリが存在しないチャンネルがある場合、ダミーサマリを登録
+        // ただし、ソート順序は反映されず、一番下に不要なものが並ぶだけとなる。
+        accessibleChannelList.findAll{!(it in summaryList.channel)}.sort{it.name}.each { channel ->
+            summaryList << new Summary(channel:channel, lastUpdated:new Date())
+        }
+
+        return summaryList
+    }
+
     /** 全チャンネルのサマリ情報を取得する。 */
-    public List<Summary> getAllSummaryList() {
+    private List<Summary> getAllSummaryList(params) {
+        // 今日の分のサマリを更新
         updateTodaySummary()
-        Summary.list()
+
+        // ソート条件を解決してから、サマリを取得
+        resolveSortCondition(params)
+        def summaryList = Summary.list(params)
+
+        // 独自ソート
+        // チャンネル名(channel)
+        //  - 関連テーブルの条件になるため、params.sortで指定できないようだ。
+        if (params.sort == 'channel') {
+            summaryList.sort{it.channel.name}
+            return (params.order == 'desc') ? summaryList.reverse() : summaryList
+        }
+
+        // 独自ソート
+        // 累積件素(total/totalBeforeYesterday)
+        //  - 今日の件数を加えた累積件数(total)はDB上に存在しないため、totalBeforeYesterdayに差し替えしている。
+        //  - このソート結果自体は不要であるが、他のUI上も有効なソートキーとは異なるキーでなければならない。
+        //  - ここでは、使われたソートキーがtotalBeforeYesterdayの場合、total()を使って再ソートする。
+        if (params.sort == 'totalBeforeYesterday') {
+            params.sort = 'total' // UI上のソートキーに戻す
+            summaryList.sort{it.total()}
+            return (params.order == 'desc') ? summaryList.reverse() : summaryList
+        }
+
+        // 独自ソート
+        // 最新の発言(latestIrclog)
+        //  - DB上のlatest_irclog_idでソートすると、通常の運用ではIDは発言順に払い出されるため、
+        //    ほぼ正しく最新発言日時順にソートされる。
+        //  - しかし、バッチインポートによって過去の発言をINSERTすると、IDでは期待されたソートはできなくなる。
+        //  - とはいえ、その後オンラインインポートによって誰かの発言がINSERTされれば、再び期待通りとなる。
+        //  - それほど問題とはならないと考えるため、現時点では対処しないこととする。
+
+        return summaryList
+    }
+
+    private void resolveSortCondition(params) {
+        // orderの指定がないか不正値の場合は、asc固定
+        if (!params.order || !['asc', 'desc'].contains(params.order)) params.order = 'asc'
+
+        switch (params.sort) {
+            case 'total': // UI上では単にtotalであるが、内部的にはいったんtotalBeforeYesterdayにする
+                params.sort = 'totalBeforeYesterday'; break;
+            case Summary.SORTABLE:
+                break; // そのまま
+            default:
+                params.sort = 'channel'; break;
+        }
     }
 
     /** 今日の分のサマリを更新する。 */

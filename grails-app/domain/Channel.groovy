@@ -5,6 +5,14 @@ class Channel {
     Boolean isPrivate
     String secretKey
 
+    public String toString() {
+        return """${name} {
+    description: ${description}
+    isPrivate: ${isPrivate}
+    secretKey: ${(secretKey) ? '****' : ''}
+}"""
+    }
+
     static constraints = {
         name(blank:false, unique:true, maxSize:100, matches:"^#.*")
         description()

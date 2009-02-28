@@ -262,7 +262,7 @@ th a:link, th a:visited, th a:hover {
 th.asc a, th.desc a {
     background-position: left;
     background-repeat: no-repeat;
-    padding-left: .7em;
+    padding-left: 10px;
 }
 th.asc a {
     background-image: url(../images/skin/sorted_asc.gif);
@@ -773,7 +773,9 @@ html>/**/body .viewer .list tr:hover.highlight.optionType td.irclog-message {
 }
 .summary .count {
     text-align: right;
-    width: 3em;
+}
+.summary td.count {
+    padding-right: 1em;
 }
 .summary .totalCount {
     text-align: right;
@@ -783,7 +785,7 @@ html>/**/body .viewer .list tr:hover.highlight.optionType td.irclog-message {
     padding-left: 2em;
 }
 .summary .latestIrclog .time {
-    padding-right: .7em;
+    padding-right: .4em;
     white-space: nowrap;
 }
 

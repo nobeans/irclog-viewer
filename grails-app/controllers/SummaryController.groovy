@@ -4,9 +4,9 @@ class SummaryController extends Base {
     def channelService
     
     def index = {
+        def channelList = channelService.getAccessibleChannelList(loginUserDomain, [:])
         [
-            summaryList: summaryService.getAllSummaryList(),
-            channelList: channelService.getAccessibleChannelList(loginUserDomain, params),
+            summaryList: summaryService.getAccessibleSummaryList(params, channelList),
             nickPersonList: Person.list()
         ]
     }

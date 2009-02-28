@@ -24,20 +24,35 @@ class Summary {
 
     public String toString() {
         def df = new java.text.SimpleDateFormat("yyyy-MM-dd")
-        return """${channel?.name}@${df.format(baseDate)} {
-            today:${today}
-            yesterday:${yesterday}
-            twoDaysAgo:${twoDaysAgo}
-            threeDaysAgo:${threeDaysAgo}
-            fourDaysAgo:${fourDaysAgo}
-            fiveDaysAgo:${fiveDaysAgo}
-            sixDaysAgo:${sixDaysAgo}
-            today:${today}
-            latestTime:${latestTime}
-        }"""
+        return """${channel?.name}@${lastUpdated ? df.format(lastUpdated) : 'NEVER'} {
+    today: ${today}
+    yesterday: ${yesterday}
+    twoDaysAgo: ${twoDaysAgo}
+    threeDaysAgo: ${threeDaysAgo}
+    fourDaysAgo: ${fourDaysAgo}
+    fiveDaysAgo: ${fiveDaysAgo}
+    sixDaysAgo: ${sixDaysAgo}
+    totalBeforeYesterday: ${totalBeforeYesterday}
+    latestIrclog: ${latestIrclog}
+}"""
     }
 
+    public static final SORTABLE = [
+        'channel',
+        'lastUpdated',
+        'today',
+        'yesterday',
+        'twoDaysAgo',
+        'threeDaysAgo',
+        'fourDaysAgo',
+        'fiveDaysAgo',
+        'sixDaysAgo',
+        'totalBeforeYesterday',
+        'latestIrclog'
+    ]
+
     static belongsTo = Channel
+
     static mapping = {
         version(false)
         message(type:'text')
