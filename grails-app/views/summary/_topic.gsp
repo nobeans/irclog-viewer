@@ -8,6 +8,6 @@
           </my:singleLink>
         </li>
       </g:each>
-      <li class="summary-topic-search"><my:topicLink>過去のトピックを検索</my:topicLink></li>
+      <li class="summary-topic-search"><my:topicLink><g:message code="summary.topic.search" /></my:topicLink></li>
     </ul>
   </div>
