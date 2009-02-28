@@ -60,6 +60,7 @@ log4j {
             app {
                 controller='info'
                 service='info'
+                task='info'
             }
         }
 
