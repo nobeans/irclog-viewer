@@ -564,10 +564,9 @@ html>/**/body .list tr:hover {
 .singleViewer .optionButtons {
     position: absolute;
     right: 3em;
-    line-height: .9em;
 }
 .singleViewer .optionButtons button {
-    font-size: .8em;
+    font-size: .75em;
     vertical-align: top;
     cursor: pointer;
     border: 1px solid #aaa;
@@ -748,10 +747,30 @@ html>/**/body .viewer .list tr:hover.highlight.optionType td.irclog-message {
     width: 8em;
 }
 #login .inner .rememberMe {
-    height: 12px;
     font-size: .6em;
+    padding: 5px;
 }
 #login .inner .button input {
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
     padding: 0 .3em;
 }
+
+/* Summary */
+
+.summary .searchAllLogs {
+    width: 1em;
+}
+.summary .channel {
+    width: auto;
+}
+.summary .count {
+    text-align: right;
+    width: 3em;
+}
+.summary .latestIrclog {
+    padding-left: 2em;
+}
+.summary .latestIrclog .time {
+    padding-right: .7em;
+}
+

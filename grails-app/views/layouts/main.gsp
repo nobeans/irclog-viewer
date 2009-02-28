@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="${createLinkTo(dir:'css', file:'print.css')}" media="print" />
     <link rel="shortcut icon" href="${createLinkTo(dir:'images',file:'favicon.png')}" type="image/x-icon" />
     <g:javascript library="prototype" />
+    <g:javascript library="common" />
     <g:layoutHead />
   </head>
   <body>

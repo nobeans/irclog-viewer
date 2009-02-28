@@ -4,7 +4,7 @@
 class Summary {
 
     Channel channel
-    Date baseDate     // 基準日(＝今日)
+    Date lastUpdated  // 最終更新日(＝基準日＝今日)
 
     // 各種カウント
     int today         // 今日(＝基準日)
@@ -16,7 +16,7 @@ class Summary {
     int sixDaysAgo    // 6日前
     int totalBeforeYesterday  // 今日をのぞく過去全ての合計
 
-    Date latestTime   // 最新発言日時
+    Irclog latestIrclog     // 最新発言ログ
 
     public int total() {
         return today + totalBeforeYesterday

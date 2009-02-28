@@ -11,7 +11,8 @@ class ChannelController extends Base {
     def list = {
         [
             channelList: channelService.getAccessibleChannelList(loginUserDomain, params),
-            allJoinedPersons: channelService.getAllJoinedPersons()
+            allJoinedPersons: channelService.getAllJoinedPersons(),
+            nickPersonList: Person.list()
         ]
     }
 

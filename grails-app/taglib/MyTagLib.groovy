@@ -98,14 +98,14 @@ class MyTagLib {
         out << """<style type="text/css">"""
         attrs.persons.each{ person ->
             if (person && person.color && person.nicks) {
-                out << person.nicks.split(/\s+/).collect{ ".irclog-nick.${it}" }.join(",") + "{color:${person.color}} "
+                out << person.nicks.split(/\s+/).collect{ "${attrs.classPrefix ?: ''}.${it}" }.join(",") + "{color:${person.color} !important} "
             }
         }
         out << """</style>"""
     }
 
     def searchAllLogsLink = { attrs ->
-        out << "/irclog/viewer?channel=${attrs.channel.name.replace(/#/, '%23')}&period=all&nick=&message=&_type="
+        out << "/irclog/viewer?channel=${attrs.channel.name.replace(/#/, '%23')}&period=all&nick=&message=&_type=".encodeAsHTML()
     }
 
     def summaryLink = { attrs ->

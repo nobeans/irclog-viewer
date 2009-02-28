@@ -2,6 +2,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="main" />
+    <my:nickStyle persons="${nickPersonList}" classPrefix=".channel " />
     <g:javascript library="channel" />
     <title><g:message code="channel.list" default="Channel List" /></title>
   </head>
@@ -29,13 +30,13 @@
           <tbody>
           <g:each in="${channelList}" status="i" var="channel">
             <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-              <td><img class="clickable" src="${createLinkTo(dir:'images', file:'search.png')}" alt="Search all logs" onclick="IRCLOG.goto('${my.searchAllLogsLink(channel:channel).encodeAsHTML()}')" title="${message(code:'channel.searchAllLogs')}" /></td>
+              <td><img class="clickable" src="${createLinkTo(dir:'images', file:'search.png')}" alt="Search all logs" onclick="IRCLOG.goto('${my.searchAllLogsLink(channel:channel)}')" title="${message(code:'channel.searchAllLogs')}" /></td>
               <td><g:link action="show" id="${channel.id}">${fieldValue(bean:channel, field:'name')}</g:link></td>
               <td>${fieldValue(bean:channel, field:'description')}</td>
               <td><g:message code="channel.isPrivate.${channel.isPrivate.toString()}" /></td>
               <td>
                 <% allJoinedPersons[channel].each{ person -> %>
-                  <span title="${person.realName.encodeAsHTML()}">
+                  <span class="${person.loginName}" title="${person.realName.encodeAsHTML()}">
                     <g:ifAnyGranted role="ROLE_ADMIN">
                       <g:link controller="person" action="show" id="${person.id}">${person.loginName.encodeAsHTML()}</g:link>
                     </g:ifAnyGranted>

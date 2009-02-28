@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 class SummaryService {
 
     /** 基本種別をIN句で使うための文字列 */
@@ -14,20 +16,20 @@ class SummaryService {
     /** 今日の分のサマリを更新する。 */
     private void updateTodaySummary() {
         def baseDate = new Date()
-        def df = new java.text.SimpleDateFormat("yyyy-MM-dd")
+        def df = new SimpleDateFormat("yyyy-MM-dd")
         def baseDateFormatted = df.format(baseDate)
         int result = Summary.executeUpdateNativeQuery("""
             update
                 summary
             set
                 today = tbl.today,
-                latest_time = tbl.latest_time 
+                latest_irclog_id = tbl.latest_irclog_id 
             from
                 (
                     select
                         channel_id,
                         count(*) as today,
-                        max(time) as latest_time
+                        (select id from irclog as i where i.channel_id = irclog.channel_id and i.time = max(irclog.time) order by time desc limit 1) as latest_irclog_id
                     from
                         irclog
                     where
@@ -42,7 +44,7 @@ class SummaryService {
             where
                 summary.channel_id = tbl.channel_id
             and
-                summary.base_date = timestamp '${baseDateFormatted}'
+                date_trunc('day', summary.last_updated) = timestamp '${baseDateFormatted}'
         """)
         log.info "Updated today's summary: " + result
 
@@ -53,15 +55,15 @@ class SummaryService {
     /** 全ての分のサマリを更新する。 */
     public void updateAllSummary() {
         def baseDate = new Date()
-        def df = new java.text.SimpleDateFormat("yyyy-MM-dd")
+        def df = new SimpleDateFormat("yyyy-MM-dd")
         int resultDeleted = Summary.executeUpdateNativeQuery("delete from summary")
         int resultInserted = Summary.executeUpdateNativeQuery("""
             insert into summary
-                (id, channel_id, base_date, today, yesterday, two_days_ago, three_days_ago, four_days_ago, five_days_ago, six_days_ago, total_before_yesterday, latest_time) 
+                (id, channel_id, last_updated, today, yesterday, two_days_ago, three_days_ago, four_days_ago, five_days_ago, six_days_ago, total_before_yesterday, latest_irclog_id) 
             select
                 nextval('hibernate_sequence') as id,
                 channel_id,
-                '${df.format(baseDate)}' as base_date,
+                timestamp '${new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(baseDate)}' as last_updated,
                 sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate)}'     then 1 else 0 end) as today,
                 sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate - 1)}' then 1 else 0 end) as yesterday,
                 sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate - 2)}' then 1 else 0 end) as two_days_ago,
@@ -70,7 +72,7 @@ class SummaryService {
                 sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate - 5)}' then 1 else 0 end) as five_days_ago,
                 sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate - 6)}' then 1 else 0 end) as six_days_ago,
                 count(*) as total_before_yesterday,
-                max(time) as latest_time
+                (select id from irclog as i where i.channel_id = irclog.channel_id and i.time = max(irclog.time) order by time desc limit 1) as latest_irclog_id
             from
                 irclog
             where
