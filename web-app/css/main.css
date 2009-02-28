@@ -368,7 +368,7 @@ html>/**/body .list tr:hover {
     background: #fff;
 }
 .prop .caption {
-    font-size: .9em;
+    font-size: .85em;
     margin-left: .5em;
 }
 
@@ -695,8 +695,9 @@ html>/**/body .viewer .list tr:hover.highlight.optionType td.irclog-message {
 /* Channel */
 
 .channel .caption {
-    padding: 5px 0 8px 0;
-    line-height: 1.5em;
+    padding: 0 0 1em 1em;
+    line-height: 1.3em;
+    font-size: .85em;
 }
 .channel .searchAllLogs {
     width: 1em;
@@ -762,11 +763,16 @@ html>/**/body .viewer .list tr:hover.highlight.optionType td.irclog-message {
 /* Summary */
 
 .summary .caption {
-    padding: 5px 0 8px 0;
-    line-height: 1.5em;
+    padding: 0 0 1em 1em;
+    line-height: 1.3em;
+    font-size: .85em;
 }
 .summary .summary-topic ul {
     margin-left: 1em;
+}
+.summary .summary-topic li {
+    font-size: .9em;
+    margin-bottom: 4px;
 }
 .summary .summary-statement .searchAllLogs {
     width: 1em;
