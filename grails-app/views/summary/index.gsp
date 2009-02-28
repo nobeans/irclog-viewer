@@ -9,6 +9,9 @@
     <div class="body summary">
       <my:flashMessage />
       <h1><g:message code="summary" /></h1>
+      <div class="caption">
+        <g:message code="summary.caption" />
+      </div>
       <div class="list">
         <table>
           <thead>
@@ -17,13 +20,14 @@
                 <img src="${createLinkTo(dir:'images',file:'singleTitle.png')}" alt="Search all logs" />
               </th>
               <th class="channel"><g:message code="summary.channel" /></th>
-              <th class="count"><g:message code="summary.today" /></th>
-              <th class="count"><g:message code="summary.yesterday" /></th>
-              <th class="count"><g:message code="summary.twoDaysAgo" /></th>
-              <th class="count"><g:message code="summary.threeDaysAgo" /></th>
-              <th class="count"><g:message code="summary.fourDaysAgo" /></th>
-              <th class="count"><g:message code="summary.fiveDaysAgo" /></th>
-              <th class="count"><g:message code="summary.sixDaysAgo" /></th>
+              <% def today = new Date() %>
+              <th class="count" title="${my.dateFormat(format:'M/d(E)', value:today)}"><g:message code="summary.today" /></th>
+              <th class="count" title="${message(code:'summary.yesterday')}"><my:dateFormat format="M/d(E)" value="${today - 1}" /></th>
+              <th class="count" title="${message(code:'summary.twoDaysAgo')}"><my:dateFormat format="M/d(E)" value="${today - 2}" /></th>
+              <th class="count" title="${message(code:'summary.threeDaysAgo')}"><my:dateFormat format="M/d(E)" value="${today - 3}" /></th>
+              <th class="count" title="${message(code:'summary.fourDaysAgo')}"><my:dateFormat format="M/d(E)" value="${today - 4}" /></th>
+              <th class="count" title="${message(code:'summary.fiveDaysAgo')}"><my:dateFormat format="M/d(E)" value="${today - 5}" /></th>
+              <th class="count" title="${message(code:'summary.sixDaysAgo')}"><my:dateFormat format="M/d(E)" value="${today - 6}" /></th>
               <th class="totalCount"><g:message code="summary.total" /></th>
               <th class="latestIrclog"><g:message code="summary.latestIrclog" /></th>
             </tr>

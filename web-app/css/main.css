@@ -760,6 +760,10 @@ html>/**/body .viewer .list tr:hover.highlight.optionType td.irclog-message {
 
 /* Summary */
 
+.summary .caption {
+    padding: 5px 0 8px 0;
+    line-height: 1.5em;
+}
 .summary .searchAllLogs {
     width: 1em;
 }
@@ -779,5 +783,6 @@ html>/**/body .viewer .list tr:hover.highlight.optionType td.irclog-message {
 }
 .summary .latestIrclog .time {
     padding-right: .7em;
+    white-space: nowrap;
 }
 
