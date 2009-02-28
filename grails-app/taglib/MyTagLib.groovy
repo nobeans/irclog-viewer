@@ -3,17 +3,24 @@ class MyTagLib {
     static namespace = 'my'
 
     def dateFormat = { attrs ->
+        if (!attrs.format || !attrs.value) return
         out << new java.text.SimpleDateFormat(attrs.format).format(attrs.value)
     }
 
-    def singleLink = { attrs ->
+    def singleLink = { attrs, body ->
         if (!attrs.channelName || !attrs.time) return
         def shortDate = new java.text.SimpleDateFormat("yyyyMMdd").format(attrs.time)
         def fullDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(attrs.time)
         def anchor = attrs.permaId ? '#pid-' + attrs.permaId : ''
         def title = "${attrs.channelName}@${fullDate}"
         out << g.link(url:"/irclog/the/${attrs.channelName.substring(1)}/${shortDate}/${anchor}", title:"${title}") {
-            """<img src="${createLinkTo(dir:'images', file:attrs.image)}" alt="Link to ${title}" />"""
+            if (attrs.image) {
+                return """<img src="${createLinkTo(dir:'images', file:attrs.image)}" alt="Link to ${title}" />"""
+            } else if (attrs.text) {
+                return attrs.text
+            } else {
+                return body()
+            }
         }
     }
 
@@ -99,5 +106,9 @@ class MyTagLib {
 
     def searchAllLogsLink = { attrs ->
         out << "/irclog/viewer?channel=${attrs.channel.name.replace(/#/, '%23')}&period=all&nick=&message=&_type="
+    }
+
+    def summaryLink = { attrs ->
+        out << ((attrs.count == 0) ? 0 : singleLink([*:attrs, text:attrs.count]))
     }
 }

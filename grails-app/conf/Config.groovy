@@ -59,6 +59,7 @@ log4j {
         grails {
             app {
                 controller='info'
+                service='info'
             }
         }
 

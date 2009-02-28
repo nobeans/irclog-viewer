@@ -1,6 +1,7 @@
 <%-- 未ログイン --%>
 <g:isNotLoggedIn>
   <ul>
+    <my:createNavLinkIfNotCurrent controller="summary" />
     <my:createNavLinkIfNotCurrent controller="mixedViewer" />
     <my:createNavLinkIfNotCurrent controller="channel" action="list" />
     <my:createNavLinkIfNotCurrent controller="register" action="create" />
@@ -14,6 +15,7 @@
 <%-- ログイン中 --%>
 <g:isLoggedIn>
   <ul>
+    <my:createNavLinkIfNotCurrent controller="summary" />
     <my:createNavLinkIfNotCurrent controller="mixedViewer" />
     <my:createNavLinkIfNotCurrent controller="channel" action="list" />
     <g:ifAnyGranted role="ROLE_ADMIN">

@@ -4,6 +4,11 @@ if (!IRCLOG) IRCLOG = {};
 
 (function() {
 
+    // 指定されたURLに遷移する。
+    IRCLOG.goto = function(url) {
+        document.location = url;
+    }
+
     // Refererをつけずにリンクする。
     // FIXME:この方法ではOperaでは対応できない。
     // (参考)

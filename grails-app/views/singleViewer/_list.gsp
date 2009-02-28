@@ -36,7 +36,7 @@
               title="${message(code:'singleViewer.toggleTypeFilter.button.tooltips.filtered')}">
               <g:message code="singleViewer.toggleTypeFilter.button.filtered" />
             </button>
-            <button id="clearHighlight" onclick="IRCLOG.highlightLine('');document.location='#'"
+            <button id="clearHighlight" onclick="IRCLOG.highlightLine('');IRCLOG.goto('#')"
               disabled="disabled"
               title="${message(code:'singleViewer.clearHighlight.button.tooltips')}">
               <g:message code="singleViewer.clearHighlight.button" />
@@ -52,7 +52,7 @@
         <tr id="pid-${irclog.permaId}"
             class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${isEssentialType(irclog.type) ? 'essentialType' : 'optionType'} clickable"
             ${isDefaultHiddenType(irclog.type) ? 'style="display:none"' : ''}
-            onclick="IRCLOG.highlightLine('pid-${irclog.permaId}');document.location='#pid-${irclog.permaId}'">
+            onclick="IRCLOG.highlightLine('pid-${irclog.permaId}');IRCLOG.goto('#pid-${irclog.permaId}')">
           <td class="irclog-time"><my:dateFormat value="${irclog.time}" format="HH:mm:ss" /></td>
           <td class="irclog-nick ${irclog.nick?.encodeAsHTML()}" title="${getPersonByNick(irclog.nick)?.realName?.encodeAsHTML() ?: ''}">${irclog.nick?.encodeAsHTML()}</td>
           <td class="irclog-message wordBreak"><my:messageFormat value="${irclog.message}" /></td>

@@ -4,10 +4,6 @@ if (!IRCLOG) IRCLOG = {};
 
 (function() {
 
-    IRCLOG.goto = function(url) {
-        document.location = url;
-    }
-
     IRCLOG.toggleJoinToSecretChannel = function() {
         var button = $('join');
         button.toggleClassName('active');
