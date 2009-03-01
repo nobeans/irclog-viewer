@@ -49,8 +49,8 @@ class SummaryService {
 
     /** 全チャンネルのサマリ情報を取得する。 */
     private List<Summary> getAllSummaryList(params) {
-        // 今日の分のサマリを更新
-        updateTodaySummary()
+        // サマリ更新
+        updateSummary()
 
         // ソート条件を解決してから、サマリを取得
         resolveSortCondition(params)
@@ -100,6 +100,50 @@ class SummaryService {
         }
     }
 
+    /**
+     * サマリを更新する。
+     * 以下のいずれかの場合は、全てのサマリを更新する。
+     * - (A) サマリが0件の場合
+     * - (B) lastUpdatedが今日以外のサマリレコードが1件以上存在する場合
+     * - (C) サマリレコード件数がirclogテーブル上にログが存在するチャンネル総数と一致しない場合
+     * それ以外の場合は、今日のサマリのみを更新する。
+     */
+    private void updateSummary() {
+        def baseDate = new Date()
+        def df = new SimpleDateFormat("yyyy-MM-dd")
+        def baseDateFormatted = df.format(baseDate)
+
+        // (A) サマリが0件の場合
+        if (Summary.count() == 0) {
+            log.info "サマリが0件のため、全サマリを更新します。"
+            updateAllSummary()
+            return
+        }
+
+        // (B) lastUpdatedが今日以外のサマリレコードが1件以上存在するかどうか
+        int summaryCountInPast = Summary.executeQuery("select count(*) from Summary as s where s.lastUpdated < '${baseDateFormatted} %'")[0]
+        if (summaryCountInPast > 0) {
+            log.info "lastUpdatedが今日以外のサマリレコードが1件以上存在するため、全サマリを更新します。"
+            updateAllSummary()
+            return
+        }
+
+        // (C) サマリレコード件数がirclogテーブル上にログが存在するチャンネル総数と一致しないかどうか
+        // FIXME:
+        //   これはチャンネルを追加した場合そのチャンネルがサマリ対象となるのは翌日から、という運用制約をかけれれば不要となる。
+        //   ログ件数が非常に大きいDBでは、毎回irclogテーブルを検索するのは性能的に不安であるため、最初は(B)の条件はOFFにする。
+        //   チャンネル追加時にサマリレコードをピンポイントで追加する、という処理を入れればこの運用制約も不要になる。
+        //int summaryTotalCount = Summary.count()
+        //int logExistingChannelCount = Irclog.executeQuery("select '1' from Irclog as i where i.channel is not null group by i.channel").size()
+        //if (summaryTotalCount != logExistingChannelCount) {
+        //    log.info "サマリレコード件数がirclogテーブル上にログが存在するチャンネル総数と一致しないため、全サマリを更新します。"
+        //    updateAllSummary()
+        //    return
+        //}
+
+        updateTodaySummary()
+    }
+
     /** 今日の分のサマリを更新する。 */
     private void updateTodaySummary() {
         def baseDate = new Date()
@@ -110,7 +154,8 @@ class SummaryService {
                 summary
             set
                 today = tbl.today,
-                latest_irclog_id = tbl.latest_irclog_id 
+                latest_irclog_id = tbl.latest_irclog_id,
+                last_updated = timestamp '${new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(baseDate)}'
             from
                 (
                     select
@@ -134,9 +179,6 @@ class SummaryService {
                 date_trunc('day', summary.last_updated) = timestamp '${baseDateFormatted}'
         """)
         log.info "Updated today's summary: " + result
-
-        // 今日の分のサマリで更新対象がない＝全体サマリが生成されていない
-        if (result == 0) updateAllSummary()
     }
 
     /** 全ての分のサマリを更新する。 */
