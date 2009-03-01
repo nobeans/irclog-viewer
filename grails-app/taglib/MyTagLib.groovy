@@ -123,4 +123,17 @@ class MyTagLib {
         def params = [message:"TOPIC:", period:"all"]
         out << g.link(controller:'mixedViewer', action:'index', params:params) { body() }
     }
+
+    def withHelp = { attrs, body ->
+        out << """
+            <div class="help">
+              ${body()}
+              <img class="help-button" src="${createLinkTo(dir:'images', file:'help.gif')}" alt="help"
+                onclick="\$('${attrs.id}').toggle()" />
+            </div>
+        """
+    }
+    def help = { attrs, body ->
+        out << """<div class="help-caption" id="${attrs.for}" ${(attrs.visible == 'true') ? '' : 'style="display:none"'}>${body()}</div>"""
+    }
 }

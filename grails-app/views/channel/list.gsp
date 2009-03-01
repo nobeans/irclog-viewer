@@ -9,11 +9,13 @@
   <body>
     <div class="body channel">
       <my:flashMessage />
-      <h1><g:message code="channel.list" default="Channel List" /></h1>
-      <div class="caption">
+      <my:withHelp id="channel-list-caption">
+        <h1><g:message code="channel.list" default="Channel List" /></h1>
+      </my:withHelp>
+      <my:help for="channel-list-caption">
         <g:isLoggedIn><g:message code="channel.list.caption.isLoggedIn" /></g:isLoggedIn>
         <g:isNotLoggedIn><g:message code="channel.list.caption.isNotLoggedIn" /></g:isNotLoggedIn>
-      </div>
+      </my:help>
       <div class="list">
         <table>
           <thead>

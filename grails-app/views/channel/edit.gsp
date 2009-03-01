@@ -7,10 +7,12 @@
   <body>
     <div class="body channel">
       <my:flashMessage bean="${channel}" />
-      <h1><g:message code="channel.edit" default="Edit Channel" /></h1>
-      <div class="caption">
+      <my:withHelp id="channel-edit-caption">
+        <h1><g:message code="channel.edit" default="Edit Channel" /></h1>
+      </my:withHelp>
+      <my:help for="channel-edit-caption" visible="true">
         <g:message code="channel.edit.caption" />
-      </div>
+      </my:help>
       <g:form method="post" >
         <input type="hidden" name="id" value="${channel?.id}" />
         <div class="dialog">

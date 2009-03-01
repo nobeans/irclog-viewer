@@ -113,6 +113,29 @@ input.image {
     word-break: break-all;
 }
 
+.help {
+    margin: 1em 0 .3em 0;
+    padding: 0;
+}
+.help * {
+    display: inline;
+    vertical-align: baseline;
+}
+.help .help-button {
+    cursor: pointer;
+}
+.help-caption {
+    display: block;
+    margin: .2em 0 1em 1em;
+    padding: .5em 1.5em;
+    width: 80%;
+    line-height: 1.5em;
+    font-size: 12px;
+    font-weight: normal;
+    border: 1px solid #dd8;
+    background-color: #ffd;
+}
+
 /* Navigation Menu */
 
 .nav {
