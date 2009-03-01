@@ -37,8 +37,7 @@
                   <label for="isPrivate"><g:message code="channel.isPrivate" default="Is Private" />:</label>
                 </th>
                 <td valign="top" class="value ${hasErrors(bean:channel,field:'isPrivate','errors')}">
-                  <g:checkBox name="isPrivate" value="${channel?.isPrivate}" ></g:checkBox><br/>
-                  <g:message code="channel.isPrivate.editCaption" />
+                  <g:checkBox name="isPrivate" value="${channel?.isPrivate}" ></g:checkBox> <g:message code="channel.isPrivate.editCaption" />
                 </td>
               </tr> 
               <tr class="prop">
