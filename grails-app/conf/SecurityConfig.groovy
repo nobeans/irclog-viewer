@@ -11,7 +11,7 @@ security {
     algorithm = 'MD5' 
     //use Base64 text ( true or false )
     encodeHashAsBase64 = false
-    errorPage = '/summary/index'
+    errorPage = '/login/denied'
 
     /** login user domain class name and fields */
     loginUserDomainClass = "Person"
@@ -55,10 +55,10 @@ security {
         /channel/list/**=IS_AUTHENTICATED_ANONYMOUSLY
         /channel/show/**=IS_AUTHENTICATED_ANONYMOUSLY
         /channel/kick/**=ROLE_ADMIN
-        /channel/**=IS_AUTHENTICATED_FULLY
+        /channel/**=ROLE_USER,ROLE_ADMIN
         /register/create/**=IS_AUTHENTICATED_ANONYMOUSLY
         /register/save/**=IS_AUTHENTICATED_ANONYMOUSLY
-        /register/**=IS_AUTHENTICATED_FULLY
+        /register/**=ROLE_USER,ROLE_ADMIN
         /person/**=ROLE_ADMIN
         /**=IS_AUTHENTICATED_ANONYMOUSLY
     """

@@ -24,9 +24,15 @@ class LoginController extends Base {
         }
     }
 
-    /** ログイン不許可画面を表示する。 */
+    /** アクセス不許可 */
     def denied = {
-        log.info "Denied to Login"
+        log.warn "Denied to access: ${request['javax.servlet.forward.request_uri']} by ${loginUserName}"
+        def statusCode = request['javax.servlet.error.status_code']
+        if (statusCode) {
+            flash.errors = ['login.accessDenied.error.' + statusCode]
+        } else {
+            flash.errors = ['login.accessDenied.error']
+        }
         redirect(uri: config.irclog.viewer.defaultTargetUrl)
     }
 
