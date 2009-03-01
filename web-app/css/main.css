@@ -393,6 +393,8 @@ html>/**/body .list tr:hover {
 .prop .caption {
     font-size: .85em;
     margin-left: .5em;
+    background: #fff;
+    line-height: 1.3em;
 }
 
 /* Action Buttons */

@@ -19,6 +19,7 @@
                 <td valign='top' class='value ${hasErrors(bean:person,field:'loginName','errors')}'>
                   <div>${person?.loginName?.encodeAsHTML()}</div>
                 </td>
+                <td class="caption"></td>
               </tr>
               <tr class='prop'>
                 <td valign='top' class='name'>
@@ -26,8 +27,8 @@
                 </td>
                 <td valign='top' class='value ${hasErrors(bean:person,field:'realName','errors')}'>
                   <input type="text" name='realName' value="${person?.realName?.encodeAsHTML()}"/>
-                  <span class="caption"><g:message code="person.realName.caption" /></span>
                 </td>
+                <td class="caption"><g:message code="person.realName.caption" /></td>
               </tr>
               <tr class='prop'>
                 <td valign='top' class='name'>
@@ -36,6 +37,7 @@
                 <td valign='top' class='value ${hasErrors(bean:person,field:'password','errors')}'>
                   <input type="password" name='password' value="${person?.password?.encodeAsHTML()}"/>
                 </td>
+                <td class="caption"></td>
               </tr>
               <tr class='prop'>
                 <td valign='top' class='name'>
@@ -44,6 +46,7 @@
                 <td valign='top' class='value ${hasErrors(bean:person,field:'password','errors')}'>
                   <input type="password" name='repassword' value="${person?.repassword?.encodeAsHTML()}"/>
                 </td>
+                <td class="caption"></td>
               </tr>
               <tr class='prop'>
                 <td valign='top' class='name'>
@@ -51,8 +54,8 @@
                 </td>
                 <td valign='top' class='value ${hasErrors(bean:person,field:'nicks','errors')}'>
                   <input type="nicks" name='nicks' value="${person?.nicks?.encodeAsHTML()}"/>
-                  <span class="caption"><g:message code="person.nicks.caption" /></span>
                 </td>
+                <td class="caption"><g:message code="person.nicks.caption" /></td>
               </tr>
               <tr class='prop'>
                 <td valign='top' class='name'>
@@ -60,8 +63,8 @@
                 </td>
                 <td valign='top' class='value ${hasErrors(bean:person,field:'color','errors')}'>
                   <input type="color" name='color' value="${person?.color?.encodeAsHTML()}"/>
-                  <span class="caption"><g:message code="person.color.caption" /></span>
                 </td>
+                <td class="caption"><g:message code="person.color.caption" /></td>
               </tr>
             </tbody>
           </table>
