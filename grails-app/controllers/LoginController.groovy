@@ -16,6 +16,7 @@ class LoginController extends Base {
             // セッション有効期間をカスタマイズ
             session.maxInactiveInterval = config.irclog.session.maxInactiveInterval
 
+            log.info "Logged in by ${loginUserName}"
             redirect(uri: config.irclog.viewer.defaultTargetUrl)
         }
         else {
@@ -25,6 +26,7 @@ class LoginController extends Base {
 
     /** ログイン不許可画面を表示する。 */
     def denied = {
+        log.info "Denied to Login"
         redirect(uri: config.irclog.viewer.defaultTargetUrl)
     }
 
