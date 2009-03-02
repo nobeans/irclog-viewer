@@ -93,6 +93,9 @@ class ChannelService {
         // nullで更新するだけで、ログレコードの削除はしない。
         Irclog.executeUpdateNativeQuery("update irclog set channel_id = null where channel_id = :channelId", null, [channelId:channel.id])
 
+        // サマリが存在している場合は削除する。
+        println Summary.findByChannel(channel)?.delete()
+
         // チャンネルを削除する。
         channel.delete()
     }
