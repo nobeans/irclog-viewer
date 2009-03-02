@@ -5,6 +5,7 @@ class ChannelController extends Base {
 
     def allowedMethods = [delete:'POST', save:'POST', update:'POST', join:'POST']
     def channelService
+    def summaryService
     
     def index = { redirect(action:list, params:params) }
 
@@ -86,6 +87,9 @@ class ChannelController extends Base {
             if (channel.isPrivate) {
                 Person.get(loginUserDomain.id).addToChannels(channel)
             }
+
+            // 全サマリ更新を実行して、新規チャンネルのログが既に存在する場合にサマリも生成する。
+            summaryService.updateAllSummary()
 
             flash.message = "channel.created"
             flash.args = [channel.id]

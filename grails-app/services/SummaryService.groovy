@@ -112,6 +112,8 @@ class SummaryService {
      * - (A) サマリが0件の場合
      * - (B) lastUpdatedが今日以外のサマリレコードが1件以上存在する場合
      * - (C) サマリレコード件数がirclogテーブル上にログが存在するチャンネル総数と一致しない場合
+     *       →これで救えるのは追加されたばかりのチャンネルに対する過去ログレコードのサマリ情報であるが、
+     *         チャンネル追加時に全サマリ更新処理を実行するため、対応は不要。(A)(B)のみとする。
      * それ以外の場合は、今日のサマリのみを更新する。
      */
     private void updateSummary() {
@@ -133,19 +135,6 @@ class SummaryService {
             updateAllSummary()
             return
         }
-
-        // (C) サマリレコード件数がirclogテーブル上にログが存在するチャンネル総数と一致しないかどうか
-        // FIXME:
-        //   これはチャンネルを追加した場合そのチャンネルがサマリ対象となるのは翌日から、という運用制約をかけれれば不要となる。
-        //   ログ件数が非常に大きいDBでは、毎回irclogテーブルを検索するのは性能的に不安であるため、最初は(B)の条件はOFFにする。
-        //   チャンネル追加時にサマリレコードをピンポイントで追加する、という処理を入れればこの運用制約も不要になる。
-        //int summaryTotalCount = Summary.count()
-        //int logExistingChannelCount = Irclog.executeQuery("select '1' from Irclog as i where i.channel is not null group by i.channel").size()
-        //if (summaryTotalCount != logExistingChannelCount) {
-        //    log.info "サマリレコード件数がirclogテーブル上にログが存在するチャンネル総数と一致しないため、全サマリを更新します。"
-        //    updateAllSummary()
-        //    return
-        //}
 
         updateTodaySummary()
     }
