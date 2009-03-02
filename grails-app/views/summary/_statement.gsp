@@ -14,15 +14,15 @@
           </th>
           <g:sortableColumn property="channel" titleKey="summary.channel" action="index" />
           <% def today = new Date() %>
-          <g:sortableColumn property="today"        class="count" titleKey="summary.today" />
-          <g:sortableColumn property="yesterday"    class="count" title="${my.dateFormat(format:'M/d(E)', value:today - 1)}" />
-          <g:sortableColumn property="twoDaysAgo"   class="count" title="${my.dateFormat(format:'M/d(E)', value:today - 2)}" />
-          <g:sortableColumn property="threeDaysAgo" class="count" title="${my.dateFormat(format:'M/d(E)', value:today - 3)}" />
-          <g:sortableColumn property="fourDaysAgo"  class="count" title="${my.dateFormat(format:'M/d(E)', value:today - 4)}" />
-          <g:sortableColumn property="fiveDaysAgo"  class="count" title="${my.dateFormat(format:'M/d(E)', value:today - 5)}" />
-          <g:sortableColumn property="sixDaysAgo"   class="count" title="${my.dateFormat(format:'M/d(E)', value:today - 6)}" />
-          <g:sortableColumn property="total"        class="count" titleKey="summary.total" />
-          <g:sortableColumn property="latestIrclog" class="latestIrclog" titleKey="summary.latestIrclog" />
+          <g:sortableColumn property="today"        class="count" titleKey="summary.today" action="index" />
+          <g:sortableColumn property="yesterday"    class="count" title="${my.dateFormat(format:'M/d(E)', value:today - 1)}" action="index" />
+          <g:sortableColumn property="twoDaysAgo"   class="count" title="${my.dateFormat(format:'M/d(E)', value:today - 2)}" action="index" />
+          <g:sortableColumn property="threeDaysAgo" class="count" title="${my.dateFormat(format:'M/d(E)', value:today - 3)}" action="index" />
+          <g:sortableColumn property="fourDaysAgo"  class="count" title="${my.dateFormat(format:'M/d(E)', value:today - 4)}" action="index" />
+          <g:sortableColumn property="fiveDaysAgo"  class="count" title="${my.dateFormat(format:'M/d(E)', value:today - 5)}" action="index" />
+          <g:sortableColumn property="sixDaysAgo"   class="count" title="${my.dateFormat(format:'M/d(E)', value:today - 6)}" action="index" />
+          <g:sortableColumn property="total"        class="count" titleKey="summary.total"  action="index"/>
+          <g:sortableColumn property="latestIrclog" class="latestIrclog" titleKey="summary.latestIrclog"  action="index"/>
         </tr>
       </thead>
       <tbody>
