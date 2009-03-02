@@ -87,16 +87,22 @@ class SummaryService {
     }
 
     private void resolveSortCondition(params) {
-        // orderの指定がないか不正値の場合は、asc固定
-        if (!params.order || !['asc', 'desc'].contains(params.order)) params.order = 'asc'
+        // orderの指定がないか不正値の場合は、desc固定とする。
+        // この表ではチャンネル以外は降順(desc)の方がわかりやすい。
+        // 実際はデフォルト時以外は、どちらかがパラメータで指定されているはずである。
+        // デフォルトの場合は、後述のswitch文でorderも再設定する。
+        if (!params.order || !['asc', 'desc'].contains(params.order)) params.order = 'desc'
 
         switch (params.sort) {
             case 'total': // UI上では単にtotalであるが、内部的にはいったんtotalBeforeYesterdayにする
-                params.sort = 'totalBeforeYesterday'; break;
+                params.sort = 'totalBeforeYesterday'
+                break
             case Summary.SORTABLE:
-                break; // そのまま
+                break // そのまま
             default:
-                params.sort = 'channel'; break;
+                params.sort = 'latestIrclog'
+                params.order = 'desc'
+                break
         }
     }
 
