@@ -605,8 +605,12 @@ html>/**/body .list tr:hover {
     background-color: #ddd;
     color: #999;
 }
+* html .singleViewer .optionButtons {
+    right: 1em;
+}
 * html .singleViewer .optionButtons button {
-    width: 1em;
+    width: 8em;
+    line-height: .8em;
 }
 *:first-child+html.singleViewer .optionButtons button {
     width: 1em;
