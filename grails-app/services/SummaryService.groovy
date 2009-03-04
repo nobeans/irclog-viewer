@@ -12,7 +12,6 @@ class SummaryService {
     /** アクセス可能な全チャンネルのトピック情報(1週間以内の上位5件)を取得する。*/
     public List<Irclog> getAccessibleTopicList(person, accessibleChannelList) {
         def baseDate = new Date()
-        //def df = new SimpleDateFormat("yyyy-MM-dd")
         def df = new SimpleDateFormat("yyyy-MM-dd")
         def baseDateFormatted = df.format(baseDate)
         Irclog.executeNativeQuery("""
@@ -42,6 +41,10 @@ class SummaryService {
         // ただし、ソート順序は反映されず、一番下に不要なものが並ぶだけとなる。
         accessibleChannelList.findAll{!(it in summaryList.channel)}.sort{it.name}.each { channel ->
             summaryList << new Summary(channel:channel, lastUpdated:new Date())
+        }
+
+        if (params.timeMarker) {
+            setupTodayAfterTimeMarker(summaryList, params.timeMarker)
         }
 
         return summaryList
@@ -208,7 +211,25 @@ class SummaryService {
                 type in ${IN_ESSENTIAL_TYPES}
             group by
                 channel_id
-        """)
+        """, [alias:Object])
         log.info "Updated all summary: deleted(${resultDeleted}), inserted(${resultInserted})"
     }
+
+    private void setupTodayAfterTimeMarker(List<Summary> summaryList, Date timeMarker) {
+        // 0:Integer(count), 1:Channel
+        def result = Irclog.withCriteria {
+            projections {
+                rowCount()
+            }
+            isNotNull('channel')
+            ge('time', timeMarker)
+            'in'('type', Irclog.ESSENTIAL_TYPES)
+            groupProperty('channel')
+        }
+        // タイムマーカ以降の件数を反映する。
+        summaryList.each { summary ->
+            summary.todayAfterTimeMarker = result.find{ it[1] == summary.channel }?.getAt(0) ?: 0
+        }
+    }
+
 }

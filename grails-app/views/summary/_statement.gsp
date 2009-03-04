@@ -14,6 +14,7 @@
           </th>
           <g:sortableColumn property="channel" titleKey="summary.channel" action="index" defaultOrder="asc" />
           <% def today = new Date() %>
+          <g:sortableColumn property="todayAfterTimeMarker" class="count" titleKey="summary.todayAfterTimeMarker" action="index" defaultOrder="desc" />
           <g:sortableColumn property="today"        class="count" titleKey="summary.today" action="index" defaultOrder="desc" />
           <g:sortableColumn property="yesterday"    class="count" title="${my.dateFormat(format:'M/d(E)', value:today - 1)}" action="index" defaultOrder="desc" />
           <g:sortableColumn property="twoDaysAgo"   class="count" title="${my.dateFormat(format:'M/d(E)', value:today - 2)}" action="index" defaultOrder="desc" />
@@ -35,6 +36,7 @@
           <td class="channel">
             <g:link controller="channel" action="show" id="${channel.id}" title="${channel.description}">${fieldValue(bean:channel, field:'name')}</g:link>
           </td>
+          <td class="count"><my:summaryLink count="${summary.todayAfterTimeMarker}" channelName="${channel.name}" time="${summary.lastUpdated}"     /></td>
           <td class="count"><my:summaryLink count="${summary.today}"        channelName="${channel.name}" time="${summary.lastUpdated}"     /></td>
           <td class="count"><my:summaryLink count="${summary.yesterday}"    channelName="${channel.name}" time="${summary.lastUpdated - 1}" /></td>
           <td class="count"><my:summaryLink count="${summary.twoDaysAgo}"   channelName="${channel.name}" time="${summary.lastUpdated - 2}" /></td>

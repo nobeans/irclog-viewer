@@ -16,6 +16,9 @@ class Summary {
     int sixDaysAgo    // 6日前
     int totalBeforeYesterday  // 今日をのぞく過去全ての合計
 
+    // 特殊カウント
+    int todayAfterTimeMarker  // 今日のタイムマーカ以降
+
     Irclog latestIrclog     // 最新発言ログ
 
     public int total() {
@@ -33,6 +36,7 @@ class Summary {
     fiveDaysAgo: ${fiveDaysAgo}
     sixDaysAgo: ${sixDaysAgo}
     totalBeforeYesterday: ${totalBeforeYesterday}
+    todayAfterTimeMarker: ${todayAfterTimeMarker} (Include: zero means there is not time-marker)
     latestIrclog: ${latestIrclog}
 }"""
     }
@@ -50,6 +54,8 @@ class Summary {
         'totalBeforeYesterday',
         'latestIrclog'
     ]
+
+    static transients = ['todayAfterTimeMarker']
 
     static belongsTo = Channel
 
