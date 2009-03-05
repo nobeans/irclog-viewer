@@ -22,8 +22,9 @@
       <% def isEssentialType = { type -> Irclog.ESSENTIAL_TYPES.contains(type) } %>
       <g:each in="${irclogList}" status="i" var="irclog">
         <tr class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${isEssentialType(irclog.type) ? 'essentialType' : 'optionType'}">
+        <tr class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${isEssentialType(irclog.type) ? 'essentialType' : 'optionType'} ${timeMarker?.before(irclog.time) ? 'strong' : ''}">
           <td class="irclog-single"><my:singleLink permaId="${irclog.permaId}" time="${irclog.time}" channelName="${irclog.channel.name}" image="single.gif"/></td>
-          <td class="irclog-time"><my:onedayLink time="${irclog.time}" params="${criterion}" /></td>
+          <td class="irclog-time"><my:timeLink time="${irclog.time}" params="${criterion}" /></td>
           <td class="irclog-channel" title="${irclog.channel.description}"><my:channelLink channel="${irclog.channel}" params="${criterion}" /></td>
           <td class="irclog-nick ${irclog.nick?.encodeAsHTML()}" title="${getPersonByNick(irclog.nick)?.realName?.encodeAsHTML() ?: ''}">${irclog.nick?.encodeAsHTML()}</td>
           <td class="irclog-message wordBreak"><my:messageFormat value="${irclog.message}" /></td>

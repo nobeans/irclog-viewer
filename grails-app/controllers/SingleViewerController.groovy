@@ -34,7 +34,8 @@ class SingleViewerController extends Base {
             criterion: criterion,
             relatedDates: relatedDates,
             nickPersonList: nickPersonList,
-            getPersonByNick: createGetPersonByNickClosure(nickPersonList)
+            getPersonByNick: createGetPersonByNickClosure(nickPersonList),
+            timeMarker: session.timeMarker
         ]
         render(view:'index', model:model)
     }

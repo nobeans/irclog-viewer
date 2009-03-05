@@ -646,6 +646,9 @@ html>/**/body .list tr:hover {
 .viewer .list .irclog-time {
     white-space: nowrap;
 }
+.viewer .list .strong .irclog-time {
+    color: red;
+}
 .viewer .list .irclog-channel {
     white-space: nowrap;
 }

@@ -34,7 +34,8 @@ class MixedViewerController extends Base {
             selectablePeriods: SELECTABLE_PERIODS,
             criterion: criterion,
             nickPersonList: nickPersonList,
-            getPersonByNick: createGetPersonByNickClosure(nickPersonList)
+            getPersonByNick: createGetPersonByNickClosure(nickPersonList),
+            timeMarker: session.timeMarker
         ]
         render(view:'index', model:model)
     }

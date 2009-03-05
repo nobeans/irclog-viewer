@@ -42,16 +42,20 @@ class MyTagLib {
         )
     }
 
-    def onedayLink = { attrs ->
+    def timeLink = { attrs ->
         // 指定日部分と時間部分をフォーマットする。
+        def today = new java.text.SimpleDateFormat("yyyy-MM-dd").format(new Date())
         def onedayDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(attrs.time)
-        def time = new java.text.SimpleDateFormat("HH:mm:ss").format(attrs.time)
+        def timeHHmm = new java.text.SimpleDateFormat("HH:mm").format(attrs.time)
+        def timeHHmmss = new java.text.SimpleDateFormat("HH:mm:ss").format(attrs.time)
 
-        // 指定日検索を設定する。
-        def params = [*:attrs.params, period:'oneday', 'period-oneday-date':onedayDate]
-
-        out << g.link(controller:'mixedViewer', action:'index', params:params) { "${onedayDate}" }
-        out << """&nbsp;${time}"""
+        out << g.link(controller:'mixedViewer', action:'index', params:[*:attrs.params, period:'oneday', 'period-oneday-date':onedayDate]) { "${onedayDate}" }
+        out << '&nbsp;'
+        if (onedayDate == today) {
+            out << g.link(controller:'mixedViewer', action:'index', params:[*:attrs.params, period:'today', 'period-today-time':timeHHmm]) { "${timeHHmmss}" }
+        } else {
+            out << timeHHmmss
+        }
     }
 
     def channelLink = { attrs ->
