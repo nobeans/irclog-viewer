@@ -6,7 +6,8 @@ if (!IRCLOG) IRCLOG = {};
 
     // Initialize
     Event.observe(window, 'load', function() {
-        IRCLOG.highlightLine(location.hash.replace('#',''))
+        IRCLOG.highlightLine(location.hash.replace('#',''));
+        setupCalendar();
     });
 
     // 1行すべてハイライトする。
@@ -48,19 +49,10 @@ if (!IRCLOG) IRCLOG = {};
     })();
 
     // カレンダ設定
-    (function() {
+    var setupCalendar = function() {
         var baseId = "singleCalendar";
         var calendarId = baseId + "-calendar"
         var buttonId = baseId + "-button"
-
-        // 初期化
-        Event.observe(window, "load", function() {
-            var calendar = IRCLOG.createCalendar(calendarId);
-            Event.observe(buttonId, "click",
-                IRCLOG.createCalendarToggleHandler(calendar, function() { return $('currentDate').innerHTML }, $(buttonId))
-            );
-            calendar.selectEvent.subscribe(createHandleSelect(calendar), calendar, true);
-        });
 
         var createHandleSelect = function(calendar) {
             return function(type, args, obj) {
@@ -80,6 +72,12 @@ if (!IRCLOG) IRCLOG = {};
                 document.location = url;
             }
         }
-    })();
+
+        var calendar = IRCLOG.createCalendar(calendarId);
+        Event.observe(buttonId, "click",
+            IRCLOG.createCalendarToggleHandler(calendar, function() { return $('currentDate').innerHTML }, $(buttonId))
+        );
+        calendar.selectEvent.subscribe(createHandleSelect(calendar), calendar, true);
+    }
 
 })();

@@ -12,6 +12,8 @@ if (!IRCLOG) IRCLOG = {};
         $('search-period').observe('change', handleChangePeriod);
         handleChangePeriod(); // 表示時にも実行する (イベントの強制発火ができればいいのだが)
 
+        setupCalendar();
+
         setOnEnterClickButton('search-submit', "search");
     });
 
@@ -105,19 +107,11 @@ if (!IRCLOG) IRCLOG = {};
     })();
 
     // カレンダ設定
-    (function() {
+    var setupCalendar = function() {
         var baseId = "period-oneday-date";
         var calendarId = baseId + "-calendar";
         var buttonId = baseId + "-button";
         var textId = baseId + "-text";
-
-        // 初期化
-        Event.observe(window, "load", function() {
-            var calendar = IRCLOG.createCalendar(calendarId);
-            var toggleFunc = IRCLOG.createCalendarToggleHandler(calendar, function() { return $(textId).value }, $(textId));
-            Event.observe(buttonId, "click", toggleFunc);
-            calendar.selectEvent.subscribe(createHandleSelect(calendar, toggleFunc), calendar, true);
-        });
 
         var createHandleSelect = function(calendar, toggleFunc) {
             return function(type, args, obj) {
@@ -129,6 +123,11 @@ if (!IRCLOG) IRCLOG = {};
                 toggleFunc(); // このトグル関数で非表示にしないと内部状態がずれてしまうため。
             }
         }
-    })();
+
+        var calendar = IRCLOG.createCalendar(calendarId);
+        var toggleFunc = IRCLOG.createCalendarToggleHandler(calendar, function() { return $(textId).value }, $(textId));
+        Event.observe(buttonId, "click", toggleFunc);
+        calendar.selectEvent.subscribe(createHandleSelect(calendar, toggleFunc), calendar, true);
+    }
 
 })()
