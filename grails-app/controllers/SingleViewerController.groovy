@@ -27,13 +27,14 @@ class SingleViewerController extends Base {
         def relatedDates = channelService.getRelatedDates(selectableChannels, params.date, Channel.findByName(params.channel), criterion.isIgnoredOptionType)
 
         // モデルを作成して、デフォルトビューへ。
+        def nickPersonList = Person.list()
         def model = [
             irclogList: searchResult.list,
             selectableChannels: selectableChannels,
             criterion: criterion,
             relatedDates: relatedDates,
-            nickPersonList: getNickPersonList(),
-            getPersonByNick: createGetPersonByNickClosure()
+            nickPersonList: nickPersonList,
+            getPersonByNick: createGetPersonByNickClosure(nickPersonList)
         ]
         render(view:'index', model:model)
     }
@@ -70,18 +71,12 @@ class SingleViewerController extends Base {
         channels
     }
 
-    private getNickPersonList() {
-        // FIXME:対象chに関連するユーザだけに絞った方がもっと軽くなる。
-        //       が、せいぜい数十人規模であれば最適化する必要性も薄い。
-        Person.list()
-    }
-
     /** mixed側での現在のtype条件がallかどうか。*/
     private getCurrentTypeInMixed() {
         session['IRCLOG_VIEWER_CRITERION']?.type ?: 'filtered'
     }
 
-    private createGetPersonByNickClosure() {
+    private createGetPersonByNickClosure(nickPersonList) {
         def cache = [:] // ↓で作られるクロージャに対するグローバル的な変数
         return { nick ->
             if (cache.containsKey(nick)) {

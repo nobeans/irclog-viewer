@@ -92,7 +92,7 @@ class IrclogSearchService {
     // ----------------------------------------------
     // 対象期間:〜から
     private resolveBeginDate_today(criterion) {
-        getCalendarAtZeroHourOfToday().getTime()
+        criterion['period-today-time-object'] ?: getCalendarAtZeroHourOfToday().getTime()
     }
     private resolveBeginDate_oneday(criterion) {
         try {

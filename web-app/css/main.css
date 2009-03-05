@@ -534,7 +534,12 @@ html>/**/body .list tr:hover {
     border: 1px solid #ccc;
     z-index: 1;
 }
-.mixedViewer .search * {
+.mixedViewer .search  {
+    font-size: .96em;
+}
+.mixedViewer .search label,
+.mixedViewer .search input,
+.mixedViewer .search img {
     font-size: .96em;
     vertical-align: middle;
 }
@@ -543,6 +548,9 @@ html>/**/body .list tr:hover {
 }
 .mixedViewer .search #period-oneday-date-text {
     width: 6.5em;
+}
+.mixedViewer .search #period-today-time-text {
+    width: 4em;
 }
 .mixedViewer .search #search-channel {
     width: 6em;

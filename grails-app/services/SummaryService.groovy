@@ -211,7 +211,7 @@ class SummaryService {
                 type in ${IN_ESSENTIAL_TYPES}
             group by
                 channel_id
-        """, [alias:Object])
+        """)
         log.info "Updated all summary: deleted(${resultDeleted}), inserted(${resultInserted})"
     }
 

@@ -10,7 +10,11 @@ if (!IRCLOG) IRCLOG = {};
         highlightSearchedWord('message');
 
         $('search-period').observe('change', handleChangePeriod);
-        handleChangePeriod(); // 表示時にも実行する (イベントの強制発火ができればいいのだが)
+
+        $('period-today-time-button').observe('click', function(){
+            var dateFormat = new DateFormat("HH:mm");
+            $('period-today-time-text').value = dateFormat.format(new Date());
+        });
 
         setupCalendar();
 
@@ -41,13 +45,15 @@ if (!IRCLOG) IRCLOG = {};
     })();
 
     var handleChangePeriod = function(event) {
-        // イベントから取得したいが、load時にも実行したい。
-        // prototype.js 1.5系では、イベントの強制Fireは対応してないので、
-        // 対象が固定要素だということもあって、固定で書いてみた。
-        //var ele = Event.element(event);
-        var ele = $('search-period');
-
+        var ele = Event.element(event);
         var selectedValue = ele.options[ele.selectedIndex].value;
+        if (selectedValue == 'today') {
+            $('period-today-select').show();
+            $('period-today-time-text').disabled = false;
+        } else {
+            $('period-today-select').hide();
+            $('period-today-time-text').disabled = true;
+        }
         if (selectedValue == 'oneday') {
             $('period-oneday-select').show();
             $('period-oneday-date-text').disabled = false;

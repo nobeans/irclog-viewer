@@ -1,3 +1,6 @@
+import java.text.SimpleDateFormat
+import java.text.ParseException
+
 /**
  * IRCログのミックス表示モード用コントローラ。
  */
@@ -23,14 +26,15 @@ class MixedViewerController extends Base {
         flash.message = null
 
         // モデルを作成して、デフォルトビューへ。
+        def nickPersonList = Person.list()
         def model = [
             irclogList: searchResult.list,
             irclogCount: searchResult.totalCount,
             selectableChannels: getSelectableChannels(),
             selectablePeriods: SELECTABLE_PERIODS,
             criterion: criterion,
-            nickPersonList: getNickPersonList(),
-            getPersonByNick: createGetPersonByNickClosure()
+            nickPersonList: nickPersonList,
+            getPersonByNick: createGetPersonByNickClosure(nickPersonList)
         ]
         render(view:'index', model:model)
     }
@@ -64,6 +68,7 @@ class MixedViewerController extends Base {
             criterion = session['IRCLOG_VIEWER_CRITERION']
             log.debug "Criterion restored from session."
         }
+
         // 新しくリクエストパラメータからパースする。
         else {
             criterion = [
@@ -79,7 +84,33 @@ class MixedViewerController extends Base {
             criterion.remove('') // 値が空のものを除外
             log.debug "Criterion parsed from params."
         }
-        session['IRCLOG_VIEWER_CRITERION'] = criterion // いったん別の画面から戻ってきた場合などのために、検索条件をセッションに待避する。
+
+        // タイムマーカがある場合はセッションに格納する。
+        // FIXME:日付パースの部分はUtil化する。
+        if (criterion.period == 'today' && params['period-today-time']) {
+            if (params['period-today-time'] ==~ /([01]?[0-9]|2[0-3]):([0-5]?[0-9])/) {
+                def today = new SimpleDateFormat('yyyy-MM-dd ').format(new Date())
+                try {
+                    session.timeMarker = new SimpleDateFormat('yyyy-MM-dd HH:mm').parse(today + params['period-today-time'])
+                } catch (ParseException e) {
+                    flash.errors = ['mixedViewer.search.timeWorker.error']
+                    session.removeAttribute('timeMarker')
+                }
+            } else {
+                flash.errors = ['mixedViewer.search.timeWorker.error']
+                session.removeAttribute('timeMarker')
+            }
+        } else {
+            session.removeAttribute('timeMarker')
+        }
+        if (session.timeMarker) {
+            criterion['period-today-time'] = new SimpleDateFormat('HH:mm').format(session.timeMarker) // for View
+            criterion['period-today-time-object'] = session.timeMarker // for Service FIXME:Serviceで別途Utilを使ってDate化する方向で整理
+        }
+
+        // いったん別の画面から戻ってきた場合などのために、検索条件をセッションに待避する。
+        session['IRCLOG_VIEWER_CRITERION'] = criterion
+
         log.debug "Criterion: " + criterion
         criterion
     }
@@ -91,13 +122,7 @@ class MixedViewerController extends Base {
         channels
     }
 
-    private getNickPersonList() {
-        // FIXME:対象chに関連するユーザだけに絞った方がもっと軽くなる。
-        //       が、せいぜい数十人規模であれば最適化する必要性も薄い。
-        Person.list()
-    }
-
-    private createGetPersonByNickClosure() {
+    private createGetPersonByNickClosure(nickPersonList) {
         def cache = [:] // ↓で作られるクロージャに対するグローバル的な変数
         return { nick ->
             if (cache.containsKey(nick)) {

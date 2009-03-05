@@ -7,6 +7,7 @@
     <g:javascript library="yui" />
     <yui:javascript dir="calendar" file="calendar.js" />
     <g:javascript library="calendar" />
+    <g:javascript library="dateformat" />
     <g:javascript library="mixedViewer" />
     <title><g:message code="mixedViewer" /></title>
   </head>
