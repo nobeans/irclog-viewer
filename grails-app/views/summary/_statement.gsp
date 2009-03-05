@@ -15,7 +15,9 @@
           <g:sortableColumn property="channel" titleKey="summary.channel" action="index" defaultOrder="asc" />
           <% def today = new Date() %>
           <g:if test="${session.timeMarker}">
-            <g:sortableColumn property="todayAfterTimeMarker" class="count" titleKey="summary.todayAfterTimeMarker" action="index" defaultOrder="desc" />
+            <my:sortableColumn property="todayAfterTimeMarker" class="count" action="index" defaultOrder="desc" >
+              <img src="${createLinkTo(dir:'images', file:'clock.png')}" alt="Clock" />
+            </my:sortableColumn>
           </g:if>
           <g:sortableColumn property="today"        class="count" titleKey="summary.today" action="index" defaultOrder="desc" />
           <g:sortableColumn property="yesterday"    class="count" title="${my.dateFormat(format:'M/d(E)', value:today - 1)}" action="index" defaultOrder="desc" />

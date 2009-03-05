@@ -69,7 +69,6 @@ class MixedViewerController extends Base {
             criterion = session['IRCLOG_VIEWER_CRITERION']
             log.debug "Criterion restored from session."
         }
-
         // 新しくリクエストパラメータからパースする。
         else {
             criterion = [
@@ -88,25 +87,22 @@ class MixedViewerController extends Base {
 
         // タイムマーカがある場合はセッションに格納する。
         // FIXME:日付パースの部分はUtil化する。
-        if (criterion.period == 'today' && params['period-today-time']) {
-            if (params['period-today-time'] ==~ /([01]?[0-9]|2[0-3]):([0-5]?[0-9])/) {
+        if (criterion.period == 'today') {
+            if (params['period-today-time'] == '') {
+                session.removeAttribute('timeMarker')
+            } else if (params['period-today-time'] ==~ /([01]?[0-9]|2[0-3]):([0-5]?[0-9])/) {
                 def today = new SimpleDateFormat('yyyy-MM-dd ').format(new Date())
                 try {
                     session.timeMarker = new SimpleDateFormat('yyyy-MM-dd HH:mm').parse(today + params['period-today-time'])
+                    criterion['period-today-time'] = new SimpleDateFormat('HH:mm').format(session.timeMarker) // for View
+                    criterion['period-today-time-object'] = session.timeMarker // for Service FIXME:Serviceで別途Utilを使ってDate化する方向で整理
                 } catch (ParseException e) {
                     flash.errors = ['mixedViewer.search.timeWorker.error']
                     session.removeAttribute('timeMarker')
                 }
-            } else {
-                flash.errors = ['mixedViewer.search.timeWorker.error']
-                session.removeAttribute('timeMarker')
             }
         } else {
             session.removeAttribute('timeMarker')
-        }
-        if (session.timeMarker) {
-            criterion['period-today-time'] = new SimpleDateFormat('HH:mm').format(session.timeMarker) // for View
-            criterion['period-today-time-object'] = session.timeMarker // for Service FIXME:Serviceで別途Utilを使ってDate化する方向で整理
         }
 
         // いったん別の画面から戻ってきた場合などのために、検索条件をセッションに待避する。

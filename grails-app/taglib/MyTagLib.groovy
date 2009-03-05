@@ -50,7 +50,7 @@ class MyTagLib {
         def timeHHmmss = new java.text.SimpleDateFormat("HH:mm:ss").format(attrs.time)
 
         out << g.link(controller:'mixedViewer', action:'index', params:[*:attrs.params, period:'oneday', 'period-oneday-date':onedayDate]) { "${onedayDate}" }
-        out << '&nbsp;'
+        out << '&nbsp;' << '&nbsp;'
         if (onedayDate == today) {
             out << g.link(controller:'mixedViewer', action:'index', params:[*:attrs.params, period:'today', 'period-today-time':timeHHmm]) { "${timeHHmmss}" }
         } else {
@@ -140,4 +140,45 @@ class MyTagLib {
     def help = { attrs, body ->
         out << """<div class="help-caption" id="${attrs.for}" ${(attrs.visible == 'true') ? '' : 'style="display:none"'}>${body()}</div>"""
     }
+
+    // 標準の拡張版
+	def sortableColumn = { attrs, body ->
+		def writer = out
+		if (!attrs.property) throwTagError("Tag [sortableColumn] is missing required attribute [property]")
+
+		def property = attrs.remove("property")
+		def action = attrs.action ? attrs.remove("action") : (params.action ? params.action : "list")
+
+		def defaultOrder = attrs.remove("defaultOrder")
+		if (defaultOrder != "desc") defaultOrder = "asc"
+
+		// current sorting property and order
+		def sort = params.sort
+		def order = params.order
+
+		// add sorting property and params to link params
+		def linkParams = [sort:property]
+		if (params.id) linkParams.put("id",params.id)
+		if (attrs.params) linkParams.putAll(attrs.remove("params"))
+
+		// determine and add sorting order for this column to link params
+		attrs.class = (attrs.class ? "${attrs.class} sortable" : "sortable")
+		if (property == sort) {
+			attrs.class = attrs.class + " sorted " + order
+			if (order == "asc") {
+				linkParams.order = "desc"
+			} else {
+				linkParams.order = "asc"
+			}
+		} else {
+			linkParams.order = defaultOrder
+		}
+
+		writer << "<th "
+		// process remaining attributes
+		attrs.each { k, v ->
+			writer << "${k}=\"${v.encodeAsHTML()}\" "
+		}
+		writer << ">${link(action:action, params:linkParams) { body() }}</th>"
+	}
 }

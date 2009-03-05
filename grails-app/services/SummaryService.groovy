@@ -43,10 +43,6 @@ class SummaryService {
             summaryList << new Summary(channel:channel, lastUpdated:new Date())
         }
 
-        if (params.timeMarker) {
-            setupTodayAfterTimeMarker(summaryList, params.timeMarker)
-        }
-
         return summaryList
     }
 
@@ -56,8 +52,11 @@ class SummaryService {
         updateSummary()
 
         // ソート条件を解決してから、サマリを取得
-        resolveSortCondition(params)
+        def originalSort = resolveSortCondition(params)
         def summaryList = Summary.list(params)
+        if (params.timeMarker) {
+            setupTodayAfterTimeMarker(summaryList, params.timeMarker)
+        }
 
         // 独自ソート
         // チャンネル名(channel)
@@ -72,7 +71,7 @@ class SummaryService {
         //  - 今日の件数を加えた累積件数(total)はDB上に存在しないため、totalBeforeYesterdayに差し替えしている。
         //  - このソート結果自体は不要であるが、他のUI上も有効なソートキーとは異なるキーでなければならない。
         //  - ここでは、使われたソートキーがtotalBeforeYesterdayの場合、total()を使って再ソートする。
-        if (params.sort == 'totalBeforeYesterday') {
+        if (originalSort == 'total') {
             params.sort = 'total' // UI上のソートキーに戻す
             summaryList.sort{it.total()}
             return (params.order == 'desc') ? summaryList.reverse() : summaryList
@@ -86,10 +85,22 @@ class SummaryService {
         //  - とはいえ、その後オンラインインポートによって誰かの発言がINSERTされれば、再び期待通りとなる。
         //  - それほど問題とはならないと考えるため、現時点では対処しないこととする。
 
+        // 独自ソート
+        // 累積件素(total/totalBeforeYesterday)
+        //  - 今日の件数を加えた累積件数(total)はDB上に存在しないため、totalBeforeYesterdayに差し替えしている。
+        //  - このソート結果自体は不要であるが、他のUI上も有効なソートキーとは異なるキーでなければならない。
+        //  - ここでは、使われたソートキーがtotalBeforeYesterdayの場合、total()を使って再ソートする。
+        if (originalSort == 'todayAfterTimeMarker') {
+            params.sort = originalSort // UI上のソートキーに戻す
+            summaryList.sort{it.todayAfterTimeMarker}
+            println(summaryList)
+            return (params.order == 'desc') ? summaryList.reverse() : summaryList
+        }
+
         return summaryList
     }
 
-    private void resolveSortCondition(params) {
+    private String resolveSortCondition(params) {
         // orderの指定がないか不正値の場合は、desc固定とする。
         // この表ではチャンネル以外は降順(desc)の方がわかりやすい。
         // 実際はデフォルト時以外は、どちらかがパラメータで指定されているはずである。
@@ -98,10 +109,13 @@ class SummaryService {
 
         switch (params.sort) {
             case 'total': // UI上では単にtotalであるが、内部的にはいったんtotalBeforeYesterdayにする
-                params.sort = 'totalBeforeYesterday'
-                break
+                params.sort = 'totalBeforeYesterday' // 何でも良い
+                return 'total'
+            case 'todayAfterTimeMarker':
+                params.sort = 'totalBeforeYesterday' // 何でも良い
+                return 'todayAfterTimeMarker'
             case Summary.SORTABLE:
-                break // そのまま
+                return params.sort // そのまま
             default:
                 params.sort = 'latestIrclog'
                 params.order = 'desc'
