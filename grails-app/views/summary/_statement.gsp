@@ -12,22 +12,23 @@
           <th class="searchAllLogs" title="${message(code:'summary.searchAllLogs')}">
             <img src="${createLinkTo(dir:'images',file:'singleTitle.png')}" alt="Search all logs" />
           </th>
-          <g:sortableColumn property="channel" titleKey="summary.channel" action="index" defaultOrder="asc" />
-          <% def today = new Date() %>
+          <my:sortableColumn action="index" defaultOrder="asc" property="channel" code="summary.channel" />
           <g:if test="${session.timeMarker}">
-            <my:sortableColumn property="todayAfterTimeMarker" class="count" action="index" defaultOrder="desc" >
+            <my:sortableColumn class="count" action="index" defaultOrder="desc" property="todayAfterTimeMarker" titleKey="summary.todayAfterTimeMarker.tooltips" >
               <img src="${createLinkTo(dir:'images', file:'clock.png')}" alt="Clock" />
             </my:sortableColumn>
           </g:if>
-          <g:sortableColumn property="today"        class="count" titleKey="summary.today" action="index" defaultOrder="desc" />
-          <g:sortableColumn property="yesterday"    class="count" title="${my.dateFormat(format:'M/d(E)', value:today - 1)}" action="index" defaultOrder="desc" />
-          <g:sortableColumn property="twoDaysAgo"   class="count" title="${my.dateFormat(format:'M/d(E)', value:today - 2)}" action="index" defaultOrder="desc" />
-          <g:sortableColumn property="threeDaysAgo" class="count" title="${my.dateFormat(format:'M/d(E)', value:today - 3)}" action="index" defaultOrder="desc" />
-          <g:sortableColumn property="fourDaysAgo"  class="count" title="${my.dateFormat(format:'M/d(E)', value:today - 4)}" action="index" defaultOrder="desc" />
-          <g:sortableColumn property="fiveDaysAgo"  class="count" title="${my.dateFormat(format:'M/d(E)', value:today - 5)}" action="index" defaultOrder="desc" />
-          <g:sortableColumn property="sixDaysAgo"   class="count" title="${my.dateFormat(format:'M/d(E)', value:today - 6)}" action="index" defaultOrder="desc" />
-          <g:sortableColumn property="total"        class="count" titleKey="summary.total" action="index" defaultOrder="desc" />
-          <g:sortableColumn property="latestIrclog" class="latestIrclog" titleKey="summary.latestIrclog" action="index" defaultOrder="desc" />
+          <% def today = new Date() %>
+          <% dateBefore = { delta -> my.dateFormat(format:'M/d(E)', value:(today - delta))} %>
+          <my:sortableColumn class="count" action="index" defaultOrder="desc" property="today" code="summary.today" title="${dateBefore(0)}" />
+          <my:sortableColumn class="count" action="index" defaultOrder="desc" property="yesterday">${dateBefore(1)}</my:sortableColumn>
+          <my:sortableColumn class="count" action="index" defaultOrder="desc" property="twoDaysAgo">${dateBefore(2)}</my:sortableColumn>
+          <my:sortableColumn class="count" action="index" defaultOrder="desc" property="threeDaysAgo">${dateBefore(3)}</my:sortableColumn>
+          <my:sortableColumn class="count" action="index" defaultOrder="desc" property="fourDaysAgo">${dateBefore(4)}</my:sortableColumn>
+          <my:sortableColumn class="count" action="index" defaultOrder="desc" property="fiveDaysAgo">${dateBefore(5)}</my:sortableColumn>
+          <my:sortableColumn class="count" action="index" defaultOrder="desc" property="sixDaysAgo">${dateBefore(6)}</my:sortableColumn>
+          <my:sortableColumn class="count" action="index" defaultOrder="desc" property="total" code="summary.total" titleKey="summary.total.tooltips" />
+          <my:sortableColumn class="latestIrclog" action="index" defaultOrder="desc" property="latestIrclog" code="summary.latestIrclog" />
         </tr>
       </thead>
       <tbody>

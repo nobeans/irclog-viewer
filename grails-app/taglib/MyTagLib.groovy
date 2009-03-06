@@ -1,3 +1,5 @@
+import org.springframework.web.servlet.support.RequestContextUtils as RCU
+
 class MyTagLib {
 
     static namespace = 'my'
@@ -141,7 +143,11 @@ class MyTagLib {
         out << """<div class="help-caption" id="${attrs.for}" ${(attrs.visible == 'true') ? '' : 'style="display:none"'}>${body()}</div>"""
     }
 
-    // 標準の拡張版
+    /**
+     * 標準の拡張版
+     * ラベルはbodyとして指定する。
+     * title属性はHTML本来のtitle属性として扱う。
+     */
 	def sortableColumn = { attrs, body ->
 		def writer = out
 		if (!attrs.property) throwTagError("Tag [sortableColumn] is missing required attribute [property]")
@@ -174,11 +180,30 @@ class MyTagLib {
 			linkParams.order = defaultOrder
 		}
 
+        def messageSource = grailsAttributes.getApplicationContext().getBean("messageSource")
+        def locale = RCU.getLocale(request)
+
+        // determine column title
+        def title = attrs.remove("title")
+        def titleKey = attrs.remove("titleKey") ?: title
+        title = messageSource.getMessage(titleKey, null, title, locale)
+
+        // determine column code
+        def message
+        def code = attrs.remove("code")
+        if (code) {
+            message = messageSource.getMessage(code, null, code, locale)
+        } else {
+            message = body()
+        }
+
 		writer << "<th "
 		// process remaining attributes
 		attrs.each { k, v ->
 			writer << "${k}=\"${v.encodeAsHTML()}\" "
 		}
-		writer << ">${link(action:action, params:linkParams) { body() }}</th>"
+		writer << ">"
+		writer << link(action:action, params:linkParams, title:(title ?: '')) { message }
+		writer << "</th>"
 	}
 }

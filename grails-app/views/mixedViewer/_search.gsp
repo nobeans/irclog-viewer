@@ -4,7 +4,7 @@
       <g:select id="search-period" name="period" from="${selectablePeriods}" value="${criterion?.period}" valueMessagePrefix="mixedViewer.search.period" />
       <span id="period-today-select" ${(criterion?.period == 'today') ? '' : 'style="display:none"'}>
         <input id="period-today-time-text" name="period-today-time" type="text" value="${criterion?.'period-today-time' ?: ''}" maxlength="10" />
-        <img class="button" id="period-today-time-button" src="${createLinkTo(dir:'images', file:'clock.png')}" title="${message(code:'mixedViewer.search.period.today.tooltips')}" alt="Clock" />
+        <img class="button" id="period-today-time-button" src="${createLinkTo(dir:'images', file:'fromClock.png')}" title="${message(code:'mixedViewer.search.period.today.tooltips')}" alt="Clock" />
       </span>
       <span id="period-oneday-select" ${(criterion?.period == 'oneday') ? '' : 'style="display:none"'}>
         <input id="period-oneday-date-text" name="period-oneday-date" type="text" value="${criterion?.'period-oneday-date' ?: ''}" maxlength="10" />
