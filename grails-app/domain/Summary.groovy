@@ -19,7 +19,7 @@ class Summary {
     // 特殊カウント
     int todayAfterTimeMarker  // 今日のタイムマーカ以降
 
-    Irclog latestIrclog     // 最新発言ログ
+    Irclog latestIrclog     // 最新ログ
 
     public int total() {
         return today + totalBeforeYesterday

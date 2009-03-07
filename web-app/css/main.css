@@ -477,6 +477,7 @@ html>/**/body .list tr:hover {
     position: relative;
     margin: 0;
     padding: 0;
+    height: 113px;
 }
 .header h1 {
     margin: 0;
@@ -498,6 +499,16 @@ html>/**/body .list tr:hover {
     font-weight: bold;
     color: #555;
     filter:progid:DXImageTransform.Microsoft.Alpha(Enabled=1,Style=0,Opacity=60);
+}
+.header #timeMarkerClock {
+    position: absolute;
+    top: 12px;
+    right: 20px;
+    height: 90px;
+    width: 90px;
+}
+* html .header #timeMarkerClock {
+    right: 120px;
 }
 
 /* Footer */
@@ -646,7 +657,7 @@ html>/**/body .list tr:hover {
 .viewer .list .irclog-time {
     white-space: nowrap;
 }
-.singleViewer .list .strong .irclog-time {
+.singleViewer .list .timeMarker .irclog-time {
     border-left: 5px #e80 solid;
 }
 .viewer .list .irclog-channel {

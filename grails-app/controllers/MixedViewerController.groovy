@@ -88,9 +88,7 @@ class MixedViewerController extends Base {
         // タイムマーカがある場合はセッションに格納する。
         // FIXME:日付パースの部分はUtil化する。
         if (criterion.period == 'today') {
-            if (params['period-today-time'] == '') {
-                session.removeAttribute('timeMarker')
-            } else if (params['period-today-time'] ==~ /([01]?[0-9]|2[0-3]):([0-5]?[0-9])/) {
+            if (params['period-today-time'] ==~ /([01]?[0-9]|2[0-3]):([0-5]?[0-9])/) {
                 def today = new SimpleDateFormat('yyyy-MM-dd ').format(new Date())
                 try {
                     session.timeMarker = new SimpleDateFormat('yyyy-MM-dd HH:mm').parse(today + params['period-today-time'])
@@ -100,6 +98,9 @@ class MixedViewerController extends Base {
                     flash.errors = ['mixedViewer.search.timeWorker.error']
                     session.removeAttribute('timeMarker')
                 }
+            }
+            else if (params['period-today-time'] == '') { // パラメータが存在してかつ空文字
+                session.removeAttribute('timeMarker')
             }
         } else {
             session.removeAttribute('timeMarker')

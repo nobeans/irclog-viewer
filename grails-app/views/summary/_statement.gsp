@@ -19,7 +19,7 @@
             </my:sortableColumn>
           </g:if>
           <% def today = new Date() %>
-          <% dateBefore = { delta -> my.dateFormat(format:'M/d(E)', value:(today - delta))} %>
+          <% def dateBefore = { delta -> my.dateFormat(format:'M/d(E)', value:(today - delta))} %>
           <my:sortableColumn class="count" action="index" defaultOrder="desc" property="today" code="summary.today" title="${dateBefore(0)}" />
           <my:sortableColumn class="count" action="index" defaultOrder="desc" property="yesterday">${dateBefore(1)}</my:sortableColumn>
           <my:sortableColumn class="count" action="index" defaultOrder="desc" property="twoDaysAgo">${dateBefore(2)}</my:sortableColumn>
@@ -28,7 +28,7 @@
           <my:sortableColumn class="count" action="index" defaultOrder="desc" property="fiveDaysAgo">${dateBefore(5)}</my:sortableColumn>
           <my:sortableColumn class="count" action="index" defaultOrder="desc" property="sixDaysAgo">${dateBefore(6)}</my:sortableColumn>
           <my:sortableColumn class="count" action="index" defaultOrder="desc" property="total" code="summary.total" titleKey="summary.total.tooltips" />
-          <my:sortableColumn class="latestIrclog" action="index" defaultOrder="desc" property="latestIrclog" code="summary.latestIrclog" />
+          <my:sortableColumn class="latestIrclog" action="index" defaultOrder="desc" property="latestIrclog" code="summary.latestIrclog" titleKey="summary.latestIrclog.tooltips" />
         </tr>
       </thead>
       <tbody>
