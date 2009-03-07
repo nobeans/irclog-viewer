@@ -657,11 +657,14 @@ html>/**/body .list tr:hover {
     color: red;
     font-weight: bold;
 }
+.singleViewer .list tbody#timemarker {
+    border-left: 3px #f70 solid;
+    border-right: 3px #f70 solid;
+    border-top: 2px #c90 dotted;
+}
 .viewer .list .irclog-time {
     white-space: nowrap;
-}
-.singleViewer .list .timeMarker .irclog-time {
-    border-left: 5px #e80 solid;
+    width: 190px;
 }
 .viewer .list .irclog-channel {
     white-space: nowrap;
