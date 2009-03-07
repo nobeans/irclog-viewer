@@ -646,6 +646,9 @@ html>/**/body .list tr:hover {
 *:first-child+html .viewer .list {
     z-index: -1;
 }
+.viewer .list tbody tr {
+    cursor: pointer;
+}
 .viewer .list td {
     padding: 1px 10px 1px 5px;
 }
@@ -836,6 +839,9 @@ html>/**/body .viewer .list tr:hover.highlight.optionType td.irclog-message {
 }
 .summary .summary-statement td.count {
     padding-right: 1em;
+}
+.summary .summary-statement th.todayAfterTimeMarker {
+    padding-left: 1em;
 }
 .summary .summary-statement .totalCount {
     text-align: right;

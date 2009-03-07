@@ -14,7 +14,7 @@
           </th>
           <my:sortableColumn action="index" defaultOrder="asc" property="channel" code="summary.channel" />
           <g:if test="${session.timeMarker}">
-            <my:sortableColumn class="count" action="index" defaultOrder="desc" property="todayAfterTimeMarker" titleKey="summary.todayAfterTimeMarker.tooltips" >
+            <my:sortableColumn class="count todayAfterTimeMarker" action="index" defaultOrder="desc" property="todayAfterTimeMarker" titleKey="summary.todayAfterTimeMarker.tooltips" >
               <img src="${createLinkTo(dir:'images', file:'clock.png')}" alt="Clock" />
             </my:sortableColumn>
           </g:if>
@@ -42,7 +42,9 @@
             <g:link controller="channel" action="show" id="${channel.id}" title="${channel.description}">${fieldValue(bean:channel, field:'name')}</g:link>
           </td>
           <g:if test="${session.timeMarker}">
-            <td class="count"><my:summaryLink count="${summary.todayAfterTimeMarker}" channelName="${channel.name}" time="${summary.lastUpdated}"     /></td>
+            <td class="count todayAfterTimeMarker">
+              <my:summaryLink count="${summary.todayAfterTimeMarker}" channelName="${channel.name}" time="${summary.lastUpdated}" timeMarkerJump="${true}" />
+            </td>
           </g:if>
           <td class="count"><my:summaryLink count="${summary.today}"        channelName="${channel.name}" time="${summary.lastUpdated}"     /></td>
           <td class="count"><my:summaryLink count="${summary.yesterday}"    channelName="${channel.name}" time="${summary.lastUpdated - 1}" /></td>
