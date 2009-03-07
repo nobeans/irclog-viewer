@@ -90,14 +90,8 @@ class MixedViewerController extends Base {
             if (params['period-today-time'] ==~ /([01]?[0-9]|2[0-3]):([0-5]?[0-9])/) {
                 try {
                     // 評価時の日付を元にタイムマーカ日時を決定するクロージャ
-                    session.timeMarker = { time ->
-                        return {
-                            def today = new SimpleDateFormat('yyyy-MM-dd ').format(new Date())
-                            return new SimpleDateFormat('yyyy-MM-dd HH:mm').parse(today + time)
-                        }
-                    }(params['period-today-time'])
-
-                    def timeMarker = session.timeMarker.call()
+                    session.timeMarker = new TimeMarker(params['period-today-time'])
+                    def timeMarker = session.timeMarker.date
                     criterion['period-today-time'] = new SimpleDateFormat('HH:mm').format(timeMarker) // for View
                     criterion['period-today-time-object'] = timeMarker // for Service FIXME:Serviceで別途Utilを使ってDate化する方向で整理
                 } catch (ParseException e) {

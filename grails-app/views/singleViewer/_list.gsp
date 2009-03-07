@@ -50,7 +50,7 @@
       <% def isDefaultHiddenType = { type -> criterion.isIgnoredOptionType && !isEssentialType(type) } %>
       <% def withinTimeMarker = false %>
       <g:each in="${irclogList}" status="i" var="irclog">
-        <% def isTimeMarked = session.timeMarker?.call().before(irclog.time)
+        <% def isTimeMarked = session.timeMarker?.date?.before(irclog.time)
            if (!withinTimeMarker && isTimeMarked) {
               withinTimeMarker = true %>
     </tbody>
