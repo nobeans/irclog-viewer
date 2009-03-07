@@ -88,18 +88,26 @@ class MixedViewerController extends Base {
         // FIXME:日付パースの部分はUtil化する。
         if (criterion.period == 'today') {
             if (params['period-today-time'] ==~ /([01]?[0-9]|2[0-3]):([0-5]?[0-9])/) {
-                def today = new SimpleDateFormat('yyyy-MM-dd ').format(new Date())
                 try {
-                    session.timeMarker = new SimpleDateFormat('yyyy-MM-dd HH:mm').parse(today + params['period-today-time'])
-                    criterion['period-today-time'] = new SimpleDateFormat('HH:mm').format(session.timeMarker) // for View
-                    criterion['period-today-time-object'] = session.timeMarker // for Service FIXME:Serviceで別途Utilを使ってDate化する方向で整理
+                    // 評価時の日付を元にタイムマーカ日時を決定するクロージャ
+                    session.timeMarker = { time ->
+                        return {
+                            def today = new SimpleDateFormat('yyyy-MM-dd ').format(new Date())
+                            return new SimpleDateFormat('yyyy-MM-dd HH:mm').parse(today + time)
+                        }
+                    }(params['period-today-time'])
+
+                    def timeMarker = session.timeMarker.call()
+                    criterion['period-today-time'] = new SimpleDateFormat('HH:mm').format(timeMarker) // for View
+                    criterion['period-today-time-object'] = timeMarker // for Service FIXME:Serviceで別途Utilを使ってDate化する方向で整理
                 } catch (ParseException e) {
                     flash.errors = ['mixedViewer.search.timeWorker.error']
                     session.removeAttribute('timeMarker')
                 }
-            }
-            else if (params['period-today-time'] == '') { // パラメータが存在してかつ空文字
+            } else if (params['period-today-time'] == '') { // パラメータが存在してかつ空文字
                 session.removeAttribute('timeMarker')
+            } else {
+                // パラメータがない場合は現状の設定を引き継ぐ
             }
         } else {
             session.removeAttribute('timeMarker')
