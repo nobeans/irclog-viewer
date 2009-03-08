@@ -10,7 +10,7 @@ class MixedViewerController extends Base {
     def channelService
 
     final SELECTABLE_PERIODS = ['all', 'year', 'month', 'week', 'today', 'oneday']
-    final SESSION_KEY_CRITERION = 'irclog.MixedViewerController.CRITERION'
+    public static final String SESSION_KEY_CRITERION = 'criterion'
     
     /**
      * ログ一覧を表示する。
@@ -83,19 +83,17 @@ class MixedViewerController extends Base {
         }
         criterion.remove('') // 値が空のものを除外
 
-        // タイムマーカがある場合はセッションに格納する。
-        // FIXME:日付パースの部分はUtil化する。
-        if (criterion.period == 'today') {
-            if (params['period-today-time'] ==~ /([01]?[0-9]|2[0-3]):([0-5]?[0-9])/) {
-                try {
-                    // 評価時の日付を元にタイムマーカ日時を決定するクロージャ
-                    session.timeMarker = new TimeMarker(params['period-today-time'])
-                    def time = session.timeMarker.time
-                    criterion['period-today-time'] = new SimpleDateFormat('HH:mm').format(time) // for View
-                    criterion['period-today-time-object'] = time // for Service FIXME:Serviceで別途Utilを使ってDate化する方向で整理
-                } catch (ParseException e) {
-                    flash.errors = ['mixedViewer.search.timeWorker.error']
-                }
+        // 今日＆時刻指定有りの場合
+        if (criterion.period == 'today' && params['period-today-time']) {
+            // タイムマーカを生成してセッションに格納する。
+            try {
+                def timeMarker = new TimeMarker(params['period-today-time'])
+                def time = timeMarker.time
+                criterion['period-today-time'] = new SimpleDateFormat('HH:mm').format(time) // for View
+                criterion['period-today-time-object'] = time // for Service
+                session.timeMarker = timeMarker
+            } catch (ParseException e) {
+                flash.errors = ['mixedViewer.search.period.today.time.error']
             }
         }
         if (criterion['period-today-time'] == null) {

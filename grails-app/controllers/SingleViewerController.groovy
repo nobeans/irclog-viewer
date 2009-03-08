@@ -74,7 +74,7 @@ class SingleViewerController extends Base {
 
     /** mixed側での現在のtype条件がallかどうか。*/
     private getCurrentTypeInMixed() {
-        session['IRCLOG_VIEWER_CRITERION']?.type ?: 'filtered'
+        session[MixedViewerController.SESSION_KEY_CRITERION]?.type ?: 'filtered'
     }
 
     private createGetPersonByNickClosure(nickPersonList) {
