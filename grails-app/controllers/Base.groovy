@@ -1,6 +1,6 @@
+import grails.util.GrailsUtil
 import org.codehaus.groovy.grails.commons.ApplicationHolder
 import org.grails.plugins.springsecurity.service.AuthenticateService
-
 import org.springframework.security.context.SecurityContextHolder as SCH
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
@@ -82,8 +82,8 @@ abstract class Base {
         }
 
         /* for DEBUG */
-        if (System.getProperty("grails.env") == "development") {
-            println "="*20
+        if (GrailsUtil.isDevelopmentEnv()) {
+            println "[Before]" + "="*20
             println "Request attributes:"
             request.getAttributeNames().collect({it}).sort().each { println "  ${it} = ${request.getAttribute(it)}" }
             println "-"*20
@@ -101,7 +101,11 @@ abstract class Base {
 
     def afterInterceptor = {
         /* for DEBUG */
-        if (System.getProperty("grails.env") == "development") {
+        if (GrailsUtil.isDevelopmentEnv()) {
+            println "[After]" + "="*20
+            println "Session attributes:"
+            session.getAttributeNames().collect({it}).sort().each { println "  ${it} = ${session.getAttribute(it)}" }
+            println "="*20
             def time = (System.currentTimeMillis() - startTime) / 1000.0
             log.info("END Request " + "<"*30 + " (control time: ${time}[sec])")
         }
