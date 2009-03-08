@@ -45,26 +45,39 @@
         </th>
       </tr>
     </thead>
-    <tbody>
-      <% def isEssentialType = { type -> Irclog.ESSENTIAL_TYPES.contains(type) } %>
-      <% def isDefaultHiddenType = { type -> criterion.isIgnoredOptionType && !isEssentialType(type) } %>
-      <% def withinTimeMarker = false %>
-      <g:each in="${irclogList}" status="i" var="irclog">
-        <% def isTimeMarked = session.timeMarker?.time?.before(irclog.time)
-           if (!withinTimeMarker && isTimeMarked) {
-              withinTimeMarker = true %>
-    </tbody>
-    <tbody id="timemarker">
-        <% } %>
-        <tr id="pid-${irclog.permaId}"
-            class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${isEssentialType(irclog.type) ? 'essentialType' : 'optionType'} ${isTimeMarked ? 'timeMarker' : ''}"
-            ${isDefaultHiddenType(irclog.type) ? 'style="display:none"' : ''}
-            onclick="IRCLOG.highlightLine('pid-${irclog.permaId}');IRCLOG.goto('#pid-${irclog.permaId}')">
-          <td class="irclog-time"><my:dateFormat value="${irclog.time}" format="HH:mm:ss" /></td>
-          <td class="irclog-nick ${irclog.nick?.encodeAsHTML()}" title="${getPersonByNick(irclog.nick)?.realName?.encodeAsHTML() ?: ''}">${irclog.nick?.encodeAsHTML()}</td>
-          <td class="irclog-message wordBreak"><my:messageFormat value="${irclog.message}" /></td>
-        </tr>
-      </g:each>
-    </tbody>
+    <% def isEssentialType = { type -> Irclog.ESSENTIAL_TYPES.contains(type) } %>
+    <% def isDefaultHiddenType = { type -> criterion.isIgnoredOptionType && !isEssentialType(type) } %>
+    <% def boundaryTime = session.timeMarker?.time ?: new Date(0) %>
+    <% def unmarkIrclogList = [] %>
+    <% def markedIrclogList = [] %>
+    <% irclogList.each{ irclog -> (irclog.time.before(boundaryTime) ? unmarkIrclogList : markedIrclogList) << irclog } %>
+    <g:if test="${unmarkIrclogList.size() > 0}">
+      <tbody>
+        <g:each in="${unmarkIrclogList}" status="i" var="irclog">
+          <tr id="pid-${irclog.permaId}"
+              class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${isEssentialType(irclog.type) ? 'essentialType' : 'optionType'}"
+              ${isDefaultHiddenType(irclog.type) ? 'style="display:none"' : ''}
+              onclick="IRCLOG.highlightLine('pid-${irclog.permaId}');IRCLOG.goto('#pid-${irclog.permaId}')">
+            <td class="irclog-time"><my:dateFormat value="${irclog.time}" format="HH:mm:ss" /></td>
+            <td class="irclog-nick ${irclog.nick?.encodeAsHTML()}" title="${getPersonByNick(irclog.nick)?.realName?.encodeAsHTML() ?: ''}">${irclog.nick?.encodeAsHTML()}</td>
+            <td class="irclog-message wordBreak"><my:messageFormat value="${irclog.message}" /></td>
+          </tr>
+        </g:each>
+      </tbody>
+    </g:if>
+    <g:if test="${markedIrclogList.size() > 0}">
+      <tbody id="timemarker">
+        <g:each in="${markedIrclogList}" status="i" var="irclog">
+          <tr id="pid-${irclog.permaId}"
+              class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${isEssentialType(irclog.type) ? 'essentialType' : 'optionType'}"
+              ${isDefaultHiddenType(irclog.type) ? 'style="display:none"' : ''}
+              onclick="IRCLOG.highlightLine('pid-${irclog.permaId}');IRCLOG.goto('#pid-${irclog.permaId}')">
+            <td class="irclog-time"><my:dateFormat value="${irclog.time}" format="HH:mm:ss" /></td>
+            <td class="irclog-nick ${irclog.nick?.encodeAsHTML()}" title="${getPersonByNick(irclog.nick)?.realName?.encodeAsHTML() ?: ''}">${irclog.nick?.encodeAsHTML()}</td>
+            <td class="irclog-message wordBreak"><my:messageFormat value="${irclog.message}" /></td>
+          </tr>
+        </g:each>
+      </tbody>
+    </g:if>
   </table>
 </div>
