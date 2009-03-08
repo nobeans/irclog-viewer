@@ -47,7 +47,7 @@
     </thead>
     <% def isEssentialType = { type -> Irclog.ESSENTIAL_TYPES.contains(type) } %>
     <% def isDefaultHiddenType = { type -> criterion.isIgnoredOptionType && !isEssentialType(type) } %>
-    <% def boundaryTime = session.timeMarker?.time ?: new Date(0) %>
+    <% def boundaryTime = session.timeMarker?.time ?: (new Date() + 1) %>
     <% def unmarkIrclogList = [] %>
     <% def markedIrclogList = [] %>
     <% irclogList.each{ irclog -> (irclog.time.before(boundaryTime) ? unmarkIrclogList : markedIrclogList) << irclog } %>
