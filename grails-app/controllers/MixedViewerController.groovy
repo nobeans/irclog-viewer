@@ -10,6 +10,7 @@ class MixedViewerController extends Base {
     def channelService
 
     final SELECTABLE_PERIODS = ['all', 'year', 'month', 'week', 'today', 'oneday']
+    final SESSION_KEY_CRITERION = 'irclog.MixedViewerController.CRITERION'
     
     /**
      * ログ一覧を表示する。
@@ -43,7 +44,7 @@ class MixedViewerController extends Base {
      * セッション上の検索条件を削除して、リダイレクトする。
      */
     def clearCriterion = {
-        session.removeAttribute('IRCLOG_VIEWER_CRITERION')
+        session.removeAttribute(SESSION_KEY_CRITERION)
         redirect(action:index)
     }
 
@@ -62,27 +63,25 @@ class MixedViewerController extends Base {
     // params属性で渡したcriterion中のmax/offsetで上書きされてしまい、戻るボタンのページ遷移がおかしくなる。
     // よって、max/offsetはcriterionとして取り扱わない。
     private parseCriterion() {
-        def criterion
         // もし、今回検索条件が未指定の場合は、セッション上の検索条件を適用する。
-        if (!params.period && session['IRCLOG_VIEWER_CRITERION']) {
-            criterion = session['IRCLOG_VIEWER_CRITERION']
+        if (!params.period && session[SESSION_KEY_CRITERION]) {
             log.debug "Criterion restored from session."
+            return session[SESSION_KEY_CRITERION]
         }
+
         // 新しくリクエストパラメータからパースする。
-        else {
-            criterion = [
-                period:    params.period ?: 'today',
-                channel:   params.channel ?: 'all',
-                type:      params.type ?: 'filtered',
-                nick:      params.nick,
-                message:   params.message
-            ]
-            if (criterion.period == 'oneday') {
-                criterion['period-oneday-date'] = params['period-oneday-date']
-            }
-            criterion.remove('') // 値が空のものを除外
-            log.debug "Criterion parsed from params."
+        log.debug "Criterion parsed from params."
+        def criterion = [
+            period:    params.period ?: 'today',
+            channel:   params.channel ?: 'all',
+            type:      params.type ?: 'filtered',
+            nick:      params.nick,
+            message:   params.message
+        ]
+        if (criterion.period == 'oneday') {
+            criterion['period-oneday-date'] = params['period-oneday-date']
         }
+        criterion.remove('') // 値が空のものを除外
 
         // タイムマーカがある場合はセッションに格納する。
         // FIXME:日付パースの部分はUtil化する。
@@ -96,22 +95,18 @@ class MixedViewerController extends Base {
                     criterion['period-today-time-object'] = time // for Service FIXME:Serviceで別途Utilを使ってDate化する方向で整理
                 } catch (ParseException e) {
                     flash.errors = ['mixedViewer.search.timeWorker.error']
-                    session.removeAttribute('timeMarker')
                 }
-            } else if (params['period-today-time'] == '') { // パラメータが存在してかつ空文字
-                session.removeAttribute('timeMarker')
-            } else {
-                // パラメータがない場合は現状の設定を引き継ぐ
             }
-        } else {
+        }
+        if (criterion['period-today-time'] == null) {
             session.removeAttribute('timeMarker')
         }
 
         // いったん別の画面から戻ってきた場合などのために、検索条件をセッションに待避する。
-        session['IRCLOG_VIEWER_CRITERION'] = criterion
+        session[SESSION_KEY_CRITERION] = criterion
 
         log.debug "Criterion: " + criterion
-        criterion
+        return criterion
     }
 
     private getSelectableChannels() {
