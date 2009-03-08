@@ -4,12 +4,9 @@ class SummaryController extends Base {
     def channelService
     
     def index = {
-        // using TimerMarker
-        if (session.timeMarker) params.timeMarker = session.timeMarker.time
-
         def channelList = channelService.getAccessibleChannelList(loginUserDomain, [:])
         [
-            summaryList: summaryService.getAccessibleSummaryList(params, channelList),
+            summaryList: summaryService.getAccessibleSummaryList(params, channelList, session.timeMarker),
             nickPersonList: Person.list(),
             topicList: summaryService.getAccessibleTopicList(loginUserDomain, channelList)
         ]

@@ -32,9 +32,9 @@ class SummaryService {
     }
 
     /** アクセス可能な全チャンネルのサマリ情報を取得する。 */
-    public List<Summary> getAccessibleSummaryList(params, accessibleChannelList) {
+    public List<Summary> getAccessibleSummaryList(params, accessibleChannelList, TimeMarker timeMarker) {
         // 全てのサマリを取得して、アクセス可能な範囲に絞り込む
-        def summaryList = getAllSummaryList(params).findAll{it.channel in accessibleChannelList}
+        def summaryList = getAllSummaryList(params, timeMarker).findAll{it.channel in accessibleChannelList}
 
         // FIXME: 単に表示しない、というだけで良い気がする。後で削除するかも。
         // 何らかの原因でサマリが存在しないチャンネルがある場合、ダミーサマリを登録
@@ -47,15 +47,17 @@ class SummaryService {
     }
 
     /** 全チャンネルのサマリ情報を取得する。 */
-    private List<Summary> getAllSummaryList(params) {
+    private List<Summary> getAllSummaryList(params, TimeMarker timeMarker) {
         // サマリ更新
         updateSummary()
 
         // ソート条件を解決してから、サマリを取得
         def originalSort = resolveSortCondition(params)
         def summaryList = Summary.list(params)
-        if (params.timeMarker) {
-            setupTodayAfterTimeMarker(summaryList, params.timeMarker)
+        
+        // タイムマーカが指定されている場合は、タイムマーカ以降の件数を取得して結果に追加反映する。
+        if (timeMarker) {
+            setupTodayAfterTimeMarker(summaryList, timeMarker)
         }
 
         // 独自ソート
@@ -229,14 +231,14 @@ class SummaryService {
         log.info "Updated all summary: deleted(${resultDeleted}), inserted(${resultInserted})"
     }
 
-    private void setupTodayAfterTimeMarker(List<Summary> summaryList, Date timeMarker) {
+    private void setupTodayAfterTimeMarker(List<Summary> summaryList, TimeMarker timeMarker) {
         // 0:Integer(count), 1:Channel
         def result = Irclog.withCriteria {
             projections {
                 rowCount()
             }
             isNotNull('channel')
-            ge('time', timeMarker)
+            ge('time', timeMarker.time)
             'in'('type', Irclog.ESSENTIAL_TYPES)
             groupProperty('channel')
         }
