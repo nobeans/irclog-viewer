@@ -5,7 +5,7 @@ class SummaryController extends Base {
     
     def index = {
         // using TimerMarker
-        if (session.timeMarker) params.timeMarker = session.timeMarker.date
+        if (session.timeMarker) params.timeMarker = session.timeMarker.time
 
         def channelList = channelService.getAccessibleChannelList(loginUserDomain, [:])
         [

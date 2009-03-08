@@ -8,7 +8,7 @@ public class TimeMarker {
         this.time = time
     }
     
-    public Date getDate() {
+    public Date getTime() { // Date型であるがあえて文脈に合わせてTimeというプロパティ名とした。
         def today = new SimpleDateFormat('yyyy-MM-dd ').format(new Date())
         return new SimpleDateFormat('yyyy-MM-dd HH:mm').parse(today + time)
     }

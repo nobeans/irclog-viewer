@@ -91,9 +91,9 @@ class MixedViewerController extends Base {
                 try {
                     // 評価時の日付を元にタイムマーカ日時を決定するクロージャ
                     session.timeMarker = new TimeMarker(params['period-today-time'])
-                    def timeMarker = session.timeMarker.date
-                    criterion['period-today-time'] = new SimpleDateFormat('HH:mm').format(timeMarker) // for View
-                    criterion['period-today-time-object'] = timeMarker // for Service FIXME:Serviceで別途Utilを使ってDate化する方向で整理
+                    def time = session.timeMarker.time
+                    criterion['period-today-time'] = new SimpleDateFormat('HH:mm').format(time) // for View
+                    criterion['period-today-time-object'] = time // for Service FIXME:Serviceで別途Utilを使ってDate化する方向で整理
                 } catch (ParseException e) {
                     flash.errors = ['mixedViewer.search.timeWorker.error']
                     session.removeAttribute('timeMarker')

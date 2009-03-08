@@ -15,9 +15,9 @@
     <div class="header">
       <h1><img class="title" src="${createLinkTo(dir:'images', file:'headerTitle.png')}" alt="${message(code:"application.name")}" /></h1>
       <g:if test="${session.timeMarker}">
-        <% def timeMarker = session.timeMarker.date %>
-        <% def dateHHmm = my.dateFormat(format:'hhmm', value:timeMarker) %>
-        <% def dateHHmmDisp = my.dateFormat(format:'HH:mm', value:timeMarker) %>
+        <% def time = session.timeMarker.time %>
+        <% def dateHHmm = my.dateFormat(format:'hhmm', value:time) %>
+        <% def dateHHmmDisp = my.dateFormat(format:'HH:mm', value:time) %>
         <img id="timeMarkerClock" src="${createLinkTo(dir:'images/clock/', dateHHmm + '.gif')}" alt="${dateHHmmDisp}" title="${message(code:'header.timeMarkerClock', args:[dateHHmmDisp])}" />
       </g:if>
       <div id="analog"><g:message code="header.analog" /></div>
