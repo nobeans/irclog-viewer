@@ -837,14 +837,15 @@ html>/**/body .viewer .list tr:hover.highlight.optionType td.irclog-message {
 .summary .summary-statement .channel {
     width: auto;
 }
-.summary .summary-statement .count {
+.summary .summary-statement th.count a {
     text-align: right;
 }
 .summary .summary-statement td.count {
-    padding-right: 1em;
+    text-align: right;
+    padding-right: .5em;
 }
 .summary .summary-statement th.todayAfterTimeMarker {
-    padding-left: 1em;
+    padding-right: .5em;
 }
 .summary .summary-statement .totalCount {
     text-align: right;
