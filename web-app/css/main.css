@@ -657,10 +657,13 @@ html>/**/body .list tr:hover {
     color: red;
     font-weight: bold;
 }
-.singleViewer .list tbody#timemarker {
-    border-left: 3px #f70 solid;
-    border-right: 3px #f70 solid;
-    border-top: 2px #c90 dotted;
+.singleViewer .list tr#timemarker {
+    background-color: #f50;
+    border: 1px #f50 solid;
+    height: .5em;
+}
+.singleViewer .list tr.afterTimeMarker {
+    border-left: 2px #f70 solid;
 }
 .viewer .list .irclog-time {
     white-space: nowrap;
