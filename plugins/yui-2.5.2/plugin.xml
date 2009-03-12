@@ -1,4 +1,4 @@
-<plugin name='yui' version='2.5.2'>
+<plugin name='yui' version='2.5.2' grailsVersion='1.1 &gt; *'>
   <author>Marcel Overdijk</author>
   <authorEmail>marceloverdijk@gmail.com</authorEmail>
   <title>Yahoo! User Interface Library (YUI)</title>
@@ -7,4 +7,5 @@
   <resources>
     <resource>YuiTagLib</resource>
   </resources>
+  <dependencies />
 </plugin>

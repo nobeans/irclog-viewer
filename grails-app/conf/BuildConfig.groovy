@@ -1,0 +1,5 @@
+grails.plugin.location."acegi" = "./plugins/acegi-0.3"
+grails.plugin.location."native-query" = "./plugins/native-query-0.1"
+grails.plugin.location."i18n-templates" = "./plugins/i18n-templates-1.0.3"
+grails.plugin.location."quartz" = "./plugins/quartz-0.4.1-SNAPSHOT"
+grails.plugin.location."yui" = "./plugins/yui-2.5.2"

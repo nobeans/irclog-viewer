@@ -10,7 +10,7 @@ class RegisterController extends Base {
 	AuthenticateService authenticateService
     def daoAuthenticationProvider
 
-    def allowedMethods = [save:'POST', update:'POST']
+    static allowedMethods = [save:'POST', update:'POST']
 
     def show = {
         withLoginPerson { person ->

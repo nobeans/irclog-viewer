@@ -3,7 +3,7 @@
  */
 class ChannelController extends Base {
 
-    def allowedMethods = [delete:'POST', save:'POST', update:'POST', join:'POST']
+    static allowedMethods = [delete:'POST', save:'POST', update:'POST', join:'POST']
     def channelService
     def summaryService
     

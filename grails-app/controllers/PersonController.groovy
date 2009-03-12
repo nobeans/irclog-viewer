@@ -10,7 +10,7 @@ class PersonController extends Base {
     def index = { redirect(action:list, params:params) }
 
     // the delete, save and update actions only accept POST requests
-    def allowedMethods = [delete:'POST', save:'POST', update:'POST']
+    static allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
     def list = {
         params.max    = params.max?.toInteger() ? Math.min(params.max?.toInteger(), config.irclog.viewer.defaultMax) : config.irclog.viewer.defaultMax
