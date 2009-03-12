@@ -634,6 +634,9 @@ html>/**/body .list tr:hover {
 *:first-child+html.singleViewer .optionButtons button {
     width: 1em;
 }
+.singleViewer .list tbody tr {
+    cursor: pointer;
+}
 
 /* Viewer (Mixed/Single) */
 
@@ -645,9 +648,6 @@ html>/**/body .list tr:hover {
 }
 *:first-child+html .viewer .list {
     z-index: -1;
-}
-.viewer .list tbody tr {
-    cursor: pointer;
 }
 .viewer .list td {
     padding: 1px 10px 1px 5px;
