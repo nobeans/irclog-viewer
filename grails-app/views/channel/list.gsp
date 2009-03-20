@@ -21,7 +21,7 @@
           <thead>
             <tr>
               <th class="searchAllLogs" title="${message(code:'channel.searchAllLogs')}">
-                <img src="${createLinkTo(dir:'images',file:'singleTitle.png')}" alt="Search all logs" />
+                <img src="${resource(dir:'images',file:'singleTitle.png')}" alt="Search all logs" />
               </th>
               <g:sortableColumn property="name" title="Name" titleKey="channel.name" />
               <g:sortableColumn property="description" title="Description" titleKey="channel.description" />
@@ -32,7 +32,7 @@
           <tbody>
           <g:each in="${channelList}" status="i" var="channel">
             <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-              <td><img class="clickable" src="${createLinkTo(dir:'images', file:'search.png')}" alt="Search all logs" onclick="IRCLOG.goto('${my.searchAllLogsLink(channel:channel)}')" title="${message(code:'channel.searchAllLogs')}" /></td>
+              <td><img class="clickable" src="${resource(dir:'images', file:'search.png')}" alt="Search all logs" onclick="IRCLOG.goto('${my.searchAllLogsLink(channel:channel)}')" title="${message(code:'channel.searchAllLogs')}" /></td>
               <td><g:link action="show" id="${channel.id}">${fieldValue(bean:channel, field:'name')}</g:link></td>
               <td>${fieldValue(bean:channel, field:'description')}</td>
               <td><g:message code="channel.isPrivate.${channel.isPrivate.toString()}" /></td>

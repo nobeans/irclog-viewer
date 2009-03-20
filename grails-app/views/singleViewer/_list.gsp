@@ -6,7 +6,7 @@
   <my:singleLink time="${relatedDates.after}" channelName="${criterion.channel}" image="singleAfter.png" />
   <my:singleLink time="${relatedDates.latest}" channelName="${criterion.channel}" image="singleToday.png" />
   <span id="singleCalendar">
-    <img class="button" id="singleCalendar-button" src="${createLinkTo(dir:'images', file:'calendar.png')}" title="${message(code:'singleViewer.calendar.tooltips')}" alt="Calendar" />
+    <img class="button" id="singleCalendar-button" src="${resource(dir:'images', file:'calendar.png')}" title="${message(code:'singleViewer.calendar.tooltips')}" alt="Calendar" />
     <span id="singleCalendar-calendar"></span>
   </span>
 </div>

@@ -10,7 +10,7 @@
     <thead>
       <tr>
         <th class="irclog-single"  title="${message(code:'mixedViewer.list.single.tooltips')}">
-          <img src="${createLinkTo(dir:'images',file:'singleTitle.png')}" alt="Link to single viewer" />
+          <img src="${resource(dir:'images',file:'singleTitle.png')}" alt="Link to single viewer" />
         </th>
         <th class="irclog-time" title="${message(code:'mixedViewer.list.time.tooltips')}"><g:message code="irclog.time"/></th>
         <th class="irclog-channel" title="${message(code:'mixedViewer.list.channel.tooltips')}"><g:message code="irclog.channel"/></th>

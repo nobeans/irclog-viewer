@@ -24,7 +24,7 @@ class MyTagLib {
         def title = "${attrs.channelName}@${fullDate}"
         out << g.link(url:"/irclog/the/${attrs.channelName.substring(1)}/${shortDate}/${anchor}", title:"${title}") {
             if (attrs.image) {
-                return """<img src="${createLinkTo(dir:'images', file:attrs.image)}" alt="Link to ${title}" />"""
+                return """<img src="${resource(dir:'images', file:attrs.image)}" alt="Link to ${title}" />"""
             } else if (attrs.text) {
                 return attrs.text
             } else {
@@ -141,7 +141,7 @@ class MyTagLib {
         out << """
             <div class="help">
               ${body()}
-              <img class="help-button" src="${createLinkTo(dir:'images', file:'help.gif')}" alt="help"
+              <img class="help-button" src="${resource(dir:'images', file:'help.gif')}" alt="help"
                 onclick="\$('${attrs.id}').toggle()" />
             </div>
         """

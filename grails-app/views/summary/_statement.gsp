@@ -10,12 +10,12 @@
       <thead>
         <tr>
           <th class="searchAllLogs" title="${message(code:'summary.searchAllLogs')}">
-            <img src="${createLinkTo(dir:'images',file:'singleTitle.png')}" alt="Search all logs" />
+            <img src="${resource(dir:'images',file:'singleTitle.png')}" alt="Search all logs" />
           </th>
           <my:sortableColumn action="index" defaultOrder="asc" property="channel" code="summary.channel" />
           <g:if test="${session.timeMarker}">
             <my:sortableColumn class="count todayAfterTimeMarker" action="index" defaultOrder="desc" property="todayAfterTimeMarker" titleKey="summary.todayAfterTimeMarker.tooltips" >
-              <img src="${createLinkTo(dir:'images', file:'clock.png')}" alt="Clock" />
+              <img src="${resource(dir:'images', file:'clock.png')}" alt="Clock" />
             </my:sortableColumn>
           </g:if>
           <% def today = new Date() %>
@@ -36,7 +36,7 @@
         <% def channel = summary.channel %>
         <tr class="${(i % 2) == 0 ? 'odd' : 'even'} ${(summary) ? '' : 'summaryNotFound'}">
           <td class="searchAllLogs">
-            <img class="clickable" src="${createLinkTo(dir:'images', file:'search.png')}" alt="Search all logs" onclick="IRCLOG.goto('${my.searchAllLogsLink(channel:channel)}')" title="${message(code:'summary.searchAllLogs')}" />
+            <img class="clickable" src="${resource(dir:'images', file:'search.png')}" alt="Search all logs" onclick="IRCLOG.goto('${my.searchAllLogsLink(channel:channel)}')" title="${message(code:'summary.searchAllLogs')}" />
           </td>
           <td class="channel">
             <g:link controller="channel" action="show" id="${channel.id}" title="${channel.description}">${fieldValue(bean:channel, field:'name')}</g:link>
