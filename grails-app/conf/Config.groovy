@@ -38,52 +38,34 @@ environments {
     }
 }
 
-// log4j configuration
-log4j {
-    // for Debug
-    appender.stdout = "org.apache.log4j.ConsoleAppender"
-    appender.'stdout.layout'="org.apache.log4j.PatternLayout"
-    appender.'stdout.layout.ConversionPattern'='%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n'
-
-    // for Error
-    appender.stacktraceLog = "org.apache.log4j.FileAppender"
-    appender.'stacktraceLog.layout'="org.apache.log4j.PatternLayout"
-    appender.'stacktraceLog.layout.ConversionPattern'='%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n'
-    appender.'stacktraceLog.File'="log/stacktrace.log"
-
-    // Default
-    rootLogger="error,stdout"
-
-    logger {
-        // for My application
-        grails {
-            app {
-                controller='info'
-                service='info'
-                task='info'
-            }
-        }
-
-        // for others library / framework
-        StackTrace="error,stacktraceLog"
-        org {
-            codehaus.groovy.grails.web.servlet="error"  //  controllers
-            codehaus.groovy.grails.web.pages="error" //  GSP
-            codehaus.groovy.grails.web.sitemesh="error" //  layouts
-            codehaus.groovy.grails."web.mapping.filter"="error" // URL mapping
-            codehaus.groovy.grails."web.mapping"="error" // URL mapping
-            codehaus.groovy.grails.commons="info" // core / classloading
-            codehaus.groovy.grails.plugins="error" // plugins
-            codehaus.groovy.grails.orm.hibernate="error" // hibernate integration
-            springframework="off"
-            hibernate="off"
-        }
-        org.'springframework.security'='info' // Acegi plugin
+// log4
+log4j = {
+    appenders {
+        console      name:'stdout', layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n')
+        rollingFile  name:"file", file:"log/irclog.log", maxFileSize:1024, layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n')
+        'null'       name:'stacktrace' // disabled unwanted "StackTrace" log
     }
-
-    additivity {
-        StackTrace=false
+    root {
+        info 'stdout', 'file'
+        additivity = true
     }
+    error 'org.codehaus.groovy.grails.web.servlet'  //  controllers
+    error 'org.codehaus.groovy.grails.web.pages' //  GSP
+    error 'org.codehaus.groovy.grails.web.sitemesh' //  layouts
+    error 'org.codehaus.groovy.grails."web.mapping.filter' // URL mapping
+    error 'org.codehaus.groovy.grails."web.mapping' // URL mapping
+    error 'org.codehaus.groovy.grails.commons' // core / classloading
+    error 'org.codehaus.groovy.grails.plugins' // plugins
+    error 'org.codehaus.groovy.grails.orm.hibernate' // hibernate integration
+    error 'org.springframework'
+    info  'org.springframework.security' // Acegi plugin
+    error 'org.hibernate'
+    warn  'org.mortbay.log'
+
+    // for My application
+    info "grails.app.controller"
+    info "grails.app.service"
+    info "grails.app.task"
 }
 
 // irclog-viewer
