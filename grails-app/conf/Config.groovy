@@ -41,13 +41,16 @@ environments {
 // log4
 log4j = {
     appenders {
-        console      name:'stdout', layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n')
-        rollingFile  name:"file", file:"log/irclog.log", maxFileSize:1024, layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n')
-        'null'       name:'stacktrace' // disabled unwanted "StackTrace" log
+        console      name:'stdout',
+                     layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n')
+        rollingFile  name:"file", file:"log/irclog.log", maxFileSize:'10MB', maxBackupIndex:5,
+                     layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n')
+        rollingFile  name:'stacktrace', file:'log/stacktrace.log', maxFileSize:'10MB', maxBackupIndex:5,
+                     layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n')
     }
     root {
         info 'stdout', 'file'
-        additivity = true
+        additivity = false
     }
     error 'org.codehaus.groovy.grails.web.servlet'  //  controllers
     error 'org.codehaus.groovy.grails.web.pages' //  GSP
