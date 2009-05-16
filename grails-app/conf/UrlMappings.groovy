@@ -27,6 +27,6 @@ class UrlMappings {
 
         "404"(controller:'login', action:'denied')
         "405"(controller:'login', action:'denied')
-        "500"(view:'/error/500')
+        "500"(view:'/error')
 	}
 }
