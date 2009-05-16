@@ -55,8 +55,8 @@ log4j = {
     error 'org.codehaus.groovy.grails.web.servlet'  //  controllers
     error 'org.codehaus.groovy.grails.web.pages' //  GSP
     error 'org.codehaus.groovy.grails.web.sitemesh' //  layouts
-    error 'org.codehaus.groovy.grails."web.mapping.filter' // URL mapping
-    error 'org.codehaus.groovy.grails."web.mapping' // URL mapping
+    error 'org.codehaus.groovy.grails.web.mapping.filter' // URL mapping
+    error 'org.codehaus.groovy.grails.web.mapping' // URL mapping
     error 'org.codehaus.groovy.grails.commons' // core / classloading
     error 'org.codehaus.groovy.grails.plugins' // plugins
     error 'org.codehaus.groovy.grails.orm.hibernate' // hibernate integration
