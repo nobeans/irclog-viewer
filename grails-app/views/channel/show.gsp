@@ -25,6 +25,10 @@
               <td valign="top" class="value"><g:message code="channel.isPrivate.${channel.isPrivate.toString()}" /></td>
             </tr>
             <tr class="prop">
+              <th valign="top" class="name"><g:message code="channel.isArchived" default="Is Archived" />:</th>
+              <td valign="top" class="value"><g:message code="channel.isArchived.${channel.isArchived.toString()}" /></td>
+            </tr>
+            <tr class="prop">
               <th valign="top" class="name"><g:message code="channel.secretKey" default="Secret Key" />:</th>
               <td valign="top" class="value">${channel.secretKey ? '****' : ''}</td>
             </tr>

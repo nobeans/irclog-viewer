@@ -26,6 +26,7 @@
               <g:sortableColumn property="name" title="Name" titleKey="channel.name" />
               <g:sortableColumn property="description" title="Description" titleKey="channel.description" />
               <g:sortableColumn property="isPrivate" title="Is Private" titleKey="channel.isPrivate" />
+              <g:sortableColumn property="isArchived" title="Is Archived" titleKey="channel.isArchived" />
               <th><g:message code="channel.joinedPersons" /></th>
             </tr>
           </thead>
@@ -36,6 +37,7 @@
               <td><g:link action="show" id="${channel.id}">${fieldValue(bean:channel, field:'name')}</g:link></td>
               <td>${fieldValue(bean:channel, field:'description')}</td>
               <td><g:message code="channel.isPrivate.${channel.isPrivate.toString()}" /></td>
+              <td><g:message code="channel.isArchived.${channel.isArchived.toString()}" /></td>
               <td>
                 <% allJoinedPersons[channel].each{ person -> %>
                   <span class="${person.loginName}" title="${person.realName.encodeAsHTML()}">

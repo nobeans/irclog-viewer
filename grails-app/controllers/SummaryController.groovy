@@ -4,7 +4,7 @@ class SummaryController extends Base {
     def channelService
     
     def index = {
-        def channelList = channelService.getAccessibleChannelList(loginUserDomain, [:])
+        def channelList = channelService.getAccessibleChannelList(loginUserDomain, [:]).grep{!it.isArchived}
         [
             summaryList: summaryService.getAccessibleSummaryList(params, channelList, session.timeMarker),
             nickPersonList: Person.list(),

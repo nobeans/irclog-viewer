@@ -23,7 +23,7 @@
                   <label for="name"><g:message code="channel.name" default="Name" />:</label>
                 </th>
                 <td valign="top" class="value">${fieldValue(bean:channel,field:'name')}</td>
-              </tr> 
+              </tr>
               <tr class="prop">
                 <th valign="top" class="name">
                   <label for="description"><g:message code="channel.description" default="Description" />:</label>
@@ -31,15 +31,25 @@
                 <td valign="top" class="value ${hasErrors(bean:channel,field:'description','errors')}">
                   <textarea id="description" name="description">${fieldValue(bean:channel,field:'description')}</textarea>
                 </td>
-              </tr> 
+              </tr>
               <tr class="prop">
                 <th valign="top" class="name">
                   <label for="isPrivate"><g:message code="channel.isPrivate" default="Is Private" />:</label>
                 </th>
                 <td valign="top" class="value ${hasErrors(bean:channel,field:'isPrivate','errors')}">
-                  <g:checkBox name="isPrivate" value="${channel?.isPrivate}" ></g:checkBox> <g:message code="channel.isPrivate.editCaption" />
+                  <g:checkBox name="isPrivate" value="${channel?.isPrivate}" ></g:checkBox>
+                  <label for="isPrivate"><g:message code="channel.isPrivate.editCaption" /></label>
                 </td>
-              </tr> 
+              </tr>
+              <tr class="prop">
+                <th valign="top" class="name">
+                  <label for="isArchived"><g:message code="channel.isArchived" default="Is Archived" />:</label>
+                </th>
+                <td valign="top" class="value ${hasErrors(bean:channel,field:'isArchived','errors')}">
+                  <g:checkBox name="isArchived" value="${channel?.isArchived}" ></g:checkBox>
+                  <label for="isArchived"><g:message code="channel.isArchived.editCaption" /></label>
+                </td>
+              </tr>
               <tr class="prop">
                 <th valign="top" class="name">
                   <label for="secretKey"><g:message code="channel.secretKey" default="Secret Key" />:</label>
@@ -47,7 +57,7 @@
                 <td valign="top" class="value ${hasErrors(bean:channel,field:'secretKey','errors')}">
                   <input type="password" id="secretKey" name="secretKey" value="${fieldValue(bean:channel,field:'secretKey')}"/>
                 </td>
-              </tr> 
+              </tr>
             </tbody>
           </table>
         </div>

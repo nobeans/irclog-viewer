@@ -43,6 +43,14 @@
               </tr> 
               <tr class="prop">
                 <th valign="top" class="name">
+                  <label for="isArchived"><g:message code="channel.isArchived" default="Is Archived" />:</label>
+                </th>
+                <td valign="top" class="value ${hasErrors(bean:channel,field:'isArchived','errors')}">
+                  <g:checkBox name="isArchived" value="${channel?.isArchived}" ></g:checkBox> <g:message code="channel.isArchived.editCaption" />
+                </td>
+              </tr> 
+              <tr class="prop">
+                <th valign="top" class="name">
                   <label for="secretKey"><g:message code="channel.secretKey" default="Secret Key" />:</label>
                 </th>
                 <td valign="top" class="value ${hasErrors(bean:channel,field:'secretKey','errors')}">

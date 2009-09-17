@@ -21,7 +21,7 @@ class SingleViewerController extends Base {
         }
 
         // アクセス可能なチャンネルを取得する。
-        def selectableChannels = getSelectableChannels()
+        def selectableChannels = getSelectableChannels(criterion.channel)
 
         // リンク用の関連日付を取得する。
         def relatedDates = channelService.getRelatedDates(selectableChannels, params.date, Channel.findByName(params.channel), criterion.isIgnoredOptionType)
@@ -66,10 +66,11 @@ class SingleViewerController extends Base {
         criterion
     }
 
-    private getSelectableChannels() {
+    private getSelectableChannels(specifiedChannel) {
         def channels = [:]
-        channelService.getAccessibleChannelList(loginUserDomain, params).each { channels[it.name] = it.name }
-        channels
+        channels[specifiedChannel] = specifiedChannel // 指定されたチャンネルは必ず表示(書庫対応)
+        channelService.getAccessibleChannelList(loginUserDomain, params).grep{!it.isArchived}.each{ channels[it.name] = it.name }
+        channels.sort{it.key}
     }
 
     /** mixed側での現在のtype条件がallかどうか。*/

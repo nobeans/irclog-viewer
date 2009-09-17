@@ -110,7 +110,7 @@ class MixedViewerController extends Base {
     private getSelectableChannels() {
         def channels = [:]
         channels['all'] = message(code:'mixedViewer.search.channel.all')
-        channelService.getAccessibleChannelList(loginUserDomain, params).each { channels[it.name] = it.name }
+        channelService.getAccessibleChannelList(loginUserDomain, params).grep{ !it.isArchived }.each{ channels[it.name] = it.name }
         channels
     }
 
