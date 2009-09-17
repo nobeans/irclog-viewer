@@ -40,6 +40,7 @@ abstract class Base {
         /* for DEBUG */
         if (System.getProperty("grails.env") == "development") {
             startTime = System.currentTimeMillis()
+            request.startTime = startTime // フッタのレスポンスタイム表示用
             log.info("BEGIN Request " + ">"*30)
         }
 

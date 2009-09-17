@@ -28,7 +28,15 @@
     <g:layoutBody />  
     <div class="footer">
       <a id="linkeToTop" href="#"><img src="${resource(dir:'images',file:'top.png')}" title="${message(code:"footer.linkToTop.tooltips")}" alt="To top" /></a>
-      <span id="poweredBy"><g:message code="footer.poweredBy" /></span>
+      <div class="right">
+        <div id="poweredBy"><g:message code="footer.poweredBy" /></div>
+        <div id="responseTime">
+          <g:if test="${request.startTime}">
+            <% def responseTime = String.format("%.3f", (System.currentTimeMillis() - request.startTime) / 1000.0 ) %>
+            <g:message code="footer.responseTime" args="${[responseTime]}" />
+          </g:if>
+        </div>
+      </div>
     </div>
   </body>	
 </html>

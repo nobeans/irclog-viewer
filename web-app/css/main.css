@@ -528,11 +528,15 @@ html>/**/body .list tr:hover {
     left: 1em;
     width: 5em;
 }
-.footer #poweredBy {
+.footer .right {
     position: absolute;
     text-align: right;
     right: 1em;
     width: 20em;
+    top: 5px;
+}
+.footer .right div {
+    text-align: right;
 }
 
 /* MixedViewer */
