@@ -1,14 +1,9 @@
-import org.grails.plugins.springsecurity.service.AuthenticateService
-import org.springframework.security.providers.UsernamePasswordAuthenticationToken as AuthToken
-import org.springframework.security.context.SecurityContextHolder as SCH
-
 /**
  * ユーザによるユーザ情報登録・参照・編集のためのコントローラ。
  */
 class RegisterController extends Base {
 
-	AuthenticateService authenticateService
-    def daoAuthenticationProvider
+    def personService
 
     static allowedMethods = [save:'POST', update:'POST']
 
@@ -29,18 +24,8 @@ class RegisterController extends Base {
  
     def update = {
         withLoginPerson { person ->
-            def currentEncodedPassword = person.password
-            person.properties = params
-            if (person.save()) {
-                // 素のパスワード文字列に対してバリデーションはOKなので、ハッシュに変換する。
-                if (currentEncodedPassword != person.password) {
-                    person.password = authenticateService.passwordEncoder(params.password)
-                }
-
-                // 更新に成功した場合は、セッション上のユーザ情報を更新する。
-                // FIXME:Acegiの作法がわからなかったため、かなり強引な方法で実装している。
-                SCH.context.authentication.principal.domainClass.realName = person.realName
-
+            person = personService.update(person, params)
+            if (!person.hasErrors()) {
                 flash.message = 'register.updated'
                 redirect(action:'show', id:person.id)
             } else {
@@ -61,25 +46,8 @@ class RegisterController extends Base {
             return
         }
 
-        // デフォルトロールを取得する。
-        def role = Role.findByName(authenticateService.securityConfig.security.defaultRole)
-        if (!role) {
-            flash.message = 'register.defaultRoleNotFound'
-            redirect(controller:'top')
-            return 
-        }
-
-        def person = new Person(params)
-        person.enabled = true // 自分で登録したときは即有効
-        role.addToPersons(person)
-        if (person.save()) {
-            // 素のパスワード文字列に対してバリデーションはOKなので、ハッシュに変換する。
-            person.password = authenticateService.passwordEncoder(params.password)
-
-            // 新規登録に成功した場合は、そのままログインする。
-            def authtoken = daoAuthenticationProvider.authenticate(new AuthToken(person.loginName, params.password))
-            SCH.context.authentication = authtoken
-
+        def person = personService.create(params)
+        if (!person.hasErrors()) {
             flash.message = "register.created"
             redirect(action:'show')
         } else {
