@@ -11,37 +11,33 @@ class PersonService {
 
     def create(params) {
         def person = new Person(params)
-        try {
-            // 自分で登録したときは即有効にする。
-            person.enabled = true
 
-            // 保存する。
-            if (person.hasErrors()) return person // 事前
-            person.save()
-            if (person.hasErrors()) return person // 事後
+        // 自分で登録したときは即有効にする。
+        person.enabled = true
 
-            // 素のパスワード文字列に対してバリデーションはOKなので、ハッシュに変換する。
-            def rawPassword = person.password // 後でログイン用に使うため、退避しておく。
-            if (person.password && person.repassword && person.password == person.repassword) {
-                person.password = authenticateService.passwordEncoder(rawPassword)
-                person.repassword = person.password
-                if (person.hasErrors()) return person
-            }
+        // 保存する。
+        if (person.hasErrors()) return person // 事前
+        person.save()
+        if (person.hasErrors()) return person // 事後
 
-            // デフォルトロールに関連づける。
-            def role = Role.findByName(authenticateService.securityConfig.security.defaultRole)
-            role.addToPersons(person)
-            if (role.hasErrors()) return person
-
-            // 新規登録に成功した場合は、そのままログインする。
-            def authtoken = daoAuthenticationProvider.authenticate(new AuthToken(person.loginName, rawPassword))
-            SCH.context.authentication = authtoken
-
-            return person
-        } catch (Throwable e) {
-            log.error('ユーザ情報の保存で予期せぬエラーが発生しました。', e)
-            person.errors.addError(new FieldError("Person", "", "person.unexpected.error"))
+        // 素のパスワード文字列に対してバリデーションはOKなので、ハッシュに変換する。
+        def rawPassword = person.password // 後でログイン用に使うため、退避しておく。
+        if (person.password && person.repassword && person.password == person.repassword) {
+            person.password = authenticateService.passwordEncoder(rawPassword)
+            person.repassword = person.password
+            if (person.hasErrors()) return person
         }
+
+        // デフォルトロールに関連づける。
+        def role = Role.findByName(authenticateService.securityConfig.security.defaultRole)
+        role.addToPersons(person)
+        if (role.hasErrors()) return person
+
+        // 新規登録に成功した場合は、そのままログインする。
+        def authtoken = daoAuthenticationProvider.authenticate(new AuthToken(person.loginName, rawPassword))
+        SCH.context.authentication = authtoken
+
+        return person
     }
 
     def update(person, params) {
