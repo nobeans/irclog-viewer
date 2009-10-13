@@ -34,8 +34,7 @@ class PersonService {
         if (role.hasErrors()) return person
 
         // 新規登録に成功した場合は、そのままログインする。
-        def authtoken = daoAuthenticationProvider.authenticate(new AuthToken(person.loginName, rawPassword))
-        SCH.context.authentication = authtoken
+        SCH.context.authentication = new AuthToken(person.loginName, rawPassword)
 
         return person
     }
