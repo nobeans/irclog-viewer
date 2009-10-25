@@ -7,7 +7,6 @@ class PersonService {
 
     boolean transactional = true
 	def authenticateService
-    def daoAuthenticationProvider
 
     def create(params) {
         def person = new Person(params)
