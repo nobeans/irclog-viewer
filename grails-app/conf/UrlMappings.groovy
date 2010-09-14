@@ -13,7 +13,7 @@ class UrlMappings {
         // Single viewer
         "/the/$channel/$date"(controller:"singleViewer", action:"index") {
             constraints {
-                channel(matches:/[\w-]+/)
+                channel(matches:/[\w()-]+/)
                 date(matches:/\d{8}/)
             }
         }
