@@ -1,9 +1,0 @@
-<plugin name='i18n-templates' version='1.0.3' grailsVersion='1.1.1 &gt; *'>
-  <author>Marcel Overdijk</author>
-  <authorEmail>marceloverdijk@gmail.com</authorEmail>
-  <title>I18n Templates</title>
-  <description>This plugin offers i18n scaffolding templates to generate a full internationalizable application.</description>
-  <documentation>http://grails.org/I18n+Templates+Plugin</documentation>
-  <resources />
-  <dependencies />
-</plugin>

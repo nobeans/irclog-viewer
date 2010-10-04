@@ -2,4 +2,5 @@ log
 db
 tmp
 web-app/plugins
+classes
 
