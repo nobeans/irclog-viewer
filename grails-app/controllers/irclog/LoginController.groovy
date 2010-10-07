@@ -2,16 +2,25 @@ package irclog
 
 import irclog.controller.Base
 
-//import org.springframework.security.DisabledException
-//import org.springframework.security.ui.webapp.AuthenticationProcessingFilter as APF
+import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
+import org.springframework.security.authentication.DisabledException
+import org.springframework.security.authentication.AccountExpiredException
+import org.springframework.security.authentication.CredentialsExpiredException
+import org.springframework.security.authentication.DisabledException
+import org.springframework.security.authentication.LockedException
+import org.springframework.security.core.context.SecurityContextHolder as SCH
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 class LoginController extends Base {
-    
+
     def index = {
-        redirect(action:auth, params:params)
+        redirect action:auth, params:params
     }
-    
-    /** ログイン画面を表示する。 */
+
+    /**
+     * Show the login page.
+     */
     def auth = {
         if (isLoggedIn) {
             flash.message = null
@@ -27,7 +36,7 @@ class LoginController extends Base {
             render(view:'auth', params:params)
         }
     }
-    
+
     /** アクセス不許可 */
     def denied = {
         log.warn "Denied to access: ${request['javax.servlet.forward.request_uri']} by ${loginUserName}"
@@ -39,11 +48,13 @@ class LoginController extends Base {
         }
         redirect(uri: config.irclog.viewer.defaultTargetUrl)
     }
-    
-    /** ログイン失敗 */
+
+    /**
+     * Callback after a failed login. Redirects to the auth page with a warning message.
+     */
     def authfail = {
-        def loginName = session[APF.SPRING_SECURITY_LAST_USERNAME_KEY]
-        def exception = session[APF.SPRING_SECURITY_LAST_EXCEPTION_KEY]
+        def loginName = session[UsernamePasswordAuthenticationFilter.SPRING_SECURITY_LAST_USERNAME_KEY]
+        def exception = session[AbstractAuthenticationProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY]
         if (exception) {
             if (exception instanceof DisabledException) {
                 flash.message = "login.loginName.disabled.error"

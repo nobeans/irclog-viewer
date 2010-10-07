@@ -29,7 +29,7 @@ class ChannelService {
                     ch.isPrivate = false
                 order by
                     ch.${params.sort} ${params.order}
-            """, person.id)
+            """, [person.id])
         }
         // 未ログインユーザの場合は、公開チャンネルのみ
         return Channel.executeQuery("""
@@ -49,7 +49,7 @@ class ChannelService {
      * @return キー=Channel, 値=[Person...] のMap
      */
     public List<Person> getJoinedPersons(Channel ch) {
-        Person.executeQuery("select p from Person as p join p.channels as c where c = ?", ch)
+        Person.executeQuery("select p from Person as p join p.channels as c where c = ?", [ch])
     }
 
     /**
@@ -59,7 +59,7 @@ class ChannelService {
     public Map<Channel, List<Person>> getAllJoinedPersons() {
         def result = [:]
         Channel.list().each { ch ->
-            result[ch] = Person.executeQuery("select p from Person as p join p.channels as c where c = ?", ch)
+            result[ch] = Person.executeQuery("select p from Person as p join p.channels as c where c = ?", [ch])
         }
         result
     }

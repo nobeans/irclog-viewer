@@ -1,7 +1,7 @@
 dataSource {
     pooled = true
-    driverClassName = "org.hsqldb.jdbcDriver"
-    username = "sa"
+    driverClassName = "org.postgresql.Driver"
+    username = "postgres"
     password = ""
 }
 hibernate {
@@ -14,20 +14,23 @@ environments {
     development {
         dataSource {
             dbCreate = "create-drop" // one of 'create', 'create-drop','update'
-            url = "jdbc:hsqldb:mem:devDB"
+            url = "jdbc:postgresql://localhost:5432/irclog"
             //logSql = true
         }
     }
     test {
         dataSource {
+            driverClassName = "org.hsqldb.jdbcDriver"
+            username = "sa"
+            password = ""
             dbCreate = "update"
             url = "jdbc:hsqldb:mem:testDb"
         }
     }
     production {
         dataSource {
-            dbCreate = "update"
-            url = "jdbc:hsqldb:file:prodDb;shutdown=true"
+            //dbCreate = "update"
+            url = "jdbc:postgresql://localhost:5432/irclog"
         }
     }
 }

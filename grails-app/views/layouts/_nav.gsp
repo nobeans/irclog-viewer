@@ -1,5 +1,5 @@
 <%-- 未ログイン --%>
-<g:isNotLoggedIn>
+<sec:ifNotLoggedIn>
   <ul>
     <my:createNavLinkIfNotCurrent controller="summary" />
     <my:createNavLinkIfNotCurrent controller="mixedViewer" />
@@ -10,23 +10,23 @@
   <ul id="login-info">
     <li><img src="${resource(dir:'images',file:'guest.png')}" alt="Guest user" /><g:message code="login.info.guest" /></li>
   </ul>
-</g:isNotLoggedIn>
+</sec:ifNotLoggedIn>
 
 <%-- ログイン中 --%>
-<g:isLoggedIn>
+<sec:ifLoggedIn>
   <ul>
     <my:createNavLinkIfNotCurrent controller="summary" />
     <my:createNavLinkIfNotCurrent controller="mixedViewer" />
     <my:createNavLinkIfNotCurrent controller="channel" action="list" />
-    <g:ifAnyGranted role="ROLE_ADMIN">
+    <sec:ifAnyGranted role="ROLE_ADMIN">
       <my:createNavLinkIfNotCurrent controller="person" action="list" />
-    </g:ifAnyGranted>
-    <g:ifNotGranted role="ROLE_ADMIN">
+    </sec:ifAnyGranted>
+    <sec:ifNotGranted role="ROLE_ADMIN">
       <my:createNavLinkIfNotCurrent controller="register" action="show" />
-    </g:ifNotGranted>
+    </sec:ifNotGranted>
     <my:createNavLinkIfNotCurrent controller="logout" />
   </ul>
   <ul id="login-info">
     <li><img src="${resource(dir:'images',file:'person.png')}" alt="Logged-in user" /><g:message code="login.info" args="${[g.loggedInUserInfo(field:'realName'), g.loggedInUserInfo(field:'loginName')]}" /></li>
   </ul>
-</g:isLoggedIn>
+</sec:ifLoggedIn>

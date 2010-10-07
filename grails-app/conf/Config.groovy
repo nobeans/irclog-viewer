@@ -104,3 +104,8 @@ irclog {
     viewer.defaultTargetUrl = "/summary"
     session.maxInactiveInterval = 24 * 60 * 60 // [sec] => 1day
 }
+
+// Added by the Spring Security Core plugin:
+grails.plugins.springsecurity.userLookup.userDomainClassName = 'irclog.auth.SecUser'
+grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'irclog.auth.SecUserSecRole'
+grails.plugins.springsecurity.authority.className = 'irclog.auth.SecRole'

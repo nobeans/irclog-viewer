@@ -13,8 +13,8 @@
         <h1><g:message code="channel.list" default="Channel List" /></h1>
       </my:withHelp>
       <my:help for="channel-list-caption">
-        <g:isLoggedIn><g:message code="channel.list.caption.isLoggedIn" /></g:isLoggedIn>
-        <g:isNotLoggedIn><g:message code="channel.list.caption.isNotLoggedIn" /></g:isNotLoggedIn>
+        <sec:ifLoggedIn><g:message code="channel.list.caption.isLoggedIn" /></sec:ifLoggedIn>
+        <sec:ifNotLoggedIn><g:message code="channel.list.caption.isNotLoggedIn" /></sec:ifNotLoggedIn>
       </my:help>
       <div class="list">
         <table>
@@ -41,12 +41,12 @@
               <td>
                 <% allJoinedPersons[channel].each{ person -> %>
                   <span class="${person.loginName}" title="${person.realName.encodeAsHTML()}">
-                    <g:ifAnyGranted role="ROLE_ADMIN">
+                    <sec:ifAnyGranted role="ROLE_ADMIN">
                       <g:link controller="person" action="show" id="${person.id}">${person.loginName.encodeAsHTML()}</g:link>
-                    </g:ifAnyGranted>
-                    <g:ifNotGranted role="ROLE_ADMIN">
+                    </sec:ifAnyGranted>
+                    <sec:ifNotGranted role="ROLE_ADMIN">
                       ${person.loginName.encodeAsHTML()}
-                    </g:ifNotGranted>
+                    </sec:ifNotGranted>
                   </span>
                 <% } %>
               </td>
@@ -55,7 +55,7 @@
           </tbody>
         </table>
       </div>
-      <g:isLoggedIn>
+      <sec:ifLoggedIn>
         <div class="buttons">
           <span class="menuButton"><g:link class="create" action="create"><g:message code="create" /></g:link></span>
           <span class="menuButton" id="join"><a href="javascript:void(0);" onclick="IRCLOG.toggleJoinToSecretChannel()"><g:message code="channel.join" />...</a></span>
@@ -69,7 +69,7 @@
             <span class="button"><input type="submit" value="${message(code:"channel.join.submit")}" /></span>
           </g:form>
         </div>
-      </g:isLoggedIn>
+      </sec:ifLoggedIn>
     </div>
   </body>
 </html>

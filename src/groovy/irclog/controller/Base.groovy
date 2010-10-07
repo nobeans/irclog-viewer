@@ -2,7 +2,7 @@ package irclog.controller
 
 import org.codehaus.groovy.grails.commons.ApplicationHolder
 //import org.grails.plugins.springsecurity.service.AuthenticateService
-//import org.springframework.security.context.SecurityContextHolder as SCH
+import org.springframework.security.core.context.SecurityContextHolder as SCH
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 abstract class Base {
@@ -12,6 +12,8 @@ abstract class Base {
     
     /** Authenticate Service */
     //    AuthenticateService authenticateService
+    def authenticationTrustResolver
+    def springSecurityService
     
     /** Login user */
     def loginUserName
@@ -28,15 +30,9 @@ abstract class Base {
     boolean isAdmin
     boolean isUser
     
-    /** Locale */
-    Locale locale
-    
-    /** main request permission setting */
-    def requestAllowed
-    
     def beforeInterceptor = {
-        if (requestAllowed != null && !authenticateService.ifAnyGranted(requestAllowed)) {
-            log.error('request not allowed: ' + requestAllowed)
+        if (springSecurityService.isLoggedIn()) {
+            log.error('request not allowed')
             redirect(uri: '/')
             return
         }
@@ -56,21 +52,6 @@ abstract class Base {
             // 現状はロールが増えるごとに修正が必要。
             isAdmin = authenticateService.ifAnyGranted('ROLE_admin')
             isUser = authenticateService.ifAnyGranted('ROLE_user')
-        }
-        
-        /* i18n: if lang params */
-        if (params['lang']) {
-            locale = new Locale(params['lang'])
-            RCU.getLocaleResolver(request).setLocale(request,response,locale)
-            session.lang = params['lang']
-        }
-        /* need this for jetty */
-        if (session.lang != null) {
-            locale = new Locale(session.lang)
-            RCU.getLocaleResolver(request).setLocale(request,response,locale)
-        }
-        if (locale == null) {
-            locale = RCU.getLocale(request)
         }
     }
 }

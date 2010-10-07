@@ -1,5 +1,6 @@
 package irclog
 
+import groovy.sql.Sql
 import irclog.utils.TimeMarker 
 import java.text.SimpleDateFormat
 
@@ -11,19 +12,24 @@ class SummaryService {
     boolean transactional = true
 
     def irclogSearchService
+    def dataSource
 
     /** アクセス可能な全チャンネルのトピック情報(1週間以内の上位5件)を取得する。*/
     public List<Irclog> getAccessibleTopicList(person, accessibleChannelList) {
         def baseDate = new Date()
         def df = new SimpleDateFormat("yyyy-MM-dd")
         def baseDateFormatted = df.format(baseDate)
-        Irclog.executeNativeQuery("""
+        def db = new Sql(dataSource)
+        
+        def channelIds = accessibleChannelList.collect{ it.id }.join(", ")
+        if (!channelIds) return [] 
+        db.execute("""
             select
                 *
             from
                 irclog
             where
-                channel_id in ( ${accessibleChannelList.collect{it.id}.join(", ")} )
+                channel_id in ( ${channelIds} )
             and
                 type = 'TOPIC'
             and
@@ -31,7 +37,7 @@ class SummaryService {
             order by
                 time desc
             limit 5
-        """)
+        """.toString())
     }
 
     /** アクセス可能な全チャンネルのサマリ情報を取得する。 */
@@ -166,7 +172,9 @@ class SummaryService {
         def baseDate = new Date()
         def df = new SimpleDateFormat("yyyy-MM-dd")
         def baseDateFormatted = df.format(baseDate)
-        int result = Summary.executeUpdateNativeQuery("""
+        
+        def db = new Sql(dataSource)
+        int result = db.executeUpdate ("""
             update
                 summary
             set
@@ -204,9 +212,10 @@ class SummaryService {
         def df = new SimpleDateFormat("yyyy-MM-dd")
 
         // タイミングによっては重複したINSERTが実行されることもありうるため、排他的テーブルロックを取得する。
-        Summary.executeUpdateNativeQuery("lock table summary in exclusive mode")
-        int resultDeleted = Summary.executeUpdateNativeQuery("delete from summary")
-        int resultInserted = Summary.executeUpdateNativeQuery("""
+        def db = new Sql(dataSource)
+        db.execute("lock table summary in exclusive mode")
+        int resultDeleted = db.executeUpdate("delete from summary")
+        int resultInserted = db.executeUpdate("""
             insert into summary
                 (id, channel_id, last_updated, today, yesterday, two_days_ago, three_days_ago, four_days_ago, five_days_ago, six_days_ago, total_before_yesterday, latest_irclog_id) 
             select
@@ -230,7 +239,7 @@ class SummaryService {
                 type in ${IN_ESSENTIAL_TYPES}
             group by
                 channel_id
-        """)
+        """.toString())
         log.info "Updated all summary: deleted(${resultDeleted}), inserted(${resultInserted})"
     }
 

@@ -38,15 +38,15 @@
                 <ul>
                   <g:each var="p" in="${joinedPersons.sort{it.loginName}}">
                     <li title="${p.realName.encodeAsHTML()}">
-                      <g:ifAnyGranted role="ROLE_ADMIN">
+                      <sec:ifAnyGranted role="ROLE_ADMIN">
                         <g:link controller="person" action="show" id="${p.id}">${p.loginName.encodeAsHTML()}</g:link>
                         &gt;&gt; <g:link controller="channel" action="kick" id="${channel.id}" params="[personId:p.id]" onclick="return confirm('${message(code:'channel.kick.confirm')}');">
                             <g:message code="channel.kick" />
                         </g:link>
-                      </g:ifAnyGranted>
-                      <g:ifNotGranted role="ROLE_ADMIN">
+                      </sec:ifAnyGranted>
+                      <sec:ifNotGranted role="ROLE_ADMIN">
                         ${p.loginName.encodeAsHTML()}
-                      </g:ifNotGranted>
+                      </sec:ifNotGranted>
                     </li>
                   </g:each>
                 </ul>
@@ -62,13 +62,13 @@
         <g:form>
           <input type="hidden" name="id" value="${channel?.id}" />
           <span class="button"><input type="button" class="search" onclick="IRCLOG.goto('${my.searchAllLogsLink(channel:channel)}')" value="${message(code:'channel.searchAllLogs')}" /></span>
-          <g:isLoggedIn>
+          <sec:ifLoggedIn>
             <span class="button"><g:actionSubmit class="edit" action="edit" value="${message(code:'edit')}" /></span>
             <span class="button"><g:actionSubmit class="delete" action="delete" value="${message(code:'delete')}" onclick="return confirm('${message(code:'delete.confirm')}');" /></span>
             <% if (joinedPersons.find{it.loginName == loginUserName} != null) { %>
               <span class="button"><g:actionSubmit class="part" action="part" value="${message(code:'channel.part')}" onclick="return confirm('${message(code:'channel.part.confirm')}');" /></span>
             <% } %>
-          </g:isLoggedIn>
+          </sec:ifLoggedIn>
         </g:form>
       </div>
     </div>

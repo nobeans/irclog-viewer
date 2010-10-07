@@ -1,3 +1,5 @@
+package irclog
+
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 class MyTagLib {
@@ -92,14 +94,15 @@ class MyTagLib {
             out << """ <li class="menuButton">${g.link(class:key, controller:attrs.controller, action:attrs.action) { g.message(code:key) }}</li> """
         }
     }
-
+    
     def flashMessage = { attrs ->
         if (flash.message) {
             out << """<div class="message">${g.message(code:flash.message, args:flash.args, default:flash.defaultMessage)}</div>"""
         }
         if (flash.errors) {
             out << """<div class="errors"><ul>"""
-            out << flash.errors.collect{ """<li>${g.message(code:it, args:flash.args)}</li>"""}.join("")
+            out << flash.errors.collect{ """<li>${g.message(code:it, args:flash.args)}</li>"""
+            }.join("")
             out << """</ul></div>"""
         }
         if (attrs.bean && attrs.bean.hasErrors()) {
@@ -155,37 +158,37 @@ class MyTagLib {
      * ラベルはbodyとして指定する。
      * title属性はHTML本来のtitle属性として扱う。
      */
-	def sortableColumn = { attrs, body ->
-		def writer = out
-		if (!attrs.property) throwTagError("Tag [sortableColumn] is missing required attribute [property]")
+    def sortableColumn = { attrs, body ->
+        def writer = out
+        if (!attrs.property) throwTagError("Tag [sortableColumn] is missing required attribute [property]")
 
-		def property = attrs.remove("property")
-		def action = attrs.action ? attrs.remove("action") : (params.action ? params.action : "list")
+        def property = attrs.remove("property")
+        def action = attrs.action ? attrs.remove("action") : (params.action ? params.action : "list")
 
-		def defaultOrder = attrs.remove("defaultOrder")
-		if (defaultOrder != "desc") defaultOrder = "asc"
+        def defaultOrder = attrs.remove("defaultOrder")
+        if (defaultOrder != "desc") defaultOrder = "asc"
 
-		// current sorting property and order
-		def sort = params.sort
-		def order = params.order
+        // current sorting property and order
+        def sort = params.sort
+        def order = params.order
 
-		// add sorting property and params to link params
-		def linkParams = [sort:property]
-		if (params.id) linkParams.put("id",params.id)
-		if (attrs.params) linkParams.putAll(attrs.remove("params"))
+        // add sorting property and params to link params
+        def linkParams = [sort:property]
+        if (params.id) linkParams.put("id",params.id)
+        if (attrs.params) linkParams.putAll(attrs.remove("params"))
 
-		// determine and add sorting order for this column to link params
-		attrs.class = (attrs.class ? "${attrs.class} sortable" : "sortable")
-		if (property == sort) {
-			attrs.class = attrs.class + " sorted " + order
-			if (order == "asc") {
-				linkParams.order = "desc"
-			} else {
-				linkParams.order = "asc"
-			}
-		} else {
-			linkParams.order = defaultOrder
-		}
+        // determine and add sorting order for this column to link params
+        attrs.class = (attrs.class ? "${attrs.class} sortable" : "sortable")
+        if (property == sort) {
+            attrs.class = attrs.class + " sorted " + order
+            if (order == "asc") {
+                linkParams.order = "desc"
+            } else {
+                linkParams.order = "asc"
+            }
+        } else {
+            linkParams.order = defaultOrder
+        }
 
         def messageSource = grailsAttributes.getApplicationContext().getBean("messageSource")
         def locale = RCU.getLocale(request)
@@ -204,13 +207,13 @@ class MyTagLib {
             message = body()
         }
 
-		writer << "<th "
-		// process remaining attributes
-		attrs.each { k, v ->
-			writer << "${k}=\"${v.encodeAsHTML()}\" "
-		}
-		writer << ">"
-		writer << link(action:action, params:linkParams, title:(title ?: '')) { message }
-		writer << "</th>"
-	}
+        writer << "<th "
+        // process remaining attributes
+        attrs.each { k, v ->
+            writer << "${k}=\"${v.encodeAsHTML()}\" "
+        }
+        writer << ">"
+        writer << link(action:action, params:linkParams, title:(title ?: '')) { message }
+        writer << "</th>"
+    }
 }
