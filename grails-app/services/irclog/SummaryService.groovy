@@ -1,7 +1,7 @@
 package irclog
 
 import groovy.sql.Sql
-import irclog.utils.TimeMarker 
+import irclog.helper.TimeMarker;
 import java.text.SimpleDateFormat
 
 class SummaryService {

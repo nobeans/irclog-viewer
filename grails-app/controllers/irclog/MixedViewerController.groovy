@@ -1,7 +1,7 @@
 package irclog
 
 import irclog.controller.Base
-import irclog.utils.TimeMarker 
+import irclog.helper.TimeMarker;
 import java.text.ParseException
 import java.text.SimpleDateFormat
 

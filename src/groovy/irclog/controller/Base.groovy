@@ -1,9 +1,9 @@
 package irclog.controller
 
+import grails.plugins.springsecurity.SpringSecurityService
 import org.codehaus.groovy.grails.commons.ApplicationHolder
-//import org.grails.plugins.springsecurity.service.AuthenticateService
-import org.springframework.security.core.context.SecurityContextHolder as SCH
-import org.springframework.web.servlet.support.RequestContextUtils as RCU
+import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
+import irclog.utils.CollectionUtils
 
 abstract class Base {
     
@@ -11,8 +11,6 @@ abstract class Base {
     def config = ApplicationHolder.application.config
     
     /** Authenticate Service */
-    //    AuthenticateService authenticateService
-    def authenticationTrustResolver
     def springSecurityService
     
     /** Login user */
@@ -37,21 +35,21 @@ abstract class Base {
             return
         }
         
-        authPrincipal = SCH?.context?.authentication?.principal
+        authPrincipal = springSecurityService.authentication?.principal
         if (authPrincipal != null && authPrincipal != 'anonymousUser') {
             isLoggedIn = true
             
             // 各種ログインユーザ情報を取得する。リクエスト属性にも格納しておく。
             loginUserName = authPrincipal?.username
-            loginUserDomain = authenticateService.userDomain()
+            loginUserDomain = springSecurityService.userDomain()
             loginUserRole = CollectionUtils.getFirstOrNull(loginUserDomain?.roles)
             request.loginUserName = loginUserName
             request.loginUserDomain = loginUserDomain
             request.loginUserRole = loginUserRole
             
             // 現状はロールが増えるごとに修正が必要。
-            isAdmin = authenticateService.ifAnyGranted('ROLE_admin')
-            isUser = authenticateService.ifAnyGranted('ROLE_user')
+            isAdmin = SpringSecurityUtils.ifAnyGranted('ROLE_admin')
+            isUser = SpringSecurityUtils.ifAnyGranted('ROLE_user')
         }
     }
 }

@@ -1,25 +1,13 @@
 package irclog
 
-import org.grails.plugins.springsecurity.service.AuthenticateService
-import org.springframework.security.providers.UsernamePasswordAuthenticationToken as AuthToken
-
-
-import org.springframework.validation.FieldError
-import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
-
-import org.springframework.security.authentication.DisabledException
-import org.springframework.security.authentication.AccountExpiredException
-import org.springframework.security.authentication.CredentialsExpiredException
-import org.springframework.security.authentication.DisabledException
-import org.springframework.security.authentication.LockedException
+import grails.plugins.springsecurity.SpringSecurityService
+import org.springframework.security.core.token.DefaultToken as AuthToken
 import org.springframework.security.core.context.SecurityContextHolder as SCH
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
 class PersonService {
     
     boolean transactional = true
-    def authenticateService
+    def springSecurityService
     
     def create(params) {
         def person = new Person(params)
@@ -35,13 +23,13 @@ class PersonService {
         // 素のパスワード文字列に対してバリデーションはOKなので、ハッシュに変換する。
         def rawPassword = person.password // 後でログイン用に使うため、退避しておく。
         if (person.password && person.repassword && person.password == person.repassword) {
-            person.password = authenticateService.passwordEncoder(rawPassword)
+            person.password = springSecurityService.encodePassword(rawPassword)
             person.repassword = person.password
             if (person.hasErrors()) return person
         }
         
         // デフォルトロールに関連づける。
-        def role = Role.findByName(authenticateService.securityConfig.security.defaultRole)
+        def role = Role.findByName(springSecurityService.securityConfig.security.defaultRole)
         role.addToPersons(person)
         if (role.hasErrors()) return person
         
@@ -63,7 +51,7 @@ class PersonService {
         
         // 素のパスワード文字列に対してバリデーションはOKなので、ハッシュに変換する。
         if (currentEncodedPassword != person.password) {
-            person.password = authenticateService.passwordEncoder(params.password)
+            person.password = springSecurityService.encodePassword(params.password)
             person.repassword = person.password
             if (person.hasErrors()) return person
         }

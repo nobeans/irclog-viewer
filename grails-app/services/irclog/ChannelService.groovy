@@ -1,4 +1,7 @@
 package irclog
+
+import irclog.utils.CollectionUtils
+
 class ChannelService {
 
     /** 基本種別をIN句で使うための文字列 */
