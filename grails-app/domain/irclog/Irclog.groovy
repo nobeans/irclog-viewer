@@ -2,8 +2,8 @@ package irclog
 
 class Irclog {
     
-    public static final ESSENTIAL_TYPES = ['PRIVMSG', 'NOTICE', 'TOPIC']
-    public static final OPTION_TYPES = [
+    static final ESSENTIAL_TYPES = ['PRIVMSG', 'NOTICE', 'TOPIC']
+    static final OPTION_TYPES = [
         'JOIN',
         'NICK',
         'QUIT',
@@ -14,16 +14,16 @@ class Irclog {
         'OTHER',
         'SIMPLE'
     ]
-    public static final ALL_TYPES = ESSENTIAL_TYPES + OPTION_TYPES
+    static final ALL_TYPES = ESSENTIAL_TYPES + OPTION_TYPES
     
     Date time
     String type
     String message
     String nick
-    String permaId // パーマID (パーマリンクに使用する)
+    String permaId // permanent ID for perma-link
     
-    String channelName // インポート時にログからそのまま格納する
-    Channel channel    // チャンネルが登録済みの場合は関連として保持する
+    String channelName // just store channel name imported from log
+    Channel channel    // make relation if channel has registered yet
     
     static belongsTo = Channel
     

@@ -16,7 +16,7 @@ class ChannelTests extends GrailsUnitTestCase {
         assert channel.validate()
     }
     
-    void testValidate_NG_notStartingWithHash() {
+    void testValidate_NG_name_notStartingWithHash() {
         Channel channel = createChannel("test")
         assert channel.validate() == false
     }

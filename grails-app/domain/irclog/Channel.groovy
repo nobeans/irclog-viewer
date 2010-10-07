@@ -10,11 +10,11 @@ class Channel {
     
     public String toString() {
         return """${name} {
-    description: ${description}
-    isPrivate: ${isPrivate}
-    isArchived: ${isArchived}
-    secretKey: ${(secretKey) ? '****' : ''}
-}"""
+                 |    description: ${description}
+                 |    isPrivate: ${isPrivate}
+                 |    isArchived: ${isArchived}
+                 |    secretKey: ${(secretKey) ? '****' : ''}
+                 |}""".stripMargin()
     }
     
     static constraints = {

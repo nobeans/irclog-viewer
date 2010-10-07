@@ -1,27 +1,27 @@
 package irclog
 
 /**
- * チャンネルごとのサマリ情報
+ * Summary for each channel
  */
 class Summary {
     
     Channel channel
-    Date lastUpdated  // 最終更新日(＝基準日＝今日)
+    Date lastUpdated  // = origin = today
     
-    // 各種カウント
-    int today         // 今日(＝基準日)
-    int yesterday     // 昨日
-    int twoDaysAgo    // 2日前
-    int threeDaysAgo  // 3日前
-    int fourDaysAgo   // 4日前
-    int fiveDaysAgo   // 5日前
-    int sixDaysAgo    // 6日前
-    int totalBeforeYesterday  // 今日をのぞく過去全ての合計
+    // Counts
+    int today         // ＝origin
+    int yesterday
+    int twoDaysAgo
+    int threeDaysAgo
+    int fourDaysAgo
+    int fiveDaysAgo
+    int sixDaysAgo
+    int totalBeforeYesterday  // total of all count of past days except today
     
-    // 特殊カウント
-    int todayAfterTimeMarker  // 今日のタイムマーカ以降
+    // Special count
+    int todayAfterTimeMarker
     
-    Irclog latestIrclog     // 最新ログ
+    Irclog latestIrclog
     
     public int total() {
         return today + totalBeforeYesterday
@@ -30,17 +30,17 @@ class Summary {
     public String toString() {
         def df = new java.text.SimpleDateFormat("yyyy-MM-dd")
         return """${channel?.name}@${lastUpdated ? df.format(lastUpdated) : 'NEVER'} {
-    today: ${today}
-    yesterday: ${yesterday}
-    twoDaysAgo: ${twoDaysAgo}
-    threeDaysAgo: ${threeDaysAgo}
-    fourDaysAgo: ${fourDaysAgo}
-    fiveDaysAgo: ${fiveDaysAgo}
-    sixDaysAgo: ${sixDaysAgo}
-    totalBeforeYesterday: ${totalBeforeYesterday}
-    todayAfterTimeMarker: ${todayAfterTimeMarker} (Include: zero means there is not time-marker)
-    latestIrclog: ${latestIrclog}
-}"""
+                 |    today: ${today}
+                 |    yesterday: ${yesterday}
+                 |    twoDaysAgo: ${twoDaysAgo}
+                 |    threeDaysAgo: ${threeDaysAgo}
+                 |    fourDaysAgo: ${fourDaysAgo}
+                 |    fiveDaysAgo: ${fiveDaysAgo}
+                 |    sixDaysAgo: ${sixDaysAgo}
+                 |    totalBeforeYesterday: ${totalBeforeYesterday}
+                 |    todayAfterTimeMarker: ${todayAfterTimeMarker} (Include: zero means there is not time-marker)
+                 |    latestIrclog: ${latestIrclog}
+                 |}""".stripMargin()
     }
     
     public static final SORTABLE = [
