@@ -1,5 +1,6 @@
 package irclog.controller
 
+
 import grails.plugins.springsecurity.SpringSecurityService
 import org.codehaus.groovy.grails.commons.ApplicationHolder
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
