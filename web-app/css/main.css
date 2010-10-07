@@ -1,36 +1,45 @@
+@charset "utf-8";
+
+/* General */
+
 html * {
     margin: 0;
-    /*padding: 0; SELECT NOT DISPLAYED CORRECTLY IN FIREFOX */
+    text-align: left;
+    border-collapse: collapse;
+
+    /* 全要素の基本フォントサイズを統一して、扱いやすくする。 */
+    /* IEでのフォントサイズが不安定になる事象を抑止する効果もある。 */
+    font-size: 100%;
 }
-
-/* GENERAL */
-
-.spinner {
-    padding: 5px;
-    position: absolute;
-    right: 0;
+html {
+    position: relative;
+    width: 100%;
 }
 
 body {
+    position: relative;
+    width: 100%;
     background: #fff;
-    color: #333;
-    font: 11px verdana, arial, helvetica, sans-serif;
-}
-#grailsLogo {
-	padding:20px;
+    color: #555;
+    font-family: verdana, arial, helvetica, sans-serif;
 }
 
-a:link, a:visited, a:hover {
-    color: #666;
+a:link, a:visited {
+    color: #669;
     font-weight: bold;
     text-decoration: none;
 }
+a:hover {
+    color: blue;
+    text-decoration: underline;
+}
 
 h1 {
-    color: #48802c;
-    font-weight: normal;
-    font-size: 16px;
-    margin: .8em 0 .3em 0;
+    margin: 0;
+    padding: 2px 15px;
+    color: #555;
+    font-weight: bold;
+    font-size: 2em;
 }
 
 ul {
@@ -38,135 +47,245 @@ ul {
 }
 
 input, select, textarea {
-    background-color: #fcfcfc;
-    border: 1px solid #ccc;
-    font: 11px verdana, arial, helvetica, sans-serif;
-    margin: 2px 0;
+    font-family: verdana, arial, helvetica, sans-serif;
+    background-color: #fff;
+    border: 1px solid #bbb;
+    margin: 0;
     padding: 2px 4px;
+    vertical-align: middle;
+    color: #555;
 }
 select {
    padding: 2px 2px 2px 0;
 }
 textarea {
-	width: 250px;
-	height: 150px;
-	vertical-align: top;
+    width: 250px;
+    height: 100px;
+    vertical-align: top;
 }
-
 input:focus, select:focus, textarea:focus {
     border: 1px solid #b2d1ff;
+    background-color: #feb;
+}
+}
+label {
+    vertical-align: middle;
+}
+
+pre {
+    font-family: verdana, arial, helvetica, sans-serif;
+}
+
+img {
+    vertical-align: middle;
+    background-color: transparent;
+    border: 0;
+}
+img.button,
+input.image {
+    vertical-align: middle;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
 }
 
 .body {
-    float: left;
-    margin: 0 15px 10px 15px;
+    position: relative;
+    margin: 0 auto 0 auto;
+    padding: 0 2em;
+    z-index: 5;
+}
+.body h1 {
+    font-size: 1.5em;
+    margin: 15px 0 5px 0;
+    padding: 0;
 }
 
-/* NAVIGATION MENU */
+.clickable {
+    cursor: pointer;
+}
+
+.print {
+    display: none;
+}
+
+.wordBreak {
+    word-break: break-all;
+}
+
+.help {
+    margin: 1em 0 .3em 0;
+    padding: 0;
+}
+.help * {
+    display: inline;
+    vertical-align: baseline;
+}
+.help .help-button {
+    cursor: pointer;
+}
+.help-caption {
+    display: block;
+    margin: .2em 0 1em 1em;
+    padding: .5em 1.5em;
+    width: 80%;
+    line-height: 1.5em;
+    font-size: 12px;
+    font-weight: normal;
+    border: 1px solid #dd8;
+    background-color: #ffd;
+}
+
+/* Navigation Menu */
 
 .nav {
+    position: relative;
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
-    border: 1px solid #ccc;
+    border: 1px solid #bbb;
     border-style: solid none solid none;
-    margin-top: 5px;
-    padding: 7px 12px;
+    padding: 3px 18px;
+    overflow: hidden;
+}
+.nav * {
+    font-size: .98em;
+}
+.nav ul {
+    display: inline;
+    list-style-type: none;
+}
+.nav li {
+    margin: 0;
+    padding: 4px 8px;
+}
+.nav #login-info {
+    position: absolute;
+    top: 3px;
+    right: 2em;
+}
+.nav #login-info li {
+    margin: 0;
+    padding: 0;
+}
+.nav #login-info img {
+    margin: -2px 4px 0 0;
+}
+* html .nav #login-info {
+    top: 10px;
+}
+* html .nav #login-info img {
+    margin: 2px 4px 0 0;
+}
+*:first-child+html .nav #login-info img {
+    margin: 2px 4px 0 0;
 }
 
 .menuButton {
-    font-size: 10px;
-    padding: 0 5px;
+    display: inline;
+    padding: 4px 8px;
 }
-.menuButton a {
-    color: #333;
-    padding: 4px 6px;
-}
-.menuButton a.home {
+.menuButton .home {
     background: url(../images/skin/house.png) center left no-repeat;
-    color: #333;
     padding-left: 25px;
 }
-.menuButton a.list {
+.menuButton .list {
     background: url(../images/skin/database_table.png) center left no-repeat;
-    color: #333;
     padding-left: 25px;
 }
-.menuButton a.create {
+.menuButton .create {
     background: url(../images/skin/database_add.png) center left no-repeat;
-    color: #333;
     padding-left: 25px;
+}
+.menuButton.active {
+    background-color: #777;
+    color: #fff;
+}
+.menuButton.active a {
+    font-weight: normal;
+    color: #fff;
+}
+.menuButton a,
+.menuButton input {
+    color: #555;
+}
+.menuButton a:hover {
+    text-decoration: none;
 }
 
-/* MESSAGES AND ERRORS */
+/* Messages and Errors */
 
 .message {
     background: #f3f8fc url(../images/skin/information.png) 8px 50% no-repeat;
-    border: 1px solid #b2d1ff;
+    border-left: 1px solid #b2d1ff;
+    border-right: 1px solid #b2d1ff;
+    border-bottom: 1px solid #b2d1ff;
+    margin: 0 0 10px 0;
+    padding: 5px 5px 5px 30px;
     color: #006dba;
-    margin: 10px 0 5px 0;
-    padding: 5px 5px 5px 30px
 }
 
 div.errors {
     background: #fff3f3;
-    border: 1px solid red;
+    border-left: 1px solid #f88;
+    border-right: 1px solid #f88;
+    border-bottom: 1px solid #f88;
+    margin: 0 0 10px 0;
+    padding: 5px 5px 5px 30px;
     color: #cc0000;
-    margin: 10px 0 5px 0;
-    padding: 5px 0 5px 0;
 }
 div.errors ul {
     list-style: none;
     padding: 0;
 }
 div.errors li {
-	background: url(../images/skin/exclamation.png) 8px 0% no-repeat;
-    line-height: 16px;
+    background: url(../images/skin/exclamation.png) 8px 0% no-repeat;
+    vertical-align: middle;
     padding-left: 30px;
+    line-height: 1.5em;
 }
 
 td.errors select {
-    border: 1px solid red;
+    border: 1px solid #f88;
 }
 td.errors input {
-    border: 1px solid red;
-}
-td.errors textarea {
-    border: 1px solid red;
+    border: 1px solid #f88;
 }
 
-/* TABLES */
+/* Tables */
 
 table {
-    border: 1px solid #ccc;
-    width: 100%
+    position: relative;
+    border: 1px solid #bbb;
+    border-spacing: 0;
+    padding: 5px;
+    empty-cells: show;
+    width: 100%;
+    background-color: #fff;
 }
-tr {
-    border: 0;
-}
-td, th {
-    font: 11px verdana, arial, helvetica, sans-serif;
-    line-height: 12px;
-    padding: 5px 6px;
+td {
+    font-family: verdana, arial, helvetica, sans-serif;
+    line-height: 1.05em;
     text-align: left;
-    vertical-align: top;
+    padding: 3px 6px;
 }
 th {
-    background: #fff url(../images/skin/shadow.jpg);
-    color: #666;
-    font-size: 11px;
-    font-weight: bold;
-    line-height: 17px;
-    padding: 2px 6px;
+    background: transparent url(../images/skin/shadow.jpg) bottom repeat-x;
+    line-height: 1.3em;
+    text-align: left;
+    padding: 3px 6px;
+    vertical-align: baseline;
+    white-space: nowrap;
+    font-weight: normal;
 }
 th a:link, th a:visited, th a:hover {
-    color: #333;
     display: block;
-    font-size: 10px;
-    text-decoration: none;
     width: 100%;
+    color: #555;
+    text-decoration: none;
 }
 th.asc a, th.desc a {
-    background-position: right;
+    background-position: left;
     background-repeat: no-repeat;
+    padding-left: 10px;
 }
 th.asc a {
     background-image: url(../images/skin/sorted_asc.gif);
@@ -175,99 +294,575 @@ th.desc a {
     background-image: url(../images/skin/sorted_desc.gif);
 }
 
-.odd {
-    background: #f7f7f7;
-}
-.even {
-    background: #fff;
-}
-
-/* LIST */
+/* List */
 
 .list table {
-    border-collapse: collapse;
+    position: relative;
+    margin: 0;
+    padding: 0;
 }
-.list th, .list td {
-    border-left: 1px solid #ddd;
+* html .list table {
+    margin-bottom: -1px;
 }
-.list th:hover, .list tr:hover {
-    background: #b2d1ff;
+*:first-child+html .list table {
+    margin-bottom: -1px;
+}
+.list td {
+    border-top: 1px dotted #bbb;
+    border-bottom: 1px dotted #bbb;
+    padding: 3px 5px 3px 5px;
+    vertical-align: middle;
+}
+.list th {
+    border-top: 1px solid #bbb;
+    border-bottom: 1px solid #bbb;
+    white-space: nowrap;
+    vertical-align: middle;
+    font-size: .9em;
+}
+html>/**/body .list tr:hover {
+    background: #ddf;
 }
 
-/* PAGINATION */
+/* Pagination */
 
 .paginateButtons {
+    position: relative;
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
-    border: 1px solid #ccc;
-    border-top: 0;
-    color: #666;
-    font-size: 10px;
-    overflow: hidden;
-    padding: 10px 3px;
+    border: 1px solid #bbb;
+    padding: 3px 6px;
+    height: 1em;
+    vertical-align: baseline;
+    margin-left: -1px;
+    margin-top: -1px;
+}
+.paginateButtons * {
+    font-size: .85em;
+}
+* html .paginateButtons {
+    margin-left: 0px;
+}
+*:first-child+html .paginateButtons {
+    margin-left: 0px;
+}
+.paginateButtons.top {
+    margin-bottom: -1px;
+}
+.paginateButtons.bottom {
+    margin-top: -1px;
 }
 .paginateButtons a {
-    background: #fff;
-    border: 1px solid #ccc;
-    border-color: #ccc #aaa #aaa #ccc;
-    color: #666;
     margin: 0 3px;
-    padding: 2px 6px;
+    padding: 0px 3px;
 }
-.paginateButtons span {
-    padding: 2px 3px;
+.paginateButtons .currentStep {
+    padding: 0px 5px;
+    color: #f60;
+    font-weight: bold;
+}
+.paginateButtons .count {
+    padding: 0px 3px;
+    position: absolute;
+    right: 4px;
 }
 
-/* DIALOG */
+/* Dialog */
 
 .dialog table {
     padding: 5px 0;
+    background: #eee url(../images/slash.png) repeat;
 }
 
 .prop {
     padding: 5px;
 }
 .prop .name {
-    text-align: left;
+    text-align: right;
+    vertical-align: middle;
     width: 15%;
     white-space: nowrap;
+    font-weight: bold;
+    background: transparent;
 }
 .prop .value {
     text-align: left;
-    width: 85%;
+    vertical-align: middle;
+    width: auto;
+    background: #fff;
+}
+.prop .caption {
+    font-size: .85em;
+    margin-left: .5em;
+    background: #fff;
+    line-height: 1.3em;
 }
 
-/* ACTION BUTTONS */
+/* Action Buttons */
 
 .buttons {
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
-    border: 1px solid #ccc;
-    color: #666;
-    font-size: 10px;
-    margin-top: 5px;
+    border: 1px solid #bbb;
     overflow: hidden;
-    padding: 0;
+    margin: -1px 0 0 -1px;
+    padding: 2px;
 }
-
+* html .buttons {
+    margin-left: 0;
+}
+*:first-child+html .buttons {
+    margin-left: 0;
+}
+.buttons * {
+    font-size: .96em;
+}
+.buttons form {
+    display: inline;
+    margin: 0;
+}
 .buttons input {
-    background: #fff;
+    background: transparent;
     border: 0;
-    color: #333;
     cursor: pointer;
-    font-size: 10px;
     font-weight: bold;
-    margin-left: 3px;
-    overflow: visible;
-    padding: 2px 6px;
 }
 .buttons input.delete {
     background: transparent url(../images/skin/database_delete.png) 5px 50% no-repeat;
-    padding-left: 28px;
+    padding-left: 1.5em;
 }
 .buttons input.edit {
     background: transparent url(../images/skin/database_edit.png) 5px 50% no-repeat;
-    padding-left: 28px;
+    padding-left: 1.5em;
 }
 .buttons input.save {
     background: transparent url(../images/skin/database_save.png) 5px 50% no-repeat;
-    padding-left: 28px;
+    padding-left: 1.5em;
 }
+.buttons input.search {
+    background: transparent url(../images/search.png) 5px 50% no-repeat;
+    padding-left: 1.5em;
+    width: 15em;
+}
+.button input {
+    text-align: center;
+    padding: 2px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Yahoo UI */
+
+.yui-calcontainer {
+    display: none;
+    position: absolute !important;
+    width: 260px !important;
+    font-size: 18px !important;
+    z-index: 9 !important;
+}
+.yui-calcontainer .title {
+    font-size: 15px !important;
+    padding: 3px;
+}
+.yui-calendar .calheader,
+.yui-calendar .calweekdaycell {
+    font-size: 15px !important;
+}
+.yui-calendar .calcell a {
+    font-size: 18px;
+    line-height: 24px;
+}
+
+/* Header */
+
+.header {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    height: 113px;
+}
+.header h1 {
+    margin: 0;
+    padding: 0;
+}
+.header #analog {
+    display: none;
+}
+* html .header #analog {
+    position: absolute;
+    top: .5em;
+    right: .5em;
+    display: block;
+    background: #ddd;
+    margin: 10px;
+    padding: 8px 10px 5px 10px;
+    border: 1px solid #555;
+    font-size: 15px;
+    font-weight: bold;
+    color: #555;
+    filter:progid:DXImageTransform.Microsoft.Alpha(Enabled=1,Style=0,Opacity=60);
+}
+.header #timeMarkerClock {
+    position: absolute;
+    top: 12px;
+    right: 20px;
+    height: 90px;
+    width: 90px;
+}
+* html .header #timeMarkerClock {
+    right: 120px;
+}
+
+/* Footer */
+
+.footer {
+    position: relative;
+    margin-top: 15px;
+    padding: 5px 10px 5px 10px;
+    border-top: 1px solid #bbb;
+    background-color: #fff;
+    font-style: italic;
+    height: 1.5em;
+    z-index: 1;
+}
+.footer #linkToTop {
+    position: absolute;
+    left: 1em;
+    width: 5em;
+}
+.footer .right {
+    position: absolute;
+    text-align: right;
+    right: 1em;
+    width: 20em;
+    top: 5px;
+}
+.footer .right div {
+    text-align: right;
+}
+
+/* MixedViewer */
+
+.mixedViewer .search {
+    position: relative;
+    margin: 15px 0;
+    padding: 3px 10px;
+    background: #eee url(../images/slash.png) repeat;
+    border: 1px solid #ccc;
+    z-index: 1;
+}
+.mixedViewer .search  {
+    font-size: .96em;
+}
+.mixedViewer .search label,
+.mixedViewer .search input,
+.mixedViewer .search img {
+    font-size: .96em;
+    vertical-align: middle;
+}
+.mixedViewer .search .searchItem {
+    margin-left: .8em;
+}
+.mixedViewer .search #period-oneday-date-text {
+    width: 6.5em;
+}
+.mixedViewer .search #period-today-time-text {
+    width: 4em;
+}
+.mixedViewer .search #search-channel {
+    width: 6em;
+}
+.mixedViewer .search #search-nick {
+    width: 6em;
+}
+.mixedViewer .search #search-message {
+    width: 12em;
+}
+.mixedViewer .search #search-type-label {
+    margin-left: 4px;
+}
+.mixedViewer .search #search-submit-label {
+    cursor: pointer;
+}
+.mixedViewer .search #search-clear-label {
+    background: transparent;
+    cursor: pointer;
+    border: 0;
+}
+* html .mixedViewer .search #search-clear-label {
+    width: 7em;
+}
+*:first-child+html .mixedViewer .search #search-clear-label {
+    width: 7em;
+}
+
+/* SingleViewer */
+
+.singleViewer .caption {
+    padding: 15px 0 5px 0;
+    line-height: 1.5em;
+    font-size: 1.5em;
+}
+.singleViewer .caption select,
+.singleViewer .caption option {
+    font-size: 1em;
+    vertical-align: baseline;
+}
+.singleViewer .caption img {
+    vertical-align: middle;
+    margin: 0 -2px;
+}
+.singleViewer .optionButtons {
+    position: absolute;
+    right: 3em;
+}
+.singleViewer .optionButtons button {
+    font-size: .75em;
+    vertical-align: top;
+    cursor: pointer;
+    border: 1px solid #aaa;
+    background-color: #ddd;
+    margin: 0 2px;
+    text-align: center;
+    color: #333;
+}
+.singleViewer .optionButtons button:disabled {
+    background-color: #ddd;
+    color: #999;
+}
+* html .singleViewer .optionButtons {
+    right: 1em;
+}
+* html .singleViewer .optionButtons button {
+    width: 8em;
+    line-height: .8em;
+}
+*:first-child+html.singleViewer .optionButtons button {
+    width: 1em;
+}
+.singleViewer .list tbody tr {
+    cursor: pointer;
+}
+
+/* Viewer (Mixed/Single) */
+
+.viewer .list {
+    margin: 0;
+}
+* html .viewer .list {
+    z-index: -1;
+}
+*:first-child+html .viewer .list {
+    z-index: -1;
+}
+.viewer .list td {
+    padding: 1px 10px 1px 5px;
+}
+.viewer .list td strong {
+    background-color: yellow;
+    color: red;
+    font-weight: bold;
+}
+.singleViewer .list tr#timemarker {
+    background-color: #f50;
+    border: 1px #f50 solid;
+    height: .5em;
+}
+.singleViewer .list tr.afterTimeMarker {
+    border-left: 2px #f70 solid;
+}
+.viewer .list .irclog-time {
+    white-space: nowrap;
+    width: 190px;
+}
+.viewer .list .irclog-channel {
+    white-space: nowrap;
+}
+.viewer .list .irclog-nick {
+    white-space: nowrap;
+    text-align: right;
+}
+.viewer .list td.irclog-message {
+    width: 90%;
+    white-space: pre-wrap;
+}
+.viewer .list tr.PRIVMSG td.irclog-message {
+    font-style: normal;
+    background-color: transparent;
+}
+.viewer .list tr.NOTICE td.irclog-message {
+    font-style: italic;
+    background-color: #ffd;
+    padding-left: 4em;
+}
+.viewer .list tr.TOPIC td.irclog-message {
+    color: #c33;
+    font-weight: bold;
+    background-color: #fdd;
+}
+.viewer .list tr.optionType td.irclog-message {
+    color: #888;
+    font-style: italic;
+    text-align: right;
+    background-color: #efefef;
+}
+.viewer .list tr.KICK td.irclog-message {
+    color: red;
+}
+
+.viewer .list tr.highlight {
+    background-color: #ff0;
+}
+.viewer .list tr.PRIVMSG.highlight td.irclog-message {
+    background-color: #ff0;
+}
+.viewer .list tr.NOTICE.highlight td.irclog-message {
+    background-color: #fe8;
+}
+.viewer .list tr.TOPIC.highlight td.irclog-message {
+    background-color: #fb7;
+}
+.viewer .list tr.optionType.highlight td.irclog-message {
+    background-color: #ee9;
+}
+
+html>/**/body .viewer .list tr:hover {
+    background: #ddf;
+}
+html>/**/body .viewer .list tr:hover.PRIVMSG td.irclog-message {
+    background: #ddf;
+}
+html>/**/body .viewer .list tr:hover.NOTICE td.irclog-message {
+    background: #dcf;
+}
+html>/**/body .viewer .list tr:hover.TOPIC td.irclog-message {
+    background: #baf;
+}
+html>/**/body .viewer .list tr:hover.optionType td.irclog-message {
+    background: #dde;
+}
+
+html>/**/body .viewer .list tr:hover.highlight {
+    background-color: #dbf;
+}
+html>/**/body .viewer .list tr:hover.highlight.PRIVMSG td.irclog-message {
+    background-color: #dbf;
+}
+html>/**/body .viewer .list tr:hover.highlight.NOTICE td.irclog-message {
+    background-color: #bad;
+}
+html>/**/body .viewer .list tr:hover.highlight.TOPIC td.irclog-message {
+    background-color: #98d;
+}
+html>/**/body .viewer .list tr:hover.highlight.optionType td.irclog-message {
+    background-color: #ccd;
+}
+
+/* Channel */
+
+.channel .caption {
+    padding: 0 0 1em 1em;
+    line-height: 1.3em;
+    font-size: .85em;
+}
+.channel .searchAllLogs {
+    width: 1em;
+}
+#joinToSecretChannel {
+    position: absolute;
+    border-left: 1px solid #bbb;
+    border-right: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    padding: .5em 1em;
+    background: #eee url(../images/slash.png) repeat;
+    z-index: 9999;
+}
+#joinToSecretChannel .button input {
+    background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
+}
+
+/* Login */
+
+#login {
+    margin: 15px 0px; padding:0px;
+    text-align: center;
+    font-size: 2em;
+}
+#login .inner {
+    width: 500px;
+    text-align: left;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background: #eee url(../images/slash.png) repeat;
+    margin-left: auto;
+    margin-right: auto;
+}
+#login .inner .cssform p {
+    text-align: center;
+    padding: 5px 0 5px 10px;
+    margin: .4em;
+}
+#login .inner .cssform label {
+    font-weight: bold;
+}
+#login .inner .cssform .button {
+    text-align: center;
+}
+#login .inner .login_message {
+    color: red;
+    font-size: .7em;
+    text-align: center;
+    padding: 8px 0;
+}
+#login .inner .text_ {
+    width: 8em;
+}
+#login .inner .rememberMe {
+    font-size: .6em;
+    padding: 5px;
+}
+#login .inner .button input {
+    background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
+    padding: 0 .3em;
+}
+
+/* Summary */
+
+.summary .caption {
+    padding: 0 0 1em 1em;
+    line-height: 1.3em;
+    font-size: .85em;
+}
+.summary .summary-topic ul {
+    margin-left: 1em;
+}
+.summary .summary-topic li {
+    font-size: .9em;
+    margin-bottom: 4px;
+}
+.summary .summary-statement .searchAllLogs {
+    width: 1em;
+}
+.summary .summary-statement .channel {
+    width: auto;
+}
+.summary .summary-statement th.count a {
+    text-align: right;
+}
+.summary .summary-statement td.count {
+    text-align: right;
+    padding-right: .5em;
+}
+.summary .summary-statement th.todayAfterTimeMarker {
+    padding-right: .5em;
+}
+.summary .summary-statement .totalCount {
+    text-align: right;
+    width: 4em;
+}
+.summary .summary-statement .latestIrclog {
+    padding-left: 2em;
+}
+.summary .summary-statement .latestIrclog .time {
+    padding-right: .4em;
+    white-space: nowrap;
+}
+

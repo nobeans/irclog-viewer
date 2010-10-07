@@ -1,0 +1,73 @@
+@charset "utf-8";
+
+/* General */
+
+html * {
+    font-size: 12px !important;
+    font-weight: normal !important;
+    border-collapse: collapse !important;
+    border: 0 !important;
+    color: #000 !important;
+}
+img, form, input, select, textarea {
+    display: none !important;
+}
+a {
+    font-weight: normal !important;
+    text-decoration: none;
+}
+h2 {
+    font-size: 2em !important;
+    margin-bottom: .5em !important;
+}
+table {
+    border-top: 2px solid !important;
+    border-bottom: 2px solid !important;
+}
+thead tr {
+    border-bottom: 2px solid !important;
+}
+tbody tr {
+    border-bottom: 1px solid !important;
+}
+th {
+    white-space: nowrap;
+}
+td {
+    padding: 0 .3em;
+}
+
+.caption, .header, .nav, .paginateButtons, .optionButtons, .footer {
+    display: none !important;
+}
+.print {
+    display: block !important;
+}
+
+/* Viewer (Mixed/Single) */
+
+.viewer .list .irclog-time {
+    white-space: nowrap !important;
+}
+.viewer .list .irclog-channel {
+    white-space: nowrap !important;
+}
+.viewer .list .irclog-nick {
+    white-space: nowrap !important;
+    text-align: right !important;
+}
+.viewer .list .irclog-message {
+    width: 90% !important;
+    text-align: left !important;
+}
+.viewer .list tr.PRIVMSG td.irclog-message {
+    font-style: normal !important;
+}
+.viewer .list tr.NOTICE td.irclog-message {
+    font-style: italic !important;
+    padding-left: 2em !important;
+}
+.viewer .list tr.optionType td.irclog-message {
+    font-style: italic !important;
+    text-align: right !important;
+}
