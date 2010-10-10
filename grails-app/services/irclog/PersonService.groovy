@@ -1,9 +1,6 @@
 package irclog
 
-import grails.plugins.springsecurity.SpringSecurityService
-import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken as AuthToken
-import org.springframework.security.core.context.SecurityContextHolder as SCH
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 class PersonService {

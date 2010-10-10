@@ -1,4 +1,3 @@
-import grails.plugins.springsecurity.SpringSecurityService
 import irclog.Person
 
 class SecurityHelperFilters {
