@@ -1,11 +1,9 @@
 package irclog
 
-import irclog.controller.Base
-
 /**
  * IRCログの単独表示モード用コントローラ
  */
-class SingleViewerController extends Base {
+class SingleViewerController {
     
     def irclogSearchService
     def channelService

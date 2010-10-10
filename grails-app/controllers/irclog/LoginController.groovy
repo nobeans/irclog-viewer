@@ -1,13 +1,11 @@
 package irclog
 
-import irclog.controller.Base
-
 import org.springframework.security.authentication.DisabledException
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
-class LoginController extends Base {
+class LoginController {
 
     def index = {
         redirect action:auth, params:params

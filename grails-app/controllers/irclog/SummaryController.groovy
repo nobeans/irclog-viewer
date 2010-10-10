@@ -1,8 +1,6 @@
 package irclog
 
-import irclog.controller.Base
-
-class SummaryController extends Base {
+class SummaryController {
     
     def summaryService
     def channelService

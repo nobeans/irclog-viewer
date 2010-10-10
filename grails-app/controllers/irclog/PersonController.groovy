@@ -1,12 +1,11 @@
 package irclog
 
-import irclog.controller.Base
 import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 /**
  * 管理者用のユーザ管理コントローラ。
  */
-class PersonController extends Base {
+class PersonController {
 
     def springSecurityService
 

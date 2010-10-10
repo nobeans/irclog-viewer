@@ -1,6 +1,5 @@
 package irclog
 
-import irclog.controller.Base
 import irclog.helper.TimeMarker;
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -9,7 +8,7 @@ import org.codehaus.groovy.grails.commons.ConfigurationHolder
 /**
  * IRCログのミックス表示モード用コントローラ。
  */
-class MixedViewerController extends Base {
+class MixedViewerController {
     
     def irclogSearchService
     def channelService

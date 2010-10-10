@@ -1,11 +1,9 @@
 package irclog
 
-import irclog.controller.Base
-
 /**
  * チャンネル管理コントローラ
  */
-class ChannelController extends Base {
+class ChannelController {
     
     static allowedMethods = [delete:'POST', save:'POST', update:'POST', join:'POST']
     def channelService

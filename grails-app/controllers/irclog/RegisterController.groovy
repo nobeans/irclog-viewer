@@ -1,11 +1,9 @@
 package irclog
 
-import irclog.controller.Base
-
 /**
  * ユーザによるユーザ情報登録・参照・編集のためのコントローラ。
  */
-class RegisterController extends Base {
+class RegisterController {
     
     def personService
     
