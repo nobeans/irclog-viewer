@@ -18,7 +18,7 @@ class SingleViewerController extends Base {
         def criterion = parseCriterion()
         
         // ログ一覧を取得する。
-        def searchResult = irclogSearchService.search(loginUserDomain, criterion, [:], 'asc')
+        def searchResult = irclogSearchService.search(request.loginUserDomain, criterion, [:], 'asc')
         flash.message = null
         if (searchResult.totalCount == 0) {
             flash.message = 'singleViewer.search.error.empty'
@@ -73,7 +73,7 @@ class SingleViewerController extends Base {
     private getSelectableChannels(specifiedChannel) {
         def channels = [:]
         channels[specifiedChannel] = specifiedChannel // 指定されたチャンネルは必ず表示(書庫対応)
-        channelService.getAccessibleChannelList(loginUserDomain, params).grep{!it.isArchived}.each{ channels[it.name] = it.name }
+        channelService.getAccessibleChannelList(request.loginUserDomain, params).grep{!it.isArchived}.each{ channels[it.name] = it.name }
         channels.sort{it.key}
     }
     

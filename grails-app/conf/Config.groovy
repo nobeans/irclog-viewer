@@ -104,9 +104,48 @@ irclog {
     viewer.typeVisible = true
     viewer.defaultTargetUrl = "/summary"
     session.maxInactiveInterval = 24 * 60 * 60 // [sec] => 1day
+
+    /** default user's role for user registration */
+    security.defaultRole = 'ROLE_USER'
 }
 
-// Added by the Spring Security Core plugin:
-grails.plugins.springsecurity.userLookup.userDomainClassName = 'irclog.auth.SecUser'
-grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'irclog.auth.SecUserSecRole'
-grails.plugins.springsecurity.authority.className = 'irclog.auth.SecRole'
+// SpringSecurity ------------------------------------------
+import grails.plugins.springsecurity.SecurityConfigType
+
+// user and role class properties
+grails.plugins.springsecurity.userLookup.userDomainClassName = 'Person'
+grails.plugins.springsecurity.userLookup.usernamePropertyName = 'loginName'
+grails.plugins.springsecurity.userLookup.enabledPropertyName = 'enabled'
+grails.plugins.springsecurity.userLookup.passwordPropertyName = 'password'
+grails.plugins.springsecurity.userLookup.authoritiesPropertyName = 'roles'
+grails.plugins.springsecurity.userLookup.accountExpiredPropertyName = 'accountExpired'
+grails.plugins.springsecurity.userLookup.accountLockedPropertyName = 'accountLocked'
+grails.plugins.springsecurity.userLookup.passwordExpiredPropertyName = 'passwordExpired'
+grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'PersonAuthority'
+grails.plugins.springsecurity.authority.className = 'Role'
+grails.plugins.springsecurity.authority.nameField = 'name'
+
+// failureHandler
+grails.plugins.springsecurity.failureHandler.defaultFailureUrl = '/login/denied'
+
+// successHandler
+grails.plugins.springsecurity.successHandler.defaultTargetUrl = '/login/auth'
+
+/** passwordEncoder */
+grails.plugins.springsecurity.password.algorithm = 'MD5'
+grails.plugins.springsecurity.password.encodeHashAsBase64 = false
+
+/** use RequestMap from DomainClass */
+grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
+grails.plugins.springsecurity.interceptUrlMap = [
+    '/channel/index/**':    ['permitAll'],
+    '/channel/list/**':     ['permitAll'],
+    '/channel/show/**':     ['permitAll'],
+    '/channel/kick/**':     ['hasRole("ROLE_ADMIN")'],
+    '/channel/**':          ['hasAnyRole("ROLE_USER","ROLE_ADMIN")'],
+    '/register/create/**':  ['permitAll'],
+    '/register/save/**':    ['permitAll'],
+    '/register/**':         ['hasAnyRole("ROLE_USER","ROLE_ADMIN")'],
+    '/person/**':           ['hasRole("ROLE_ADMIN")'],
+    '/**':                  ['permitAll']
+]

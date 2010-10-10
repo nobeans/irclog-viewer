@@ -41,10 +41,10 @@
               <td>
                 <% allJoinedPersons[channel].each{ person -> %>
                   <span class="${person.loginName}" title="${person.realName.encodeAsHTML()}">
-                    <sec:ifAnyGranted role="ROLE_ADMIN">
+                    <sec:ifAnyGranted roles="ROLE_ADMIN">
                       <g:link controller="person" action="show" id="${person.id}">${person.loginName.encodeAsHTML()}</g:link>
                     </sec:ifAnyGranted>
-                    <sec:ifNotGranted role="ROLE_ADMIN">
+                    <sec:ifNotGranted roles="ROLE_ADMIN">
                       ${person.loginName.encodeAsHTML()}
                     </sec:ifNotGranted>
                   </span>

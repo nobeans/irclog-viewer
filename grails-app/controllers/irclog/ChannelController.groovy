@@ -15,7 +15,7 @@ class ChannelController extends Base {
     
     def list = {
         [
-            channelList: channelService.getAccessibleChannelList(loginUserDomain, params),
+            channelList: channelService.getAccessibleChannelList(request.loginUserDomain, params),
             allJoinedPersons: channelService.getAllJoinedPersons(),
             nickPersonList: Person.list()
         ]
@@ -58,7 +58,7 @@ class ChannelController extends Base {
                 // 間違って非公開→公開→非公開とすると、関連付けが全部クリアされてしまい
                 // 運用上困るかもしれないため、関連付けはそのまま残す。
                 if (channel.isPrivate) {
-                    Person.get(loginUserDomain.id).addToChannels(channel)
+                    Person.get(request.loginUserDomain.id).addToChannels(channel) // TODO: request.loginUserDomain.addToChannels()ではどうか？
                 }
                 
                 flash.message = "channel.updated"
@@ -89,7 +89,7 @@ class ChannelController extends Base {
             // 間違って非公開→公開→非公開とすると、関連付けが全部クリアされてしまい
             // 運用上困るかもしれないため、関連付けはそのまま残す。
             if (channel.isPrivate) {
-                Person.get(loginUserDomain.id).addToChannels(channel)
+                Person.get(request.loginUserDomain.id).addToChannels(channel)
             }
             
             // 全サマリ更新を実行して、新規チャンネルのログが既に存在する場合にサマリも生成する。
@@ -110,7 +110,7 @@ class ChannelController extends Base {
             flash.errors = ["channel.join.error"]
             flash.args = [params.channelName]
         } else {
-            Person.get(loginUserDomain.id).addToChannels(channel)
+            Person.get(request.loginUserDomain.id).addToChannels(channel)
             flash.message = "channel.joined"
             flash.args = [params.channelName]
         }
@@ -119,7 +119,7 @@ class ChannelController extends Base {
     
     def part = {
         withChannel(params.id) { channel ->
-            Person.get(loginUserDomain.id).removeFromChannels(channel)
+            Person.get(request.loginUserDomain.id).removeFromChannels(channel)
             flash.message = "channel.parted"
             redirect(action:show, id:channel.id)
         }
@@ -153,6 +153,6 @@ class ChannelController extends Base {
     }
     
     private isAccessibleChannel(channel) {
-        channelService.getAccessibleChannelList(loginUserDomain, params).contains(channel)
+        channelService.getAccessibleChannelList(request.loginUserDomain, params).contains(channel)
     }
 }

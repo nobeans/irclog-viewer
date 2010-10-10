@@ -38,13 +38,13 @@
                 <ul>
                   <g:each var="p" in="${joinedPersons.sort{it.loginName}}">
                     <li title="${p.realName.encodeAsHTML()}">
-                      <sec:ifAnyGranted role="ROLE_ADMIN">
+                      <sec:ifAnyGranted roles="ROLE_ADMIN">
                         <g:link controller="person" action="show" id="${p.id}">${p.loginName.encodeAsHTML()}</g:link>
                         &gt;&gt; <g:link controller="channel" action="kick" id="${channel.id}" params="[personId:p.id]" onclick="return confirm('${message(code:'channel.kick.confirm')}');">
                             <g:message code="channel.kick" />
                         </g:link>
                       </sec:ifAnyGranted>
-                      <sec:ifNotGranted role="ROLE_ADMIN">
+                      <sec:ifNotGranted roles="ROLE_ADMIN">
                         ${p.loginName.encodeAsHTML()}
                       </sec:ifNotGranted>
                     </li>

@@ -1,23 +1,23 @@
 package irclog
 
 import irclog.controller.Base
-
-//import org.grails.plugins.springsecurity.service.AuthenticateService
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 /**
  * 管理者用のユーザ管理コントローラ。
  */
 class PersonController extends Base {
-    
-    def authenticateService
-    
+
+    def springSecurityService
+
     def index = { redirect(action:list, params:params) }
     
     // the delete, save and update actions only accept POST requests
     static allowedMethods = [delete:'POST', save:'POST', update:'POST']
     
     def list = {
-        params.max    = params.max?.toInteger() ? Math.min(params.max?.toInteger(), config.irclog.viewer.defaultMax) : config.irclog.viewer.defaultMax
+        def defaultMax = ConfigurationHolder.config.irclog.viewer.defaultMax
+        params.max    = params.max?.toInteger() ? Math.min(params.max?.toInteger(), defaultMax) : defaultMax
         params.offset = params.offset?.toInteger() ?: 0
         params.sort   = params.sort ?: "loginName"
         params.order  = params.order ?: "asc"
@@ -35,7 +35,7 @@ class PersonController extends Base {
     
     def delete = {
         withPerson(params.id) { person ->
-            if (person.id == loginUserDomain?.id) {
+            if (person.id == request.loginUserDomain?.id) {
                 flash.message = "person.deleted.loggedInUser.error"
                 flash.args = [params.id]
                 redirect(action:list)
@@ -68,7 +68,7 @@ class PersonController extends Base {
             if (person.save()) {
                 // 素のパスワード文字列に対してバリデーションはOKなので、ハッシュに変換する。
                 if (currentEncodedPassword != person.password) {
-                    person.password = authenticateService.passwordEncoder(params.password)
+                    person.password = springSecurityService.encodePassword(params.password)
                 }
                 redirect(action:'show', id:person.id)
             } else {
@@ -83,7 +83,7 @@ class PersonController extends Base {
     
     def save = {
         // デフォルトロールを取得する。
-        def role = Role.findByName(authenticateService.securityConfig.security.defaultRole)
+        def role = Role.findByName(ConfigurationHolder.config.irclog.security.defaultRole)
         if (!role) {
             flash.message = 'register.defaultRoleNotFound.'
             redirect(controller:'top')
@@ -94,7 +94,7 @@ class PersonController extends Base {
         role.addToPersons(person)
         if (person.save()) {
             // 素のパスワード文字列に対してバリデーションはOKなので、ハッシュに変換する。
-            person.password = authenticateService.passwordEncoder(params.password)
+            person.password = springSecurityService.encodePassword(params.password)
             
             flash.message = "person.created"
             redirect(action:show, id:person.id)
@@ -119,7 +119,7 @@ class PersonController extends Base {
     
     def toUser = {
         withPerson(params.id) { person ->
-            if (person.id == loginUserDomain?.id) {
+            if (person.id == request.loginUserDomain?.id) {
                 flash.message = "person.toUser.loggedInUser.error"
                 flash.args = [params.id]
                 redirect(action:show, id:person.id)

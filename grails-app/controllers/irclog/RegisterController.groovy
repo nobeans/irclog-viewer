@@ -44,7 +44,7 @@ class RegisterController extends Base {
     
     def save = {
         // 未ログインかどうか。
-        if (isLoggedIn) {
+        if (request.isLoggedIn) {
             log.info('ログイン済みのため、ユーザ情報参照にリダイレクトします。')
             redirect(action:'show')
             return
@@ -60,7 +60,7 @@ class RegisterController extends Base {
     }
     
     private withLoginPerson(closure) {
-        def personId = loginUserDomain?.id
+        def personId = request.loginUserDomain?.id // TODO
         def person = Person.get(personId)
         if (!person) {
             flash.errors = ["register.not.found"]

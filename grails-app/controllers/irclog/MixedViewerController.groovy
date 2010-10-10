@@ -4,6 +4,7 @@ import irclog.controller.Base
 import irclog.helper.TimeMarker;
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 /**
  * IRCログのミックス表示モード用コントローラ。
@@ -34,7 +35,7 @@ class MixedViewerController extends Base {
         def criterion = parseCriterion()
         
         // ログ一覧を取得する。
-        def searchResult = irclogSearchService.search(loginUserDomain, criterion, [max:params.max, offset:params.offset])
+        def searchResult = irclogSearchService.search(request.loginUserDomain, criterion, [max:params.max, offset:params.offset])
         flash.message = null
         
         // モデルを作成して、デフォルトビューへ。
@@ -63,7 +64,8 @@ class MixedViewerController extends Base {
         log.debug "Original params: " + params
         
         // ページングのために、max/offsetをセットアップする。
-        params.max = params.max?.toInteger() ? Math.min(params.max?.toInteger(), config.irclog.viewer.defaultMax) : config.irclog.viewer.defaultMax
+        def defaultMax = ConfigurationHolder.config.irclog.viewer.defaultMax
+        params.max = params.max?.toInteger() ? Math.min(params.max?.toInteger(), defaultMax) : defaultMax
         params.offset = params.offset?.toInteger() ?: 0
         
         log.debug "Normalized params: " + params
@@ -123,7 +125,7 @@ class MixedViewerController extends Base {
     private getSelectableChannels() {
         def channels = [:]
         channels['all'] = message(code:'mixedViewer.search.channel.all')
-        channelService.getAccessibleChannelList(loginUserDomain, params).grep{ !it.isArchived }.each{ channels[it.name] = it.name }
+        channelService.getAccessibleChannelList(request.loginUserDomain, params).grep{ !it.isArchived }.each{ channels[it.name] = it.name }
         channels
     }
     

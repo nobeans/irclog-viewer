@@ -1,7 +1,7 @@
 package irclog
 
 import groovy.sql.Sql
-import irclog.helper.TimeMarker;
+import irclog.helper.TimeMarker
 import java.text.SimpleDateFormat
 
 class SummaryService {
@@ -20,10 +20,12 @@ class SummaryService {
         def df = new SimpleDateFormat("yyyy-MM-dd")
         def baseDateFormatted = df.format(baseDate)
         def db = new Sql(dataSource)
-        
+
         def channelIds = accessibleChannelList.collect{ it.id }.join(", ")
-        if (!channelIds) return [] 
-        db.execute("""
+        if (!channelIds) return []
+
+        def result = []
+        db.eachRows("""
             select
                 *
             from
@@ -37,7 +39,12 @@ class SummaryService {
             order by
                 time desc
             limit 5
-        """.toString())
+        """.toString()) { row ->
+            println row
+            result << new Irclog(row)
+        }
+        println result
+        result
     }
 
     /** アクセス可能な全チャンネルのサマリ情報を取得する。 */

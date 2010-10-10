@@ -1,7 +1,7 @@
 package irclog
 
 class Person {
-    
+
     String loginName
     String realName
     String password
@@ -9,14 +9,18 @@ class Person {
     boolean enabled   // user staus (wether an user can login)
     String nicks // commpa separated nicks
     String color // for coloring on screen
-    
+
+    boolean isAccountExpired()  { false }
+    boolean isAccountLocked()   { false }
+    boolean isPasswordExpired() { false }
+
     static hasMany = [channels:Channel, roles:Role]
     
     static belongsTo = Role
     
-    static transients = [
-        'repassword',
-        'admin'] // required because there is isAdmin method which is recognized as properties wrongly
+    static transients = [ 'repassword',
+        'admin', 'accountExpired', 'accountLocked', 'passwordExpired'] // required because there is isXxxx method which is recognized as properties wrongly
+
     static constraints = {
         loginName(blank:false, matches:"[a-zA-Z0-9_-]{3,}+", unique:true, maxSize:100)
         realName(blank:false, unique:true, maxSize:100)

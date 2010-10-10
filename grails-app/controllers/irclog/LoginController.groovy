@@ -5,6 +5,7 @@ import irclog.controller.Base
 import org.springframework.security.authentication.DisabledException
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 class LoginController extends Base {
 
@@ -16,15 +17,15 @@ class LoginController extends Base {
      * Show the login page.
      */
     def auth = {
-        if (isLoggedIn) {
+        if (request.isLoggedIn) {
             flash.message = null
             flash.errors = null
             
             // セッション有効期間をカスタマイズ
-            session.maxInactiveInterval = config.irclog.session.maxInactiveInterval
+            session.maxInactiveInterval = ConfigurationHolder.config.irclog.session.maxInactiveInterval
             
-            log.info "Logged in by ${loginUserName}"
-            redirect(uri: config.irclog.viewer.defaultTargetUrl)
+            log.info "Logged in by ${request.loginUserName}"
+            redirect(uri: ConfigurationHolder.config.irclog.viewer.defaultTargetUrl)
         }
         else {
             render(view:'auth', params:params)
@@ -33,14 +34,14 @@ class LoginController extends Base {
 
     /** アクセス不許可 */
     def denied = {
-        log.warn "Denied to access: ${request['javax.servlet.forward.request_uri']} by ${loginUserName}"
+        log.warn "Denied to access: ${request['javax.servlet.forward.request_uri']} by ${request.loginUserName}"
         def statusCode = request['javax.servlet.error.status_code']
         if (statusCode) {
             flash.errors = ['login.accessDenied.error.' + statusCode]
         } else {
             flash.errors = ['login.accessDenied.error']
         }
-        redirect(uri: config.irclog.viewer.defaultTargetUrl)
+        redirect(uri: ConfigurationHolder.config.irclog.viewer.defaultTargetUrl)
     }
 
     /**
