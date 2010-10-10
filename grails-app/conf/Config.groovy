@@ -68,7 +68,7 @@ environments {
 log4j = {
     appenders {
         console      name:'stdout',
-                        layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n')
+                        layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{1}) %m%n')
         rollingFile  name:"file", file:"log/irclog.log", maxFileSize:'10MB', maxBackupIndex:5,
                         layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n')
         rollingFile  name:'stacktrace', file:'log/stacktrace.log', maxFileSize:'10MB', maxBackupIndex:5,
@@ -95,6 +95,7 @@ log4j = {
     info "grails.app.controller"
     info "grails.app.service"
     info "grails.app.task"
+    debug "grails.app.filters.RequestTracelogFilters"
 }
 
 // irclog-viewer
