@@ -154,7 +154,7 @@ class MyTagLib {
     }
 
     /**
-     * 標準の拡張版
+     * Grails1.1.1の標準タグリブを元に実装した。
      * ラベルはbodyとして指定する。
      * title属性はHTML本来のtitle属性として扱う。
      */
@@ -190,13 +190,15 @@ class MyTagLib {
             linkParams.order = defaultOrder
         }
 
-        def messageSource = grailsAttributes.getApplicationContext().getBean("messageSource")
+        def messageSource = grailsAttributes.messageSource
         def locale = RCU.getLocale(request)
 
         // determine column title
         def title = attrs.remove("title")
-        def titleKey = attrs.remove("titleKey") ?: title
-        title = messageSource.getMessage(titleKey, null, title, locale)
+        def titleKey = attrs.remove("titleKey")
+        if (titleKey) {
+            title = messageSource.getMessage(titleKey, null, title, locale)
+        }
 
         // determine column code
         def message
