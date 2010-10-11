@@ -32,7 +32,7 @@ class ChannelServiceTests extends GrailsUnitTestCase {
         assert channel.name == "#test3"
         assert channel.description == "#test3 is nice!"
         assert channel.isPrivate == true
-        assert channel.isArchived == true
+        assert channel.isArchived == false
         assert channel.secretKey == "1234"
     }
 
@@ -49,7 +49,7 @@ class ChannelServiceTests extends GrailsUnitTestCase {
         assert channel.name == "#test1"
         assert channel.description == "#test1 is nice!"
         assert channel.isPrivate == true
-        assert channel.isArchived == true
+        assert channel.isArchived == false
         assert channel.secretKey == "1234"
     }
 

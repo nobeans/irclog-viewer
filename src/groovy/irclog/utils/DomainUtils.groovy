@@ -26,7 +26,7 @@ class DomainUtils {
             name: name,
             description: "${name} is nice!",
             isPrivate: true,
-            isArchived: true,
+            isArchived: false,
             secretKey: "1234",
         ]
         return expandDomainObjectForTests(new Channel(defaultProps + propertyMap))
