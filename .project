@@ -23,11 +23,6 @@
 			<location>/Users/ynak/Developer/workspace/irclog-viewer/plugins/http-nocache-0.1/grails-app/conf</location>
 		</link>
 		<link>
-			<name>request-tracelog-0.1-grails-app-conf</name>
-			<type>2</type>
-			<location>/Users/ynak/Developer/workspace/irclog-viewer/plugins/request-tracelog-0.1/grails-app/conf</location>
-		</link>
-		<link>
 			<name>spring-security-core-1.0.1-grails-app-conf</name>
 			<type>2</type>
 			<location>/Users/ynak/.grails/1.3.5/projects/irclog-viewer/plugins/spring-security-core-1.0.1/grails-app/conf</location>
