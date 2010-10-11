@@ -13,7 +13,7 @@ class MixedViewerController {
     def irclogSearchService
     def channelService
 
-    final SELECTABLE_PERIODS = [ 'all', 'year', 'month', 'week', 'today', 'oneday' ]
+    final SELECTABLE_PERIODS = [ 'all', 'year', 'halfyear', 'month', 'week', 'today', 'oneday' ]
     public static final String SESSION_KEY_CRITERION = 'criterion'
 
     /**

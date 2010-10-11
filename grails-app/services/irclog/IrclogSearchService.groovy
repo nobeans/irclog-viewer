@@ -118,6 +118,11 @@ class IrclogSearchService {
         cal.add(Calendar.MONTH, -1)
         cal.getTime()
     }
+    private resolveBeginDate_halfyear(criterion) {
+        def cal = getCalendarAtZeroHourOfToday()
+        cal.add(Calendar.MONTH, -6)
+        cal.getTime()
+    }
     private resolveBeginDate_year(criterion) {
         def cal = getCalendarAtZeroHourOfToday()
         cal.add(Calendar.YEAR, -1)
@@ -147,6 +152,9 @@ class IrclogSearchService {
         getCalendarAtZeroHourOfTomorrow().getTime()
     }
     private resolveEndDate_month(criterion) {
+        getCalendarAtZeroHourOfTomorrow().getTime()
+    }
+    private resolveEndDate_halfyear(criterion) {
         getCalendarAtZeroHourOfTomorrow().getTime()
     }
     private resolveEndDate_year(criterion) {
