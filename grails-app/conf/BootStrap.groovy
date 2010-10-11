@@ -2,6 +2,7 @@ import grails.util.GrailsUtil
 import irclog.Channel
 import irclog.Role
 import irclog.Person
+import static irclog.utils.DomainUtils.*
 
 class BootStrap {
 
@@ -10,19 +11,12 @@ class BootStrap {
     def init = { servletContext ->
         setupRolesIfNotExists()
         setupDefaultAdminUserIfNotExists()
-
-        // for Development
-        if (GrailsUtil.isDevelopmentEnv()) { // only in development mode
-            (1..3).each {
-                assert createChannel("#test$it").save()
-            }
-        }
+        setupForDevelopmentEnv()
     }
 
     def destroy = {
     }
 
-    /** ロール定義を追加する。 */
     private void setupRolesIfNotExists() {
         if (Role.count() == 0) {
             Role.withTransaction {
@@ -32,7 +26,6 @@ class BootStrap {
         }
     }
 
-    /** 組み込みの管理者ユーザを追加する。[admin/admin] */
     private void setupDefaultAdminUserIfNotExists() {
         if (Person.findByLoginName("admin") == null) {
             Person.withTransaction {
@@ -45,12 +38,11 @@ class BootStrap {
         }
     }
 
-    private Channel createChannel(name) {
-        def channel = new Channel(name:name)
-        channel.description = "説明文です"
-        channel.isPrivate = true
-        channel.isArchived = true
-        channel.secretKey = "1234"
-        channel
+    private setupForDevelopmentEnv() {
+        if (GrailsUtil.isDevelopmentEnv()) { // only in development mode
+            createChannel(name:"#test1", isPrivate:true).saveSurely()
+            createChannel(name:"#test2", isPrivate:false, secretKey:"").saveSurely()
+            createChannel(name:"#test3", isPrivate:true).saveSurely()
+        }
     }
 }
