@@ -1,5 +1,4 @@
-import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils;
-import org.springframework.security.access.SecurityConfig;
+import grails.util.GrailsUtil
 import irclog.Channel
 import irclog.Role
 import irclog.Person
@@ -13,8 +12,10 @@ class BootStrap {
         setupDefaultAdminUserIfNotExists()
 
         // for Development
-        (1..3).each {
-            assert createChannel("#test$it").save()
+        if (GrailsUtil.isDevelopmentEnv()) { // only in development mode
+            (1..3).each {
+                assert createChannel("#test$it").save()
+            }
         }
     }
 
