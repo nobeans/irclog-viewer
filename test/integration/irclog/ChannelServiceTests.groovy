@@ -25,8 +25,6 @@ class ChannelServiceTests extends GrailsUnitTestCase {
             this."ch${it}" = ch
             this."user${it}" = user
         }
-
-        // aditional user for #ch3
         userX = createPerson(loginName:"userX").saveSurely()
         userX.addToRoles(roleUser)
         userX.addToChannels(ch3)
@@ -37,18 +35,8 @@ class ChannelServiceTests extends GrailsUnitTestCase {
     void testGetAccessibleChannelList_admin() {
         // Exercise
         def channels = channelService.getAccessibleChannelList(admin, [:])
-        // Verify constructures
-        assert channels.size() == 3
-        assert channels[0].name == "#ch1"
-        assert channels[1].name == "#ch2"
-        // Verify type and properties
-        def channel = channels[2]
-        assert channel.class == Channel
-        assert channel.name == "#ch3"
-        assert channel.description == "#ch3 is nice!"
-        assert channel.isPrivate == true
-        assert channel.isArchived == false
-        assert channel.secretKey == "1234"
+        // Verify
+        assert channels == [ch1, ch2, ch3]
     }
 
     void testGetAccessibleChannelList_user1() {
@@ -56,16 +44,8 @@ class ChannelServiceTests extends GrailsUnitTestCase {
         def user1 = Person.findByLoginName("user1")
         // Exercise
         def channels = channelService.getAccessibleChannelList(user1, [:])
-        // Verify constructures
-        assert channels.size() == 1
-        // Verify type and properties
-        def channel = channels[0]
-        assert channel.class == Channel
-        assert channel.name == "#ch1"
-        assert channel.description == "#ch1 is nice!"
-        assert channel.isPrivate == true
-        assert channel.isArchived == false
-        assert channel.secretKey == "1234"
+        // Verify
+        assert channels == [ch1]
     }
 
     void testGetJoinedPersons_test1() {
@@ -91,4 +71,20 @@ class ChannelServiceTests extends GrailsUnitTestCase {
         assert channels[ch2] == [user2]
         assert channels[ch3] == [user3, userX]
     }
+
+    void testRelateToIrclog() {
+        // Setup
+        def log1 = createIrclog(channelName:ch1.name).saveSurely()
+        def log2 = createIrclog(channelName:ch1.name).saveSurely()
+        def log3 = createIrclog(channelName:ch1.name, channel:ch2).saveSurely()
+        def log4 = createIrclog(channelName:ch2.name, channel:ch2).saveSurely()
+        // Exercise
+        assert channelService.relateToIrclog(ch1) == 2
+        // Verify
+        assert log1.channel == ch1
+        assert log2.channel == ch1
+        assert log3.channel == ch2
+        assert log4.channel == ch2
+    }
+
 }
