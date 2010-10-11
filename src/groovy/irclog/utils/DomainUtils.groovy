@@ -39,11 +39,21 @@ class DomainUtils {
             loginName: loginName,
             realName: "Mr. <${loginName}}>",
             password: "123456",
-            repassword: "123456",
+            repassword: propertyMap.password ?: "123456",
             enabled: true,
             nicks: "${loginName}_",
             color: "#fff",
         ]
         return expandDomainObjectForTests(new Person(defaultProps + propertyMap))
+    }
+
+    static Role createRole(propertyMap) {
+        def id = counter.getAndIncrement()
+        def name = propertyMap.name ?: "#role${id}"
+        def defaultProps = [
+            name: name,
+            description: "${name} is nice!",
+        ]
+        return expandDomainObjectForTests(new Role(defaultProps + propertyMap))
     }
 }
