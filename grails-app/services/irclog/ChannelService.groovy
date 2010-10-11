@@ -8,7 +8,7 @@ class ChannelService {
     /** 基本種別をIN句で使うための文字列 */
     private static final String IN_ESSENTIAL_TYPES = "(" + Irclog.ESSENTIAL_TYPES.collect{"'${it}'"}.join(', ') + ")"
 
-    boolean transactional = true
+    static transactional = true
 
     def dataSource
 
@@ -65,7 +65,7 @@ class ChannelService {
     public Map<Channel, List<Person>> getAllJoinedPersons() {
         def result = [:]
         Channel.list().each { ch ->
-            result[ch] = Person.executeQuery("select p from Person as p join p.channels as c where c = ?", [ch])
+            result[ch] = getJoinedPersons(ch)
         }
         result
     }
@@ -74,33 +74,42 @@ class ChannelService {
      * 現在のチャンネル定義を元に、まだチャンネルに関連付けできていないIrclogの関連更新を試みる。
      */
     public int relateToIrclog(channel) {
-        def query = """
-            update
-                irclog as i
-            set
-                channel_id = (select id from channel where name = :channelName)
-            where
-                i.channel_id is null
-            and
-                i.channel_name = :channelName
-        """
-        def db = new Sql(dataSource)
-        db.executeUpdate(query, null, [channelName:channel.name])
+        return Irclog.findAllByChannelIsNullAndChannelName(channel.name).each { it.channel = channel }.size()
+//        def db = new Sql(dataSource.connection)
+//        try {
+//            return db.executeUpdate("""
+//                update
+//                    irclog as i
+//                set
+//                    channel_id = ${channel.id}
+//                where
+//                    i.channel_id is null
+//                and
+//                    i.channel_name = ${channel.name}
+//            """)
+//        } finally {
+//            db.close()
+//        }
     }
 
     /**
      * 指定のチャンネルを削除する。
      * 各種の関連付けを適切に削除する。
+     * TODO カスケードを有効活用できないか？
      */
     public void deleteChannel(channel) {
-        // チャンネルとユーザの関連付けを削除する。
-        // 関連付けレコード自体を削除する。
         def db = new Sql(dataSource)
-        db.executeUpdate("delete from person_channel where channel_id = :channelId", null, [channelId:channel.id])
+        try {
+            // チャンネルとユーザの関連付けを削除する。
+            // 関連付けレコード自体を削除する。
+            db.executeUpdate("delete from person_channel where channel_id = ${channel.id}")
 
-        // チャンネルとログの関連付けを削除する。
-        // nullで更新するだけで、ログレコードの削除はしない。
-        db.executeUpdate("update irclog set channel_id = null where channel_id = :channelId", null, [channelId:channel.id])
+            // チャンネルとログの関連付けを削除する。
+            // nullで更新するだけで、ログレコードの削除はしない。
+            db.executeUpdate("update irclog set channel_id = null where channel_id = ${channel.id}")
+        } finally {
+            db.close()
+        }
 
         // サマリが存在している場合は削除する。
         Summary.findByChannel(channel)?.delete()
@@ -128,70 +137,82 @@ class ChannelService {
     /** 現在の日付よりも前で、ログが存在する日付を取得する。 */
     private Date getBeforeDate(date, channel, isIgnoredOptionType) {
         def db = new Sql(dataSource)
-        def dates = db.firstRow("""
-            select
-                {tbl.*}
-            from
-                irclog as {tbl}
-            where
-                time < '${date} 00:00:00'
-            and
-                channel_id = '${channel.id}'
-        """ + (isIgnoredOptionType ? """ and type in ${IN_ESSENTIAL_TYPES} """ : '') + """
-            order by
-                time desc
-            limit 1
-        """.toString())
-        println ">y"*50
-        println dates
-        println dates.class
-        println "<y"*50
-        CollectionUtils.getFirstOrNull(dates)?.time
+        try {
+            def dates = db.firstRow("""
+                select
+                    {tbl.*}
+                from
+                    irclog as {tbl}
+                where
+                    time < '${date} 00:00:00'
+                and
+                    channel_id = '${channel.id}'
+            """ + (isIgnoredOptionType ? """ and type in ${IN_ESSENTIAL_TYPES} """ : '') + """
+                order by
+                    time desc
+                limit 1
+            """.toString())
+            println ">y"*50
+            println dates
+            println dates.class
+            println "<y"*50
+            CollectionUtils.getFirstOrNull(dates)?.time
+        } finally {
+            db.close()
+        }
     }
     /** 現在の日付よりも後で、ログが存在する日付を取得する。*/
     private Date getAfterDate(date, channel, isIgnoredOptionType) {
         def db = new Sql(dataSource)
-        def dates = db.firstRow("""
-            select
-                {tbl.*}
-            from
-                irclog as {tbl}
-            where
-                time > '${date} 23:59:59'
-            and
-                channel_id = '${channel.id}'
-        """ + (isIgnoredOptionType ? """ and type in ${IN_ESSENTIAL_TYPES} """ : '') + """
-            order by
-                time asc
-            limit 1
-        """.toString())
-        println ">z"*50
-        println dates
-        println dates.class
-        println "<z"*50
-        CollectionUtils.getFirstOrNull(dates)?.time
+        try {
+            def dates = db.firstRow("""
+                select
+                    {tbl.*}
+                from
+                    irclog as {tbl}
+                where
+                    time > '${date} 23:59:59'
+                and
+                    channel_id = '${channel.id}'
+            """ + (isIgnoredOptionType ? """ and type in ${IN_ESSENTIAL_TYPES} """ : '') + """
+                order by
+                    time asc
+                limit 1
+            """.toString())
+            println ">z"*50
+            println dates
+            println dates.class
+            println "<z"*50
+            CollectionUtils.getFirstOrNull(dates)?.time
+        } finally {
+            db.close()
+        } 
     }
     /** 現在の日付よりも後で、ログが存在する最新日付を取得する。*/
     private Date getLatestDate(date, channel, isIgnoredOptionType) {
         def db = new Sql(dataSource)
-        def dates = db.firstRow("""
-            select
-                {tbl.*}
-            from
-                irclog as {tbl}
-            where
-                time > '${date} 23:59:59'
-            and
-                channel_id = '${channel.id}'
-        """ + (isIgnoredOptionType ? """ and type in ${IN_ESSENTIAL_TYPES} """ : '') + """
-            order by
-                time desc
-            limit 1
-        """.toString())
-        println ">v"*50
-        println dates
-        println dates.class
-        println "<v"*50
-        CollectionUtils.getFirstOrNull(dates)?.time
+        try {
+            def dates = db.firstRow("""
+                select
+                    {tbl.*}
+                from
+                    irclog as {tbl}
+                where
+                    time > '${date} 23:59:59'
+                and
+                    channel_id = '${channel.id}'
+            """ + (isIgnoredOptionType ? """ and type in ${IN_ESSENTIAL_TYPES} """ : '') + """
+                order by
+                    time desc
+                limit 1
+            """.toString())
+            println ">v"*50
+            println dates
+            println dates.class
+            println "<v"*50
+            CollectionUtils.getFirstOrNull(dates)?.time
+        } finally {
+            db.close()
+        }
     }
 }

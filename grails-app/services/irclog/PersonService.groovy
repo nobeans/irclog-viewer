@@ -5,7 +5,7 @@ import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 class PersonService {
 
-    boolean transactional = true
+    static transactional = true
 
     def springSecurityService
 

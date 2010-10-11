@@ -9,7 +9,7 @@ class SummaryService {
     /** 基本種別をIN句で使うための文字列 */
     private static final String IN_ESSENTIAL_TYPES = "(" + Irclog.ESSENTIAL_TYPES.collect{"'${it}'"}.join(', ') + ")"
 
-    boolean transactional = true
+    static transactional = true
 
     def dataSource
 
