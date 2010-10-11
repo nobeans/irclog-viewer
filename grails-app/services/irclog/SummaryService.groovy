@@ -11,7 +11,6 @@ class SummaryService {
 
     boolean transactional = true
 
-    def irclogSearchService
     def dataSource
 
     /** アクセス可能な全チャンネルのトピック情報(1週間以内の上位5件)を取得する。*/
@@ -19,12 +18,12 @@ class SummaryService {
         def baseDate = new Date()
         def df = new SimpleDateFormat("yyyy-MM-dd")
         def baseDateFormatted = df.format(baseDate)
-        def db = new Sql(dataSource)
 
         def channelIds = accessibleChannelList.collect{ it.id }.join(", ")
         if (!channelIds) return []
 
         def result = []
+        def db = new Sql(dataSource)
         db.eachRows("""
             select
                 *
