@@ -1,7 +1,7 @@
 package irclog
 
 import grails.test.*
-import static irclog.utils.DomainTestUtils.*
+import static irclog.utils.DomainUtils.*
 
 class ChannelServiceTests extends GrailsUnitTestCase {
 

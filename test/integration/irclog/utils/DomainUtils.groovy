@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import grails.test.*
 import irclog.*
 
-class DomainTestUtils {
+class DomainUtils {
 
     private static AtomicInteger counter = new AtomicInteger(0)
 
@@ -15,7 +15,7 @@ class DomainTestUtils {
     }
 
     private static expandDomainObjectForTests(domain) {
-        domain.metaClass.saveSurely = DomainTestUtils.saveSurely
+        domain.metaClass.saveSurely = DomainUtils.saveSurely
         return domain
     }
 
