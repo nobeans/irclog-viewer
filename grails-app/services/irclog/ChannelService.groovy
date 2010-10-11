@@ -1,5 +1,6 @@
 package irclog
 
+import groovy.sql.Sql
 import irclog.utils.CollectionUtils
 
 class ChannelService {
@@ -8,6 +9,8 @@ class ChannelService {
     private static final String IN_ESSENTIAL_TYPES = "(" + Irclog.ESSENTIAL_TYPES.collect{"'${it}'"}.join(', ') + ")"
 
     boolean transactional = true
+
+    def dataSource
 
     /** アクセス可能な全チャンネルを取得する。 */
     public List<Channel> getAccessibleChannelList(person, params) {
@@ -81,7 +84,8 @@ class ChannelService {
             and
                 i.channel_name = :channelName
         """
-        Irclog.executeUpdateNativeQuery(query, null, [channelName:channel.name]) // native-sql plugin (modified)
+        def db = new Sql(dataSource)
+        db.executeUpdate(query, null, [channelName:channel.name])
     }
 
     /**
@@ -91,14 +95,15 @@ class ChannelService {
     public void deleteChannel(channel) {
         // チャンネルとユーザの関連付けを削除する。
         // 関連付けレコード自体を削除する。
-        Irclog.executeUpdateNativeQuery("delete from person_channel where channel_id = :channelId", null, [channelId:channel.id])
+        def db = new Sql(dataSource)
+        db.executeUpdate("delete from person_channel where channel_id = :channelId", null, [channelId:channel.id])
 
         // チャンネルとログの関連付けを削除する。
         // nullで更新するだけで、ログレコードの削除はしない。
-        Irclog.executeUpdateNativeQuery("update irclog set channel_id = null where channel_id = :channelId", null, [channelId:channel.id])
+        db.executeUpdate("update irclog set channel_id = null where channel_id = :channelId", null, [channelId:channel.id])
 
         // サマリが存在している場合は削除する。
-        println Summary.findByChannel(channel)?.delete()
+        Summary.findByChannel(channel)?.delete()
 
         // チャンネルを削除する。
         channel.delete()
@@ -122,7 +127,8 @@ class ChannelService {
     }
     /** 現在の日付よりも前で、ログが存在する日付を取得する。 */
     private Date getBeforeDate(date, channel, isIgnoredOptionType) {
-        def dates = Irclog.executeNativeQuery("""
+        def db = new Sql(dataSource)
+        def dates = db.firstRow("""
             select
                 {tbl.*}
             from
@@ -135,12 +141,17 @@ class ChannelService {
             order by
                 time desc
             limit 1
-        """)
+        """.toString())
+        println ">y"*50
+        println dates
+        println dates.class
+        println "<y"*50
         CollectionUtils.getFirstOrNull(dates)?.time
     }
     /** 現在の日付よりも後で、ログが存在する日付を取得する。*/
     private Date getAfterDate(date, channel, isIgnoredOptionType) {
-        def dates = Irclog.executeNativeQuery("""
+        def db = new Sql(dataSource)
+        def dates = db.firstRow("""
             select
                 {tbl.*}
             from
@@ -153,12 +164,17 @@ class ChannelService {
             order by
                 time asc
             limit 1
-        """)
+        """.toString())
+        println ">z"*50
+        println dates
+        println dates.class
+        println "<z"*50
         CollectionUtils.getFirstOrNull(dates)?.time
     }
     /** 現在の日付よりも後で、ログが存在する最新日付を取得する。*/
     private Date getLatestDate(date, channel, isIgnoredOptionType) {
-        def dates = Irclog.executeNativeQuery("""
+        def db = new Sql(dataSource)
+        def dates = db.firstRow("""
             select
                 {tbl.*}
             from
@@ -171,7 +187,11 @@ class ChannelService {
             order by
                 time desc
             limit 1
-        """)
+        """.toString())
+        println ">v"*50
+        println dates
+        println dates.class
+        println "<v"*50
         CollectionUtils.getFirstOrNull(dates)?.time
     }
 }
