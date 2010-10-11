@@ -24,7 +24,7 @@ class SummaryService {
 
         def result = []
         def db = new Sql(dataSource)
-        db.eachRows("""
+        db.eachRow("""
             select
                 *
             from
@@ -110,7 +110,6 @@ class SummaryService {
         if (originalSort == 'todayAfterTimeMarker') {
             params.sort = originalSort // UI上のソートキーに戻す
             summaryList.sort{it.todayAfterTimeMarker}
-            println(summaryList)
             return (params.order == 'desc') ? summaryList.reverse() : summaryList
         }
 
