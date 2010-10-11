@@ -8,7 +8,7 @@ import org.codehaus.groovy.grails.commons.ConfigurationHolder
 class LoginController {
 
     def index = {
-        redirect action:auth, params:params
+        redirect(action:auth, params:params)
     }
 
     /**
@@ -18,10 +18,10 @@ class LoginController {
         if (request.isLoggedIn) {
             flash.message = null
             flash.errors = null
-            
+
             // セッション有効期間をカスタマイズ
             session.maxInactiveInterval = ConfigurationHolder.config.irclog.session.maxInactiveInterval
-            
+
             log.info "Logged in by ${request.loginUserName}"
             redirect(uri: ConfigurationHolder.config.irclog.viewer.defaultTargetUrl)
         }

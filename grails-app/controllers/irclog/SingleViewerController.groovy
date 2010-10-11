@@ -4,30 +4,30 @@ package irclog
  * IRCログの単独表示モード用コントローラ
  */
 class SingleViewerController {
-    
+
     def irclogSearchService
     def channelService
-    
+
     def index = {
         // パラメータを正規化する。
         normalizeParams()
-        
+
         // 検索条件をパースする。
         def criterion = parseCriterion()
-        
+
         // ログ一覧を取得する。
         def searchResult = irclogSearchService.search(request.loginUserDomain, criterion, [:], 'asc')
         flash.message = null
         if (searchResult.totalCount == 0) {
             flash.message = 'singleViewer.search.error.empty'
         }
-        
+
         // アクセス可能なチャンネルを取得する。
         def selectableChannels = getSelectableChannels(criterion.channel)
-        
+
         // リンク用の関連日付を取得する。
         def relatedDates = channelService.getRelatedDates(selectableChannels, params.date, Channel.findByName(params.channel), criterion.isIgnoredOptionType)
-        
+
         // モデルを作成して、デフォルトビューへ。
         def nickPersonList = Person.list()
         def model = [
@@ -41,7 +41,7 @@ class SingleViewerController {
         ]
         render(view:'index', model:model)
     }
-    
+
     private normalizeParams() {
         log.debug "Original params: " + params
         params.channel = normalizeChannelName(params.channel)
@@ -54,7 +54,7 @@ class SingleViewerController {
     private normalizeDate(date) { // YYYYMMDD -> YYYY-MM-DD
         date.replaceAll(/(\d{4})(\d{2})(\d{2})/, "\$1-\$2-\$3")
     }
-    
+
     private parseCriterion() {
         def criterion = [
                             period:      'oneday',
@@ -67,19 +67,19 @@ class SingleViewerController {
         log.debug "Criterion: " + criterion
         criterion
     }
-    
+
     private getSelectableChannels(specifiedChannel) {
         def channels = [:]
         channels[specifiedChannel] = specifiedChannel // 指定されたチャンネルは必ず表示(書庫対応)
         channelService.getAccessibleChannelList(request.loginUserDomain, params).grep{!it.isArchived}.each{ channels[it.name] = it.name }
         channels.sort{it.key}
     }
-    
+
     /** mixed側での現在のtype条件がallかどうか。*/
     private getCurrentTypeInMixed() {
         session[MixedViewerController.SESSION_KEY_CRITERION]?.type ?: 'filtered'
     }
-    
+
     private createGetPersonByNickClosure(nickPersonList) {
         def cache = [:] // ↓で作られるクロージャに対するグローバル的な変数
         return { nick ->

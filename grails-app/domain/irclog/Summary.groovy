@@ -4,10 +4,10 @@ package irclog
  * Summary for each channel
  */
 class Summary {
-    
+
     Channel channel
     Date lastUpdated  // = origin = today
-    
+
     // Counts
     int today         // ＝origin
     int yesterday
@@ -17,16 +17,16 @@ class Summary {
     int fiveDaysAgo
     int sixDaysAgo
     int totalBeforeYesterday  // total of all count of past days except today
-    
+
     // Special count
     int todayAfterTimeMarker
-    
+
     Irclog latestIrclog
-    
+
     public int total() {
         return today + totalBeforeYesterday
     }
-    
+
     public String toString() {
         def df = new java.text.SimpleDateFormat("yyyy-MM-dd")
         return """${channel?.name}@${lastUpdated ? df.format(lastUpdated) : 'NEVER'} {
@@ -42,7 +42,7 @@ class Summary {
                  |    latestIrclog: ${latestIrclog}
                  |}""".stripMargin()
     }
-    
+
     public static final SORTABLE = [
         'channel',
         'lastUpdated',
@@ -56,11 +56,11 @@ class Summary {
         'totalBeforeYesterday',
         'latestIrclog'
     ]
-    
+
     static transients = ['todayAfterTimeMarker']
-    
+
     static belongsTo = Channel
-    
+
     static mapping = {
         version(false)
         message(type:'text')

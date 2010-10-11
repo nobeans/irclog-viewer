@@ -1,13 +1,13 @@
 package irclog
 
 class Channel {
-    
+
     String name
     String description
     Boolean isPrivate
     Boolean isArchived
     String secretKey
-    
+
     public String toString() {
         return """${name} {
                  |    description: ${description}
@@ -16,7 +16,7 @@ class Channel {
                  |    secretKey: ${(secretKey) ? '****' : ''}
                  |}""".stripMargin()
     }
-    
+
     static constraints = {
         name(blank:false, unique:true, maxSize:100, matches:"^#.*")
         description()
@@ -30,6 +30,6 @@ class Channel {
             }
         })
     }
-    
+
     static mapping = { description(type:'text') }
 }

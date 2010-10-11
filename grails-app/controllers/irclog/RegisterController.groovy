@@ -4,17 +4,17 @@ package irclog
  * ユーザによるユーザ情報登録・参照・編集のためのコントローラ。
  */
 class RegisterController {
-    
+
     def personService
-    
+
     static allowedMethods = [save:'POST', update:'POST']
-    
+
     def show = {
         withLoginPerson { person ->
             [person:person]
         }
     }
-    
+
     def edit = {
         withLoginPerson { person ->
             // DB上にはrepasswordは存在しないので、画面上の初期表示のためにpasswordからコピーする。
@@ -23,7 +23,7 @@ class RegisterController {
             [person:person]
         }
     }
-    
+
     def update = {
         withLoginPerson { person ->
             person = personService.update(person, params)
@@ -35,11 +35,11 @@ class RegisterController {
             }
         }
     }
-    
+
     def create = {
         [person:new Person()]
     }
-    
+
     def save = {
         // 未ログインかどうか。
         if (request.isLoggedIn) {
@@ -47,7 +47,7 @@ class RegisterController {
             redirect(action:'show')
             return
         }
-        
+
         def person = personService.create(params)
         if (!person.hasErrors()) {
             flash.message = "register.created"
@@ -56,7 +56,7 @@ class RegisterController {
             render(view:'create', model:[person:person])
         }
     }
-    
+
     private withLoginPerson(closure) {
         def personId = request.loginUserDomain?.id // TODO
         def person = Person.get(personId)
