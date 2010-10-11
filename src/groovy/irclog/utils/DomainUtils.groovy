@@ -1,5 +1,6 @@
 package irclog.utils
 
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger
 import grails.test.*
 import irclog.*
@@ -55,5 +56,19 @@ class DomainUtils {
             description: "${name} is nice!",
         ]
         return expandDomainObjectForTests(new Role(defaultProps + propertyMap))
+    }
+
+    static Irclog createIrclog(propertyMap) {
+        def id = counter.getAndIncrement()
+        def defaultProps = [
+            time: new Date(),
+            type: "PRIVMSG",
+            message: "Hello, ${id}!",
+            nick: "user_for_${id}",
+            permaId: "PERMID${id}",
+            channelName: "#channel",
+            channel: null
+        ]
+        return expandDomainObjectForTests(new Irclog(defaultProps + propertyMap))
     }
 }
