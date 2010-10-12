@@ -74,17 +74,17 @@ class ChannelServiceTests extends GrailsUnitTestCase {
 
     void testRelateToIrclog() {
         // Setup
-        def log1 = createIrclog(channelName:ch1.name).saveSurely()
-        def log2 = createIrclog(channelName:ch1.name).saveSurely()
+        def log1 = createIrclog(channelName:ch1.name, channel:null).saveSurely()
+        def log2 = createIrclog(channelName:ch1.name, channel:null).saveSurely()
         def log3 = createIrclog(channelName:ch1.name, channel:ch2).saveSurely()
         def log4 = createIrclog(channelName:ch2.name, channel:ch2).saveSurely()
         // Exercise
         assert channelService.relateToIrclog(ch1) == 2
         // Verify
-        assert log1.channel == ch1
-        assert log2.channel == ch1
-        assert log3.channel == ch2
-        assert log4.channel == ch2
+        assert Irclog.get(log1.id).channel == ch1
+        assert Irclog.get(log2.id).channel == ch1
+        assert Irclog.get(log3.id).channel == ch2
+        assert Irclog.get(log4.id).channel == ch2
     }
 
 }

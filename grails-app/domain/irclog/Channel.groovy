@@ -8,15 +8,6 @@ class Channel {
     Boolean isArchived
     String secretKey
 
-    public String toString() {
-        return """${name} {
-                 |    description: ${description}
-                 |    isPrivate: ${isPrivate}
-                 |    isArchived: ${isArchived}
-                 |    secretKey: ${(secretKey) ? '****' : ''}
-                 |}""".stripMargin()
-    }
-
     static constraints = {
         name(blank:false, unique:true, maxSize:100, matches:"^#.*")
         description()
@@ -32,4 +23,25 @@ class Channel {
     }
 
     static mapping = { description(type:'text') }
+
+    @Override
+    String toString() {
+        return """${name} {
+                 |    description: ${description}
+                 |    isPrivate: ${isPrivate}
+                 |    isArchived: ${isArchived}
+                 |    secretKey: ${(secretKey) ? '****' : ''}
+                 |}""".stripMargin()
+    }
+
+    @Override
+    boolean equals(obj) {
+        if (!(obj instanceof Channel)) return false
+        return (obj.name == this.name)
+    }
+
+    @Override
+    int hashCode() {
+        return (this.name ?: "?").hashCode() * 17
+    }
 }

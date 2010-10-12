@@ -11,6 +11,7 @@ class ChannelService {
     static transactional = true
 
     def dataSource
+    def sessionFactory
 
     /** アクセス可能な全チャンネルを取得する。 */
     public List<Channel> getAccessibleChannelList(person, params) {
@@ -74,22 +75,22 @@ class ChannelService {
      * 現在のチャンネル定義を元に、まだチャンネルに関連付けできていないIrclogの関連更新を試みる。
      */
     public int relateToIrclog(channel) {
-        return Irclog.findAllByChannelIsNullAndChannelName(channel.name).each { it.channel = channel }.size()
-//        def db = new Sql(dataSource.connection)
-//        try {
-//            return db.executeUpdate("""
-//                update
-//                    irclog as i
-//                set
-//                    channel_id = ${channel.id}
-//                where
-//                    i.channel_id is null
-//                and
-//                    i.channel_name = ${channel.name}
-//            """)
-//        } finally {
-//            db.close()
-//        }
+        def db = new Sql(dataSource)
+        try {
+            return db.executeUpdate("""
+                update
+                    irclog as i
+                set
+                    channel_id = ${channel.id}
+                where
+                    i.channel_id is null
+                and
+                    i.channel_name = ${channel.name}
+            """)
+        } finally {
+            sessionFactory.currentSession.clear()
+            db.close()
+        }
     }
 
     /**

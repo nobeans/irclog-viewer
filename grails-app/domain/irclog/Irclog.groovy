@@ -32,7 +32,8 @@ class Irclog {
         message(type:'text')
     }
 
-    public String toString() {
+    @Override
+    String toString() {
         "[${new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(time)}] ${type?.toUpperCase()} <${nick}:${channelName}> ${message}"
     }
 }
