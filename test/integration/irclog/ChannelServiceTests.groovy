@@ -17,13 +17,13 @@ class ChannelServiceTests extends GrailsUnitTestCase {
         // #ch1 [user1]
         // #ch2 [user2]
         // #ch3 [user3, userX]
-        (1..3).each {
-            def ch = createChannel(name:"#ch$it").saveSurely()
-            def user = createPerson(loginName:"user$it").saveSurely()
+        (1..3).each { num ->
+            def ch = createChannel(name:"#ch${num}", description:"${10 - num}").saveSurely()
+            def user = createPerson(loginName:"user${num}").saveSurely()
             user.addToRoles(roleUser)
             user.addToChannels(ch)
-            this."ch${it}" = ch
-            this."user${it}" = user
+            this."ch${num}" = ch
+            this."user${num}" = user
         }
         userX = createPerson(loginName:"userX").saveSurely()
         userX.addToRoles(roleUser)
@@ -37,6 +37,20 @@ class ChannelServiceTests extends GrailsUnitTestCase {
         def channels = channelService.getAccessibleChannelList(admin, [:])
         // Verify
         assert channels == [ch1, ch2, ch3]
+    }
+
+    void testGetAccessibleChannelList_admin_sortByNameDesc() {
+        // Exercise
+        def channels = channelService.getAccessibleChannelList(admin, [sort:'name', order:'desc'])
+        // Verify
+        assert channels == [ch3, ch2, ch1]
+    }
+
+    void testGetAccessibleChannelList_admin_sortByDescriptionAsc() {
+        // Exercise
+        def channels = channelService.getAccessibleChannelList(admin, [sort:'description', order:'asc'])
+        // Verify
+        assert channels == [ch3, ch2, ch1]
     }
 
     void testGetAccessibleChannelList_user1() {
