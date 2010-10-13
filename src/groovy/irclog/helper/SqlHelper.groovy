@@ -4,28 +4,38 @@ import groovy.sql.Sql
 
 public class SqlHelper {
 
-    def dataSource
     def sessionFactory
 
-    int executeUpdate(query) {
-        return executeNqtiveQuery { Sql db ->
-            db.executeUpdate(query)
+    void execute(query, option = null) {
+        withSql { Sql sql ->
+            if (option) {
+                sql.execute(query, option)
+            } else {
+                sql.execute(query)
+            }
         }
     }
 
-    def executeQuery(query, Closure closure) {
-        return executeNqtiveQuery { Sql db ->
-            closure.call(db.executeQuery(query))
+    int executeUpdate(query, option = null) {
+        return withSql { Sql sql ->
+            if (option) {
+                return sql.executeUpdate(query, option)
+            } else {
+                return sql.executeUpdate(query)
+            }
         }
     }
 
-    def executeNqtiveQuery(Closure closure) {
-        def db = new Sql(dataSource)
+    def withSql(Closure closure) {
+        def sql = new Sql(sessionFactory.currentSession.connection())
         try {
-            return closure.call(db)
+            return closure.call(sql)
         } finally {
+            // clear caches to get latest value from database via Hibernate
             sessionFactory.currentSession.clear()
-            db.close()
+
+            // the connection should not be closed because it's managed by sessionFactory
+            //sql.close()
         }
     }
 
