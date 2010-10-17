@@ -67,8 +67,27 @@ class DomainUtils {
             nick: "user_for_${id}",
             permaId: "PERMID${id}",
             channelName: "#channel",
-            channel: null
+            channel: null,
         ]
         return expandDomainObjectForTests(new Irclog(defaultProps + propertyMap))
+    }
+
+    static Summary createSummary(propertyMap) {
+        def id = counter.getAndIncrement()
+        def defaultProps = [
+            todayAfterTimeMarker:id,
+            today:1,
+            yesterday:2,
+            twoDaysAgo:3,
+            threeDaysAgo:4,
+            fourDaysAgo:5,
+            fiveDaysAgo:6,
+            sixDaysAgo:7,
+            totalBeforeYesterday:8,
+            lastUpdate: new Date(id),
+            latestIrclog: null,
+            channel: null,
+        ]
+        return expandDomainObjectForTests(new Summary(defaultProps + propertyMap))
     }
 }

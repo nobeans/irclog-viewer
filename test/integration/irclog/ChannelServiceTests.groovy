@@ -12,11 +12,11 @@ class ChannelServiceTests extends GrailsUnitTestCase {
     protected void setUp() {
         super.setUp()
 
-        def roleUser = Role.findByName("ROLE_USER")
-
+        // Person & Channel
         // #ch1 [user1]
         // #ch2 [user2]
         // #ch3 [user3, userX]
+        def roleUser = Role.findByName("ROLE_USER")
         (1..3).each { num ->
             def ch = createChannel(name:"#ch${num}", description:"${10 - num}").saveSurely()
             def user = createPerson(loginName:"user${num}").saveSurely()
@@ -28,8 +28,19 @@ class ChannelServiceTests extends GrailsUnitTestCase {
         userX = createPerson(loginName:"userX").saveSurely()
         userX.addToRoles(roleUser)
         userX.addToChannels(ch3)
-
         admin = Person.findByLoginName("admin") // setup in Bootstrap
+
+        // Irclog
+        2.times { id ->
+            createIrclog(permaId:"log:ch1:${id}", channelName:ch1.name, channel:null).saveSurely()
+            createIrclog(permaId:"log:ch2:${id}", channelName:ch2.name, channel:ch2).saveSurely()
+            createIrclog(permaId:"log:ch3:${id}", channelName:ch3.name, channel:ch3).saveSurely()
+        }
+
+        // Summary
+        createSummary(channel:ch1, latestIrclog:Irclog.findByPermaId("log:ch1:0")).saveSurely()
+        createSummary(channel:ch2, latestIrclog:Irclog.findByPermaId("log:ch2:0")).saveSurely()
+        createSummary(channel:ch3, latestIrclog:Irclog.findByPermaId("log:ch3:0")).saveSurely()
     }
 
     void testGetAccessibleChannelList_admin() {
@@ -103,4 +114,22 @@ class ChannelServiceTests extends GrailsUnitTestCase {
         assert Irclog.findByPermaId("log:ch1/ch2").channel == ch2
     }
 
+    void testDeleteChannel() {
+        // Verify Fixture
+        assert Person.findByLoginName("user3").channels.contains(ch3)
+        assert Person.findByLoginName("userX").channels.contains(ch3)
+        assert Irclog.count() == 6
+        assert Irclog.findAllByChannelName("#ch3").every{ it.channel == ch3 }
+        assert Summary.countByChannel(ch3) == 1
+        assert Channel.get(ch3.id) == ch3
+        // Exercise
+        channelService.deleteChannel(ch3)
+        // Verify
+        assert Person.findByLoginName("user3").channels.contains(ch3) == false
+        assert Person.findByLoginName("userX").channels.contains(ch3) == false
+        assert Irclog.count() == 6
+        assert Irclog.findAllByChannelName("#ch3").every{ it.channel == null }
+        assert Summary.countByChannel(ch3) == 0
+        assert Channel.get(ch3.id) == null
+    }
 }

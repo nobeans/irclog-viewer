@@ -92,21 +92,18 @@ class ChannelService {
      * TODO カスケードを有効活用できないか？
      */
     public void deleteChannel(channel) {
-        def db = new Sql(dataSource)
-        try {
+        sqlHelper.withSql { sql ->
             // チャンネルとユーザの関連付けを削除する。
             // 関連付けレコード自体を削除する。
-            db.executeUpdate("delete from person_channel where channel_id = ${channel.id}")
+            sql.executeUpdate("delete from person_channel where channel_id = ${channel.id}")
 
             // チャンネルとログの関連付けを削除する。
             // nullで更新するだけで、ログレコードの削除はしない。
-            db.executeUpdate("update irclog set channel_id = null where channel_id = ${channel.id}")
-        } finally {
-            db.close()
-        }
+            sql.executeUpdate("update irclog set channel_id = null where channel_id = ${channel.id}")
 
-        // サマリが存在している場合は削除する。
-        Summary.findByChannel(channel)?.delete()
+            // サマリが存在している場合は削除する。
+            sql.executeUpdate("delete from summary where channel_id = ${channel.id}")
+        }
 
         // チャンネルを削除する。
         channel.delete()
