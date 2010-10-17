@@ -88,17 +88,19 @@ class ChannelServiceTests extends GrailsUnitTestCase {
 
     void testRelateToIrclog() {
         // Setup
-        def log1 = createIrclog(channelName:ch1.name, channel:null).saveSurely()
-        def log2 = createIrclog(channelName:ch1.name, channel:null).saveSurely()
-        def log3 = createIrclog(channelName:ch1.name, channel:ch2).saveSurely()
-        def log4 = createIrclog(channelName:ch2.name, channel:ch2).saveSurely()
+        createIrclog(permaId:"log:ch1/ch2", channelName:ch1.name, channel:ch2).saveSurely()
+        // Verify Fixture
+        assert Irclog.findByPermaId("log:ch1:0").channel == null
+        assert Irclog.findByPermaId("log:ch1:1").channel == null
+        assert Irclog.findByPermaId("log:ch2:0").channel == ch2
+        assert Irclog.findByPermaId("log:ch1/ch2").channel == ch2
         // Exercise
         assert channelService.relateToIrclog(ch1) == 2
         // Verify
-        assert Irclog.get(log1.id).channel == ch1
-        assert Irclog.get(log2.id).channel == ch1
-        assert Irclog.get(log3.id).channel == ch2
-        assert Irclog.get(log4.id).channel == ch2
+        assert Irclog.findByPermaId("log:ch1:0").channel == ch1
+        assert Irclog.findByPermaId("log:ch1:1").channel == ch1
+        assert Irclog.findByPermaId("log:ch2:0").channel == ch2
+        assert Irclog.findByPermaId("log:ch1/ch2").channel == ch2
     }
 
 }
