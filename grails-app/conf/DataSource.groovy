@@ -15,7 +15,7 @@ environments {
         dataSource {
             dbCreate = "create" // one of 'create', 'create-drop','update'
             url = "jdbc:postgresql://localhost:5432/irclog"
-            //logSql = true
+            //loggingSql = true
         }
     }
     test {
@@ -25,6 +25,7 @@ environments {
             password = ""
             dbCreate = "update"
             url = "jdbc:hsqldb:mem:testDb"
+            //loggingSql = true
         }
     }
     production {
