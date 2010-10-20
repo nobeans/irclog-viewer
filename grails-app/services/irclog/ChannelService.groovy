@@ -1,12 +1,10 @@
 package irclog
 
 import groovy.sql.Sql
-import irclog.utils.CollectionUtils
+import static irclog.utils.CollectionUtils.*
+import static irclog.utils.ConvertUtils.*
 
 class ChannelService {
-
-    /** 基本種別をIN句で使うための文字列 */
-    private static final String IN_ESSENTIAL_TYPES = "(" + Irclog.ESSENTIAL_TYPES.collect{"'${it}'"}.join(', ') + ")"
 
     static transactional = true
 
@@ -89,7 +87,6 @@ class ChannelService {
     /**
      * 指定のチャンネルを削除する。
      * 各種の関連付けを適切に削除する。
-     * TODO カスケードを有効活用できないか？
      */
     public void deleteChannel(channel) {
         sqlHelper.withSql { sql ->
@@ -116,94 +113,61 @@ class ChannelService {
      * <li>現在の日付よりも後で、ログが存在する最新日付</li>
      * <li>現在の日付よりも後で、ログが存在する日付</li>
      * </ul>
+     * @param date "yyyy-MM-dd"
      */
-    public Map<String, Date> getRelatedDates(selectableChannels, date, channel, isIgnoredOptionType) {
-        if (!selectableChannels.keySet().contains(channel.name)) return [:]
+    public Map<String, Date> getRelatedDates(date, channel, isIgnoredOptionType) {
         [
             before: getBeforeDate(date, channel, isIgnoredOptionType),
-            after:  getAfterDate(date, channel, isIgnoredOptionType),
-            latest: getLatestDate(date, channel, isIgnoredOptionType)
+            after:  getAfterDate (date, channel, isIgnoredOptionType),
+            latest: getLatestDate(date, channel, isIgnoredOptionType),
         ]
     }
     /** 現在の日付よりも前で、ログが存在する日付を取得する。 */
-    private Date getBeforeDate(date, channel, isIgnoredOptionType) {
-        def db = new Sql(dataSource)
-        try {
-            def dates = db.firstRow("""
-                select
-                    {tbl.*}
-                from
-                    irclog as {tbl}
-                where
-                    time < '${date} 00:00:00'
-                and
-                    channel_id = '${channel.id}'
-            """ + (isIgnoredOptionType ? """ and type in ${IN_ESSENTIAL_TYPES} """ : '') + """
-                order by
-                    time desc
-                limit 1
-            """.toString())
-            println ">y"*50
-            println dates
-            println dates.class
-            println "<y"*50
-            CollectionUtils.getFirstOrNull(dates)?.time
-        } finally {
-            db.close()
-        }
+    private Date getBeforeDate(dateStr, channel, isIgnoredOptionType) {
+        def c = Irclog.createCriteria()
+        def list = c.list {
+            and {
+                lt "time", toDate(dateStr + " 00:00:00")
+                eq "channel", channel
+                if (isIgnoredOptionType) {
+                    'in' "type", Irclog.ESSENTIAL_TYPES
+                }
+            }
+            order("time", "desc")
+            maxResults(1)
+        }.collect { resetTimeToOrigin(it.time) }
+        return getFirstOrNull(list)
     }
     /** 現在の日付よりも後で、ログが存在する日付を取得する。*/
-    private Date getAfterDate(date, channel, isIgnoredOptionType) {
-        def db = new Sql(dataSource)
-        try {
-            def dates = db.firstRow("""
-                select
-                    {tbl.*}
-                from
-                    irclog as {tbl}
-                where
-                    time > '${date} 23:59:59'
-                and
-                    channel_id = '${channel.id}'
-            """ + (isIgnoredOptionType ? """ and type in ${IN_ESSENTIAL_TYPES} """ : '') + """
-                order by
-                    time asc
-                limit 1
-            """.toString())
-            println ">z"*50
-            println dates
-            println dates.class
-            println "<z"*50
-            CollectionUtils.getFirstOrNull(dates)?.time
-        } finally {
-            db.close()
-        } 
+    private Date getAfterDate(dateStr, channel, isIgnoredOptionType) {
+        def c = Irclog.createCriteria()
+        def list = c.list {
+            and {
+                gt "time", toDate(dateStr + " 23:59:59")
+                eq("channel", channel)
+                if (isIgnoredOptionType) {
+                    'in' "type", Irclog.ESSENTIAL_TYPES
+                }
+            }
+            order("time", "asc")
+            maxResults(1)
+        }.collect { resetTimeToOrigin(it.time) }
+        return getFirstOrNull(list)
     }
     /** 現在の日付よりも後で、ログが存在する最新日付を取得する。*/
-    private Date getLatestDate(date, channel, isIgnoredOptionType) {
-        def db = new Sql(dataSource)
-        try {
-            def dates = db.firstRow("""
-                select
-                    {tbl.*}
-                from
-                    irclog as {tbl}
-                where
-                    time > '${date} 23:59:59'
-                and
-                    channel_id = '${channel.id}'
-            """ + (isIgnoredOptionType ? """ and type in ${IN_ESSENTIAL_TYPES} """ : '') + """
-                order by
-                    time desc
-                limit 1
-            """.toString())
-            println ">v"*50
-            println dates
-            println dates.class
-            println "<v"*50
-            CollectionUtils.getFirstOrNull(dates)?.time
-        } finally {
-            db.close()
-        }
+    private Date getLatestDate(dateStr, channel, isIgnoredOptionType) {
+        def c = Irclog.createCriteria()
+        def list = c.list {
+            and {
+                gt "time", toDate(dateStr + " 23:59:59")
+                eq "channel", channel
+                if (isIgnoredOptionType) {
+                    'in' "type", Irclog.ESSENTIAL_TYPES
+                }
+            }
+            order("time", "desc")
+            maxResults(1)
+        }.collect { resetTimeToOrigin(it.time) }
+        return getFirstOrNull(list)
     }
 }

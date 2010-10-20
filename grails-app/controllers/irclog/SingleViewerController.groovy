@@ -26,7 +26,7 @@ class SingleViewerController {
         def selectableChannels = getSelectableChannels(criterion.channel)
 
         // リンク用の関連日付を取得する。
-        def relatedDates = channelService.getRelatedDates(selectableChannels, params.date, Channel.findByName(params.channel), criterion.isIgnoredOptionType)
+        def relatedDates = channelService.getRelatedDates(params.date, Channel.findByName(params.channel), criterion.isIgnoredOptionType)
 
         // モデルを作成して、デフォルトビューへ。
         def nickPersonList = Person.list()

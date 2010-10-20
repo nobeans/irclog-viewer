@@ -1,7 +1,9 @@
 package irclog
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
 import grails.test.*
 import static irclog.utils.DomainUtils.*
+import static irclog.utils.ConvertUtils.*
 
 class ChannelServiceTests extends GrailsUnitTestCase {
 
@@ -32,9 +34,9 @@ class ChannelServiceTests extends GrailsUnitTestCase {
 
         // Irclog
         2.times { id ->
-            createIrclog(permaId:"log:ch1:${id}", channelName:ch1.name, channel:null).saveSurely()
-            createIrclog(permaId:"log:ch2:${id}", channelName:ch2.name, channel:ch2).saveSurely()
-            createIrclog(permaId:"log:ch3:${id}", channelName:ch3.name, channel:ch3).saveSurely()
+            createIrclog(permaId:"log:ch1:${id}", channelName:ch1.name, time:toDate("2010-01-01"), channel:null).saveSurely()
+            createIrclog(permaId:"log:ch2:${id}", channelName:ch2.name, time:toDate("2010-01-01"), channel:ch2).saveSurely()
+            createIrclog(permaId:"log:ch3:${id}", channelName:ch3.name, time:toDate("2010-01-01"), channel:ch3).saveSurely()
         }
 
         // Summary
@@ -131,5 +133,127 @@ class ChannelServiceTests extends GrailsUnitTestCase {
         assert Irclog.findAllByChannelName("#ch3").every{ it.channel == null }
         assert Summary.countByChannel(ch3) == 0
         assert Channel.get(ch3.id) == null
+    }
+
+    void testGetBeforeDate_IgnoredOptionType_TRUE() {
+        // Setup
+        createIrclogAs(ch2, "2010-10-01 12:34:56", "PRIVMSG")
+        createIrclogAs(ch2, "2010-10-03 23:59:59", "NOTICE")
+        createIrclogAs(ch2, "2010-10-05 12:34:56", "OTHER")
+        createIrclogAs(ch2, "2010-10-07 01:23:45", "PRIVMSG")
+        // Exercise
+        boolean isIgnoredOptionType = true
+        Date date = channelService.getBeforeDate("2010-10-06", ch2, isIgnoredOptionType)
+        // Verify
+        assert date == toDate("2010-10-03 00:00:00")
+    }
+
+    void testGetBeforeDate_IgnoredOptionType_FALSE() {
+        // Setup
+        createIrclogAs(ch2, "2010-10-01 12:34:56", "PRIVMSG")
+        createIrclogAs(ch2, "2010-10-03 23:59:59", "NOTICE")
+        createIrclogAs(ch2, "2010-10-05 12:34:56", "OTHER")
+        createIrclogAs(ch2, "2010-10-07 01:23:45", "PRIVMSG")
+        // Exercise
+        boolean isIgnoredOptionType = false
+        Date date = channelService.getBeforeDate("2010-10-06", ch2, isIgnoredOptionType)
+        // Verify
+        assert date == toDate("2010-10-05 00:00:00")
+    }
+
+    void testGetBeforeDate_Empty() {
+        // Exercise
+        boolean isIgnoredOptionType = true
+        Date date = channelService.getBeforeDate("1999-01-01", ch2, isIgnoredOptionType)
+        // Verify
+        assert date == null
+    }
+
+    void testGetAfterDate_IgnoredOptionType_TRUE() {
+        // Setup
+        createIrclogAs(ch2, "2010-10-01 12:34:56", "PRIVMSG")
+        createIrclogAs(ch2, "2010-10-03 23:59:59", "OTHER")
+        createIrclogAs(ch2, "2010-10-05 12:34:56", "NOTICE")
+        createIrclogAs(ch2, "2010-10-07 01:23:45", "PRIVMSG")
+        // Exercise
+        boolean isIgnoredOptionType = true
+        Date date = channelService.getAfterDate("2010-10-02", ch2, isIgnoredOptionType)
+        // Verify
+        assert date == toDate("2010-10-05 00:00:00")
+    }
+
+    void testGetAfterDate_IgnoredOptionType_FALSE() {
+        // Setup
+        createIrclogAs(ch2, "2010-10-01 12:34:56", "PRIVMSG")
+        createIrclogAs(ch2, "2010-10-03 23:59:59", "OTHER")
+        createIrclogAs(ch2, "2010-10-05 12:34:56", "NOTICE")
+        createIrclogAs(ch2, "2010-10-07 01:23:45", "PRIVMSG")
+        // Exercise
+        boolean isIgnoredOptionType = false
+        Date date = channelService.getAfterDate("2010-10-02", ch2, isIgnoredOptionType)
+        // Verify
+        assert date == toDate("2010-10-03 00:00:00")
+    }
+
+    void testGetAfterDate_Empty() {
+        // Exercise
+        boolean isIgnoredOptionType = true
+        Date date = channelService.getAfterDate("2999-01-01", ch2, isIgnoredOptionType)
+        // Verify
+        assert date == null
+    }
+    void testGetLatestDate_IgnoredOptionType_TRUE() {
+        // Setup
+        createIrclogAs(ch2, "2010-10-01 12:34:56", "PRIVMSG")
+        createIrclogAs(ch2, "2010-10-03 23:59:59", "OTHER")
+        createIrclogAs(ch2, "2010-10-05 12:34:56", "NOTICE")
+        createIrclogAs(ch2, "2010-10-07 01:23:45", "OTHER")
+        // Exercise
+        boolean isIgnoredOptionType = true
+        Date date = channelService.getLatestDate("2010-10-02", ch2, isIgnoredOptionType)
+        // Verify
+        assert date == toDate("2010-10-05 00:00:00")
+    }
+
+    void testGetLatestDate_IgnoredOptionType_FALSE() {
+        // Setup
+        createIrclogAs(ch2, "2010-10-01 12:34:56", "PRIVMSG")
+        createIrclogAs(ch2, "2010-10-03 23:59:59", "OTHER")
+        createIrclogAs(ch2, "2010-10-05 12:34:56", "NOTICE")
+        createIrclogAs(ch2, "2010-10-07 01:23:45", "OTHER")
+        // Exercise
+        boolean isIgnoredOptionType = false
+        Date date = channelService.getLatestDate("2010-10-02", ch2, isIgnoredOptionType)
+        // Verify
+        assert date == toDate("2010-10-07 00:00:00")
+    }
+
+    void testGetLatestDate_Empty() {
+        // Exercise
+        boolean isIgnoredOptionType = true
+        Date date = channelService.getLatestDate("2999-01-01", ch2, isIgnoredOptionType)
+        // Verify
+        assert date == null
+    }
+
+    void testGetRelatedDates() {
+        // Setup
+        createIrclogAs(ch2, "2010-10-01 12:34:56", "PRIVMSG")
+        createIrclogAs(ch2, "2010-10-03 23:59:59", "OTHER")
+        createIrclogAs(ch2, "2010-10-05 12:34:56", "NOTICE")
+        createIrclogAs(ch2, "2010-10-07 01:23:45", "TOPIC")
+        // Exercise
+        boolean isIgnoredOptionType = true
+        def result = channelService.getRelatedDates("2010-10-04", ch2, isIgnoredOptionType)
+        // Verify
+        assert result.size() == 3
+        assert result.before == toDate("2010-10-01 00:00:00")
+        assert result.after  == toDate("2010-10-05 00:00:00")
+        assert result.latest == toDate("2010-10-07 00:00:00")
+    }
+
+    private createIrclogAs(ch, dateTime, type) {
+        Date time = toDate(dateTime)
+        createIrclog(permaId:"log:${ch}:${time}", channelName:ch.name, time:time, channel:ch, type:type).saveSurely()
     }
 }
