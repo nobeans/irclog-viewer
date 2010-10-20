@@ -202,6 +202,7 @@ class ChannelServiceTests extends GrailsUnitTestCase {
         // Verify
         assert date == null
     }
+
     void testGetLatestDate_IgnoredOptionType_TRUE() {
         // Setup
         createIrclogAs(ch2, "2010-10-01 12:34:56", "PRIVMSG")
