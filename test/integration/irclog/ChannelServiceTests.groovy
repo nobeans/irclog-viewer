@@ -1,5 +1,4 @@
 package irclog
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
 import grails.test.*
 import static irclog.utils.DomainUtils.*
