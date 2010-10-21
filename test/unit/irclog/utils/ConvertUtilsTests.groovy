@@ -46,6 +46,7 @@ class ConvertUtilsTests extends GrailsUnitTestCase {
             "",
             "xx",
             "2010-10-18 01:23:xx",
+            "2010-10-18 1:23:45",
             "201010-18 01:23:45",
             "2010-1-18 01:23:45",
         ].each { value ->
@@ -55,8 +56,24 @@ class ConvertUtilsTests extends GrailsUnitTestCase {
         }
     }
 
-    void testResetTimeToOrigin() {
-        def date = ConvertUtils.toDate("2010-10-18 01:23:45")
-        assert ConvertUtils.resetTimeToOrigin(date).toString() == "Mon Oct 18 00:00:00 JST 2010"
+    void testToCalendar_date() {
+        assert ConvertUtils.toCalendar("2010-10-18").time.toString() == "Mon Oct 18 00:00:00 JST 2010"
+    }
+
+    void testToCalendar_dateAndTime() {
+        assert ConvertUtils.toCalendar("2010-10-18 01:23:45").time.toString() == "Mon Oct 18 01:23:45 JST 2010"
+        assert ConvertUtils.toCalendar("2010-10-18 23:59:59").time.toString() == "Mon Oct 18 23:59:59 JST 2010"
+    }
+
+    void testResetTimeToOrigin_Date() {
+        Date date = ConvertUtils.toDate("2010-10-18 01:23:45")
+        Date actual = ConvertUtils.resetTimeToOrigin(date)
+        assert actual.toString() == "Mon Oct 18 00:00:00 JST 2010"
+    }
+
+    void testResetTimeToOrigin_Calendar() {
+        Calendar cal = ConvertUtils.toCalendar("2010-10-18 01:23:45")
+        Calendar actual = ConvertUtils.resetTimeToOrigin(cal)
+        assert actual.time.toString() == "Mon Oct 18 00:00:00 JST 2010"
     }
 }
