@@ -24,7 +24,6 @@ class ChannelTests extends GrailsUnitTestCase {
     void testFindAll() {
         def actual = Channel.findAll()
         assert actual.size() == 2
-        println actual
     }
     
     private Channel createChannel(name) {
