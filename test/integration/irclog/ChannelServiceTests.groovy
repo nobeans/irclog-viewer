@@ -12,33 +12,42 @@ class ChannelServiceTests extends GrailsUnitTestCase {
 
     protected void setUp() {
         super.setUp()
+        setUpChannel()
+        setUpPerson()
+        setUpRelationBetweenPersonAndChannel()
+        setUpIrclog()
+        setUpSummary()
+    }
 
-        // Person & Channel
-        // #ch1 [user1]
-        // #ch2 [user2]
-        // #ch3 [user3, userX]
-        def roleUser = Role.findByName("ROLE_USER")
+    private setUpChannel() {
         (1..3).each { num ->
-            def ch = createChannel(name:"#ch${num}", description:"${10 - num}").saveSurely()
-            def user = createPerson(loginName:"user${num}").saveSurely()
-            user.addToRoles(roleUser)
-            user.addToChannels(ch)
-            this."ch${num}" = ch
-            this."user${num}" = user
+            this."ch${num}" = createChannel(name:"#ch${num}", description:"${10 - num}").saveSurely()
         }
-        userX = createPerson(loginName:"userX").saveSurely()
-        userX.addToRoles(roleUser)
-        userX.addToChannels(ch3)
+    }
+    private setUpPerson() {
         admin = Person.findByLoginName("admin") // setup in Bootstrap
-
-        // Irclog
+        def roleUser = Role.findByName("ROLE_USER")
+        ["1", "2", "3", "X"].each { id ->
+            def user = createPerson(loginName:"user${id}").saveSurely()
+            user.addToRoles(roleUser)
+            this."user${id}" = user
+        }
+    }
+    private setUpRelationBetweenPersonAndChannel() {
+        // #ch1[user1], #ch2[user2], #ch3[user3, userX]
+        user1.addToChannels(ch1)
+        user2.addToChannels(ch2)
+        user3.addToChannels(ch3)
+        userX.addToChannels(ch3)
+    }
+    private setUpIrclog() {
         2.times { id ->
             createIrclog(permaId:"log:ch1:${id}", channelName:ch1.name, time:toDate("2010-01-01"), channel:null).saveSurely()
             createIrclog(permaId:"log:ch2:${id}", channelName:ch2.name, time:toDate("2010-01-01"), channel:ch2).saveSurely()
             createIrclog(permaId:"log:ch3:${id}", channelName:ch3.name, time:toDate("2010-01-01"), channel:ch3).saveSurely()
         }
-
-        // Summary
+    }
+    private setUpSummary() {
         createSummary(channel:ch1, latestIrclog:Irclog.findByPermaId("log:ch1:0")).saveSurely()
         createSummary(channel:ch2, latestIrclog:Irclog.findByPermaId("log:ch2:0")).saveSurely()
         createSummary(channel:ch3, latestIrclog:Irclog.findByPermaId("log:ch3:0")).saveSurely()

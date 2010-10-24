@@ -21,9 +21,16 @@ class ConvertUtils {
         }
     }
 
-    static Calendar toCalendar(String date) {
-        def cal = Calendar.getInstance()
-        cal.time = toDate(date)
+    static Calendar toCalendar(String date, Map map = null) {
+        return toCalendar(toDate(date), map)
+    }
+
+    static Calendar toCalendar(Date date, Map map = null) {
+        def cal = Calendar.instance
+        cal.time = date
+        if (map) {
+            cal.set(map)
+        }
         return cal
     }
 
