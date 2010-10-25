@@ -14,7 +14,7 @@ class SummaryService {
     def dataSource
 
     /** アクセス可能な全チャンネルのトピック情報(1週間以内の上位5件)を取得する。*/
-    public List<Irclog> getAccessibleTopicList(person, accessibleChannelList) {
+    List<Irclog> getAccessibleTopicList(person, accessibleChannelList) {
         def baseDate = new Date()
         def df = new SimpleDateFormat("yyyy-MM-dd")
         def baseDateFormatted = df.format(baseDate)
@@ -47,7 +47,7 @@ class SummaryService {
     }
 
     /** アクセス可能な全チャンネルのサマリ情報を取得する。 */
-    public List<Summary> getAccessibleSummaryList(params, accessibleChannelList, TimeMarker timeMarker) {
+    List<Summary> getAccessibleSummaryList(params, accessibleChannelList, TimeMarker timeMarker) {
         // 全てのサマリを取得して、アクセス可能な範囲に絞り込む
         def summaryList = getAllSummaryList(params, timeMarker).findAll{it.channel in accessibleChannelList}
 
@@ -212,7 +212,7 @@ class SummaryService {
     }
 
     /** 全ての分のサマリを更新する。 */
-    public void updateAllSummary() {
+    void updateAllSummary() {
         def baseDate = new Date()
         def df = new SimpleDateFormat("yyyy-MM-dd")
 

@@ -14,7 +14,7 @@ class MixedViewerController {
     def channelService
 
     final SELECTABLE_PERIODS = [ 'all', 'year', 'halfyear', 'month', 'week', 'today', 'oneday' ]
-    public static final String SESSION_KEY_CRITERION = 'criterion'
+    static final String SESSION_KEY_CRITERION = 'criterion'
 
     /**
      * ログ一覧を表示する。

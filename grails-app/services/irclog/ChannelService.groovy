@@ -11,7 +11,7 @@ class ChannelService {
     def sqlHelper
 
     /** アクセス可能な全チャンネルを取得する。 */
-    public List<Channel> getAccessibleChannelList(person, params) {
+    List<Channel> getAccessibleChannelList(person, params) {
         if (!params.sort || !Channel.constraints.keySet().contains(params.sort)) params.sort = 'name'
         if (!params.order || !['asc', 'desc'].contains(params.order)) params.order = 'asc'
         if (person) {
@@ -52,7 +52,7 @@ class ChannelService {
      * 指定されたチャンネルに対する関連付け済みのユーザを取得する。
      * @return キー=Channel, 値=[Person...] のMap
      */
-    public List<Person> getJoinedPersons(Channel ch) {
+    List<Person> getJoinedPersons(Channel ch) {
         Person.executeQuery("select p from Person as p join p.channels as c where c = ?", [ch])
     }
 
@@ -60,7 +60,7 @@ class ChannelService {
      * すべてのチャンネルに対する関連付け済みのユーザを取得する。
      * @return キー=Channel, 値=[Person...] のMap
      */
-    public Map<Channel, List<Person>> getAllJoinedPersons() {
+    Map<Channel, List<Person>> getAllJoinedPersons() {
         def result = [:]
         Channel.list().each { ch ->
             result[ch] = getJoinedPersons(ch)
@@ -71,7 +71,7 @@ class ChannelService {
     /**
      * 現在のチャンネル定義を元に、まだチャンネルに関連付けできていないIrclogの関連更新を試みる。
      */
-    public int relateToIrclog(channel) {
+    int relateToIrclog(channel) {
         return sqlHelper.executeUpdate("""
             update
                 irclog as i
@@ -88,7 +88,7 @@ class ChannelService {
      * 指定のチャンネルを削除する。
      * 各種の関連付けを適切に削除する。
      */
-    public void deleteChannel(channel) {
+    void deleteChannel(channel) {
         sqlHelper.withSql { sql ->
             // チャンネルとユーザの関連付けを削除する。
             // 関連付けレコード自体を削除する。
@@ -115,7 +115,7 @@ class ChannelService {
      * </ul>
      * @param date "yyyy-MM-dd"
      */
-    public Map<String, Date> getRelatedDates(date, channel, isIgnoredOptionType) {
+    Map<String, Date> getRelatedDates(date, channel, isIgnoredOptionType) {
         [
             before: getBeforeDate(date, channel, isIgnoredOptionType),
             after:  getAfterDate (date, channel, isIgnoredOptionType),

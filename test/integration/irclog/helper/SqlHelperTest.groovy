@@ -4,7 +4,7 @@ package irclog.helper
 
 import groovy.sql.Sql
 
-public class SqlHelperTest extends GroovyTestCase {
+class SqlHelperTest extends GroovyTestCase {
 
     def dataSource
     def sqlHelper

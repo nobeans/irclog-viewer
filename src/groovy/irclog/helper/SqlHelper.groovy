@@ -2,7 +2,7 @@ package irclog.helper
 
 import groovy.sql.Sql
 
-public class SqlHelper {
+class SqlHelper {
 
     def sessionFactory
 

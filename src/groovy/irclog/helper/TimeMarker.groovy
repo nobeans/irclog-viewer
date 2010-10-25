@@ -7,11 +7,11 @@ import java.text.SimpleDateFormat
  * タイムマーカクラス。
  * 今日のログにおいて「ここまで読んだ」を実現するために、時刻境界を表す。
  */
-public class TimeMarker {
+class TimeMarker {
 
     private String time
 
-    public TimeMarker(String time) {
+    TimeMarker(String time) {
         this.time = time
     }
 
@@ -20,12 +20,12 @@ public class TimeMarker {
      * 0時を超えても正常に動作させるため、呼び出し時に遅延評価するところがポイント。
      * Date型であるがあえて文脈に合わせてTimeというプロパティ名とした。
      */
-    public Date getTime() {
+    Date getTime() {
         def today = new SimpleDateFormat('yyyy-MM-dd ').format(new Date())
         return new SimpleDateFormat('yyyy-MM-dd HH:mm').parse(today + time)
     }
 
-    public String toString() {
+    String toString() {
         return time
     }
 }

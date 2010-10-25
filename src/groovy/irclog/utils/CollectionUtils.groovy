@@ -12,7 +12,7 @@ class CollectionUtils {
     // とにかくList型に変換する。
     // 本メソッドを通せば、List型として取り扱うことができることを保証する。
     // 変換ルールはソース参照。
-    static asList(list) {
+    static List asList(list) {
         if (list == null) return [] // nullは空リスト
         if (list instanceof Object[]) return list as List
         if (list instanceof Collection) return list as List

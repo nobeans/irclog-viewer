@@ -23,11 +23,11 @@ class Summary {
 
     Irclog latestIrclog
 
-    public int total() {
+    int total() {
         return today + totalBeforeYesterday
     }
 
-    public String toString() {
+    String toString() {
         def df = new java.text.SimpleDateFormat("yyyy-MM-dd")
         return """${channel?.name}@${lastUpdated ? df.format(lastUpdated) : 'NEVER'} {
                  |    today: ${today}
@@ -43,7 +43,7 @@ class Summary {
                  |}""".stripMargin()
     }
 
-    public static final SORTABLE = [
+    static final SORTABLE = [
         'channel',
         'lastUpdated',
         'today',
