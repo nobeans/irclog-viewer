@@ -5,87 +5,74 @@ import static irclog.utils.DomainUtils.*
 import static irclog.utils.ConvertUtils.*
 
 class IrclogSearchServiceTests extends GrailsUnitTestCase {
-    
+
     def irclogSearchService
     def ch1, ch2, ch3
-    def user1, user2, user3, userX, admin
-    
-    IrclogSearchServiceTests() {
-        // Setup shared fixture 
-        Irclog.withTransaction {
-        setUpChannel()
-        setUpPerson()
-        setUpRelationBetweenPersonAndChannel()
-        setUpIrclog()
+    def user1, user2, user3, admin
+
+    boolean setUpFixture = false
+
+    void setUp() {
+        // Setup shared fixture
+        if (!setUpFixture) { 
+            setUpChannel()
+            setUpPerson()
+            setUpRelationBetweenPersonAndChannel()
         }
+        setUpFixture = true
     }
-    
-    private setUpChannel() {
-        (1..3).each { num ->
-            this."ch${num}" = createChannel(name:"#ch${num}", description:"${10 - num}").saveSurely()
-        }
+
+    void tearDown() {
+        irclogSearchService.timeProvider.today = null
+        super.tearDown()
     }
-    private setUpPerson() {
-        admin = Person.findByLoginName("admin") // setup in Bootstrap
-        def roleUser = Role.findByName("ROLE_USER")
-        ["1", "2", "3", "X"].each { id ->
-            def user = createPerson(loginName:"user${id}").saveSurely()
-            user.addToRoles(roleUser)
-            this."user${id}" = user
-        }
+
+    void testSearch_period_all() {
+        // Setup
+        irclogSearchService.timeProvider.today = toDate("2011-01-01 00:00:01")
+        def expected = []
+        expected << saveIrclog(ch2, "2010-12-31 00:00:01", "user1", "PRIVMSG")
+        expected << saveIrclog(ch2, "2009-12-31 00:00:01", "user1", "PRIVMSG")
+        expected << saveIrclog(ch2, "2008-12-31 00:00:01", "user1", "PRIVMSG")
+        // Exercise
+        def criterion = createCriterion(period:'all')
+        def actual = irclogSearchService.search(user3, criterion, [sort:"time"], 'desc')
+        // Verify
+        assert actual.list == expected
+        assert actual.totalCount == 3
     }
-    private setUpRelationBetweenPersonAndChannel() {
-        // #ch1[user1], #ch2[user2, userX], #ch3[user3, userX]
-        user1.addToChannels(ch1)
-        user2.addToChannels(ch2)
-        user3.addToChannels(ch3)
-        userX.addToChannels(ch2)
-        userX.addToChannels(ch3)
+
+    void testSearch_period_year() {
+        // Setup
+        irclogSearchService.timeProvider.today = toDate("2011-01-01 00:00:01")
+        def expected = []
+        expected << saveIrclog(ch2, "2010-12-31 00:00:01", "user1", "PRIVMSG")
+        expected << saveIrclog(ch2, "2010-01-01 00:00:01", "user1", "PRIVMSG")
+        expected << saveIrclog(ch2, "2010-01-01 00:00:00", "user1", "PRIVMSG")
+        saveIrclog(ch2, "2009-12-31 00:00:00", "user1", "PRIVMSG")
+        // Exercise
+        def criterion = createCriterion(period:'year')
+        def actual = irclogSearchService.search(user3, criterion, [sort:"time"], 'desc')
+        // Verify
+        assert actual.list == expected
+        assert actual.totalCount == 3
     }
-    private setUpIrclog() {
-        def today = toDate("2010-01-01 00:00:00")
-        [ch1, ch2, ch3].each { ch ->
-            ["PRIVMSG", "JOIN"].each { type ->
-                [user1, user2, user3].each { user ->
-                    // second
-                    (1..59).each { second ->
-                        saveIrclog(ch, toCalendar(today.clone(), [second:second]).time, type, user)
-                    }
-                    // today
-                    (0..23).each { hour ->
-                        saveIrclog(ch, toCalendar(today.clone(), [hourOfDay:hour]).time, type, user)
-                    }
-                    // a week
-                    (1..7).each { deltaDay ->
-                        saveIrclog(ch, toCalendar((today.clone() - deltaDay).clone()).time, type, user)
-                    }
-                    // future
-                    saveIrclog(ch, toCalendar((today + 1).clone()).time, type, user)
-                    // a year + a month
-                    (1..13).each { deltaMonth ->
-                        saveIrclog(ch, toCalendar(today.clone(), [month:today.month - deltaMonth, day:1]).time, type, user)
-                    }
-                }
-            }
-        }
+
+    void testSearch_period_halfyear() {
+        // Setup
+        irclogSearchService.timeProvider.today = toDate("2011-01-01 00:00:01")
+        def expected = []
+        expected << saveIrclog(ch2, "2010-12-31 00:00:01", "user1", "PRIVMSG")
+        expected << saveIrclog(ch2, "2010-07-01 00:00:00", "user1", "PRIVMSG")
+        saveIrclog(ch2, "2010-06-30 00:00:00", "user1", "PRIVMSG")
+        // Exercise
+        def criterion = createCriterion(period:'halfyear')
+        def actual = irclogSearchService.search(user3, criterion, [sort:"time"], 'desc')
+        // Verify
+        assert actual.list == expected
+        assert actual.totalCount == 2
     }
-    private saveIrclog(Channel ch, Date date, String type, Person user) {
-        def permaId = "log:${ch.name}:${date.format('yyyy-MM-dd HH:mm:ss')}:${type}:${user}"
-        println permaId
-        createIrclog(permaId:permaId, channelName:ch.name, channel:ch, time:date, type:type, nick:user.loginName).saveSurely()
-    }
-    
-    void testSearch_periodYear_allChannel_filtered_neitherNickNorMessage() {
-        def criterion = [
-            period:  'all',
-            channel: 'all',
-            type:    'filtered',
-            nick:    '',
-            message: '',
-        ]
-        println irclogSearchService.search(user3, criterion, [:], 'asc')
-    }
-    
+
     //        // 今日(すべて)
     //        def criterion = [
     //            period:  'today',
@@ -111,4 +98,45 @@ class IrclogSearchServiceTests extends GrailsUnitTestCase {
     //            nick:    '',
     //            message: '',
     //        ]
+
+    private setUpChannel() {
+        (1..3).each { num ->
+            this."ch${num}" = createChannel(name:"#ch${num}", description:"${10 - num}").saveSurely()
+        }
+    }
+
+    private setUpPerson() {
+        admin = Person.findByLoginName("admin") // setup in Bootstrap
+        def roleUser = Role.findByName("ROLE_USER")
+        ["1", "2", "3"].each { id ->
+            def user = createPerson(loginName:"user${id}").saveSurely()
+            user.addToRoles(roleUser)
+            this."user${id}" = user
+        }
+    }
+
+    private setUpRelationBetweenPersonAndChannel() {
+        // #ch1[user1, user2, user3], #ch2[user2, user3], #ch3[user3]
+        user1.addToChannels(ch1)
+        user2.addToChannels(ch1)
+        user2.addToChannels(ch2)
+        user3.addToChannels(ch1)
+        user3.addToChannels(ch2)
+        user3.addToChannels(ch3)
+    }
+
+    private saveIrclog(Channel ch, String dateStr, String nick, String type) {
+        def permaId = "log:${ch.name}:${dateStr}:${nick}:${type}"
+        return createIrclog(permaId:permaId, channelName:ch.name, channel:ch, time:toDate(dateStr), type:type, nick:nick).saveSurely()
+    }
+
+    private createCriterion(map) {
+        return [
+            period:  'all',
+            channel: 'all',
+            type:    'all',
+            nick:    '',
+            message: '',
+        ] + map
+    }
 }

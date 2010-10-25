@@ -10,6 +10,7 @@ class IrclogSearchService {
     static transactional = false
 
     def channelService
+    def timeProvider
 
     def search(person, criterion, params, direction = 'desc') {
         def query = createQuery(person, criterion)
@@ -131,7 +132,7 @@ class IrclogSearchService {
         cal.getTime()
     }
     private resolveBeginDate_all(criterion) {
-        new Date(0) // エポックタイム
+        timeProvider.epoch
     }
 
     // ----------------------------------------------
@@ -142,12 +143,12 @@ class IrclogSearchService {
     private resolveEndDate_oneday(criterion) {
         try {
             def onedayDate = new java.text.SimpleDateFormat('yyyy-MM-dd').parse(criterion['period-oneday-date'] ?: '')
-            def cal = Calendar.getInstance()
+            def cal = timeProvider.today.asCalendar()
             cal.setTime(onedayDate)
             cal.add(Calendar.DATE, 1)
             return cal.getTime()
         } catch (java.text.ParseException e) {
-            return new Date(0) // エポックタイム==絶対にヒットさせない
+            return timeProvider.epoch // force never to match
         }
     }
     private resolveEndDate_week(criterion) {
@@ -166,7 +167,7 @@ class IrclogSearchService {
         getCalendarAtZeroHourOfTomorrow().getTime()
     }
 
-    private getCalendarAtZeroHourOfToday(cal = Calendar.getInstance()) {
+    private getCalendarAtZeroHourOfToday(cal = timeProvider.today.asCalendar()) {
         ConvertUtils.resetTimeToOrigin(cal)
     }
     private getCalendarAtZeroHourOfTomorrow() {

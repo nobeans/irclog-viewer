@@ -12,10 +12,11 @@ class SummaryService {
     static transactional = true
 
     def dataSource
+    def timeProvider
 
     /** アクセス可能な全チャンネルのトピック情報(1週間以内の上位5件)を取得する。*/
     List<Irclog> getAccessibleTopicList(person, accessibleChannelList) {
-        def baseDate = new Date()
+        def baseDate = timeProvider.today
         def df = new SimpleDateFormat("yyyy-MM-dd")
         def baseDateFormatted = df.format(baseDate)
 
@@ -55,7 +56,7 @@ class SummaryService {
         // 何らかの原因でサマリが存在しないチャンネルがある場合、ダミーサマリを登録
         // ただし、ソート順序は反映されず、一番下に不要なものが並ぶだけとなる。
         accessibleChannelList.findAll{!(it in summaryList.channel)}.sort{it.name}.each { channel ->
-            summaryList << new Summary(channel:channel, lastUpdated:new Date())
+            summaryList << new Summary(channel:channel, lastUpdated:timeProvider.today)
         }
 
         return summaryList
@@ -150,7 +151,7 @@ class SummaryService {
      * それ以外の場合は、今日のサマリのみを更新する。
      */
     private void updateSummary() {
-        def baseDate = new Date()
+        def baseDate = timeProvider.today
         def df = new SimpleDateFormat("yyyy-MM-dd")
         def baseDateFormatted = df.format(baseDate)
 
@@ -174,7 +175,7 @@ class SummaryService {
 
     /** 今日の分のサマリを更新する。 */
     private void updateTodaySummary() {
-        def baseDate = new Date()
+        def baseDate = timeProvider.today
         def df = new SimpleDateFormat("yyyy-MM-dd")
         def baseDateFormatted = df.format(baseDate)
         
@@ -213,7 +214,7 @@ class SummaryService {
 
     /** 全ての分のサマリを更新する。 */
     void updateAllSummary() {
-        def baseDate = new Date()
+        def baseDate = timeProvider.today
         def df = new SimpleDateFormat("yyyy-MM-dd")
 
         // タイミングによっては重複したINSERTが実行されることもありうるため、排他的テーブルロックを取得する。
