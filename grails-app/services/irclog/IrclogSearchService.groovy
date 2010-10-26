@@ -74,15 +74,15 @@ class IrclogSearchService {
         }
 
         // ニックネーム
-        def nicks = criterion.nick?.split(/\s+/) as List // スペース区切りで複数OR指定可能
-        if (nicks) {
+        if (criterion.nick) {
+            def nicks = criterion.nick?.split(/\s+/) as List // スペース区切りで複数OR指定可能
             query.hql += " and ( " + nicks.collect{"lower(i.nick) like lower(?)"}.join(" or ") + " )"
             query.args.addAll(nicks.collect{"%${it}%"})
         }
 
         // メッセージ
-        def messages = criterion.message?.split(/\s+/) as List // スペース区切りで複数OR指定可能
-        if (messages) {
+        if (criterion.message) {
+            def messages = criterion.message?.split(/\s+/) as List // スペース区切りで複数OR指定可能
             query.hql += " and ( " + messages.collect{"lower(i.message) like lower(?)"}.join(" or ") + " )"
             query.args.addAll(messages.collect{"%${it}%"})
         }
