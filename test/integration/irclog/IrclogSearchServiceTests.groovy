@@ -10,16 +10,10 @@ class IrclogSearchServiceTests extends GrailsUnitTestCase {
     def ch1, ch2, ch3
     def user1, user2, user3, admin
 
-    boolean setUpFixture = false
-
     void setUp() {
-        // Setup shared fixture
-        if (!setUpFixture) { 
-            setUpChannel()
-            setUpPerson()
-            setUpRelationBetweenPersonAndChannel()
-        }
-        setUpFixture = true
+        setUpChannel()
+        setUpPerson()
+        setUpRelationBetweenPersonAndChannel()
     }
 
     void tearDown() {
