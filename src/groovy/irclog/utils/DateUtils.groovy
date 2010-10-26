@@ -1,5 +1,7 @@
 package irclog.utils
 
+import java.util.Date;
+
 class DateUtils {
 
     static Date toDate(String date) {
@@ -35,4 +37,22 @@ class DateUtils {
         cal?.clearTime()
         return cal
     }
+
+    static Date getToday() {
+        return expandDate(new Date())
+    }
+
+    static Date getEpoch() {
+        return expandDate(new Date(0))
+    }
+
+    private static expandDate(Date date) {
+        date.metaClass {
+            asCalendar {
+                return toCalendar(delegate)
+            }
+        }
+        return date
+    }
+
 }

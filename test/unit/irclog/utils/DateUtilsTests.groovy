@@ -48,4 +48,31 @@ class DateUtilsTests extends GrailsUnitTestCase {
         Calendar actual = DateUtils.resetTimeToOrigin(cal)
         assert actual.time.toString() == "Mon Oct 18 00:00:00 JST 2010"
     }
+
+   void testToday_realtime() {
+        def before = new Date()
+        def today = DateUtils.getToday()
+        def after = new Date()
+        assert before <= today
+        assert today <= after
+    }
+
+    void testToday_asCalender() {
+        def today = DateUtils.getToday()
+        def cal = today.asCalendar()
+        assert cal.time == today
+        assert cal in Calendar
+    }
+
+    void testEpoch() {
+        assert DateUtils.getEpoch() == new Date(0)
+    }
+
+    void testEpoch_asCalender() {
+        def epoch = DateUtils.getEpoch()
+        def cal = epoch.asCalendar()
+        assert cal.time == new Date(0)
+        assert cal in Calendar
+    }
+
 }
