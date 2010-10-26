@@ -2,7 +2,7 @@ package irclog
 
 import grails.test.*
 import static irclog.utils.DomainUtils.*
-import static irclog.utils.ConvertUtils.*
+import static irclog.utils.DateUtils.*
 
 class IrclogSearchServiceTests extends GrailsUnitTestCase {
 

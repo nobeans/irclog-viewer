@@ -1,14 +1,6 @@
 package irclog.utils
 
-class ConvertUtils {
-
-    static Integer toInteger(value, Integer defaultValue=null) {
-        (value?.isInteger()) ? value.toInteger() : defaultValue
-    }
-
-    static Long toLong(value, Long defaultValue=null) {
-        (value?.isLong()) ? value.toLong() : defaultValue
-    }
+class DateUtils {
 
     static Date toDate(String date) {
         switch (date) {

@@ -2,7 +2,7 @@ package irclog
 
 import groovy.sql.Sql
 import static irclog.utils.CollectionUtils.*
-import static irclog.utils.ConvertUtils.*
+import static irclog.utils.DateUtils.*
 
 class ChannelService {
 

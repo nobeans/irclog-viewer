@@ -1,6 +1,6 @@
 package irclog.helper
 
-import static irclog.utils.ConvertUtils.*
+import static irclog.utils.DateUtils.*
 
 class TimeProvider {
 

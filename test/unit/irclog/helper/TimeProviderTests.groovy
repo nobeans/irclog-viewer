@@ -1,7 +1,7 @@
 package irclog.helper
 
 import grails.test.*
-import static irclog.utils.ConvertUtils.*
+import static irclog.utils.DateUtils.*
 
 class TimeProviderTests extends GrailsUnitTestCase {
 
