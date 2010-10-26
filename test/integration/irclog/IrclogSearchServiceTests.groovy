@@ -1,8 +1,8 @@
 package irclog
 
 import grails.test.*
+import irclog.utils.DateUtils
 import static irclog.utils.DomainUtils.*
-import static irclog.utils.DateUtils.*
 
 class IrclogSearchServiceTests extends GrailsUnitTestCase {
 
@@ -11,19 +11,19 @@ class IrclogSearchServiceTests extends GrailsUnitTestCase {
     def user1, user2, user3, admin
 
     void setUp() {
+        super.setUp()
         setUpChannel()
         setUpPerson()
         setUpRelationBetweenPersonAndChannel()
     }
 
     void tearDown() {
-        irclogSearchService.timeProvider.today = null
         super.tearDown()
     }
 
     void testSearch_period_all() {
         // Setup
-        irclogSearchService.timeProvider.today = toDate("2011-01-01 00:00:01")
+        mockFor(DateUtils).demand.static.getToday {-> return DateUtils.toDate("2011-01-01 00:00:01") }
         def expected = []
         expected << saveIrclog(ch2, "2010-12-31 00:00:01", "user1", "PRIVMSG")
         expected << saveIrclog(ch2, "2009-12-31 00:00:01", "user1", "PRIVMSG")
@@ -38,7 +38,7 @@ class IrclogSearchServiceTests extends GrailsUnitTestCase {
 
     void testSearch_period_year() {
         // Setup
-        irclogSearchService.timeProvider.today = toDate("2011-01-01 00:00:01")
+        mockFor(DateUtils).demand.static.getToday(1..5) {-> DateUtils.toDate("2011-01-01 00:00:01") }
         def expected = []
         expected << saveIrclog(ch2, "2010-12-31 00:00:01", "user1", "PRIVMSG")
         expected << saveIrclog(ch2, "2010-01-01 00:00:01", "user1", "PRIVMSG")
@@ -54,7 +54,7 @@ class IrclogSearchServiceTests extends GrailsUnitTestCase {
 
     void testSearch_period_halfyear() {
         // Setup
-        irclogSearchService.timeProvider.today = toDate("2011-01-01 00:00:01")
+        mockFor(DateUtils).demand.static.getToday(1..5) {-> DateUtils.toDate("2011-01-01 00:00:01") }
         def expected = []
         expected << saveIrclog(ch2, "2010-12-31 00:00:01", "user1", "PRIVMSG")
         expected << saveIrclog(ch2, "2010-07-01 00:00:00", "user1", "PRIVMSG")
@@ -121,7 +121,7 @@ class IrclogSearchServiceTests extends GrailsUnitTestCase {
 
     private saveIrclog(Channel ch, String dateStr, String nick, String type) {
         def permaId = "log:${ch.name}:${dateStr}:${nick}:${type}"
-        return createIrclog(permaId:permaId, channelName:ch.name, channel:ch, time:toDate(dateStr), type:type, nick:nick).saveSurely()
+        return createIrclog(permaId:permaId, channelName:ch.name, channel:ch, time:DateUtils.toDate(dateStr), type:type, nick:nick).saveSurely()
     }
 
     private createCriterion(map) {

@@ -1,7 +1,5 @@
 package irclog.utils
 
-import java.util.Date;
-
 class DateUtils {
 
     static Date toDate(String date) {
@@ -39,20 +37,19 @@ class DateUtils {
     }
 
     static Date getToday() {
-        return expandDate(new Date())
+        return new Date()
     }
 
     static Date getEpoch() {
-        return expandDate(new Date(0))
+        return new Date(0)
     }
 
-    private static expandDate(Date date) {
-        date.metaClass {
-            asCalendar {
-                return toCalendar(delegate)
-            }
-        }
-        return date
+    static void expandMetaClass() {
+        String.metaClass.toDate = { -> return DateUtils.toDate(delegate) }
+        String.metaClass.toCalendar = { Map map -> return DateUtils.toCalendar(delegate, map) }
+        Date.metaClass.toCalendar = { Map map -> return DateUtils.toCalendar(delegate, map) }
+        Date.metaClass.resetTimeToOrigin = { -> return resetTimeToOrigin(delegate) }
+        Calendar.metaClass.resetTimeToOrigin = { -> return resetTimeToOrigin(delegate) }
     }
 
 }

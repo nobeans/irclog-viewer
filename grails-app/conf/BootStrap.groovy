@@ -2,6 +2,7 @@ import grails.util.GrailsUtil
 import irclog.Channel
 import irclog.Role
 import irclog.Person
+import irclog.utils.DateUtils
 import static irclog.utils.DomainUtils.*
 
 class BootStrap {
@@ -9,12 +10,17 @@ class BootStrap {
     def springSecurityService
 
     def init = { servletContext ->
+        setUpMetaClass()
         setupRolesIfNotExists()
         setupDefaultAdminUserIfNotExists()
         setupForDevelopmentEnv()
     }
 
     def destroy = {
+    }
+
+    private void setUpMetaClass() {
+        DateUtils.expandMetaClass()
     }
 
     private void setupRolesIfNotExists() {

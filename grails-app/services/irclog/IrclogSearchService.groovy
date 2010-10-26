@@ -1,6 +1,6 @@
 package irclog
 
-import irclog.utils.ConvertUtils
+import irclog.utils.DateUtils
 
 class IrclogSearchService {
 
@@ -10,7 +10,6 @@ class IrclogSearchService {
     static transactional = false
 
     def channelService
-    def timeProvider
 
     def search(person, criterion, params, direction = 'desc') {
         def query = createQuery(person, criterion)
@@ -132,7 +131,7 @@ class IrclogSearchService {
         cal.getTime()
     }
     private resolveBeginDate_all(criterion) {
-        timeProvider.epoch
+        DateUtils.epoch
     }
 
     // ----------------------------------------------
@@ -143,12 +142,12 @@ class IrclogSearchService {
     private resolveEndDate_oneday(criterion) {
         try {
             def onedayDate = new java.text.SimpleDateFormat('yyyy-MM-dd').parse(criterion['period-oneday-date'] ?: '')
-            def cal = timeProvider.today.asCalendar()
+            def cal = DateUtils.today.toCalendar()
             cal.setTime(onedayDate)
             cal.add(Calendar.DATE, 1)
             return cal.getTime()
         } catch (java.text.ParseException e) {
-            return timeProvider.epoch // force never to match
+            return DateUtils.epoch // force never to match
         }
     }
     private resolveEndDate_week(criterion) {
@@ -167,8 +166,8 @@ class IrclogSearchService {
         getCalendarAtZeroHourOfTomorrow().getTime()
     }
 
-    private getCalendarAtZeroHourOfToday(cal = timeProvider.today.asCalendar()) {
-        ConvertUtils.resetTimeToOrigin(cal)
+    private getCalendarAtZeroHourOfToday(cal = DateUtils.today.toCalendar()) {
+        cal.resetTimeToOrigin()
     }
     private getCalendarAtZeroHourOfTomorrow() {
         def cal = getCalendarAtZeroHourOfToday()

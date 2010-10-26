@@ -57,22 +57,8 @@ class DateUtilsTests extends GrailsUnitTestCase {
         assert today <= after
     }
 
-    void testToday_asCalender() {
-        def today = DateUtils.getToday()
-        def cal = today.asCalendar()
-        assert cal.time == today
-        assert cal in Calendar
-    }
-
     void testEpoch() {
         assert DateUtils.getEpoch() == new Date(0)
-    }
-
-    void testEpoch_asCalender() {
-        def epoch = DateUtils.getEpoch()
-        def cal = epoch.asCalendar()
-        assert cal.time == new Date(0)
-        assert cal in Calendar
     }
 
 }

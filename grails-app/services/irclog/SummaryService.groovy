@@ -2,6 +2,7 @@ package irclog
 
 import groovy.sql.Sql
 import irclog.helper.TimeMarker
+import irclog.utils.DateUtils
 import java.text.SimpleDateFormat
 
 class SummaryService {
@@ -12,11 +13,10 @@ class SummaryService {
     static transactional = true
 
     def dataSource
-    def timeProvider
 
     /** アクセス可能な全チャンネルのトピック情報(1週間以内の上位5件)を取得する。*/
     List<Irclog> getAccessibleTopicList(person, accessibleChannelList) {
-        def baseDate = timeProvider.today
+        def baseDate = DateUtils.today
         def df = new SimpleDateFormat("yyyy-MM-dd")
         def baseDateFormatted = df.format(baseDate)
 
@@ -56,7 +56,7 @@ class SummaryService {
         // 何らかの原因でサマリが存在しないチャンネルがある場合、ダミーサマリを登録
         // ただし、ソート順序は反映されず、一番下に不要なものが並ぶだけとなる。
         accessibleChannelList.findAll{!(it in summaryList.channel)}.sort{it.name}.each { channel ->
-            summaryList << new Summary(channel:channel, lastUpdated:timeProvider.today)
+            summaryList << new Summary(channel:channel, lastUpdated:DateUtils.today)
         }
 
         return summaryList
@@ -151,7 +151,7 @@ class SummaryService {
      * それ以外の場合は、今日のサマリのみを更新する。
      */
     private void updateSummary() {
-        def baseDate = timeProvider.today
+        def baseDate = DateUtils.today
         def df = new SimpleDateFormat("yyyy-MM-dd")
         def baseDateFormatted = df.format(baseDate)
 
@@ -175,7 +175,7 @@ class SummaryService {
 
     /** 今日の分のサマリを更新する。 */
     private void updateTodaySummary() {
-        def baseDate = timeProvider.today
+        def baseDate = DateUtils.today
         def df = new SimpleDateFormat("yyyy-MM-dd")
         def baseDateFormatted = df.format(baseDate)
         
@@ -214,7 +214,7 @@ class SummaryService {
 
     /** 全ての分のサマリを更新する。 */
     void updateAllSummary() {
-        def baseDate = timeProvider.today
+        def baseDate = DateUtils.today
         def df = new SimpleDateFormat("yyyy-MM-dd")
 
         // タイミングによっては重複したINSERTが実行されることもありうるため、排他的テーブルロックを取得する。
