@@ -27,6 +27,7 @@ class Channel {
     @Override
     String toString() {
         return """${name} {
+                 |    id: ${id}
                  |    description: ${description}
                  |    isPrivate: ${isPrivate}
                  |    isArchived: ${isArchived}
