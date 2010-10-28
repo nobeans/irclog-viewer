@@ -36,13 +36,13 @@ class IrclogSearchService {
         ]
 
         // 対象期間
-        assert (criterion.period) : '必須'
+        assert (criterion.period) : 'required'
         query.hql += " and i.time >= ? and i.time < ?"
         query.args << "resolveBeginDate_${criterion.period}"(criterion)
         query.args << "resolveEndDate_${criterion.period}"(criterion)
 
         // チャンネル
-        assert (criterion.channel) : '必須'
+        assert (criterion.channel) : 'required'
         def accesibleChannels = channelService.getAccessibleChannelList(person, criterion)
         if (criterion.channel == 'all') { // 許可されたチャンネルすべて
             if (accesibleChannels) {
@@ -63,7 +63,7 @@ class IrclogSearchService {
         }
 
         // 種別
-        assert (criterion.type) : '必須'
+        assert (criterion.type) : 'required'
         if (criterion.type != 'all') { // すべての種別であれば条件なし
             if (criterion.type == 'filtered') { // 限定条件を追加する。
                 query.hql += " and i.type in " + IN_ESSENTIAL_TYPES
