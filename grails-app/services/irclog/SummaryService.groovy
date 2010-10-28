@@ -40,10 +40,8 @@ class SummaryService {
                 time desc
             limit 5
         """.toString()) { row ->
-            println row
             result << new Irclog(row)
         }
-        println result
         result
     }
 
