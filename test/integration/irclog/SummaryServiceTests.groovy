@@ -100,6 +100,18 @@ class SummaryServiceTests extends GrailsUnitTestCase {
         assert topics == expected
     }
 
+    void testGetHotTopicList_notExistsAnyAccessibleChannels() {
+        // Setup
+        setUpTodayOfDateUtils("2011-01-01 12:34:56")
+        saveIrclog(time:"2011-01-01 12:34:56", type:"TOPIC", channel:ch1)
+        saveIrclog(time:"2011-01-01 12:34:56", type:"TOPIC", channel:ch2)
+        saveIrclog(time:"2011-01-01 12:34:56", type:"TOPIC", channel:ch3)
+        // Exercise
+        def topics = summaryService.getHotTopicList([])
+        // Verify
+        assert topics == []
+    }
+
     private saveIrclog(propMap = [:]) {
         if (propMap.time in String) {
             propMap.time = DateUtils.toDate(propMap.time)
