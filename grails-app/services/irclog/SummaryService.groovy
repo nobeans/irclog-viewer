@@ -21,7 +21,7 @@ class SummaryService {
      */
     List<Irclog> getHotTopicList(accessibleChannelList) {
         if (!accessibleChannelList) return []
-        return Irclog.createCriteria().list {
+        return Irclog.withCriteria {
             and {
                 'in'('channel', accessibleChannelList)
                 eq('type', 'TOPIC')
