@@ -14,35 +14,21 @@ class SummaryService {
 
     def dataSource
 
-    /** アクセス可能な全チャンネルのトピック情報(1週間以内の上位5件)を取得する。*/
-    List<Irclog> getAccessibleTopicList(person, accessibleChannelList) {
-        def baseDate = DateUtils.today
-        def df = new SimpleDateFormat("yyyy-MM-dd")
-        def baseDateFormatted = df.format(baseDate)
-
-        def channelIds = accessibleChannelList.collect{ it.id }.join(", ")
-        if (!channelIds) return []
-
-        def result = []
-        def db = new Sql(dataSource)
-        db.eachRow("""
-            select
-                *
-            from
-                irclog
-            where
-                channel_id in ( ${channelIds} )
-            and
-                type = 'TOPIC'
-            and
-                time >= timestamp '${baseDateFormatted}' - interval '6 day'
-            order by
-                time desc
-            limit 5
-        """.toString()) { row ->
-            result << new Irclog(row)
+    /**
+     * Top 5 topics within a week in accessible channels are returned.
+     * @param accessibleChannelList one instance of Channel or list
+     * @return list of hot topics
+     */
+    List<Irclog> getAccessibleTopicList(accessibleChannelList) {
+        if (!accessibleChannelList) return []
+        return Irclog.createCriteria().list {
+            and {
+                'in'('channel', accessibleChannelList)
+                eq('type', 'TOPIC')
+                ge('time', DateUtils.today - 7)
+            }
+            maxResults(5)
         }
-        result
     }
 
     /** アクセス可能な全チャンネルのサマリ情報を取得する。 */
