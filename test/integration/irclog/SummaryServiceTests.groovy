@@ -53,7 +53,7 @@ class SummaryServiceTests extends GrailsUnitTestCase {
 //        createSummary(channel:ch3, latestIrclog:Irclog.findByPermaId("log:ch3:0")).saveSurely()
     }
 
-    void testGetAccessibleTopicList_withinOneWeekAgo() {
+    void testGetHotTopicList_withinOneWeekAgo() {
         // Setup
         setUpTodayOfDateUtils("2011-01-01 12:34:56")
         def expected = []
@@ -63,12 +63,12 @@ class SummaryServiceTests extends GrailsUnitTestCase {
         expected << saveIrclog(time:"2010-12-25 12:34:56", type:"TOPIC") // boundary
         saveIrclog(time:"2010-12-24 12:34:56", type:"TOPIC")
         // Exercise
-        def topics = summaryService.getAccessibleTopicList(ch2)
+        def topics = summaryService.getHotTopicList(ch2)
         // Verify
         assert topics == expected
     }
 
-    void testGetAccessibleTopicList_onlyTopic() {
+    void testGetHotTopicList_onlyTopic() {
         // Setup
         setUpTodayOfDateUtils("2011-01-01 12:34:56")
         def expected = []
@@ -79,12 +79,12 @@ class SummaryServiceTests extends GrailsUnitTestCase {
             saveIrclog(time:"2011-01-01 12:34:56", type:type)
         }
         // Exercise
-        def topics = summaryService.getAccessibleTopicList(ch2)
+        def topics = summaryService.getHotTopicList(ch2)
         // Verify
         assert topics == expected
     }
 
-    void testGetAccessibleTopicList_onlyInAccessibleChannels() {
+    void testGetHotTopicList_onlyInAccessibleChannels() {
         // Setup
         setUpTodayOfDateUtils("2011-01-01 12:34:56")
         def expected = []
@@ -95,7 +95,7 @@ class SummaryServiceTests extends GrailsUnitTestCase {
             saveIrclog(time:"2011-01-01 12:34:56", type:type)
         }
         // Exercise
-        def topics = summaryService.getAccessibleTopicList([ch2, ch3])
+        def topics = summaryService.getHotTopicList([ch2, ch3])
         // Verify
         assert topics == expected
     }

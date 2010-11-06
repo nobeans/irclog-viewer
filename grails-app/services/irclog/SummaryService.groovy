@@ -19,7 +19,7 @@ class SummaryService {
      * @param accessibleChannelList one instance of Channel or list
      * @return list of hot topics
      */
-    List<Irclog> getAccessibleTopicList(accessibleChannelList) {
+    List<Irclog> getHotTopicList(accessibleChannelList) {
         if (!accessibleChannelList) return []
         return Irclog.createCriteria().list {
             and {

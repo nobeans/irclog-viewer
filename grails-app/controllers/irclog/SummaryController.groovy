@@ -10,7 +10,7 @@ class SummaryController {
         [
             summaryList: summaryService.getAccessibleSummaryList(params, channelList, session.timeMarker),
             nickPersonList: Person.list(),
-            topicList: summaryService.getAccessibleTopicList(channelList)
+            topicList: summaryService.getHotTopicList(channelList)
         ]
     }
 }
