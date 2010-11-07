@@ -60,7 +60,8 @@ class SummaryServiceTests extends GrailsUnitTestCase {
         expected << saveIrclog(time:"2011-01-01 12:34:56", type:"TOPIC")
         expected << saveIrclog(time:"2010-12-31 12:34:56", type:"TOPIC")
         expected << saveIrclog(time:"2010-12-30 12:34:56", type:"TOPIC")
-        expected << saveIrclog(time:"2010-12-25 12:34:56", type:"TOPIC") // boundary
+        expected << saveIrclog(time:"2010-12-25 23:59:59", type:"TOPIC") // boundary
+        saveIrclog(time:"2010-12-24 00:00:00", type:"TOPIC")
         saveIrclog(time:"2010-12-24 12:34:56", type:"TOPIC")
         // Exercise
         def topics = summaryService.getHotTopicList(ch2)
