@@ -64,5 +64,6 @@ class Summary {
     static mapping = {
         version(false)
         message(type:'text')
+        today(column:'today_')
     }
 }
