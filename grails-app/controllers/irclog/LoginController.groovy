@@ -3,7 +3,6 @@ package irclog
 import org.springframework.security.authentication.DisabledException
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 class LoginController {
 
@@ -20,10 +19,10 @@ class LoginController {
             flash.errors = null
 
             // セッション有効期間をカスタマイズ
-            session.maxInactiveInterval = ConfigurationHolder.config.irclog.session.maxInactiveInterval
+            session.maxInactiveInterval = grailsApplication.config.irclog.session.maxInactiveInterval
 
             log.info "Logged in by ${request.loginUserName}"
-            redirect(uri: ConfigurationHolder.config.irclog.viewer.defaultTargetUrl)
+            redirect(uri: grailsApplication.config.irclog.viewer.defaultTargetUrl)
         }
         else {
             render(view:'auth', params:params)
@@ -39,7 +38,7 @@ class LoginController {
         } else {
             flash.errors = ['login.accessDenied.error']
         }
-        redirect(uri: ConfigurationHolder.config.irclog.viewer.defaultTargetUrl)
+        redirect(uri: grailsApplication.config.irclog.viewer.defaultTargetUrl)
     }
 
     /**

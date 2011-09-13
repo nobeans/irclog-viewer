@@ -1,9 +1,9 @@
-import grails.util.GrailsUtil
+import grails.util.Environment
 
 class RequestTracelogFilters {
 
     def filters = {
-        if (GrailsUtil.isDevelopmentEnv()) { // only in development mode
+        if (Environment.current == Environment.DEVELOPMENT) { // only in development mode
             all(controller:'*', action:'*') {
                 before = {
                     request.startedTime = System.currentTimeMillis()

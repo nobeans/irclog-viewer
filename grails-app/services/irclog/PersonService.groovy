@@ -1,7 +1,6 @@
 package irclog
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken as AuthToken
-import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 class PersonService {
 
@@ -29,7 +28,7 @@ class PersonService {
         }
 
         // デフォルトロールに関連づける。
-        def defaultRoleName = ConfigurationHolder.config.irclog.security.defaultRole
+        def defaultRoleName = grailsApplication.config.irclog.security.defaultRole
         def role = Role.findByName(defaultRoleName)
         if (!role) {
             throw new RuntimeException("Default role not found in database: $defaultRoleName")

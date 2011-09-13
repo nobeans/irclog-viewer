@@ -1,5 +1,3 @@
-import grails.util.GrailsUtil
-
 class HttpNoCacheFilters {
 
     def filters = {

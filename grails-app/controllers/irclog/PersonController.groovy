@@ -1,7 +1,5 @@
 package irclog
 
-import org.codehaus.groovy.grails.commons.ConfigurationHolder
-
 /**
  * 管理者用のユーザ管理コントローラ。
  */
@@ -15,7 +13,7 @@ class PersonController {
     static allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
     def list = {
-        def defaultMax = ConfigurationHolder.config.irclog.viewer.defaultMax
+        def defaultMax = grailsApplication.config.irclog.viewer.defaultMax
         params.max    = params.max?.toInteger() ? Math.min(params.max?.toInteger(), defaultMax) : defaultMax
         params.offset = params.offset?.toInteger() ?: 0
         params.sort   = params.sort ?: "loginName"
@@ -82,7 +80,7 @@ class PersonController {
 
     def save = {
         // デフォルトロールを取得する。
-        def role = Role.findByName(ConfigurationHolder.config.irclog.security.defaultRole)
+        def role = Role.findByName(grailsApplication.config.irclog.security.defaultRole)
         if (!role) {
             flash.message = 'register.defaultRoleNotFound.'
             redirect(controller:'top')

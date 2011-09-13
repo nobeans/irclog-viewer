@@ -3,7 +3,6 @@ package irclog
 import irclog.helper.TimeMarker;
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import org.codehaus.groovy.grails.commons.ConfigurationHolder
 
 /**
  * IRCログのミックス表示モード用コントローラ。
@@ -56,7 +55,7 @@ class MixedViewerController {
         log.debug "Original params: " + params
 
         // ページングのために、max/offsetをセットアップする。
-        def defaultMax = ConfigurationHolder.config.irclog.viewer.defaultMax
+        def defaultMax = grailsApplication.config.irclog.viewer.defaultMax
         params.max = params.max?.toInteger() ? Math.min(params.max?.toInteger(), defaultMax) : defaultMax
         params.offset = params.offset?.toInteger() ?: 0
 

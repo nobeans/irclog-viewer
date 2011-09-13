@@ -1,4 +1,4 @@
-import grails.util.GrailsUtil
+import grails.util.Environment
 import irclog.Channel
 import irclog.Role
 import irclog.Person
@@ -45,7 +45,7 @@ class BootStrap {
     }
 
     private setupForDevelopmentEnv() {
-        if (GrailsUtil.isDevelopmentEnv()) { // only in development mode
+        if (Environment.current == Environment.DEVELOPMENT) { // only in development mode
             createChannel(name:"#test1", isPrivate:true).saveSurely()
             createChannel(name:"#test2", isPrivate:false, secretKey:"").saveSurely()
             createChannel(name:"#test3", isPrivate:true).saveSurely()
