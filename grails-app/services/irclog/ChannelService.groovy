@@ -6,7 +6,7 @@ import static irclog.utils.DateUtils.*
 
 class ChannelService {
 
-    static transactional = true
+    def transactional = true
 
     def sqlHelper
 

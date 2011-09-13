@@ -1,17 +1,19 @@
 package irclog
 
-import grails.test.*
 import irclog.utils.DateUtils
 import static irclog.utils.DomainUtils.*
+import grails.test.mixin.*
+import org.junit.*
 
-class IrclogSearchServiceTests extends GrailsUnitTestCase {
+@TestFor(IrclogSearchService)
+class IrclogSearchServiceTests {
 
     def irclogSearchService
     def ch1, ch2, ch3
     def user1, user2, user3, userX, admin
 
+    @Before
     void setUp() {
-        super.setUp()
         setUpChannel()
         setUpPerson()
         setUpRelationBetweenPersonAndChannel()

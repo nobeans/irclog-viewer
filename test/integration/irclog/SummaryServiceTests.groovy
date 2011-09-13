@@ -1,22 +1,32 @@
 package irclog
 
-import grails.test.*
 import irclog.utils.DateUtils
 import static irclog.utils.DomainUtils.*
+import grails.test.*
+import org.junit.*
 
-class SummaryServiceTests extends GrailsUnitTestCase {
+class SummaryServiceTests {
 
     def summaryService
     def ch1, ch2, ch3
     def user1, user2, user3, userX, admin
+    def originalGetToday
 
-    protected void setUp() {
-        super.setUp()
+    @Before
+    void setUp() {
         setUpChannel()
         setUpPerson()
         setUpRelationBetweenPersonAndChannel()
         setUpIrclog()
         setUpSummary()
+
+        originalGetToday = DateUtils.metaClass.static.getToday
+        DateUtils.metaClass.static.getToday = {-> return DateUtils.toDate("2011-01-01 12:34:56") }
+    }
+
+    @After
+    void tearDown() {
+        DateUtils.metaClass.static.getToday = originalGetToday
     }
 
     private setUpChannel() {
@@ -55,7 +65,6 @@ class SummaryServiceTests extends GrailsUnitTestCase {
 
     void testGetHotTopicList_withinOneWeekAgo() {
         // Setup
-        setUpTodayOfDateUtils("2011-01-01 12:34:56")
         def expected = []
         expected << saveIrclog(time:"2011-01-01 12:34:56", type:"TOPIC")
         expected << saveIrclog(time:"2010-12-31 12:34:56", type:"TOPIC")
@@ -71,7 +80,6 @@ class SummaryServiceTests extends GrailsUnitTestCase {
 
     void testGetHotTopicList_onlyTopic() {
         // Setup
-        setUpTodayOfDateUtils("2011-01-01 12:34:56")
         def expected = []
         expected << saveIrclog(time:"2011-01-01 12:34:56", type:"TOPIC")
         saveIrclog(time:"2011-01-01 12:34:56", type:"PRIVMSG")
@@ -87,7 +95,6 @@ class SummaryServiceTests extends GrailsUnitTestCase {
 
     void testGetHotTopicList_onlyInAccessibleChannels() {
         // Setup
-        setUpTodayOfDateUtils("2011-01-01 12:34:56")
         def expected = []
         saveIrclog(time:"2011-01-01 12:34:56", type:"TOPIC", channel:ch1)
         expected << saveIrclog(time:"2011-01-01 12:34:56", type:"TOPIC", channel:ch2)
@@ -103,7 +110,6 @@ class SummaryServiceTests extends GrailsUnitTestCase {
 
     void testGetHotTopicList_notExistsAnyAccessibleChannels() {
         // Setup
-        setUpTodayOfDateUtils("2011-01-01 12:34:56")
         saveIrclog(time:"2011-01-01 12:34:56", type:"TOPIC", channel:ch1)
         saveIrclog(time:"2011-01-01 12:34:56", type:"TOPIC", channel:ch2)
         saveIrclog(time:"2011-01-01 12:34:56", type:"TOPIC", channel:ch3)
@@ -131,9 +137,5 @@ class SummaryServiceTests extends GrailsUnitTestCase {
         def permaId =  mergedMap.toString() // to avoid stack overflow
         mergedMap.permaId = permaId
         return createIrclog(mergedMap).saveSurely()
-    }
-
-    private setUpTodayOfDateUtils(dateStr) {
-        mockFor(DateUtils).demand.static.getToday(1..100) {-> return DateUtils.toDate(dateStr) }
     }
 }

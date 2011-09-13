@@ -1,8 +1,8 @@
 package irclog.utils
 
-import grails.test.*
+import org.junit.*
 
-class DateUtilsTests extends GrailsUnitTestCase {
+class DateUtilsTests extends GroovyTestCase {
 
     void testToDate_date() {
         assert DateUtils.toDate("2010-10-18").toString() == "Mon Oct 18 00:00:00 JST 2010"

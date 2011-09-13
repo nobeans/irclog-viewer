@@ -1,15 +1,14 @@
 package irclog.helper
 
-
-
 import groovy.sql.Sql
+import org.junit.*
 
-class SqlHelperTest extends GroovyTestCase {
+class SqlHelperTest {
 
     def dataSource
     def sqlHelper
 
-    @Override
+    @Before
     void setUp() {
         def sql = new Sql(dataSource.connection)
         sql.execute("CREATE TABLE hoge ( id integer, value VARCHAR(5) )")
@@ -18,7 +17,7 @@ class SqlHelperTest extends GroovyTestCase {
         sql.close()
     }
 
-    @Override
+    @After
     void tearDown() {
         def sql = new Sql(dataSource.connection)
         sql.execute("DROP TABLE hoge")

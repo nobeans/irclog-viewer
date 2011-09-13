@@ -1,15 +1,10 @@
 package irclog
 
-import grails.test.*
+import grails.test.mixin.*
+import org.junit.*
 
-class IrclogTests extends GrailsUnitTestCase {
-    protected void setUp() {
-        super.setUp()
-    }
-
-    protected void tearDown() {
-        super.tearDown()
-    }
+@TestFor(Irclog)
+class IrclogTests {
 
     void testSomething() {
 

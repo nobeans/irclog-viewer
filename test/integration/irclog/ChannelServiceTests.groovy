@@ -1,17 +1,17 @@
 package irclog
 
-import grails.test.*
 import static irclog.utils.DomainUtils.*
 import static irclog.utils.DateUtils.*
+import org.junit.*
 
-class ChannelServiceTests extends GrailsUnitTestCase {
+class ChannelServiceTests {
 
     def channelService
     def ch1, ch2, ch3
     def user1, user2, user3, userX, admin
 
-    protected void setUp() {
-        super.setUp()
+    @Before
+    void setUp() {
         setUpChannel()
         setUpPerson()
         setUpRelationBetweenPersonAndChannel()
