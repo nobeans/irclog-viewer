@@ -44,12 +44,4 @@ class DateUtils {
         return new Date(0)
     }
 
-    static void expandMetaClass() {
-        String.metaClass.toDate = { -> return DateUtils.toDate(delegate) }
-        String.metaClass.toCalendar = { Map map -> return DateUtils.toCalendar(delegate, map) }
-        Date.metaClass.toCalendar = { Map map -> return DateUtils.toCalendar(delegate, map) }
-        Date.metaClass.resetTimeToOrigin = { -> return resetTimeToOrigin(delegate) }
-        Calendar.metaClass.resetTimeToOrigin = { -> return resetTimeToOrigin(delegate) }
-    }
-
 }
