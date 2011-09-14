@@ -168,7 +168,7 @@ class SummaryService {
             update
                 summary
             set
-                today = tbl.today,
+                today_ = tbl.today,
                 latest_irclog_id = tbl.latest_irclog_id,
                 last_updated = timestamp '${new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(baseDate)}'
             from
@@ -207,12 +207,12 @@ class SummaryService {
         int resultDeleted = db.executeUpdate("delete from summary")
         int resultInserted = db.executeUpdate("""
             insert into summary
-                (id, channel_id, last_updated, today, yesterday, two_days_ago, three_days_ago, four_days_ago, five_days_ago, six_days_ago, total_before_yesterday, latest_irclog_id) 
+                (id, channel_id, last_updated, today_, yesterday, two_days_ago, three_days_ago, four_days_ago, five_days_ago, six_days_ago, total_before_yesterday, latest_irclog_id) 
             select
                 nextval('hibernate_sequence') as id,
                 channel_id,
                 timestamp '${new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(baseDate)}' as last_updated,
-                sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate)}'     then 1 else 0 end) as today,
+                sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate)}'     then 1 else 0 end) as today_,
                 sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate - 1)}' then 1 else 0 end) as yesterday,
                 sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate - 2)}' then 1 else 0 end) as two_days_ago,
                 sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate - 3)}' then 1 else 0 end) as three_days_ago,
