@@ -27,7 +27,7 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         // runtime 'mysql:mysql-connector-java:5.1.5'
-        runtime "postgresql:postgresql:8.4-701.jdbc4"
+        runtime "postgresql:postgresql:9.0-801.jdbc4"
     }
 }
 grails.plugin.location."http-nocache" = "./plugins/http-nocache-0.1"
