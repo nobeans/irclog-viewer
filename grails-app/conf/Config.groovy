@@ -33,7 +33,6 @@ grails.mime.types = [ html: ['text/html','application/xhtml+xml'],
 // What URL patterns should be processed by the resources plugin
 grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*']
 
-
 // The default codec used to encode data with ${}
 grails.views.default.codec = "none" // none, html, base64
 grails.views.gsp.encoding = "UTF-8"
@@ -119,11 +118,13 @@ irclog {
     security.defaultRole = 'ROLE_USER'
 }
 
-// SpringSecurity ------------------------------------------
+//------------------------------------------
+// SpringSecurity
+//------------------------------------------
 import grails.plugins.springsecurity.SecurityConfigType
 
 // user and role class properties
-grails.plugins.springsecurity.userLookup.userDomainClassName = 'Person'
+grails.plugins.springsecurity.userLookup.userDomainClassName = 'irclog.Person'
 grails.plugins.springsecurity.userLookup.usernamePropertyName = 'loginName'
 grails.plugins.springsecurity.userLookup.enabledPropertyName = 'enabled'
 grails.plugins.springsecurity.userLookup.passwordPropertyName = 'password'
@@ -132,7 +133,7 @@ grails.plugins.springsecurity.userLookup.accountExpiredPropertyName = 'accountEx
 grails.plugins.springsecurity.userLookup.accountLockedPropertyName = 'accountLocked'
 grails.plugins.springsecurity.userLookup.passwordExpiredPropertyName = 'passwordExpired'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'PersonAuthority'
-grails.plugins.springsecurity.authority.className = 'Role'
+grails.plugins.springsecurity.authority.className = 'irclog.Role'
 grails.plugins.springsecurity.authority.nameField = 'name'
 
 // failureHandler
@@ -141,11 +142,11 @@ grails.plugins.springsecurity.failureHandler.defaultFailureUrl = '/login/denied'
 // successHandler
 grails.plugins.springsecurity.successHandler.defaultTargetUrl = '/login/auth'
 
-/** passwordEncoder */
+// passwordEncoder
 grails.plugins.springsecurity.password.algorithm = 'MD5'
 grails.plugins.springsecurity.password.encodeHashAsBase64 = false
 
-/** use RequestMap from DomainClass */
+// use RequestMap from DomainClass
 grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
 grails.plugins.springsecurity.interceptUrlMap = [
     '/channel/index/**':    ['permitAll'],
