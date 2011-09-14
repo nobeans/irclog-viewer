@@ -54,13 +54,13 @@ grails.web.disable.multipart=false
 // request parameters to mask when logging exceptions
 grails.exceptionresolver.params.exclude = ['password']
 
-// Auto flush
+// auto flush
 grails.gorm.autoFlush = true
 
 // set per-environment serverURL stem for creating absolute links
 environments {
     development {
-        grails.logging.jul.usebridge = true
+        grails.logging.jul.usebridge = false
     }
     production {
         grails.logging.jul.usebridge = false
@@ -77,34 +77,48 @@ log4j = {
     //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
     //}
     appenders {
-        console      name:'stdout',
-                        layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{1}) %m%n')
-        rollingFile  name:"file", file:"log/irclog.log", maxFileSize:'10MB', maxBackupIndex:5,
-                        layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n')
-        rollingFile  name:'stacktrace', file:'log/stacktrace.log', maxFileSize:'10MB', maxBackupIndex:5,
-                        layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n')
+        console     name:'stdout',
+                    layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{1}) %m%n')
+        rollingFile name:'file',
+                    file:'log/irclog.log', maxFileSize:'10MB', maxBackupIndex:5,
+                    layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n')
+        rollingFile name:'stacktrace',
+                    file:'log/stacktrace.log', maxFileSize:'10MB', maxBackupIndex:5,
+                    layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n')
     }
+    def grailsDefaultsLoggingTargets = [
+        'org.codehaus.groovy.grails.web.servlet',  //  controllers
+        'org.codehaus.groovy.grails.web.pages', //  GSP
+        'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+        'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+        'org.codehaus.groovy.grails.web.mapping', // URL mapping
+        'org.codehaus.groovy.grails.commons', // core / classloading
+        'org.codehaus.groovy.grails.plugins', // plugins
+        'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+        'org.springframework',
+        'org.hibernate',
+        'net.sf.ehcache.hibernate',
+    ]
+    def myAppTargets = [
+        'grails.app.controller',
+        'grails.app.service',
+        'grails.app.filter',
+        'grails.app.views',
+    ]
     root {
-        info 'stdout', 'file'
-        additivity = false
+        warn 'stdout', 'file'
     }
-    error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
-           'org.codehaus.groovy.grails.web.pages', //  GSP
-           'org.codehaus.groovy.grails.web.sitemesh', //  layouts
-           'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-           'org.codehaus.groovy.grails.web.mapping', // URL mapping
-           'org.codehaus.groovy.grails.commons', // core / classloading
-           'org.codehaus.groovy.grails.plugins', // plugins
-           'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
-           'org.springframework',
-           'org.hibernate',
-           'net.sf.ehcache.hibernate'
-    
-    // for My application
-    info "grails.app.controller"
-    info "grails.app.service"
-    info "grails.app.task"
-    debug "grails.app.filters.RequestTracelogFilters"
+    environments {
+        development {
+            warn   grailsDefaultsLoggingTargets
+            info   myAppTargets
+            debug  'grails.app.filters.RequestTracelogFilters'
+        }
+        production {
+            error  grailsDefaultsLoggingTargets
+            info   myAppTargets
+        }
+    }
 }
 
 // irclog-viewer
