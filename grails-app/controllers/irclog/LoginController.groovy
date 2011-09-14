@@ -6,14 +6,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 class LoginController {
 
-    def index = {
-        redirect(action:auth, params:params)
+    def index() {
+        redirect(action:'auth', params:params)
     }
 
     /**
      * Show the login page.
      */
-    def auth = {
+    def auth() {
         if (request.isLoggedIn) {
             flash.message = null
             flash.errors = null
@@ -30,7 +30,7 @@ class LoginController {
     }
 
     /** アクセス不許可 */
-    def denied = {
+    def denied() {
         log.warn "Denied to access: ${request['javax.servlet.forward.request_uri']} by ${request.loginUserName}"
         def statusCode = request['javax.servlet.error.status_code']
         if (statusCode) {
@@ -44,7 +44,7 @@ class LoginController {
     /**
      * Callback after a failed login. Redirects to the auth page with a warning message.
      */
-    def authfail = {
+    def authfail() {
         def loginName = session[UsernamePasswordAuthenticationFilter.SPRING_SECURITY_LAST_USERNAME_KEY]
         def exception = session[AbstractAuthenticationProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY]
         if (exception) {

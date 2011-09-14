@@ -18,7 +18,7 @@ class MixedViewerController {
     /**
      * ログ一覧を表示する。
      */
-    def index = {
+    def index() {
         // パラメータを正規化する。
         normalizeParams()
 
@@ -46,9 +46,9 @@ class MixedViewerController {
     /** 
      * セッション上の検索条件を削除して、リダイレクトする。
      */
-    def clearCriterion = {
+    def clearCriterion() {
         session.removeAttribute(SESSION_KEY_CRITERION)
-        redirect(action:index)
+        redirect(action:'index')
     }
 
     private normalizeParams() {

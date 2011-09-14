@@ -8,7 +8,7 @@ class SingleViewerController {
     def irclogSearchService
     def channelService
 
-    def index = {
+    def index() {
         // パラメータを正規化する。
         normalizeParams()
 

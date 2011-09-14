@@ -9,13 +9,13 @@ class RegisterController {
 
     static allowedMethods = [save:'POST', update:'POST']
 
-    def show = {
+    def show() {
         withLoginPerson { person ->
             [person:person]
         }
     }
 
-    def edit = {
+    def edit() {
         withLoginPerson { person ->
             // DB上にはrepasswordは存在しないので、画面上の初期表示のためにpasswordからコピーする。
             person.repassword = person.password
@@ -24,7 +24,7 @@ class RegisterController {
         }
     }
 
-    def update = {
+    def update() {
         withLoginPerson { person ->
             person = personService.update(person, params)
             if (!person.hasErrors()) {
@@ -36,11 +36,11 @@ class RegisterController {
         }
     }
 
-    def create = {
+    def create() {
         [person:new Person()]
     }
 
-    def save = {
+    def save() {
         // 未ログインかどうか。
         if (request.isLoggedIn) {
             log.info('ログイン済みのため、ユーザ情報参照にリダイレクトします。')

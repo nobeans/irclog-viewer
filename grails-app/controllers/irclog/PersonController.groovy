@@ -7,12 +7,12 @@ class PersonController {
 
     def springSecurityService
 
-    def index = { redirect(action:list, params:params) }
+    def index() { redirect(action:'list', params:params) }
 
     // the delete, save and update actions only accept POST requests
     static allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
-    def list = {
+    def list() {
         def defaultMax = grailsApplication.config.irclog.viewer.defaultMax
         params.max    = params.max?.toInteger() ? Math.min(params.max?.toInteger(), defaultMax) : defaultMax
         params.offset = params.offset?.toInteger() ?: 0
@@ -24,18 +24,18 @@ class PersonController {
         ]
     }
 
-    def show = {
+    def show() {
         withPerson(params.id) { person ->
             [person:person]
         }
     }
 
-    def delete = {
+    def delete() {
         withPerson(params.id) { person ->
             if (person.id == request.loginUserDomain?.id) {
                 flash.message = "person.deleted.loggedInUser.error"
                 flash.args = [params.id]
-                redirect(action:list)
+                redirect(action:'list')
                 return
             }
 
@@ -45,11 +45,11 @@ class PersonController {
             person.delete()
             flash.message = "person.deleted"
             flash.args = [params.id]
-            redirect(action:list)
+            redirect(action:'list')
         }
     }
 
-    def edit = {
+    def edit() {
         withPerson(params.id) { person ->
             // DB上にはrepasswordは存在しないので、画面上の初期表示のためにpasswordからコピーする。
             person.repassword = person.password
@@ -58,7 +58,7 @@ class PersonController {
         }
     }
 
-    def update = {
+    def update() {
         withPerson(params.id) { person ->
             def currentEncodedPassword = person.password
             person.properties = params
@@ -74,11 +74,11 @@ class PersonController {
         }
     }
 
-    def create = {
+    def create() {
         [person:new Person()]
     }
 
-    def save = {
+    def save() {
         // デフォルトロールを取得する。
         def role = Role.findByName(grailsApplication.config.irclog.security.defaultRole)
         if (!role) {
@@ -94,13 +94,13 @@ class PersonController {
             person.password = springSecurityService.encodePassword(params.password)
 
             flash.message = "person.created"
-            redirect(action:show, id:person.id)
+            redirect(action:'show', id:person.id)
         } else {
             render(view:'create', model:[person:person])
         }
     }
 
-    def toAdmin = {
+    def toAdmin() {
         withPerson(params.id) { person ->
             Role.list().each { role ->
                 if (role.name == "ROLE_ADMIN") {
@@ -110,16 +110,16 @@ class PersonController {
                 }
             }
             flash.message = "person.toAdmin.roleChanged"
-            redirect(action:show, id:person.id)
+            redirect(action:'show', id:person.id)
         }
     }
 
-    def toUser = {
+    def toUser() {
         withPerson(params.id) { person ->
             if (person.id == request.loginUserDomain?.id) {
                 flash.message = "person.toUser.loggedInUser.error"
                 flash.args = [params.id]
-                redirect(action:show, id:person.id)
+                redirect(action:'show', id:person.id)
                 return
             }
 
@@ -131,7 +131,7 @@ class PersonController {
                 }
             }
             flash.message = "person.toUser.roleChanged"
-            redirect(action:show, id:person.id)
+            redirect(action:'show', id:person.id)
         }
     }
 
@@ -140,7 +140,7 @@ class PersonController {
         if (!person) {
             flash.errors = ["person.not.found"]
             flash.args = [personId]
-            redirect(action:list)
+            redirect(action:'list')
             return
         }
         closure(person)

@@ -9,9 +9,9 @@ class ChannelController {
     def channelService
     def summaryService
 
-    def index = { redirect(action:list, params:params) }
+    def index() { redirect(action:'list', params:params) }
 
-    def list = {
+    def list() {
         [
             channelList: channelService.getAccessibleChannelList(request.loginUserDomain, params),
             allJoinedPersons: channelService.getAllJoinedPersons(),
@@ -19,7 +19,7 @@ class ChannelController {
         ]
     }
 
-    def show = {
+    def show() {
         withChannel(params.id) { channel ->
             [
                 channel: channel,
@@ -28,22 +28,22 @@ class ChannelController {
         }
     }
 
-    def delete = {
+    def delete() {
         withChannel(params.id) { channel ->
             channelService.deleteChannel(channel)
             flash.message = "channel.deleted"
             flash.args = [params.id]
-            redirect(action:list)
+            redirect(action:'list')
         }
     }
 
-    def edit = {
+    def edit() {
         withChannel(params.id) { channel ->
             [channel:channel]
         }
     }
 
-    def update = {
+    def update() {
         withChannel(params.id) { channel ->
             channel.properties = params
             if (!channel.hasErrors() && channel.save()) {
@@ -61,7 +61,7 @@ class ChannelController {
 
                 flash.message = "channel.updated"
                 flash.args = [channel.id]
-                redirect(action:show, id:channel.id)
+                redirect(action:'show', id:channel.id)
             }
             else {
                 render(view:'edit', model:[channel:channel])
@@ -69,13 +69,13 @@ class ChannelController {
         }
     }
 
-    def create = {
+    def create() {
         def channel = new Channel()
         channel.isPrivate = true // デフォルトは安全サイドに。
         return ['channel':channel]
     }
 
-    def save = {
+    def save() {
         def channel = new Channel(params)
         if (!channel.hasErrors() && channel.save()) {
             // インポート済みログに対して取りこぼしがあれば関連づける
@@ -95,14 +95,14 @@ class ChannelController {
 
             flash.message = "channel.created"
             flash.args = [channel.id]
-            redirect(action:show, id:channel.id)
+            redirect(action:'show', id:channel.id)
         }
         else {
             render(view:'create', model:[channel:channel])
         }
     }
 
-    def join = {
+    def join() {
         def channel = Channel.findByNameAndSecretKey(params.channelName, params.secretKey)
         if (!channel) {
             flash.errors = ["channel.join.error"]
@@ -112,30 +112,30 @@ class ChannelController {
             flash.message = "channel.joined"
             flash.args = [params.channelName]
         }
-        redirect(action:list)
+        redirect(action:'list')
     }
 
-    def part = {
+    def part() {
         withChannel(params.id) { channel ->
             Person.get(request.loginUserDomain.id).removeFromChannels(channel)
             flash.message = "channel.parted"
-            redirect(action:show, id:channel.id)
+            redirect(action:'show', id:channel.id)
         }
     }
 
-    def kick = {
+    def kick() {
         withChannel(params.id) { channel ->
             def person = Person.get(params.personId)
             if (!person) {
                 flash.errors = ["person.not.found"]
                 flash.args = [personId]
-                redirect(action:list)
+                redirect(action:'list')
                 return
             }
             person.removeFromChannels(channel)
             flash.message = "channel.kicked"
             flash.args = [person.loginName]
-            redirect(action:show, id:channel.id)
+            redirect(action:'show', id:channel.id)
         }
     }
 
@@ -144,7 +144,7 @@ class ChannelController {
         if (!channel || !isAccessibleChannel(channel)) {
             flash.errors = ["channel.not.found"]
             flash.args = [channelId]
-            redirect(action:list)
+            redirect(action:'list')
             return
         }
         closure(channel)
