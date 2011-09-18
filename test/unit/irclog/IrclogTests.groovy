@@ -30,27 +30,27 @@ class IrclogTests {
     void validate_NG_type_undefined() {
         Irclog irclog = createIrclog(type:'UNDEFINED_TYPE')
         assert irclog.validate() == false
-        assert irclog.errors['type'].code == 'not.inList'
+        assert irclog.errors['type'] == 'inList'
     }
 
     @Test
     void validate_NG_nick_blank() {
         Irclog irclog = createIrclog(nick:'')
         assert irclog.validate() == false
-        assert irclog.errors['nick'].code == 'blank'
+        assert irclog.errors['nick'] == 'blank'
     }
 
     @Test
     void validate_NG_permaId_notUnique() {
         Irclog irclog = createIrclog(permaId:'EXISTS_PERMAID')
         assert irclog.validate() == false
-        assert irclog.errors['permaId'].code == 'unique'
+        assert irclog.errors['permaId'] == 'unique'
     }
 
     @Test
     void validate_NG_channelName_blank() {
         Irclog irclog = createIrclog(channelName:'')
         assert irclog.validate() == false
-        assert irclog.errors['channelName'].code == 'blank'
+        assert irclog.errors['channelName'] == 'blank'
     }
 }
