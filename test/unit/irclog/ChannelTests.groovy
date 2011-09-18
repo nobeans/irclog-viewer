@@ -8,9 +8,9 @@ import static irclog.utils.DomainUtils.*
 class ChannelTests {
 
     @Before
-    void setUpDatabase() {
-        createChannel(name:"#prepared1").saveSurely()
-        createChannel(name:"#prepared2").saveSurely()
+    void setUp() {
+        // it's necessary to describe "channel.errors['xxxx']".
+        mockForConstraintsTests(Channel)
     }
 
     @Test
@@ -37,6 +37,8 @@ class ChannelTests {
             name:"test",
         )
         assert channel.validate() == false
+        //assert channel.errors['name'] == 'matches' // FIXME why this didn't work?
+        assert channel.errors['name'].code == 'matches.invalid'
     }
 
     @Test
@@ -46,6 +48,8 @@ class ChannelTests {
             secretKey: '',
         )
         assert channel.validate() == false
+        //assert channel.errors['secretKey'] == 'validator' // FIXME why this didn't work?
+        assert channel.errors['secretKey'].code == 'validator.invalid'
     }
 
     @Test
@@ -55,6 +59,8 @@ class ChannelTests {
             secretKey: 'SHOULD_BE_EMPTY',
         )
         assert channel.validate() == false
+        //assert channel.errors['secretKey'] == 'validator' // FIXME why this didn't work?
+        assert channel.errors['secretKey'].code == 'validator.invalid'
     }
 
     @Test
@@ -63,11 +69,5 @@ class ChannelTests {
         assert createChannel(name:"#test2") == createChannel(name:"#test2")
         assert createChannel(name:"#test3") == createChannel(name:"#test3")
         assert createChannel(name:"#test1") != createChannel(name:"#test2")
-    }
-
-    @Test
-    void findAll() {
-        def actual = Channel.findAll()
-        assert actual.size() == 2
     }
 }
