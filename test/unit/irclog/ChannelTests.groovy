@@ -2,7 +2,7 @@ package irclog
 
 import grails.test.mixin.*
 import org.junit.*
-//import static irclog.utils.DomainUtils.*
+import static irclog.utils.DomainUtils.*
 
 @TestFor(Channel)
 class ChannelTests {
@@ -66,18 +66,5 @@ class ChannelTests {
         assert createChannel(name:"#test2") == createChannel(name:"#test2")
         assert createChannel(name:"#test3") == createChannel(name:"#test3")
         assert createChannel(name:"#test1") != createChannel(name:"#test2")
-    }
-
-    static Channel createChannel(propertyMap = [:]) {
-        def id = "1"
-        def name = propertyMap.name ?: "#channel${id}"
-        def defaultProps = [
-            name: name,
-            description: "${name} is nice!",
-            isPrivate: true,
-            isArchived: false,
-            secretKey: "1234",
-        ]
-        return new Channel(defaultProps + propertyMap)
     }
 }
