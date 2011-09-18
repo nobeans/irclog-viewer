@@ -9,14 +9,9 @@ class DomainUtils {
 
     private static AtomicInteger counter = new AtomicInteger(0)
 
-    static saveSurely = { domain = delegate ->
+    static saveSurely(domain) {
         domain.save()
         assert domain.hasErrors() == false : domain.errors
-        return domain
-    }
-
-    private static expandDomainObjectForTests(domain) {
-        domain.metaClass.saveSurely = DomainUtils.saveSurely
         return domain
     }
 
@@ -30,7 +25,7 @@ class DomainUtils {
             isArchived: false,
             secretKey: "1234",
         ]
-        return expandDomainObjectForTests(new Channel(defaultProps + propertyMap))
+        new Channel(defaultProps + propertyMap)
     }
 
     static Person createPerson(propertyMap = [:]) {
@@ -45,7 +40,7 @@ class DomainUtils {
             nicks: "${loginName}_",
             color: "#fff",
         ]
-        return expandDomainObjectForTests(new Person(defaultProps + propertyMap))
+        new Person(defaultProps + propertyMap)
     }
 
     static Role createRole(propertyMap = [:]) {
@@ -55,7 +50,7 @@ class DomainUtils {
             name: name,
             description: "${name} is nice!",
         ]
-        return expandDomainObjectForTests(new Role(defaultProps + propertyMap))
+        new Role(defaultProps + propertyMap)
     }
 
     static Irclog createIrclog(propertyMap = [:]) {
@@ -69,7 +64,7 @@ class DomainUtils {
             channelName: "#channel",
             channel: null,
         ]
-        return expandDomainObjectForTests(new Irclog(defaultProps + propertyMap))
+        new Irclog(defaultProps + propertyMap)
     }
 
     static Summary createSummary(propertyMap = [:]) {
@@ -88,6 +83,6 @@ class DomainUtils {
             latestIrclog: null,
             channel: null,
         ]
-        return expandDomainObjectForTests(new Summary(defaultProps + propertyMap))
+        new Summary(defaultProps + propertyMap)
     }
 }
