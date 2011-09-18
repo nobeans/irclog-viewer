@@ -1,44 +1,73 @@
 package irclog
 
-import com.sun.net.httpserver.Filter.Chain;
 import grails.test.mixin.*
 import org.junit.*
+import static irclog.utils.DomainUtils.*
 
 @TestFor(Channel)
 class ChannelTests {
 
     @Before
-    void setUp() {
-        mockDomain(Channel)
-        setUpDatabase()
+    void setUpDatabase() {
+        createChannel(name:"#prepared1").saveSurely()
+        createChannel(name:"#prepared2").saveSurely()
     }
 
-    void testValidate_OK() {
-        Channel channel = createChannel("#test")
+    @Test
+    void validate_OK_publicWithoutSecretKey() {
+        Channel channel = createChannel(
+            isPrivate: true,
+            secretKey: '1234',
+        )
         assert channel.validate()
     }
 
-    void testValidate_NG_name_notStartingWithHash() {
-        Channel channel = createChannel("test")
+    @Test
+    void validate_OK_privateWithSecretKey() {
+        Channel channel = createChannel(
+            isPrivate: false,
+            secretKey: '',
+        )
+        assert channel.validate()
+    }
+
+    @Test
+    void validate_NG_name_notStartingWithHash() {
+        Channel channel = createChannel(
+            name:"test",
+        )
         assert channel.validate() == false
     }
 
-    void testFindAll() {
+    @Test
+    void validate_NG_privateWithoutSecretKey() {
+        Channel channel = createChannel(
+            isPrivate: true,
+            secretKey: '',
+        )
+        assert channel.validate() == false
+    }
+
+    @Test
+    void validate_NG_publicWithSecretKey() {
+        Channel channel = createChannel(
+            isPrivate: false,
+            secretKey: 'SHOULD_BE_EMPTY',
+        )
+        assert channel.validate() == false
+    }
+
+    @Test
+    void equals() {
+        assert createChannel(name:"#test1") == createChannel(name:"#test1")
+        assert createChannel(name:"#test2") == createChannel(name:"#test2")
+        assert createChannel(name:"#test3") == createChannel(name:"#test3")
+        assert createChannel(name:"#test1") != createChannel(name:"#test2")
+    }
+
+    @Test
+    void findAll() {
         def actual = Channel.findAll()
         assert actual.size() == 2
-    }
-
-    private Channel createChannel(name) {
-        def mockChannel = new Channel(name:name)
-        mockChannel.description = "説明文です"
-        mockChannel.isPrivate = true
-        mockChannel.isArchived = true
-        mockChannel.secretKey = "1234"
-        mockChannel
-    }
-
-    private setUpDatabase() {
-        assert createChannel("#prepared1").save()
-        assert createChannel("#prepared2").save()
     }
 }
