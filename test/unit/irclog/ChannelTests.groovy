@@ -2,7 +2,7 @@ package irclog
 
 import grails.test.mixin.*
 import org.junit.*
-import static irclog.utils.DomainUtils.*
+//import static irclog.utils.DomainUtils.*
 
 @TestFor(Channel)
 class ChannelTests {
@@ -37,8 +37,7 @@ class ChannelTests {
             name:"test",
         )
         assert channel.validate() == false
-        //assert channel.errors['name'] == 'matches' // FIXME why this didn't work?
-        assert channel.errors['name'].code == 'matches.invalid'
+        assert channel.errors['name'] == 'matches'
     }
 
     @Test
@@ -48,8 +47,7 @@ class ChannelTests {
             secretKey: '',
         )
         assert channel.validate() == false
-        //assert channel.errors['secretKey'] == 'validator' // FIXME why this didn't work?
-        assert channel.errors['secretKey'].code == 'validator.invalid'
+        assert channel.errors['secretKey'] == 'validator'
     }
 
     @Test
@@ -59,8 +57,7 @@ class ChannelTests {
             secretKey: 'SHOULD_BE_EMPTY',
         )
         assert channel.validate() == false
-        //assert channel.errors['secretKey'] == 'validator' // FIXME why this didn't work?
-        assert channel.errors['secretKey'].code == 'validator.invalid'
+        assert channel.errors['secretKey'] == 'validator'
     }
 
     @Test
@@ -69,5 +66,18 @@ class ChannelTests {
         assert createChannel(name:"#test2") == createChannel(name:"#test2")
         assert createChannel(name:"#test3") == createChannel(name:"#test3")
         assert createChannel(name:"#test1") != createChannel(name:"#test2")
+    }
+
+    static Channel createChannel(propertyMap = [:]) {
+        def id = "1"
+        def name = propertyMap.name ?: "#channel${id}"
+        def defaultProps = [
+            name: name,
+            description: "${name} is nice!",
+            isPrivate: true,
+            isArchived: false,
+            secretKey: "1234",
+        ]
+        return new Channel(defaultProps + propertyMap)
     }
 }
