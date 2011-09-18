@@ -21,14 +21,14 @@ class ChannelServiceTests {
 
     private setUpChannel() {
         (1..3).each { num ->
-            this."ch${num}" = createChannel(name:"#ch${num}", description:"${10 - num}").saveSurely()
+            this."ch${num}" = saveSurely(createChannel(name:"#ch${num}", description:"${10 - num}"))
         }
     }
     private setUpPerson() {
         admin = Person.findByLoginName("admin") // setup in Bootstrap
         def roleUser = Role.findByName("ROLE_USER")
         ["1", "2", "3", "X"].each { id ->
-            def user = createPerson(loginName:"user${id}").saveSurely()
+            def user = saveSurely(createPerson(loginName:"user${id}"))
             user.addToRoles(roleUser)
             this."user${id}" = user
         }
@@ -42,15 +42,15 @@ class ChannelServiceTests {
     }
     private setUpIrclog() {
         2.times { id ->
-            createIrclog(permaId:"log:ch1:${id}", channelName:ch1.name, time:toDate("2010-01-01"), channel:null).saveSurely()
-            createIrclog(permaId:"log:ch2:${id}", channelName:ch2.name, time:toDate("2010-01-01"), channel:ch2).saveSurely()
-            createIrclog(permaId:"log:ch3:${id}", channelName:ch3.name, time:toDate("2010-01-01"), channel:ch3).saveSurely()
+            saveSurely(createIrclog(permaId:"log:ch1:${id}", channelName:ch1.name, time:toDate("2010-01-01"), channel:null))
+            saveSurely(createIrclog(permaId:"log:ch2:${id}", channelName:ch2.name, time:toDate("2010-01-01"), channel:ch2))
+            saveSurely(createIrclog(permaId:"log:ch3:${id}", channelName:ch3.name, time:toDate("2010-01-01"), channel:ch3))
         }
     }
     private setUpSummary() {
-        createSummary(channel:ch1, latestIrclog:Irclog.findByPermaId("log:ch1:0")).saveSurely()
-        createSummary(channel:ch2, latestIrclog:Irclog.findByPermaId("log:ch2:0")).saveSurely()
-        createSummary(channel:ch3, latestIrclog:Irclog.findByPermaId("log:ch3:0")).saveSurely()
+        saveSurely(createSummary(channel:ch1, latestIrclog:Irclog.findByPermaId("log:ch1:0")))
+        saveSurely(createSummary(channel:ch2, latestIrclog:Irclog.findByPermaId("log:ch2:0")))
+        saveSurely(createSummary(channel:ch3, latestIrclog:Irclog.findByPermaId("log:ch3:0")))
     }
 
     void testGetAccessibleChannelList_admin() {
@@ -109,7 +109,7 @@ class ChannelServiceTests {
 
     void testRelateToIrclog() {
         // Setup
-        createIrclog(permaId:"log:ch1/ch2", channelName:ch1.name, channel:ch2).saveSurely()
+        saveSurely(createIrclog(permaId:"log:ch1/ch2", channelName:ch1.name, channel:ch2))
         // Verify Fixture
         assert Irclog.findByPermaId("log:ch1:0").channel == null
         assert Irclog.findByPermaId("log:ch1:1").channel == null
@@ -263,6 +263,6 @@ class ChannelServiceTests {
 
     private createIrclogAs(ch, dateTime, type) {
         Date time = toDate(dateTime)
-        createIrclog(permaId:"log:${ch}:${time}", channelName:ch.name, time:time, channel:ch, type:type).saveSurely()
+        saveSurely(createIrclog(permaId:"log:${ch}:${time}", channelName:ch.name, time:time, channel:ch, type:type))
     }
 }

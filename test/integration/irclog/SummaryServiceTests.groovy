@@ -31,14 +31,14 @@ class SummaryServiceTests {
 
     private setUpChannel() {
         (1..3).each { num ->
-            this."ch${num}" = createChannel(name:"#ch${num}", description:"${10 - num}").saveSurely()
+            this."ch${num}" = saveSurely(createChannel(name:"#ch${num}", description:"${10 - num}"))
         }
     }
     private setUpPerson() {
         admin = Person.findByLoginName("admin") // setup in Bootstrap
         def roleUser = Role.findByName("ROLE_USER")
         ["1", "2", "3", "X"].each { id ->
-            def user = createPerson(loginName:"user${id}").saveSurely()
+            def user = saveSurely(createPerson(loginName:"user${id}"))
             user.addToRoles(roleUser)
             this."user${id}" = user
         }
@@ -58,9 +58,9 @@ class SummaryServiceTests {
 //        saveIrclog(channel:ch3, type:"TOPIC", message:"It's important topic")
     }
     private setUpSummary() {
-//        createSummary(channel:ch1, latestIrclog:Irclog.findByPermaId("log:ch1:0")).saveSurely()
-//        createSummary(channel:ch2, latestIrclog:Irclog.findByPermaId("log:ch2:0")).saveSurely()
-//        createSummary(channel:ch3, latestIrclog:Irclog.findByPermaId("log:ch3:0")).saveSurely()
+//        saveSurely(createSummary(channel:ch1, latestIrclog:Irclog.findByPermaId("log:ch1:0")))
+//        saveSurely(createSummary(channel:ch2, latestIrclog:Irclog.findByPermaId("log:ch2:0")))
+//        saveSurely(createSummary(channel:ch3, latestIrclog:Irclog.findByPermaId("log:ch3:0")))
     }
 
     void testGetHotTopicList_withinOneWeekAgo() {
@@ -136,6 +136,6 @@ class SummaryServiceTests {
         def mergedMap = defaultMap + propMap
         def permaId =  mergedMap.toString() // to avoid stack overflow
         mergedMap.permaId = permaId
-        return createIrclog(mergedMap).saveSurely()
+        return saveSurely(createIrclog(mergedMap))
     }
 }
