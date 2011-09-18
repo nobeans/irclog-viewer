@@ -20,7 +20,7 @@ class DomainUtils {
         return domain
     }
 
-    static Channel createChannel(propertyMap) {
+    static Channel createChannel(propertyMap = [:]) {
         def id = counter.getAndIncrement()
         def name = propertyMap.name ?: "#channel${id}"
         def defaultProps = [
@@ -33,7 +33,7 @@ class DomainUtils {
         return expandDomainObjectForTests(new Channel(defaultProps + propertyMap))
     }
 
-    static Person createPerson(propertyMap) {
+    static Person createPerson(propertyMap = [:]) {
         def id = counter.getAndIncrement()
         def loginName = propertyMap.loginName ?: "LOGIN_NAME${id}"
         def defaultProps = [
@@ -48,7 +48,7 @@ class DomainUtils {
         return expandDomainObjectForTests(new Person(defaultProps + propertyMap))
     }
 
-    static Role createRole(propertyMap) {
+    static Role createRole(propertyMap = [:]) {
         def id = counter.getAndIncrement()
         def name = propertyMap.name ?: "#role${id}"
         def defaultProps = [
@@ -58,7 +58,7 @@ class DomainUtils {
         return expandDomainObjectForTests(new Role(defaultProps + propertyMap))
     }
 
-    static Irclog createIrclog(propertyMap) {
+    static Irclog createIrclog(propertyMap = [:]) {
         def id = counter.getAndIncrement()
         def defaultProps = [
             time: new Date(),
@@ -72,7 +72,7 @@ class DomainUtils {
         return expandDomainObjectForTests(new Irclog(defaultProps + propertyMap))
     }
 
-    static Summary createSummary(propertyMap) {
+    static Summary createSummary(propertyMap = [:]) {
         def id = counter.getAndIncrement()
         def defaultProps = [
             todayAfterTimeMarker:id,
