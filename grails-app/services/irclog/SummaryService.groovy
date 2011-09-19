@@ -54,7 +54,7 @@ class SummaryService {
         // ソート条件を解決してから、サマリを取得
         def originalSort = resolveSortCondition(params)
         def summaryList = Summary.list(params)
-        
+
         // タイムマーカが指定されている場合は、タイムマーカ以降の件数を取得して結果に追加反映する。
         if (timeMarker) {
             setupTodayAfterTimeMarker(summaryList, timeMarker)
@@ -162,9 +162,9 @@ class SummaryService {
         def baseDate = DateUtils.today
         def df = new SimpleDateFormat("yyyy-MM-dd")
         def baseDateFormatted = df.format(baseDate)
-        
+
         def db = new Sql(dataSource)
-        int result = db.executeUpdate ("""
+        int result = db.executeUpdate("""
             update
                 summary
             set
@@ -192,7 +192,7 @@ class SummaryService {
                 summary.channel_id = tbl.channel_id
             and
                 date_trunc('day', summary.last_updated) = timestamp '${baseDateFormatted}'
-        """)
+        """.toString())
         log.info "Updated today's summary: " + result
     }
 
