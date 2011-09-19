@@ -38,8 +38,8 @@ class Person {
     boolean isAdmin() {
         return (roles?.find{it.name == "ROLE_ADMIN"}) != null
     }
-    //boolean isAccountExpired()  { false }
-    //boolean isAccountLocked()   { false }
-    //boolean isPasswordExpired() { false }
+    boolean isAccountExpired()  { false }
+    boolean isAccountLocked()   { false }
+    boolean isPasswordExpired() { false }
 
 }
