@@ -19,7 +19,7 @@
       </tr>
     </thead>
     <tbody>
-      <% def isEssentialType = { type -> Irclog.ESSENTIAL_TYPES.contains(type) } %>
+      <% def isEssentialType = { type -> essentialTypes.contains(type) } %>
       <g:each in="${irclogList}" status="i" var="irclog">
         <tr class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${isEssentialType(irclog.type) ? 'essentialType' : 'optionType'}">
           <td class="irclog-single"><my:singleLink permaId="${irclog.permaId}" time="${irclog.time}" channelName="${irclog.channel.name}" image="single.gif"/></td>
