@@ -57,11 +57,11 @@ class SingleViewerController {
 
     private parseCriterion() {
         def criterion = [
-                            period:      'oneday',
-                            channel:     normalizeChannelName(params.channel),
-                            type:        'all',
-                            isIgnoredOptionType: getCurrentTypeInMixed() != 'all'
-                        ]
+            period: 'oneday',
+            channel: normalizeChannelName(params.channel),
+            type: 'all',
+            isIgnoredOptionType: getCurrentTypeInMixed() != 'all'
+        ]
         criterion['period-oneday-date'] = params.date
         criterion.remove('') // 値が空のものを除外
         log.debug "Criterion: " + criterion

@@ -108,10 +108,11 @@ class ChannelService {
 
     /**
      * 以下の日付三種を取得する。
+     * それぞれ、該当する日付が存在しない場合はnullを返す。
      * <ul>
-     * <li>現在の日付よりも前で、ログが存在する日付</li>
-     * <li>現在の日付よりも後で、ログが存在する最新日付</li>
-     * <li>現在の日付よりも後で、ログが存在する日付</li>
+     * <li>before: 現在の日付よりも前で、ログが存在する日付</li>
+     * <li>after: 現在の日付よりも後で、ログが存在する最新日付</li>
+     * <li>latest: 現在の日付よりも後で、ログが存在する日付</li>
      * </ul>
      * @param date "yyyy-MM-dd"
      */
@@ -136,7 +137,7 @@ class ChannelService {
             order("time", "desc")
             maxResults(1)
         }.collect { resetTimeToOrigin(it.time) }
-        return getFirstOrNull(list)
+        return list.getAt(0)
     }
     /** 現在の日付よりも後で、ログが存在する日付を取得する。*/
     private Date getAfterDate(dateStr, channel, isIgnoredOptionType) {
@@ -152,7 +153,7 @@ class ChannelService {
             order("time", "asc")
             maxResults(1)
         }.collect { resetTimeToOrigin(it.time) }
-        return getFirstOrNull(list)
+        return list.getAt(0)
     }
     /** 現在の日付よりも後で、ログが存在する最新日付を取得する。*/
     private Date getLatestDate(dateStr, channel, isIgnoredOptionType) {
@@ -168,6 +169,6 @@ class ChannelService {
             order("time", "desc")
             maxResults(1)
         }.collect { resetTimeToOrigin(it.time) }
-        return getFirstOrNull(list)
+        return list.getAt(0)
     }
 }
