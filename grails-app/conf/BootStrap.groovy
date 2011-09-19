@@ -41,14 +41,18 @@ class BootStrap {
 
     private setupForDevelopmentEnv() {
         if (Environment.current == Environment.DEVELOPMENT) { // only in development mode
-            saveSurely(createChannel(name:"#test1", isPrivate:true))
+            def channelTest1 = saveSurely(createChannel(name:"#test1", isPrivate:true))
             def channelTest2 = saveSurely(createChannel(name:"#test2", isPrivate:false, secretKey:""))
             saveSurely(createChannel(name:"#test3", isPrivate:true))
             30.times {
                 (-2..0).each { dateDelta ->
                     def today = DateUtils.today
-                    saveSurely(createIrclog(channelName:"#test1", channel:channelTest2, type:"PRIVMSG", time:today + dateDelta))
-                    saveSurely(createIrclog(channelName:"#test1", channel:channelTest2, type:"NOTICE", time:today + dateDelta))
+                    saveSurely(createIrclog(channelName:"#test2", channel:channelTest2, type:"TOPIC", time:today + dateDelta))
+                    saveSurely(createIrclog(channelName:"#test2", channel:channelTest2, type:"PRIVMSG", time:today + dateDelta))
+                    saveSurely(createIrclog(channelName:"#test2", channel:channelTest2, type:"NOTICE", time:today + dateDelta))
+                    saveSurely(createIrclog(channelName:"#test2", channel:channelTest2, type:"JOIN", time:today + dateDelta))
+
+                    saveSurely(createIrclog(channelName:"#test1", channel:channelTest1, type:"PRIVMSG", time:today + dateDelta))
                 }
             }
         }
