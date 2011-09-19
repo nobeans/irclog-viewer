@@ -32,6 +32,7 @@ class SingleViewerController {
         def nickPersonList = Person.list()
         def model = [
             irclogList: searchResult.list,
+            essentialTypes: Irclog.ESSENTIAL_TYPES,
             selectableChannels: selectableChannels,
             criterion: criterion,
             relatedDates: relatedDates,

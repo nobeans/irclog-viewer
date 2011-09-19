@@ -12,7 +12,7 @@
 </div>
 <div class="list">
   <div class="paginateButtons top">
-    <% def essentialTypeCount = irclogList.findAll{Irclog.ESSENTIAL_TYPES.contains(it.type)}.size() %>
+    <% def essentialTypeCount = irclogList.findAll{essentialTypes.contains(it.type)}.size() %>
     <span class="count"><g:message code="singleViewer.count" args="${[irclogList.size(), essentialTypeCount]}"/></span>
   </div>
   <table>
@@ -44,7 +44,7 @@
         </th>
       </tr>
     </thead>
-    <% def isEssentialType = { type -> Irclog.ESSENTIAL_TYPES.contains(type) } %>
+    <% def isEssentialType = { type -> essentialTypes.contains(type) } %>
     <% def isDefaultHiddenType = { type -> criterion.isIgnoredOptionType && !isEssentialType(type) } %>
     <% def boundaryTime = session.timeMarker?.time ?: (new Date() + 1) %>
     <% def overBoundaryTime = false %>
