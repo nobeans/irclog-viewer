@@ -198,4 +198,10 @@ class PersonTests {
         assert person.errors['roles'] == 'size'
     }
 
+    @Test
+    void isAdmin() {
+        assert createPerson(roles:[createRole(name:"ROLE_ADMIN")]).isAdmin()
+        assert createPerson(roles:[createRole(name:"ROLE_ADMIN"), createRole(name:"ROLE_USER")]).isAdmin()
+        assert createPerson(roles:[createRole(name:"ROLE_USER")]).isAdmin() == false
+    }
 }
