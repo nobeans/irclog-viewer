@@ -1,8 +1,5 @@
 package irclog.helper
 
-
-import java.text.SimpleDateFormat
-
 /**
  * タイムマーカクラス。
  * 今日のログにおいて「ここまで読んだ」を実現するために、時刻境界を表す。
@@ -21,8 +18,7 @@ class TimeMarker {
      * Date型であるがあえて文脈に合わせてTimeというプロパティ名とした。
      */
     Date getTime() {
-        def today = new SimpleDateFormat('yyyy-MM-dd ').format(new Date())
-        return new SimpleDateFormat('yyyy-MM-dd HH:mm').parse(today + time)
+        return Date.parse("yyyy-MM-dd HH:mm", new Date().format("yyyy-MM-dd ${time}"))
     }
 
     String toString() {
