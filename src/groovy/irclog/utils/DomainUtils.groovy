@@ -39,6 +39,8 @@ class DomainUtils {
             enabled: true,
             nicks: "${loginName}_",
             color: "#fff",
+            roles: [createRole()],
+            channels: [],
         ]
         new Person(defaultProps + propertyMap)
     }
