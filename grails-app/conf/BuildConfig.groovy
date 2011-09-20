@@ -44,6 +44,5 @@ grails.project.dependency.resolution = {
         build ":tomcat:$grailsVersion"
     }
 }
-grails.plugin.location."http-nocache" = "./plugins/http-nocache-0.1"
 grails.plugin.location."request-tracelog" = "./plugins/request-tracelog-0.2"
 
