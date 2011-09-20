@@ -4,11 +4,11 @@
     <meta name="layout" content="main" />
     <yui:stylesheet dir="calendar/assets" file="calendar.css" />
     <my:nickStyle persons="${nickPersonList}" classPrefix=".irclog-nick" />
-    <g:javascript library="yui" />
+    <g:javascript src="yui/yui.js" />
     <yui:javascript dir="calendar" file="calendar.js" />
-    <g:javascript library="calendar" />
-    <g:javascript library="dateformat" />
-    <g:javascript library="mixedViewer" />
+    <g:javascript src="calendar.js" />
+    <g:javascript src="dateformat.js" />
+    <g:javascript src="mixedViewer.js" />
     <title><g:message code="mixedViewer" /></title>
   </head>
   <body>

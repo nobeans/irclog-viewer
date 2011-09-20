@@ -63,6 +63,6 @@ if (!IRCLOG) IRCLOG = {};
         return function () {
             nextFunc(calendar);
         };
-    }               
+    }
 
 })()

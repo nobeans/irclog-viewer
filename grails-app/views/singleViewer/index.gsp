@@ -4,10 +4,9 @@
     <meta name="layout" content="main" />
     <yui:stylesheet dir="calendar/assets" file="calendar.css" />
     <my:nickStyle persons="${nickPersonList}" classPrefix=".irclog-nick" />
-    <g:javascript library="yui" />
     <yui:javascript dir="calendar" file="calendar.js" />
-    <g:javascript library="calendar" />
-    <g:javascript library="singleViewer" />
+    <g:javascript src="calendar.js" />
+    <g:javascript src="singleViewer.js" />
     <title><g:message code="singleViewer" args="${[criterion?.channel +'@'+ criterion['period-oneday-date']]}" /></title>
   </head>
   <body>

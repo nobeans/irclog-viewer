@@ -3,7 +3,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="main" />
     <my:nickStyle persons="${nickPersonList}" classPrefix=".channel " />
-    <g:javascript library="channel" />
+    <g:javascript src="channel.js" />
     <title><g:message code="channel.list" default="Channel List" /></title>
   </head>
   <body>
