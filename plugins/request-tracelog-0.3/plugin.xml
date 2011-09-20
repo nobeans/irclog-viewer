@@ -1,4 +1,4 @@
-<plugin name='request-tracelog' version='0.2' grailsVersion='1.1.1 &gt; *'>
+<plugin name='request-tracelog' version='0.3' grailsVersion='1.1.1 &gt; *'>
   <author>nobeans</author>
   <authorEmail>nobeans@gmail.com</authorEmail>
   <title>filter for debug logging</title>
@@ -9,10 +9,9 @@ Logging is active only at development environment.
 It's very simple.
 </description>
   <documentation>http://grails.org/RequestTracelog+Plugin</documentation>
+  <type>RequestTracelogGrailsPlugin</type>
   <resources>
-    <resource>DataSource</resource>
     <resource>RequestTracelogFilters</resource>
-    <resource>UrlMappings</resource>
   </resources>
   <dependencies />
   <behavior />

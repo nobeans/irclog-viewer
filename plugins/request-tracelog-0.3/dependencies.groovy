@@ -32,17 +32,14 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         // runtime 'mysql:mysql-connector-java:5.1.5'
-        runtime "postgresql:postgresql:9.0-801.jdbc4"
     }
 
     plugins {
         compile ":hibernate:$grailsVersion"
         compile ":jquery:1.6.1.1"
         compile ":resources:1.0.2"
-        compile ":spring-security-core:1.2.1"
 
         build ":tomcat:$grailsVersion"
     }
 }
-grails.plugin.location."request-tracelog" = "./plugins/request-tracelog-0.3"
 
