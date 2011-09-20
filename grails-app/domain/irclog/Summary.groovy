@@ -18,9 +18,6 @@ class Summary {
     int sixDaysAgo
     int totalBeforeYesterday  // total of all count of past days except today
 
-    // Special count
-    int todayAfterTimeMarker
-
     Irclog latestIrclog
 
     int total() {
@@ -38,7 +35,6 @@ class Summary {
                  |    fiveDaysAgo: ${fiveDaysAgo}
                  |    sixDaysAgo: ${sixDaysAgo}
                  |    totalBeforeYesterday: ${totalBeforeYesterday}
-                 |    todayAfterTimeMarker: ${todayAfterTimeMarker} (Include: zero means there is not time-marker)
                  |    latestIrclog: ${latestIrclog}
                  |}""".stripMargin()
     }
@@ -56,8 +52,6 @@ class Summary {
         'totalBeforeYesterday',
         'latestIrclog'
     ]
-
-    static transients = ['todayAfterTimeMarker']
 
     static belongsTo = Channel
 

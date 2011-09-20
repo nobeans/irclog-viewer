@@ -46,16 +46,10 @@
     </thead>
     <% def isEssentialType = { type -> essentialTypes.contains(type) } %>
     <% def isDefaultHiddenType = { type -> criterion.isIgnoredOptionType && !isEssentialType(type) } %>
-    <% def boundaryTime = session.timeMarker?.time ?: (new Date() + 1) %>
-    <% def overBoundaryTime = false %>
     <tbody>
       <g:each in="${irclogList}" status="i" var="irclog">
-        <g:if test="${!overBoundaryTime && irclog.time.after(boundaryTime)}" >
-          <% overBoundaryTime = true %>
-          <tr id="timemarker"><td colspan="3" /></tr>
-        </g:if>
         <tr id="pid-${irclog.permaId}"
-            class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${isEssentialType(irclog.type) ? 'essentialType' : 'optionType'} ${overBoundaryTime ? 'afterTimeMarker' : ''}"
+            class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${isEssentialType(irclog.type) ? 'essentialType' : 'optionType'}"
             ${isDefaultHiddenType(irclog.type) ? 'style="display:none"' : ''}
             onclick="IRCLOG.highlightLine('pid-${irclog.permaId}');IRCLOG.goto('#pid-${irclog.permaId}')">
           <td class="irclog-time"><my:dateFormat value="${irclog.time}" format="HH:mm:ss" /></td>

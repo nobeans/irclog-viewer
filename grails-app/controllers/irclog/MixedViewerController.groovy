@@ -1,6 +1,5 @@
 package irclog
 
-import irclog.helper.TimeMarker;
 import java.text.ParseException
 import java.text.SimpleDateFormat
 
@@ -87,25 +86,6 @@ class MixedViewerController {
             criterion['period-oneday-date'] = params['period-oneday-date']
         }
         criterion.remove('') // 値が空のものを除外
-
-        // 今日＆時刻指定有りの場合
-        if (criterion.period == 'today' && params['period-today-time']) {
-            // タイムマーカを生成してセッションに格納する。
-            try {
-                def timeMarker = new TimeMarker(params['period-today-time'])
-                def time = timeMarker.time
-                criterion['period-today-time'] = new SimpleDateFormat('HH:mm').format(time) // for View
-                criterion['period-today-time-object'] = time // for Service
-                session.timeMarker = timeMarker
-            } catch (ParseException e) {
-                flash.errors = [
-                    'mixedViewer.search.period.today.time.error'
-                ]
-            }
-        }
-        if (criterion['period-today-time'] == null) {
-            session.removeAttribute('timeMarker')
-        }
 
         // いったん別の画面から戻ってきた場合などのために、検索条件をセッションに待避する。
         session[SESSION_KEY_CRITERION] = criterion

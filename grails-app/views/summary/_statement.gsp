@@ -13,11 +13,6 @@
             <img src="${resource(dir:'images',file:'singleTitle.png')}" alt="Search all logs" />
           </th>
           <my:sortableColumn action="index" defaultOrder="asc" property="channel" code="summary.channel" />
-          <g:if test="${session.timeMarker}">
-            <my:sortableColumn class="count todayAfterTimeMarker" action="index" defaultOrder="desc" property="todayAfterTimeMarker" titleKey="summary.todayAfterTimeMarker.tooltips" >
-              <img src="${resource(dir:'images', file:'clock.png')}" alt="Clock" />
-            </my:sortableColumn>
-          </g:if>
           <% def today = new Date() %>
           <% def dateBefore = { delta -> my.dateFormat(format:'M/d(E)', value:(today - delta))} %>
           <my:sortableColumn class="count" action="index" defaultOrder="desc" property="today" code="summary.today" title="${dateBefore(0)}" />
@@ -41,11 +36,6 @@
           <td class="channel">
             <g:link controller="channel" action="show" id="${channel.id}" title="${channel.description}">${fieldValue(bean:channel, field:'name')}</g:link>
           </td>
-          <g:if test="${session.timeMarker}">
-            <td class="count todayAfterTimeMarker">
-              <my:summaryLink count="${summary.todayAfterTimeMarker}" channelName="${channel.name}" time="${summary.lastUpdated}" timeMarkerJump="${true}" />
-            </td>
-          </g:if>
           <td class="count"><my:summaryLink count="${summary.today}"        channelName="${channel.name}" time="${summary.lastUpdated}"     /></td>
           <td class="count"><my:summaryLink count="${summary.yesterday}"    channelName="${channel.name}" time="${summary.lastUpdated - 1}" /></td>
           <td class="count"><my:summaryLink count="${summary.twoDaysAgo}"   channelName="${channel.name}" time="${summary.lastUpdated - 2}" /></td>

@@ -500,16 +500,6 @@ html>/**/body .list tr:hover {
     color: #555;
     filter:progid:DXImageTransform.Microsoft.Alpha(Enabled=1,Style=0,Opacity=60);
 }
-.header #timeMarkerClock {
-    position: absolute;
-    top: 12px;
-    right: 20px;
-    height: 90px;
-    width: 90px;
-}
-* html .header #timeMarkerClock {
-    right: 120px;
-}
 
 /* Footer */
 
@@ -563,9 +553,6 @@ html>/**/body .list tr:hover {
 }
 .mixedViewer .search #period-oneday-date-text {
     width: 6.5em;
-}
-.mixedViewer .search #period-today-time-text {
-    width: 4em;
 }
 .mixedViewer .search #search-channel {
     width: 6em;
@@ -660,14 +647,6 @@ html>/**/body .list tr:hover {
     background-color: yellow;
     color: red;
     font-weight: bold;
-}
-.singleViewer .list tr#timemarker {
-    background-color: #f50;
-    border: 1px #f50 solid;
-    height: .5em;
-}
-.singleViewer .list tr.afterTimeMarker {
-    border-left: 2px #f70 solid;
 }
 .viewer .list .irclog-time {
     white-space: nowrap;
@@ -849,9 +828,6 @@ html>/**/body .viewer .list tr:hover.highlight.optionType td.irclog-message {
 }
 .summary .summary-statement td.count {
     text-align: right;
-    padding-right: .5em;
-}
-.summary .summary-statement th.todayAfterTimeMarker {
     padding-right: .5em;
 }
 .summary .summary-statement .totalCount {

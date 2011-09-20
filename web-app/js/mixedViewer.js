@@ -11,11 +11,6 @@ if (!IRCLOG) IRCLOG = {};
 
         $('search-period').observe('change', handleChangePeriod);
 
-        $('period-today-time-button').observe('click', function(){
-            var dateFormat = new DateFormat("HH:mm");
-            $('period-today-time-text').value = dateFormat.format(new Date());
-        });
-
         setupCalendar();
 
         setOnEnterClickButton('search-submit', "search");
@@ -47,13 +42,6 @@ if (!IRCLOG) IRCLOG = {};
     var handleChangePeriod = function(event) {
         var ele = Event.element(event);
         var selectedValue = ele.options[ele.selectedIndex].value;
-        if (selectedValue == 'today') {
-            $('period-today-select').show();
-            $('period-today-time-text').disabled = false;
-        } else {
-            $('period-today-select').hide();
-            $('period-today-time-text').disabled = true;
-        }
         if (selectedValue == 'oneday') {
             $('period-oneday-select').show();
             $('period-oneday-date-text').disabled = false;

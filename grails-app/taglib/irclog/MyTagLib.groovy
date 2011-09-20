@@ -16,9 +16,7 @@ class MyTagLib {
         def shortDate = new java.text.SimpleDateFormat("yyyyMMdd").format(attrs.time)
         def fullDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(attrs.time)
         def anchor
-        if (attrs.timeMarkerJump) {
-            anchor = '#timemarker'
-        } else if (attrs.permaId) {
+        if (attrs.permaId) {
             anchor = "#pid-${attrs.permaId}"
         } else {
             anchor = ''
@@ -61,12 +59,7 @@ class MyTagLib {
         def timeHHmmss = new java.text.SimpleDateFormat("HH:mm:ss").format(attrs.time)
 
         out << g.link(controller:'mixedViewer', action:'index', params:[*:attrs.params, period:'oneday', 'period-oneday-date':onedayDate]) { "${onedayDate}" }
-        out << '&nbsp;' << '&nbsp;'
-        if (onedayDate == today) {
-            out << g.link(controller:'mixedViewer', action:'index', params:[*:attrs.params, period:'today', 'period-today-time':timeHHmm]) { "${timeHHmmss}" }
-        } else {
-            out << timeHHmmss
-        }
+        out << '&nbsp;' << '&nbsp;' << timeHHmmss
     }
 
     def channelLink = { attrs ->

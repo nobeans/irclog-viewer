@@ -8,7 +8,7 @@ class SummaryController {
     def index() {
         def channelList = channelService.getAccessibleChannelList(request.loginUserDomain, [:]).grep{!it.isArchived}
         [
-            summaryList: summaryService.getAccessibleSummaryList(params, channelList, session.timeMarker),
+            summaryList: summaryService.getAccessibleSummaryList(params, channelList),
             nickPersonList: Person.list(),
             topicList: summaryService.getHotTopicList(channelList)
         ]

@@ -1,7 +1,6 @@
 package irclog
 
 import groovy.sql.Sql
-import irclog.helper.TimeMarker
 import irclog.utils.DateUtils
 import java.text.SimpleDateFormat
 
@@ -32,9 +31,9 @@ class SummaryService {
     }
 
     /** アクセス可能な全チャンネルのサマリ情報を取得する。 */
-    List<Summary> getAccessibleSummaryList(params, accessibleChannelList, TimeMarker timeMarker) {
+    List<Summary> getAccessibleSummaryList(params, accessibleChannelList) {
         // 全てのサマリを取得して、アクセス可能な範囲に絞り込む
-        def summaryList = getAllSummaryList(params, timeMarker).findAll{it.channel in accessibleChannelList}
+        def summaryList = getAllSummaryList(params).findAll{it.channel in accessibleChannelList}
 
         // FIXME: 単に表示しない、というだけで良い気がする。後で削除するかも。
         // 何らかの原因でサマリが存在しないチャンネルがある場合、ダミーサマリを登録
@@ -47,18 +46,13 @@ class SummaryService {
     }
 
     /** 全チャンネルのサマリ情報を取得する。 */
-    private List<Summary> getAllSummaryList(params, TimeMarker timeMarker) {
+    private List<Summary> getAllSummaryList(params) {
         // サマリ更新
         updateSummary()
 
         // ソート条件を解決してから、サマリを取得
         def originalSort = resolveSortCondition(params)
         def summaryList = Summary.list(params)
-
-        // タイムマーカが指定されている場合は、タイムマーカ以降の件数を取得して結果に追加反映する。
-        if (timeMarker) {
-            setupTodayAfterTimeMarker(summaryList, timeMarker)
-        }
 
         // 独自ソート
         // チャンネル名(channel)
@@ -87,17 +81,6 @@ class SummaryService {
         //  - とはいえ、その後オンラインインポートによって誰かのログがINSERTされれば、再び期待通りとなる。
         //  - それほど問題とはならないと考えるため、現時点では対処しないこととする。
 
-        // 独自ソート
-        // 累積件素(total/totalBeforeYesterday)
-        //  - 今日の件数を加えた累積件数(total)はDB上に存在しないため、totalBeforeYesterdayに差し替えしている。
-        //  - このソート結果自体は不要であるが、他のUI上も有効なソートキーとは異なるキーでなければならない。
-        //  - ここでは、使われたソートキーがtotalBeforeYesterdayの場合、total()を使って再ソートする。
-        if (originalSort == 'todayAfterTimeMarker') {
-            params.sort = originalSort // UI上のソートキーに戻す
-            summaryList.sort{it.todayAfterTimeMarker}
-            return (params.order == 'desc') ? summaryList.reverse() : summaryList
-        }
-
         return summaryList
     }
 
@@ -112,9 +95,6 @@ class SummaryService {
             case 'total': // UI上では単にtotalであるが、内部的にはいったんtotalBeforeYesterdayにする
                 params.sort = 'totalBeforeYesterday' // 何でも良い
                 return 'total'
-            case 'todayAfterTimeMarker':
-                params.sort = 'totalBeforeYesterday' // 何でも良い
-                return 'todayAfterTimeMarker'
             case Summary.SORTABLE:
                 return params.sort // そのまま
             default:
@@ -232,22 +212,4 @@ class SummaryService {
         """.toString())
         log.info "Updated all summary: deleted(${resultDeleted}), inserted(${resultInserted})"
     }
-
-    private void setupTodayAfterTimeMarker(List<Summary> summaryList, TimeMarker timeMarker) {
-        // 0:Integer(count), 1:Channel
-        def result = Irclog.withCriteria {
-            projections {
-                rowCount()
-            }
-            isNotNull('channel')
-            ge('time', timeMarker.time)
-            'in'('type', Irclog.ESSENTIAL_TYPES)
-            groupProperty('channel')
-        }
-        // タイムマーカ以降の件数を反映する。
-        summaryList.each { summary ->
-            summary.todayAfterTimeMarker = result.find{ it[1] == summary.channel }?.getAt(0) ?: 0
-        }
-    }
-
 }

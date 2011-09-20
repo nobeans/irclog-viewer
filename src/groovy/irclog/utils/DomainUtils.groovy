@@ -72,7 +72,6 @@ class DomainUtils {
     static Summary createSummary(propertyMap = [:]) {
         def id = counter.getAndIncrement()
         def defaultProps = [
-            todayAfterTimeMarker:id,
             today:1,
             yesterday:2,
             twoDaysAgo:3,

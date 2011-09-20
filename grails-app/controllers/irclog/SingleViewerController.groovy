@@ -38,7 +38,6 @@ class SingleViewerController {
             relatedDates: relatedDates,
             nickPersonList: nickPersonList,
             getPersonByNick: createGetPersonByNickClosure(nickPersonList),
-            needTimerMarkerJump: params.timeMarkerJump
         ]
         render(view:'index', model:model)
     }
