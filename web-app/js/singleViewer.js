@@ -1,83 +1,55 @@
-// プライベート名前空間としてのグローバルオブジェクトを定義
-var IRCLOG;
-if (!IRCLOG) IRCLOG = {};
+// Highlighting specified line
+jQuery(function() {
+    var previousHighlightLine = null;
 
-(function() {
-
-    // Initialize
-    Event.observe(window, 'load', function() {
-        IRCLOG.highlightLine(location.hash.replace('#',''));
-        setupCalendar();
-    });
-
-    // 1行すべてハイライトする。
-    // 対象要素が存在しないIDを指定した場合は、ハイライトを解除する。
-    IRCLOG.highlightLine = (function () {
-        var currentElement = null;
-        return function (newElementId) {
-            // ハイライト行の世代交代をする。
-            var newElement = $(newElementId);
-            if (currentElement) currentElement.removeClassName('highlight');
-            if (newElement) newElement.addClassName('highlight');
-            currentElement = newElement;
-
-            // ハイライト状態の時だけ、選択解除ボタンを有効にする。
-            $('clearHighlight').disabled = (!newElement);
-        };
-    })();
-
-    // 基本種別のログのみを表示するモードとその他の種別も表示するモードをトグルで切り替える。
-    // 初期状態：すべて表示
-    //
-    // すべての種別を表示する。
-    IRCLOG.showAllType = (function () {
-        var showIt = function (it) { it.show() }
-        return function () {
-            $$('tr.optionType').each(showIt);
-            $('toggleTypeFilter-all').hide();
-            $('toggleTypeFilter-filtered').show();
-        };
-    })();
-    // 基本種別のみを表示する。
-    IRCLOG.hideControlType = (function () {
-        var hideIt = function (it) { it.hide() };
-        return function () {
-            $$('tr.optionType').each(hideIt);
-            $('toggleTypeFilter-all').show();
-            $('toggleTypeFilter-filtered').hide();
-        };
-    })();
-
-    // カレンダ設定
-    var setupCalendar = function() {
-        var baseId = "singleCalendar";
-        var calendarId = baseId + "-calendar"
-        var buttonId = baseId + "-button"
-
-        var createHandleSelect = function(calendar) {
-            return function(type, args, obj) {
-                // 日付部を取得する。
-                var date = args[0];
-                var date = date[0];
-                var year = date[0], month = date[1], day = date[2];
-                var targetDate = "" + year + (month < 10 ? "0" + month : month) + (day < 10 ? "0" + day : day);
-
-                // チャンネルを取得する。
-                var select = $('select-single');
-                var channel = select[select.selectedIndex].value.replace('#', '');
-
-                // URLを作成して、リダイレクトする。
-                var url = '/irclog/the/' + channel + '/' + targetDate + '/';
-                //if (!confirm(url)) return false;
-                document.location = url;
-            }
-        }
-
-        var calendar = IRCLOG.createCalendar(calendarId);
-        Event.observe(buttonId, "click",
-            IRCLOG.createCalendarToggleHandler(calendar, function() { return $('currentDate').innerHTML }, $(buttonId))
-        );
-        calendar.selectEvent.subscribe(createHandleSelect(calendar), calendar, true);
+    function highlightLine(targetLine) {
+        // ハイライト行の移動
+        targetLine.addClass('highlight');
+        if (previousHighlightLine) previousHighlightLine.removeClass('highlight');
+        previousHighlightLine = targetLine;
+        // アンカに移動
+        var hash = "#" + targetLine.attr('id');
+        document.location = hash;
+        // ハイライト解除ボタンの有効化
+        jQuery('#clearHighlight').removeAttr('disabled');
     }
 
-})();
+    // 特定行が直接URLで指定された場合の処理
+    if (location.hash) {
+        //previousHighlightLine = jQuery('tr.irclog' + location.hash).addClass('highlight');
+        highlightLine(jQuery('tr.irclog' + location.hash));
+        jQuery('#clearHighlight').removeAttr('disabled');
+    }
+
+    // 1行すべてハイライトする。
+    jQuery('tr.irclog').click(function() {
+        highlightLine(jQuery(this));
+    });
+    jQuery('#clearHighlight').click(function() {
+        // ハイライト解除
+        if (previousHighlightLine) previousHighlightLine.removeClass('highlight');
+        // URLアンカクリア
+        document.location = '#';
+        // ボタン無効化
+        jQuery('#clearHighlight').attr('disabled', 'disabled');
+    });
+});
+
+// 基本種別のログのみを表示するモードとその他の種別も表示するモードをトグルで切り替える。
+// 初期状態：すべて表示
+jQuery(function() {
+    jQuery('#toggleTypeFilter-all').click(function() {
+        // ボタンのトグル
+        jQuery(this).hide();
+        jQuery('#toggleTypeFilter-filtered').show();
+        // 種別ごとのON/OFF
+        jQuery('tr.optionType').show();
+    });
+    jQuery('#toggleTypeFilter-filtered').click(function() {
+        // ボタンのトグル
+        jQuery(this).hide();
+        jQuery('#toggleTypeFilter-all').show();
+        // 種別ごとのON/OFF
+        jQuery('tr.optionType').hide();
+    });
+});

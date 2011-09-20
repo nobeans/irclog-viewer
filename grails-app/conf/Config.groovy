@@ -32,6 +32,31 @@ grails.mime.types = [ html: ['text/html','application/xhtml+xml'],
 
 // What URL patterns should be processed by the resources plugin
 grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*']
+grails.resources.modules = {
+    common {
+        dependsOn 'jquery'
+        resource '/js/application.js'
+        resource '/js/common.js'
+    }
+    calendar {
+        resource '/js/yui/2.5.2/calendar/calendar.js'
+        resource '/js/calendar.js'
+    }
+    singleViewer {
+        dependsOn 'common'
+        //dependsOn 'calendar'
+        resource '/js/singleViewer.js'
+    }
+    mixedViewer {
+        dependsOn 'common'
+        //dependsOn 'calendar'
+        resource '/js/mixedViewer.js'
+    }
+    channel {
+        dependsOn 'common'
+        resource '/js/channel.js'
+    }
+}
 
 // The default codec used to encode data with ${}
 grails.views.default.codec = "none" // none, html, base64

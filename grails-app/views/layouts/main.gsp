@@ -15,10 +15,8 @@
     <link rel="stylesheet" href="${resource(dir:'css',file:'main.css')}" media="all" />
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile.css')}" type="text/css">
     <link rel="stylesheet" href="${resource(dir:'css', file:'print.css')}" media="print" />
-    <g:javascript src="application.js" />
-    <g:javascript src="prototype/prototype.js" />
-    <g:javascript src="common.js" />
     <g:layoutHead />
+    <r:layoutResources/>
   </head>
   <body>
     <div class="header">
@@ -28,7 +26,7 @@
     <div class="nav">
       <g:render template="../layouts/nav" />
     </div>
-    <g:layoutBody />  
+    <g:layoutBody />
     <div class="footer" role="contentinfo">
       <a id="linkeToTop" href="#"><img src="${resource(dir:'images',file:'top.png')}" title="${message(code:"footer.linkToTop.tooltips")}" alt="To top" /></a>
       <div class="right">
@@ -42,5 +40,6 @@
       </div>
     </div>
     <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
+    <r:layoutResources/>
   </body>	
 </html>

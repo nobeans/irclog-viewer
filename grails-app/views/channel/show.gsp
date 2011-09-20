@@ -2,8 +2,8 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="main" />
-    <g:javascript src="channel.js" />
     <title><g:message code="channel.show" default="Show Channel" /></title>
+    <r:require module="channel" />
   </head>
   <body>
     <div class="body channel">

@@ -2,13 +2,9 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="main" />
-    <yui:stylesheet dir="calendar/assets" file="calendar.css" />
     <my:nickStyle persons="${nickPersonList}" classPrefix=".irclog-nick" />
-    <g:javascript src="yui/yui.js" />
-    <yui:javascript dir="calendar" file="calendar.js" />
-    <g:javascript src="calendar.js" />
-    <g:javascript src="dateformat.js" />
-    <g:javascript src="mixedViewer.js" />
+    <yui:stylesheet dir="calendar/assets" file="calendar.css" />
+    <r:require module="mixedViewer" />
     <title><g:message code="mixedViewer" /></title>
   </head>
   <body>

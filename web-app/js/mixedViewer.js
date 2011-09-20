@@ -2,7 +2,7 @@
 var IRCLOG;
 if (!IRCLOG) IRCLOG = {};
 
-(function() {
+jQuery(function() {
 
     // Initialize
     Event.observe(window, 'load', function() {
@@ -124,4 +124,4 @@ if (!IRCLOG) IRCLOG = {};
         calendar.selectEvent.subscribe(createHandleSelect(calendar, toggleFunc), calendar, true);
     }
 
-})()
+});

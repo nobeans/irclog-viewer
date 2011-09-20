@@ -2,9 +2,9 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="main" />
-    <my:nickStyle persons="${nickPersonList}" classPrefix=".channel " />
-    <g:javascript src="channel.js" />
     <title><g:message code="channel.list" default="Channel List" /></title>
+    <my:nickStyle persons="${nickPersonList}" classPrefix=".channel " />
+    <r:require module="channel" />
   </head>
   <body>
     <div class="body channel">
