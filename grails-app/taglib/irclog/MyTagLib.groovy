@@ -44,13 +44,6 @@ class MyTagLib {
         out << singleLink([*:attrs, time:today])
     }
 
-    def selectChannelForSingle = { attrs ->
-        out << g.select(id:'select-single', name:'channel', from:attrs.from, value:attrs.value,
-                 optionKey:'key', optionValue:'value',
-                 onchange:"document.location='/irclog/the/'+this.options[selectedIndex].value.substring(1)+'/${attrs.date.replaceAll('-', '')}'"
-        )
-    }
-
     def timeLink = { attrs ->
         // 指定日部分と時間部分をフォーマットする。
         def today = new java.text.SimpleDateFormat("yyyy-MM-dd").format(new Date())

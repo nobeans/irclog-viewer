@@ -1,5 +1,5 @@
 <div class="caption">
-  <my:selectChannelForSingle from="${selectableChannels}" value="${criterion.channel}" date="${criterion['period-oneday-date']}" />
+  <g:select id="select-single" name="channel" from="${selectableChannels}" value="${criterion.channel}" optionKey="key" optionValue="value" />
   at
   <my:singleLink time="${relatedDates.before}" channelName="${criterion.channel}" image="singleBefore.png" />
   <span id="currentDate">${criterion['period-oneday-date']}</span>

@@ -38,18 +38,15 @@ grails.resources.modules = {
         resource '/js/application.js'
         resource '/js/common.js'
     }
-    calendar {
-        dependsOn 'jquery-ui'
-        resource '/js/calendar.js'
-    }
     singleViewer {
         dependsOn 'common'
-        dependsOn 'calendar'
+        dependsOn 'jquery-ui'
         resource '/js/singleViewer.js'
     }
     mixedViewer {
         dependsOn 'common'
-        dependsOn 'calendar'
+        dependsOn 'jquery-ui'
+        resource '/js/calendar.js'
         resource '/js/mixedViewer.js'
     }
     channel {

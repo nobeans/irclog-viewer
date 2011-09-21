@@ -53,3 +53,28 @@ jQuery(function() {
         jQuery('tr.optionType').hide();
     });
 });
+
+jQuery(function() {
+    function refresh() {
+        var targetDate = jQuery(".datepicker").val().replace(/-/g, '');
+        var channel = jQuery('#select-single').val().replace(/^#/, '');
+        var url = '/irclog/the/' + channel + '/' + targetDate + '/';
+        document.location = url;
+    }
+
+    jQuery('#select-single').change(function() {
+        refresh();
+    });
+
+    jQuery(".datepicker").datepicker({
+        dateFormat: 'yy-mm-dd',
+        showOn: "button",
+        buttonImage: "/irclog/images/calendar.png",
+        buttonImageOnly: true,
+        showButtonPanel: true,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+    }).change(function() {
+        refresh();
+    });
+});
