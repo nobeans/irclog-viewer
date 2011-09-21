@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="${resource(dir:'css',file:'main.css')}" media="all" />
     <link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile.css')}" type="text/css">
     <link rel="stylesheet" href="${resource(dir:'css', file:'print.css')}" media="print" />
+    <r:require module="common" />
     <g:layoutHead />
     <r:layoutResources/>
   </head>
