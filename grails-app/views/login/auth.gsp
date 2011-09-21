@@ -13,7 +13,7 @@
         <form action='${request.contextPath}/j_spring_security_check' method='post' id='loginForm' class='cssform'>
           <p>
             <label for='j_username'><g:message code="person.loginName" />:</label>
-            <input type='text' class='text_' name='j_username' id='j_username'  />
+            <input type='text' class='text_ defaultFocus' name='j_username' id='j_username'  />
           </p>
           <p>
             <label for='j_password'><g:message code="person.password" />:</label>

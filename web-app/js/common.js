@@ -25,4 +25,6 @@ jQuery(function() {
     jQuery(".help-button").click(function() {
         jQuery("#" + this.id + "-caption").toggle();
     });
+
+    jQuery(".defaultFocus").focus();
 });
