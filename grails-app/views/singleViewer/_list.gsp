@@ -5,10 +5,7 @@
   <span id="currentDate">${criterion['period-oneday-date']}</span>
   <my:singleLink time="${relatedDates.after}" channelName="${criterion.channel}" image="singleAfter.png" />
   <my:singleLink time="${relatedDates.latest}" channelName="${criterion.channel}" image="singleToday.png" />
-  <span id="singleCalendar">
-    <img class="button" id="singleCalendar-button" src="${resource(dir:'images', file:'calendar.png')}" title="${message(code:'singleViewer.calendar.tooltips')}" alt="Calendar" />
-    <span id="singleCalendar-calendar"></span>
-  </span>
+  <input type="text" class="datepicker" style="display:none" value="${criterion['period-oneday-date']}" />
 </div>
 <div class="list">
   <div class="paginateButtons top">

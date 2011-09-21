@@ -449,28 +449,6 @@ html>/**/body .list tr:hover {
     font-weight: bold;
 }
 
-/* Yahoo UI */
-
-.yui-calcontainer {
-    display: none;
-    position: absolute !important;
-    width: 260px !important;
-    font-size: 18px !important;
-    z-index: 9 !important;
-}
-.yui-calcontainer .title {
-    font-size: 15px !important;
-    padding: 3px;
-}
-.yui-calendar .calheader,
-.yui-calendar .calweekdaycell {
-    font-size: 15px !important;
-}
-.yui-calendar .calcell a {
-    font-size: 18px;
-    line-height: 24px;
-}
-
 /* Header */
 
 .header {

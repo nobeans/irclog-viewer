@@ -14,7 +14,7 @@ environments {
     development {
         dataSource {
             dbCreate = "create" // one of 'create', 'create-drop','update'
-            url = "jdbc:postgresql://localhost:5432/irclog"
+            url = "jdbc:postgresql://localhost:5432/irclog_dev"
             //loggingSql = true
         }
     }
@@ -29,7 +29,6 @@ environments {
     }
     production {
         dataSource {
-            //dbCreate = "update"
             url = "jdbc:postgresql://localhost:5432/irclog"
         }
     }
