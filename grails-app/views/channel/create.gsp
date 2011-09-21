@@ -7,10 +7,10 @@
   <body>
     <div class="body channel">
       <my:flashMessage bean="${channel}" />
-      <my:withHelp id="channel-create-caption">
+      <my:withHelp id="channel-create-help">
         <h1><g:message code="channel.create" default="Create Channel" /></h1>
       </my:withHelp>
-      <my:help for="channel-create-caption" visible="true">
+      <my:help for="channel-create-help" visible="true">
         <g:message code="channel.create.caption" />
       </my:help>
       <g:form action="save" method="post" >

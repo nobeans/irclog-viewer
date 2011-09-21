@@ -113,15 +113,15 @@ input.image {
     word-break: break-all;
 }
 
-.help {
+.with-help {
     margin: 1em 0 .3em 0;
     padding: 0;
 }
-.help * {
+.with-help * {
     display: inline;
     vertical-align: baseline;
 }
-.help .help-button {
+.with-help .help-button {
     cursor: pointer;
 }
 .help-caption {

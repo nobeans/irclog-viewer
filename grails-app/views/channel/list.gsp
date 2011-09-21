@@ -9,10 +9,10 @@
   <body>
     <div class="body channel">
       <my:flashMessage />
-      <my:withHelp id="channel-list-caption">
+      <my:withHelp id="channel-list-help">
         <h1><g:message code="channel.list" default="Channel List" /></h1>
       </my:withHelp>
-      <my:help for="channel-list-caption">
+      <my:help for="channel-list-help">
         <sec:ifLoggedIn><g:message code="channel.list.caption.isLoggedIn" /></sec:ifLoggedIn>
         <sec:ifNotLoggedIn><g:message code="channel.list.caption.isNotLoggedIn" /></sec:ifNotLoggedIn>
       </my:help>

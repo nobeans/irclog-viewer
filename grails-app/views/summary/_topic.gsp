@@ -1,8 +1,8 @@
 <div class="summary-topic">
-  <my:withHelp id="summary-topic-caption">
+  <my:withHelp id="summary-topic-help">
     <h1><g:message code="summary.topic" /></h1>
   </my:withHelp>
-  <my:help for="summary-topic-caption">
+  <my:help for="summary-topic-help">
     <g:message code="summary.topic.caption" />
   </my:help>
   <ul class="list">

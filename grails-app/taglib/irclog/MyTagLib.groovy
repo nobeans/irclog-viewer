@@ -128,15 +128,14 @@ class MyTagLib {
 
     def withHelp = { attrs, body ->
         out << """
-            <div class="help">
+            <div class="with-help">
               ${body()}
-              <img class="help-button" src="${resource(dir:'images', file:'help.gif')}" alt="help"
-                onclick="\$('${attrs.id}').toggle()" />
+              <img class="help-button" src="${resource(dir:'images', file:'help.gif')}" alt="help" id="${attrs.id}" />
             </div>
         """
     }
     def help = { attrs, body ->
-        out << """<div class="help-caption" id="${attrs.for}" ${(attrs.visible == 'true') ? '' : 'style="display:none"'}>${body()}</div>"""
+        out << """<div class="help-caption" id="${attrs.for}-caption" ${(attrs.visible == 'true') ? '' : 'style="display:none"'}>${body()}</div>"""
     }
 
     /**
