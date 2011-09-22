@@ -62,7 +62,7 @@
       <sec:ifLoggedIn>
         <div class="buttons">
           <span class="menuButton"><g:link class="create" action="create"><g:message code="create" /></g:link></span>
-          <span class="menuButton" id="join"><a href="javascript:void(0);" onclick="IRCLOG.toggleJoinToSecretChannel()"><g:message code="channel.join" />...</a></span>
+          <span class="menuButton" id="join"><a id="toggleJoinToSecretChannel" href="javascript:void(0);"><g:message code="channel.join" />...</a></span>
         </div>
         <div id="joinToSecretChannel" style="display:none">
           <g:form action="join" method="post">
