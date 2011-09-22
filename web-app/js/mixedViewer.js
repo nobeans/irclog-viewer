@@ -1,29 +1,15 @@
 jQuery(function($) {
 
     // Highlight of search key
+    // 指定した種別の文字列中に、検索した文字列があればハイライト表示する。
     (function() {
-        // 指定した種別の文字列中に、検索した文字列があればハイライト表示する。
         function highlightSearchedWord(type) {
             var searchKey = $('#search-' + type).val();
             if (!searchKey) return;
 
-            // <strong>要素で挟んでおいて、色づけはCSSで。
-            var pattern = new RegExp("(" + searchKey.replace(/\s+/g, '|') + ")", 'gi');
-            var replaceToStrong = function(text) {
-                return text.replace(pattern, "<strong>$1</strong>");
-            }
-
-            $('td.irclog-' + type).each(function() {
-                var td = $(this);
-                var children = td.children();
-                if (children.size() > 0) {
-                    children.each(function() {
-                        var anchor = $(this);
-                        anchor.html(replaceToStrong(anchor.html()));
-                    });
-                } else {
-                    td.html(replaceToStrong(td.html()));
-                }
+            var keys = searchKey.replace(/(^\s+)|(\s+$)/g, "").replace(/\s+/g," ").replace(/\$/g, "\$").split(' ');
+            $(keys).each(function() {
+                $('td.irclog-' + type).highlight(this);
             });
         }
         highlightSearchedWord('nick');

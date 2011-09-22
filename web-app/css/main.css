@@ -612,7 +612,12 @@ html>/**/body .list tr:hover {
 .viewer .list td {
     padding: 1px 10px 1px 5px;
 }
-.viewer .list td strong {
+.viewer .list td strong { /* deprecated */
+    background-color: yellow;
+    color: red;
+    font-weight: bold;
+}
+.viewer .list td .highlight {
     background-color: yellow;
     color: red;
     font-weight: bold;

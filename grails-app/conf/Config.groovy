@@ -45,6 +45,7 @@ grails.resources.modules = {
     mixedViewer {
         dependsOn 'jquery-ui'
         resource '/js/mixedViewer.js'
+        resource '/js/jquery.highlight-3.js'
     }
     channel {
         resource '/js/channel.js'
