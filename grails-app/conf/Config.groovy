@@ -37,6 +37,7 @@ grails.resources.modules = {
         dependsOn 'jquery'
         resource '/js/application.js'
         resource '/js/common.js'
+        resource '/js/jquery_kill_referrer.js'
     }
     singleViewer {
         dependsOn 'jquery-ui'
