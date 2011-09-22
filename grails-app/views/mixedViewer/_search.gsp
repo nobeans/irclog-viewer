@@ -3,9 +3,7 @@
     <label for="search-period"><g:message code="mixedViewer.search.period" />:</label>
       <g:select id="search-period" name="period" from="${selectablePeriods}" value="${criterion?.period}" valueMessagePrefix="mixedViewer.search.period" />
       <span id="period-oneday-select" ${(criterion?.period == 'oneday') ? '' : 'style="display:none"'}>
-        <input id="period-oneday-date-text" name="period-oneday-date" type="text" value="${criterion?.'period-oneday-date' ?: ''}" maxlength="10" />
-        <img class="button" id="period-oneday-date-button" src="${resource(dir:'images', file:'calendar.png')}" title="${message(code:'mixedViewer.search.period.oneday.tooltips')}" alt="Calendar" />
-        <span id="period-oneday-date-calendar"></span>
+        <input type="text" class="datepicker" name="period-oneday-date" value="${criterion['period-oneday-date']}" />
       </span>
     <label class="searchItem" for="search-channel"><g:message code="mixedViewer.search.channel" />:</label>
       <g:select id="search-channel" name="channel" from="${selectableChannels}" value="${criterion?.channel}" optionKey="key" optionValue="value" />
