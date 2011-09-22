@@ -4,11 +4,6 @@ if (!IRCLOG) IRCLOG = {};
 
 jQuery(function($) {
 
-    // 指定されたURLに遷移する。
-    IRCLOG.goto = function(url) {
-        document.location = url;
-    }
-
     // Help caption
     $(".help-button").click(function() {
         $("#" + this.id + "-caption").toggle();

@@ -61,7 +61,7 @@
       <div class="buttons">
         <g:form>
           <input type="hidden" name="id" value="${channel?.id}" />
-          <span class="button"><input type="button" class="search" onclick="IRCLOG.goto('${my.searchAllLogsLink(channel:channel)}')" value="${message(code:'channel.searchAllLogs')}" /></span>
+          <span class="button"><input type="button" class="search" onclick="document.location = '${my.searchAllLogsLink(channel:channel)}'" value="${message(code:'channel.searchAllLogs')}" /></span>
           <sec:ifLoggedIn>
             <span class="button"><g:actionSubmit class="edit" action="edit" value="${message(code:'edit')}" /></span>
             <span class="button"><g:actionSubmit class="delete" action="delete" value="${message(code:'delete')}" onclick="return confirm('${message(code:'delete.confirm')}');" /></span>
