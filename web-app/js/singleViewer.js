@@ -1,80 +1,84 @@
-// Highlighting specified line
-jQuery(function() {
-    var previousHighlightLine = null;
+jQuery(function($) {
 
-    function highlightLine(targetLine) {
-        // ハイライト行の移動
-        targetLine.addClass('highlight');
-        if (previousHighlightLine) previousHighlightLine.removeClass('highlight');
-        previousHighlightLine = targetLine;
-        // アンカに移動
-        var hash = "#" + targetLine.attr('id');
-        document.location = hash;
-        // ハイライト解除ボタンの有効化
-        jQuery('#clearHighlight').removeAttr('disabled');
-    }
+    // Highlighting specified line
+    (function() {
+        var previousHighlightLine = null;
 
-    // 特定行が直接URLで指定された場合の処理
-    if (location.hash) {
-        //previousHighlightLine = jQuery('tr.irclog' + location.hash).addClass('highlight');
-        highlightLine(jQuery('tr.irclog' + location.hash));
-        jQuery('#clearHighlight').removeAttr('disabled');
-    }
+        function highlightLine(targetLine) {
+            // ハイライト行の移動
+            targetLine.addClass('highlight');
+            if (previousHighlightLine) previousHighlightLine.removeClass('highlight');
+            previousHighlightLine = targetLine;
+            // アンカに移動
+            var hash = "#" + targetLine.attr('id');
+            document.location = hash;
+            // ハイライト解除ボタンの有効化
+            $('#clearHighlight').removeAttr('disabled');
+        }
 
-    // 1行すべてハイライトする。
-    jQuery('tr.irclog').click(function() {
-        highlightLine(jQuery(this));
-    });
-    jQuery('#clearHighlight').click(function() {
-        // ハイライト解除
-        if (previousHighlightLine) previousHighlightLine.removeClass('highlight');
-        // URLアンカクリア
-        document.location = '#';
-        // ボタン無効化
-        jQuery('#clearHighlight').attr('disabled', 'disabled');
-    });
-});
+        // 特定行が直接URLで指定された場合の処理
+        if (location.hash) {
+            //previousHighlightLine = $('tr.irclog' + location.hash).addClass('highlight');
+            highlightLine($('tr.irclog' + location.hash));
+            $('#clearHighlight').removeAttr('disabled');
+        }
 
-// 基本種別のログのみを表示するモードとその他の種別も表示するモードをトグルで切り替える。
-// 初期状態：すべて表示
-jQuery(function() {
-    jQuery('#toggleTypeFilter-all').click(function() {
-        // ボタンのトグル
-        jQuery(this).hide();
-        jQuery('#toggleTypeFilter-filtered').show();
-        // 種別ごとのON/OFF
-        jQuery('tr.optionType').show();
-    });
-    jQuery('#toggleTypeFilter-filtered').click(function() {
-        // ボタンのトグル
-        jQuery(this).hide();
-        jQuery('#toggleTypeFilter-all').show();
-        // 種別ごとのON/OFF
-        jQuery('tr.optionType').hide();
-    });
-});
+        // 1行すべてハイライトする。
+        $('tr.irclog').click(function() {
+            highlightLine($(this));
+        });
+        $('#clearHighlight').click(function() {
+            // ハイライト解除
+            if (previousHighlightLine) previousHighlightLine.removeClass('highlight');
+            // URLアンカクリア
+            document.location = '#';
+            // ボタン無効化
+            $('#clearHighlight').attr('disabled', 'disabled');
+        });
+    })();
 
-jQuery(function() {
-    function refresh() {
-        var targetDate = jQuery(".datepicker").val().replace(/-/g, '');
-        var channel = jQuery('#select-single').val().replace(/^#/, '');
-        var url = '/irclog/the/' + channel + '/' + targetDate + '/';
-        document.location = url;
-    }
+    // 基本種別のログのみを表示するモードとその他の種別も表示するモードをトグルで切り替える。
+    // 初期状態：すべて表示
+    (function() {
+        $('#toggleTypeFilter-all').click(function() {
+            // ボタンのトグル
+            $(this).hide();
+            $('#toggleTypeFilter-filtered').show();
+            // 種別ごとのON/OFF
+            $('tr.optionType').show();
+        });
+        $('#toggleTypeFilter-filtered').click(function() {
+            // ボタンのトグル
+            $(this).hide();
+            $('#toggleTypeFilter-all').show();
+            // 種別ごとのON/OFF
+            $('tr.optionType').hide();
+        });
+    })();
 
-    jQuery('#select-single').change(function() {
-        refresh();
-    });
+    // Calendar
+    (function() {
+        function refresh() {
+            var targetDate = $(".datepicker").val().replace(/-/g, '');
+            var channel = $('#select-single').val().replace(/^#/, '');
+            var url = '/irclog/the/' + channel + '/' + targetDate + '/';
+            document.location = url;
+        }
 
-    jQuery(".datepicker").datepicker({
-        dateFormat: 'yy-mm-dd',
-        showOn: "button",
-        buttonImage: "/irclog/images/calendar.png",
-        buttonImageOnly: true,
-        showButtonPanel: true,
-        showOtherMonths: true,
-        selectOtherMonths: true,
-    }).change(function() {
-        refresh();
-    });
+        $('#select-single').change(function() {
+            refresh();
+        });
+
+        $(".datepicker").datepicker({
+            dateFormat: 'yy-mm-dd',
+            showOn: "button",
+            buttonImage: "/irclog/images/calendar.png",
+            buttonImageOnly: true,
+            showButtonPanel: true,
+            showOtherMonths: true,
+            selectOtherMonths: true,
+        }).change(function() {
+            refresh();
+        });
+    })();
 });

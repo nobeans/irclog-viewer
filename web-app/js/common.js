@@ -2,7 +2,7 @@
 var IRCLOG;
 if (!IRCLOG) IRCLOG = {};
 
-jQuery(function() {
+jQuery(function($) {
 
     // 指定されたURLに遷移する。
     IRCLOG.goto = function(url) {
@@ -22,9 +22,11 @@ jQuery(function() {
         return false;
     };
 
-    jQuery(".help-button").click(function() {
-        jQuery("#" + this.id + "-caption").toggle();
+    // Help caption
+    $(".help-button").click(function() {
+        $("#" + this.id + "-caption").toggle();
     });
 
-    jQuery(".defaultFocus").focus();
+    // Default focus
+    $(".defaultFocus").focus();
 });
