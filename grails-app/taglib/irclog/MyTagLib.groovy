@@ -6,21 +6,11 @@ class MyTagLib {
 
     static namespace = 'my'
 
-    def dateFormat = { attrs ->
-        if (!attrs.format || !attrs.value) return
-        out << new java.text.SimpleDateFormat(attrs.format).format(attrs.value)
-    }
-
     def singleLink = { attrs, body ->
         if (!attrs.channelName || !attrs.time) return
-        def shortDate = new java.text.SimpleDateFormat("yyyyMMdd").format(attrs.time)
-        def fullDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(attrs.time)
-        def anchor
-        if (attrs.permaId) {
-            anchor = "#pid-${attrs.permaId}"
-        } else {
-            anchor = ''
-        }
+        def shortDate = attrs.time.format("yyyyMMdd")
+        def fullDate =  attrs.time.format("yyyy-MM-dd")
+        def anchor = (attrs.permaId) ?  "#pid-${attrs.permaId}" : ''
         def title = "${attrs.channelName}@${fullDate}"
         out << g.link(url:"/irclog/the/${attrs.channelName.substring(1)}/${shortDate}/${anchor}", title:"${title}") {
             if (attrs.image) {
@@ -36,9 +26,9 @@ class MyTagLib {
     def singleTodayLink = { attrs ->
         // AfterDateが存在して、更にそれが「今日」でない場合に、一気に「今日」に勧める追加リンクを表示する。
         if (!attrs.time) return
-        def today = new Date()
-        def shortToday = new java.text.SimpleDateFormat("yyyyMMdd").format(today)
-        def shortDate = new java.text.SimpleDateFormat("yyyyMMdd").format(attrs.time)
+        def today = DateUtils.today
+        def shortToday = today.format("yyyyMMdd")
+        def shortDate =  attrs.time.format("yyyyMMdd")
         if (shortToday == shortDate) return
         attrs.time = today
         out << singleLink([*:attrs, time:today])
@@ -46,10 +36,8 @@ class MyTagLib {
 
     def timeLink = { attrs ->
         // 指定日部分と時間部分をフォーマットする。
-        def today = new java.text.SimpleDateFormat("yyyy-MM-dd").format(new Date())
-        def onedayDate = new java.text.SimpleDateFormat("yyyy-MM-dd").format(attrs.time)
-        def timeHHmm = new java.text.SimpleDateFormat("HH:mm").format(attrs.time)
-        def timeHHmmss = new java.text.SimpleDateFormat("HH:mm:ss").format(attrs.time)
+        def onedayDate = attrs.time.format("yyyy-MM-dd")
+        def timeHHmmss = attrs.time.format("HH:mm:ss")
 
         out << g.link(controller:'mixedViewer', action:'index', params:[*:attrs.params, period:'oneday', 'period-oneday-date':onedayDate]) { "${onedayDate}" }
         out << '&nbsp;' << '&nbsp;' << timeHHmmss
@@ -76,7 +64,7 @@ class MyTagLib {
             out << """ <li class="menuButton">${g.link(class:key, controller:attrs.controller, action:attrs.action) { g.message(code:key) }}</li> """
         }
     }
-    
+
     def flashMessage = { attrs ->
         if (flash.message) {
             out << """<div class="message">${g.message(code:flash.message, args:flash.args, default:flash.defaultMessage)}</div>"""

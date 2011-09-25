@@ -46,7 +46,7 @@
         <tr id="pid-${irclog.permaId}"
             class="irclog ${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${isEssentialType(irclog.type) ? 'essentialType' : 'optionType'}"
             ${isDefaultHiddenType(irclog.type) ? 'style="display:none"' : ''} >
-          <td class="irclog-time"><my:dateFormat value="${irclog.time}" format="HH:mm:ss" /></td>
+          <td class="irclog-time">${irclog.time.format("HH:mm:ss")}</td>
           <td class="irclog-nick ${irclog.nick?.encodeAsHTML()}" title="${getPersonByNick(irclog.nick)?.realName?.encodeAsHTML() ?: ''}">${irclog.nick?.encodeAsHTML()}</td>
           <td class="irclog-message wordBreak"><my:messageFormat value="${irclog.message}" /></td>
         </tr>

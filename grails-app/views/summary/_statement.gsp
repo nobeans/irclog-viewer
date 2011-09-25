@@ -14,7 +14,7 @@
           </th>
           <my:sortableColumn action="index" defaultOrder="asc" property="channel" code="summary.channel" />
           <% def today = new Date() %>
-          <% def dateBefore = { delta -> my.dateFormat(format:'M/d(E)', value:(today - delta))} %>
+          <% def dateBefore = { delta -> (today - delta).format('M/d(E)') } %>
           <my:sortableColumn class="count" action="index" defaultOrder="desc" property="today" code="summary.today" title="${dateBefore(0)}" />
           <my:sortableColumn class="count" action="index" defaultOrder="desc" property="yesterday">${dateBefore(1)}</my:sortableColumn>
           <my:sortableColumn class="count" action="index" defaultOrder="desc" property="twoDaysAgo">${dateBefore(2)}</my:sortableColumn>
@@ -48,7 +48,7 @@
           <td class="totalCount">${summary.total()}</td>
           <td class="latestIrclog" title="${summary?.latestIrclog?.message?.encodeAsHTML() ?: ''}">
             <g:if test="${summary?.latestIrclog}">
-              <span class="time"><my:dateFormat format="yyyy-MM-dd HH:mm:ss" value="${summary?.latestIrclog?.time}" /></span>
+              <span class="time">${summary?.latestIrclog?.time?.format('yyyy-MM-dd HH:mm:ss')}</span>
               (by <span class="${summary.latestIrclog?.nick?.encodeAsHTML() ?: ''}">${summary?.latestIrclog?.nick?.encodeAsHTML() ?: ''}</span>)
             </g:if>
            </td>
