@@ -726,6 +726,7 @@ html>/**/body .viewer .list tr:hover.highlight.optionType td.irclog-message {
     border-bottom: 1px solid #aaa;
     padding: .5em 1em;
     background: #eee url(../images/slash.png) repeat;
+    z-index: 999;
 }
 #joinToSecretChannel .button input {
     background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
