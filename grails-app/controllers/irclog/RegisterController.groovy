@@ -19,7 +19,7 @@ class RegisterController {
         withLoginPerson { person ->
             // DB上にはrepasswordは存在しないので、画面上の初期表示のためにpasswordからコピーする。
             person.repassword = person.password
-            
+
             [person:person]
         }
     }

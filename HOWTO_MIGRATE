@@ -4,5 +4,7 @@ How to upgrade from previous version
 Change database scheme
 ^^^^^^^^^^^^^^^^^^^^^^
 
-* rename 'today' column in 'summary' table to 'today_'
+ALTER TABLE summary RENAME today TO today_;
+ALTER TABLE role_person RENAME roles_id TO person_id;
+ALTER TABLE role_person RENAME persons_id TO role_id;
 

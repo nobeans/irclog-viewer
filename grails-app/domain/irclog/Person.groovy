@@ -12,10 +12,10 @@ class Person {
 
     static hasMany = [channels:Channel, roles:Role]
 
-    static belongsTo = Role
-
-    static transients = [ 'repassword',
-        'admin', 'accountExpired', 'accountLocked', 'passwordExpired'] // required because there is isXxxx method which is recognized as properties wrongly
+    static transients = [
+        'repassword', // just only for confirmation
+        'admin', 'accountExpired', 'accountLocked', 'passwordExpired' // required because there is isXxxx method which is recognized as properties wrongly
+    ]
 
     static constraints = {
         loginName(blank:false, matches:"[a-zA-Z0-9_-]{3,}", unique:true, maxSize:100)
@@ -26,12 +26,17 @@ class Person {
         }, maxSize:200)
         color(matches:"#[0-9A-Fa-f]{3}|#[0-9A-Fa-f]{6}")
         enabled()
-        roles(nullable:false, size:1..1) // TODO in case of the hasMany's field, it seems that nullable:true is default...
+
+        // In this application, the relation between person and role is one-to-one.
+        // But spring-security requires has-many relationship, so it is.
+        // TODO in case of the hasMany's field, it seems that nullable:true is default...
+        roles(nullable:false, size:1..1)
+
         channels()
     }
 
     static mapping = {
-        roles(column:'roles_id', joinTable:'role_person')
+        roles(column:'person_id', joinTable:'role_person')
         channels(column:'person_channels_id', joinTable:'person_channel')
     }
 

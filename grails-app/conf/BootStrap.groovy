@@ -31,10 +31,9 @@ class BootStrap {
         if (Person.findByLoginName("admin") == null) {
             Person.withTransaction {
                 def password = springSecurityService.encodePassword("admin")
-                def admin = saveSurely(createPerson(loginName:"admin", realName:"Administrator", password:password, enabled:true, nicks:"", color:""))
                 def role = Role.findByName("ROLE_ADMIN")
                 assert role != null
-                role.addToPersons(admin)
+                def admin = saveSurely(createPerson(loginName:"admin", realName:"Administrator", password:password, enabled:true, nicks:"", color:"", roles:[role]))
             }
         }
     }

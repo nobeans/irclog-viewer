@@ -7,12 +7,21 @@ class PersonService {
     static transactional = true
 
     def springSecurityService
+    def grailsApplication
 
     def create(params) {
         def person = new Person(params)
 
         // 自分で登録したときは即有効にする。
         person.enabled = true
+
+        // デフォルトロールに関連づける。
+        def defaultRoleName = grailsApplication.config.irclog.security.defaultRole
+        def role = Role.findByName(defaultRoleName)
+        if (!role) {
+            throw new RuntimeException("Default role not found in database: $defaultRoleName")
+        }
+        person.addToRoles(role)
 
         // 保存する。
         if (person.hasErrors()) return person // 事前
@@ -26,15 +35,6 @@ class PersonService {
             person.repassword = person.password
             if (person.hasErrors()) return person
         }
-
-        // デフォルトロールに関連づける。
-        def defaultRoleName = grailsApplication.config.irclog.security.defaultRole
-        def role = Role.findByName(defaultRoleName)
-        if (!role) {
-            throw new RuntimeException("Default role not found in database: $defaultRoleName")
-        }
-        role.addToPersons(person)
-        if (role.hasErrors()) return person
 
         // 新規登録に成功した場合は、そのままログインする。
         springSecurityService.reauthenticate(person.loginName)

@@ -38,10 +38,6 @@ class PersonController {
                 redirect(action:'list')
                 return
             }
-
-            Role.list().each { role ->
-                role.removeFromPersons(person)
-            }
             person.delete()
             flash.message = "person.deleted"
             flash.args = [params.id]
@@ -88,7 +84,7 @@ class PersonController {
         }
 
         def person = new Person(params)
-        role.addToPersons(person)
+        person.addToRoles(role)
         if (person.save()) {
             // 素のパスワード文字列に対してバリデーションはOKなので、ハッシュに変換する。
             person.password = springSecurityService.encodePassword(params.password)
@@ -102,13 +98,8 @@ class PersonController {
 
     def toAdmin() {
         withPerson(params.id) { person ->
-            Role.list().each { role ->
-                if (role.name == "ROLE_ADMIN") {
-                    role.addToPersons(person)
-                } else {
-                    role.removeFromPersons(person)
-                }
-            }
+            person.removeFromRoles(Role.findByName("ROLE_USER"))
+            person.addToRoles(Role.findByName("ROLE_ADMIN"))
             flash.message = "person.toAdmin.roleChanged"
             redirect(action:'show', id:person.id)
         }
@@ -122,14 +113,8 @@ class PersonController {
                 redirect(action:'show', id:person.id)
                 return
             }
-
-            Role.list().each { role ->
-                if (role.name == "ROLE_USER") {
-                    role.addToPersons(person)
-                } else {
-                    role.removeFromPersons(person)
-                }
-            }
+            person.removeFromRoles(Role.findByName("ROLE_ADMIN"))
+            person.addToRoles(Role.findByName("ROLE_USER"))
             flash.message = "person.toUser.roleChanged"
             redirect(action:'show', id:person.id)
         }
