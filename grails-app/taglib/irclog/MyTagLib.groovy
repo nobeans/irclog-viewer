@@ -100,16 +100,6 @@ class MyTagLib {
         out << ((attrs.count == 0) ? 0 : singleLink([*:attrs, text:attrs.count]))
     }
 
-    def topicLink = { attrs, body ->
-        // MEMO:
-        // period指定がないとセッションの検索条件よりも優先されないことに注意すること。
-        // 個別のtypeによる検索UIを提供していないため、その後ユーザが他の条件と組み合わせて検索しやすいmessage条件を使うようにした。
-        // 将来的にtype検索を提供するのであれば、ここでもtype検索にすればよい。
-        //def params = [type:"TOPIC", period:"all"]
-        def params = [message:"TOPIC:", period:"all"]
-        out << g.link(controller:'mixedViewer', action:'index', params:params) { body() }
-    }
-
     def withHelp = { attrs, body ->
         out << """
             <div class="with-help">
