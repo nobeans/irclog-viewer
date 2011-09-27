@@ -27,6 +27,9 @@ class RegisterController {
 
     def update() {
         withLoginPerson { person ->
+            // ユーザによる情報更新の場合は一部のプロパティは変更不可
+            params.remove 'enabled'
+
             // 更新する。
             person = personService.update(person, params)
             if (person.hasErrors()) {
@@ -72,7 +75,7 @@ class RegisterController {
     }
 
     private withLoginPerson(closure) {
-        def personId = request.loginUserDomain?.id // TODO
+        def personId = request.loginUserDomain?.id
         def person = Person.get(personId)
         if (!person) {
             flash.errors = ["register.not.found"]
