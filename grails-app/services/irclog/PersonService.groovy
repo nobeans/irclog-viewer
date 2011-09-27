@@ -1,7 +1,5 @@
 package irclog
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken as AuthToken
-
 class PersonService {
 
     static transactional = true
@@ -10,10 +8,8 @@ class PersonService {
     def grailsApplication
 
     def create(params) {
+        // パラメタを反映したPersonインスタンスを生成する。
         def person = new Person(params)
-
-        // 自分で登録したときは即有効にする。
-        person.enabled = true
 
         // デフォルトロールに関連づける。
         def defaultRoleName = grailsApplication.config.irclog.security.defaultRole
@@ -23,44 +19,33 @@ class PersonService {
         }
         person.addToRoles(role)
 
-        // 保存する。
-        if (person.hasErrors()) return person // 事前
-        person.save()
-        if (person.hasErrors()) return person // 事後
-
-        // 素のパスワード文字列に対してバリデーションはOKなので、ハッシュに変換する。
-        def rawPassword = person.password // 後でログイン用に使うため、退避しておく。
+        // パスワード文字列をハッシュに変換する。
         if (person.password && person.repassword && person.password == person.repassword) {
-            person.password = springSecurityService.encodePassword(rawPassword)
+            person.password = springSecurityService.encodePassword(person.password)
             person.repassword = person.password
-            if (person.hasErrors()) return person
         }
 
-        // 新規登録に成功した場合は、そのままログインする。
-        springSecurityService.reauthenticate(person.loginName)
+        // 保存する。
+        person.save()
 
         return person
     }
 
     def update(person, params) {
-        // 入力を反映する。
+        // 変更有無判定用に、現在のエンコード済みパスワードを退避しておく。
         def currentEncodedPassword = person.password
+
+        // 入力を反映する。
         person.properties = params
 
-        // 保存する。
-        if (person.hasErrors()) return person // 事前
-        person.save()
-        if (person.hasErrors()) return person // 事後
-
-        // 素のパスワード文字列に対してバリデーションはOKなので、ハッシュに変換する。
-        if (currentEncodedPassword != person.password) {
+        // パスワード文字列をハッシュに変換する。
+        if (person.password && person.repassword && person.password == person.repassword && person.password != currentEncodedPassword) {
             person.password = springSecurityService.encodePassword(params.password)
             person.repassword = person.password
-            if (person.hasErrors()) return person
         }
 
-        // 更新に成功した場合は、セッション上のユーザ情報を更新する。
-        springSecurityService.reauthenticate(person.loginName)
+        // 保存する。
+        person.save()
 
         return person
     }

@@ -6,6 +6,7 @@ package irclog
 class PersonController {
 
     def springSecurityService
+    def personService
 
     def index() { redirect(action:'list', params:params) }
 
@@ -26,7 +27,7 @@ class PersonController {
 
     def show() {
         withPerson(params.id) { person ->
-            [person:person]
+            return [person:person]
         }
     }
 
@@ -50,28 +51,26 @@ class PersonController {
             // DB上にはrepasswordは存在しないので、画面上の初期表示のためにpasswordからコピーする。
             person.repassword = person.password
 
-            [person:person]
+            return [person:person]
         }
     }
 
     def update() {
         withPerson(params.id) { person ->
-            def currentEncodedPassword = person.password
-            person.properties = params
-            if (person.save()) {
-                // 素のパスワード文字列に対してバリデーションはOKなので、ハッシュに変換する。
-                if (currentEncodedPassword != person.password) {
-                    person.password = springSecurityService.encodePassword(params.password)
-                }
-                redirect(action:'show', id:person.id)
-            } else {
+            // 更新する。
+            person = personService.update(person, params)
+            if (person.hasErrors()) {
                 render(view:'edit', model:[person:person])
+                return
             }
+
+            flash.message = "person.updated"
+            redirect(action:'show', id:person.id)
         }
     }
 
     def create() {
-        [person:new Person()]
+        return [person:new Person()]
     }
 
     def save() {
@@ -83,17 +82,15 @@ class PersonController {
             return
         }
 
-        def person = new Person(params)
-        person.addToRoles(role)
-        if (person.save()) {
-            // 素のパスワード文字列に対してバリデーションはOKなので、ハッシュに変換する。
-            person.password = springSecurityService.encodePassword(params.password)
-
-            flash.message = "person.created"
-            redirect(action:'show', id:person.id)
-        } else {
+        // 登録する。
+        def person = personService.create(params)
+        if (person.hasErrors()) {
             render(view:'create', model:[person:person])
+            return
         }
+
+        flash.message = "person.created"
+        redirect(action:'show', id:person.id)
     }
 
     def toAdmin() {
@@ -128,6 +125,6 @@ class PersonController {
             redirect(action:'list')
             return
         }
-        closure(person)
+        return closure(person)
     }
 }

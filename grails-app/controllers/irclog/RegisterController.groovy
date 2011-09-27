@@ -6,6 +6,7 @@ package irclog
 class RegisterController {
 
     def personService
+    def springSecurityService
 
     static allowedMethods = [save:'POST', update:'POST']
 
@@ -26,13 +27,18 @@ class RegisterController {
 
     def update() {
         withLoginPerson { person ->
+            // 更新する。
             person = personService.update(person, params)
-            if (!person.hasErrors()) {
-                flash.message = 'register.updated'
-                redirect(action:'show', id:person.id)
-            } else {
+            if (person.hasErrors()) {
                 render(view:'edit', model:[person:person])
+                return
             }
+
+            // 更新に成功した場合は、セッション上のユーザ情報を更新する。
+            springSecurityService.reauthenticate(person.loginName)
+
+            flash.message = 'register.updated'
+            redirect(action:'show', id:person.id)
         }
     }
 
@@ -48,13 +54,21 @@ class RegisterController {
             return
         }
 
+        // 自分で登録したときは即有効にする。
+        params.enabled = true
+
+        // 登録する。
         def person = personService.create(params)
-        if (!person.hasErrors()) {
-            flash.message = "register.created"
-            redirect(action:'show')
-        } else {
+        if (person.hasErrors()) {
             render(view:'create', model:[person:person])
+            return
         }
+
+        // 新規登録に成功した場合は、そのままログインする。
+        springSecurityService.reauthenticate(person.loginName)
+
+        flash.message = "register.created"
+        redirect(action:'show')
     }
 
     private withLoginPerson(closure) {
