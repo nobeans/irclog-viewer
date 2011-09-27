@@ -17,8 +17,6 @@ class SummaryServiceTests {
         setUpChannel()
         setUpPerson()
         setUpRelationBetweenPersonAndChannel()
-        setUpIrclog()
-        setUpSummary()
 
         originalGetToday = DateUtils.metaClass.static.getToday
         DateUtils.metaClass.static.getToday = {-> return DateUtils.toDate("2011-01-01 12:34:56") }
@@ -30,9 +28,9 @@ class SummaryServiceTests {
     }
 
     private setUpChannel() {
-        (1..3).each { num ->
-            this."ch${num}" = saveSurely(createChannel(name:"#ch${num}", description:"${10 - num}"))
-        }
+        ch1 = saveSurely(createChannel(name:"#ch1", description:"ch1 is nice!"))
+        ch2 = saveSurely(createChannel(name:"#ch2", description:"ch2 is nice!"))
+        ch3 = saveSurely(createChannel(name:"#ch3", description:"ch3 is nice!"))
     }
     private setUpPerson() {
         admin = Person.findByLoginName("admin") // setup in Bootstrap
@@ -50,20 +48,9 @@ class SummaryServiceTests {
         user3.addToChannels(ch3)
         userX.addToChannels(ch3)
     }
-    private setUpIrclog() {
-//        saveIrclog(channel:ch1, type:"TOPIC", message:"It's important topic")
-//        saveIrclog(channel:ch1, type:"PRIVMSG", message:"It's just a private message")
-//        saveIrclog(channel:ch2, type:"TOPIC", message:"It's important topic")
-//        saveIrclog(channel:ch2, type:"JOIN", message:"It's just a join log")
-//        saveIrclog(channel:ch3, type:"TOPIC", message:"It's important topic")
-    }
-    private setUpSummary() {
-//        saveSurely(createSummary(channel:ch1, latestIrclog:Irclog.findByPermaId("log:ch1:0")))
-//        saveSurely(createSummary(channel:ch2, latestIrclog:Irclog.findByPermaId("log:ch2:0")))
-//        saveSurely(createSummary(channel:ch3, latestIrclog:Irclog.findByPermaId("log:ch3:0")))
-    }
 
-    void testGetHotTopicList_withinOneWeekAgo() {
+    @Test
+    void getHotTopicList_withinOneWeekAgo() {
         // Setup
         def expected = []
         expected << saveIrclog(time:"2011-01-01 12:34:56", type:"TOPIC")
@@ -78,7 +65,8 @@ class SummaryServiceTests {
         assert topics == expected
     }
 
-    void testGetHotTopicList_onlyTopic() {
+    @Test
+    void getHotTopicList_onlyTopic() {
         // Setup
         def expected = []
         expected << saveIrclog(time:"2011-01-01 12:34:56", type:"TOPIC")
@@ -93,7 +81,8 @@ class SummaryServiceTests {
         assert topics == expected
     }
 
-    void testGetHotTopicList_onlyInAccessibleChannels() {
+    @Test
+    void getHotTopicList_onlyInAccessibleChannels() {
         // Setup
         def expected = []
         saveIrclog(time:"2011-01-01 12:34:56", type:"TOPIC", channel:ch1)
@@ -108,7 +97,8 @@ class SummaryServiceTests {
         assert topics == expected
     }
 
-    void testGetHotTopicList_notExistsAnyAccessibleChannels() {
+    @Test
+    void getHotTopicList_notExistsAnyAccessibleChannels() {
         // Setup
         saveIrclog(time:"2011-01-01 12:34:56", type:"TOPIC", channel:ch1)
         saveIrclog(time:"2011-01-01 12:34:56", type:"TOPIC", channel:ch2)
@@ -134,8 +124,6 @@ class SummaryServiceTests {
             type: "PRIVMSG",
         ]
         def mergedMap = defaultMap + propMap
-        def permaId =  mergedMap.toString() // to avoid stack overflow
-        mergedMap.permaId = permaId
         return saveSurely(createIrclog(mergedMap))
     }
 }
