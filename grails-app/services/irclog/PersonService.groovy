@@ -20,9 +20,8 @@ class PersonService {
         person.addToRoles(role)
 
         // パスワード文字列をハッシュに変換する。
-        if (person.password && person.repassword && person.password == person.repassword) {
-            person.password = springSecurityService.encodePassword(person.password)
-            person.repassword = person.password
+        if (person.validate()) {
+            encodePassword(person)
         }
 
         // 保存する。
@@ -39,14 +38,19 @@ class PersonService {
         person.properties = params
 
         // パスワード文字列をハッシュに変換する。
-        if (person.password && person.repassword && person.password == person.repassword && person.password != currentEncodedPassword) {
-            person.password = springSecurityService.encodePassword(params.password)
-            person.repassword = person.password
+        if (person.validate() && person.password != currentEncodedPassword) {
+            encodePassword(person)
         }
 
         // 保存する。
         person.save()
 
+        return person
+    }
+
+    private Person encodePassword(person) {
+        person.password = springSecurityService.encodePassword(person.password)
+        person.repassword = springSecurityService.encodePassword(person.repassword)
         return person
     }
 }
