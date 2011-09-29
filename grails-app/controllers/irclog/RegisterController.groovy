@@ -5,7 +5,6 @@ package irclog
  */
 class RegisterController {
 
-    def personService
     def springSecurityService
 
     static allowedMethods = [save:'POST', update:'POST']
@@ -31,7 +30,8 @@ class RegisterController {
             params.remove 'enabled'
 
             // 更新する。
-            person = personService.update(person, params)
+            person.properties = params
+            person.save()
             if (person.hasErrors()) {
                 render(view:'edit', model:[person:person])
                 return
@@ -61,7 +61,8 @@ class RegisterController {
         params.enabled = true
 
         // 登録する。
-        def person = personService.create(params)
+        def person = new Person(params)
+        person.save()
         if (person.hasErrors()) {
             render(view:'create', model:[person:person])
             return

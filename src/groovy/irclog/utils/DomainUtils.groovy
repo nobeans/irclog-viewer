@@ -10,7 +10,7 @@ class DomainUtils {
     private static AtomicInteger counter = new AtomicInteger(0)
 
     static saveSurely(domain) {
-        domain.save()
+        domain.save(flush:true)
         assert domain.hasErrors() == false : domain.errors
         return domain
     }
@@ -39,7 +39,7 @@ class DomainUtils {
             enabled: true,
             nicks: "${loginName}_",
             color: "#fff",
-            roles: [createRole()],
+            roles: [propertyMap.roles ?: createRole()],
             channels: [],
         ]
         new Person(defaultProps + propertyMap)

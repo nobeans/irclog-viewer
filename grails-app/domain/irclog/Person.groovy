@@ -2,20 +2,21 @@ package irclog
 
 class Person {
 
+    def springSecurityService
+
     String loginName
     String realName
     String password
-    String repassword // for confirmation (not storing to database)
-    boolean enabled   // user staus (wether an user can login)
+    def repassword // for confirmation (not storing to database)
     String nicks // commpa separated nicks
     String color // for coloring on screen
 
-    static hasMany = [channels:Channel, roles:Role]
+    boolean enabled   // user staus (wether an user can login)
+    final accountExpired = false
+    final accountLocked = false
+    final passwordExpired = false
 
-    static transients = [
-        'repassword', // just only for confirmation
-        'admin', 'accountExpired', 'accountLocked', 'passwordExpired' // required because there is isXxxx method which is recognized as properties wrongly
-    ]
+    static hasMany = [channels:Channel, roles:Role]
 
     static constraints = {
         loginName(blank:false, matches:"[a-zA-Z0-9_-]{3,}", unique:true, maxSize:100)
@@ -26,12 +27,6 @@ class Person {
         }, maxSize:200)
         color(matches:"#[0-9A-Fa-f]{3}|#[0-9A-Fa-f]{6}")
         enabled()
-
-        // In this application, the relation between person and role is one-to-one.
-        // But spring-security requires has-many relationship, so it is.
-        // TODO in case of the hasMany's field, it seems that nullable:true is default...
-        roles(nullable:false, size:1..1)
-
         channels()
     }
 
@@ -43,8 +38,24 @@ class Person {
     boolean isAdmin() {
         return (roles?.find{it.name == Role.ADMIN}) != null
     }
-    boolean isAccountExpired()  { false }
-    boolean isAccountLocked()   { false }
-    boolean isPasswordExpired() { false }
 
+    def beforeInsert() {
+        encodePassword()
+        addUserRole()
+    }
+    def beforeUpdate() {
+        if (isDirty('password')) {
+            encodePassword()
+        }
+    }
+    private void encodePassword() {
+        password = springSecurityService.encodePassword(password)
+        repassword = password
+    }
+    private void addUserRole() {
+        if (roles) return
+        def role = Role.findByName(Role.USER)
+        if (!role) throw new RuntimeException("User role not found in database")
+        addToRoles(role)
+    }
 }

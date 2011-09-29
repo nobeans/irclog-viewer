@@ -5,9 +5,6 @@ package irclog
  */
 class PersonController {
 
-    def springSecurityService
-    def personService
-
     def index() { redirect(action:'list', params:params) }
 
     // the delete, save and update actions only accept POST requests
@@ -58,7 +55,8 @@ class PersonController {
     def update() {
         withPerson(params.id) { person ->
             // 更新する。
-            person = personService.update(person, params)
+            person.properties = params
+            person.save()
             if (person.hasErrors()) {
                 render(view:'edit', model:[person:person])
                 return
@@ -83,7 +81,8 @@ class PersonController {
         }
 
         // 登録する。
-        def person = personService.create(params)
+        def person = new Person(params)
+        person.save()
         if (person.hasErrors()) {
             render(view:'create', model:[person:person])
             return

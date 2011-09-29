@@ -163,7 +163,6 @@ grails.plugins.springsecurity.userLookup.authoritiesPropertyName = 'roles'
 grails.plugins.springsecurity.userLookup.accountExpiredPropertyName = 'accountExpired'
 grails.plugins.springsecurity.userLookup.accountLockedPropertyName = 'accountLocked'
 grails.plugins.springsecurity.userLookup.passwordExpiredPropertyName = 'passwordExpired'
-grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'PersonAuthority'
 grails.plugins.springsecurity.authority.className = 'irclog.Role'
 grails.plugins.springsecurity.authority.nameField = 'name'
 
