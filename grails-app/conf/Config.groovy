@@ -128,17 +128,9 @@ log4j = {
     root {
         warn 'stdout', 'file'
     }
-    environments {
-        development {
-            warn   grailsDefaultsLoggingTargets
-            info   myAppTargets
-            debug  'grails.app.filters.RequestTracelogFilters'
-        }
-        production {
-            error  grailsDefaultsLoggingTargets
-            info   myAppTargets
-        }
-    }
+    warn   grailsDefaultsLoggingTargets
+    info   myAppTargets
+    debug  'grails.app.filters.RequestTracelogFilters'
 }
 
 // irclog-viewer
