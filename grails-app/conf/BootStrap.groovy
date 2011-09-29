@@ -21,8 +21,8 @@ class BootStrap {
     private void setupRolesIfNotExists() {
         if (Role.count() == 0) {
             Role.withTransaction {
-                saveSurely(createRole(name:'ROLE_USER',  description:'User'))
-                saveSurely(createRole(name:'ROLE_ADMIN', description:'Administrator'))
+                saveSurely(createRole(name:Role.USER,  description:'User'))
+                saveSurely(createRole(name:Role.ADMIN, description:'Administrator'))
             }
         }
     }
@@ -31,7 +31,7 @@ class BootStrap {
         if (Person.findByLoginName("admin") == null) {
             Person.withTransaction {
                 def password = springSecurityService.encodePassword("admin")
-                def role = Role.findByName("ROLE_ADMIN")
+                def role = Role.findByName(Role.ADMIN)
                 assert role != null
                 def admin = saveSurely(createPerson(loginName:"admin", realName:"Administrator", password:password, enabled:true, nicks:"", color:"", roles:[role]))
             }

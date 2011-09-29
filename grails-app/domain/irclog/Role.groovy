@@ -2,7 +2,10 @@ package irclog
 
 class Role {
 
-    String name = 'ROLE_'
+    final static USER = 'ROLE_USER'
+    final static ADMIN = 'ROLE_ADMIN'
+
+    String name
     String description
 
     static constraints = {

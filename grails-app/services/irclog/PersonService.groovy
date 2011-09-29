@@ -5,17 +5,15 @@ class PersonService {
     static transactional = true
 
     def springSecurityService
-    def grailsApplication
 
     def create(params) {
         // パラメタを反映したPersonインスタンスを生成する。
         def person = new Person(params)
 
         // デフォルトロールに関連づける。
-        def defaultRoleName = grailsApplication.config.irclog.security.defaultRole
-        def role = Role.findByName(defaultRoleName)
+        def role = Role.findByName(Role.USER)
         if (!role) {
-            throw new RuntimeException("Default role not found in database: $defaultRoleName")
+            throw new RuntimeException("User role not found in database")
         }
         person.addToRoles(role)
 

@@ -41,7 +41,7 @@ class Person {
     }
 
     boolean isAdmin() {
-        return (roles?.find{it.name == "ROLE_ADMIN"}) != null
+        return (roles?.find{it.name == Role.ADMIN}) != null
     }
     boolean isAccountExpired()  { false }
     boolean isAccountLocked()   { false }

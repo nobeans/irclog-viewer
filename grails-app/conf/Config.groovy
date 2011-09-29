@@ -147,9 +147,6 @@ irclog {
     viewer.typeVisible = true
     viewer.defaultTargetUrl = "/summary"
     session.maxInactiveInterval = 24 * 60 * 60 // [sec] => 1day
-
-    /** default user's role for user registration */
-    security.defaultRole = 'ROLE_USER'
 }
 
 //------------------------------------------

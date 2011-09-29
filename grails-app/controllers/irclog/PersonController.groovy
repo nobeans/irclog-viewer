@@ -74,10 +74,10 @@ class PersonController {
     }
 
     def save() {
-        // デフォルトロールを取得する。
-        def role = Role.findByName(grailsApplication.config.irclog.security.defaultRole)
+        // ユーザロールを取得する。
+        def role = Role.findByName(Role.USER)
         if (!role) {
-            flash.message = 'register.defaultRoleNotFound.'
+            flash.message = 'register.userRoleNotFound.'
             redirect(controller:'top')
             return
         }
@@ -95,8 +95,8 @@ class PersonController {
 
     def toAdmin() {
         withPerson(params.id) { person ->
-            person.removeFromRoles(Role.findByName("ROLE_USER"))
-            person.addToRoles(Role.findByName("ROLE_ADMIN"))
+            person.removeFromRoles(Role.findByName(Role.USER))
+            person.addToRoles(Role.findByName(Role.ADMIN))
             flash.message = "person.toAdmin.roleChanged"
             redirect(action:'show', id:person.id)
         }
@@ -110,8 +110,8 @@ class PersonController {
                 redirect(action:'show', id:person.id)
                 return
             }
-            person.removeFromRoles(Role.findByName("ROLE_ADMIN"))
-            person.addToRoles(Role.findByName("ROLE_USER"))
+            person.removeFromRoles(Role.findByName(Role.ADMIN))
+            person.addToRoles(Role.findByName(Role.USER))
             flash.message = "person.toUser.roleChanged"
             redirect(action:'show', id:person.id)
         }
