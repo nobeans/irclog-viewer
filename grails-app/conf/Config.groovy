@@ -157,12 +157,8 @@ import grails.plugins.springsecurity.SecurityConfigType
 // user and role class properties
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'irclog.Person'
 grails.plugins.springsecurity.userLookup.usernamePropertyName = 'loginName'
-grails.plugins.springsecurity.userLookup.enabledPropertyName = 'enabled'
 grails.plugins.springsecurity.userLookup.passwordPropertyName = 'password'
 grails.plugins.springsecurity.userLookup.authoritiesPropertyName = 'roles'
-grails.plugins.springsecurity.userLookup.accountExpiredPropertyName = 'accountExpired'
-grails.plugins.springsecurity.userLookup.accountLockedPropertyName = 'accountLocked'
-grails.plugins.springsecurity.userLookup.passwordExpiredPropertyName = 'passwordExpired'
 grails.plugins.springsecurity.authority.className = 'irclog.Role'
 grails.plugins.springsecurity.authority.nameField = 'name'
 
