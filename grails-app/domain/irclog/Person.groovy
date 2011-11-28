@@ -28,6 +28,11 @@ class Person {
         color(matches:"#[0-9A-Fa-f]{3}|#[0-9A-Fa-f]{6}")
         enabled()
         channels()
+
+        // In this application, the relation between person and role is one-to-one.
+        // But spring-security requires has-many relationship, so it is.
+        // TODO in case of the hasMany's field, it seems that nullable:true is default...
+        roles(nullable:false, size:1..1)
     }
 
     static mapping = {
