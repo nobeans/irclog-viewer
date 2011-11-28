@@ -1,7 +1,3 @@
-// プライベート名前空間としてのグローバルオブジェクトを定義
-var IRCLOG;
-if (!IRCLOG) IRCLOG = {};
-
 jQuery(function($) {
 
     // Help caption
