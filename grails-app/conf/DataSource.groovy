@@ -13,8 +13,12 @@ hibernate {
 environments {
     development {
         dataSource {
+            //url = "jdbc:postgresql://localhost:5432/irclog_dev"
+            driverClassName = "org.h2.Driver"
             dbCreate = "create" // one of 'create', 'create-drop','update'
-            url = "jdbc:postgresql://localhost:5432/irclog_dev"
+            url = "jdbc:h2:mem:irclog_dev"
+            username = "sa"
+            password = ""
             //loggingSql = true
         }
     }
@@ -22,7 +26,7 @@ environments {
         dataSource {
             driverClassName = "org.h2.Driver"
             dbCreate = "update"
-            url = "jdbc:h2:mem:testDb"
+            url = "jdbc:h2:mem:irclog_test"
             username = "sa"
             password = ""
         }
