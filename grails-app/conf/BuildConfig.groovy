@@ -41,7 +41,6 @@ grails.project.dependency.resolution = {
         compile ":jquery-ui:1.8.15"
         compile ":resources:1.0.2"
         compile ":spring-security-core:1.2.1"
-
         build ":tomcat:$grailsVersion"
     }
 }
