@@ -9,12 +9,6 @@ class DomainUtils {
 
     private static AtomicInteger counter = new AtomicInteger(0)
 
-    static saveSurely(domain) {
-        domain.save(flush:true)
-        assert domain.hasErrors() == false : domain.errors
-        return domain
-    }
-
     static Channel createChannel(propertyMap = [:]) {
         def id = counter.getAndIncrement()
         def name = propertyMap.name ?: "#channel${id}"

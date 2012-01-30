@@ -28,15 +28,15 @@ class SummaryServiceTests {
     }
 
     private setUpChannel() {
-        ch1 = saveSurely(createChannel(name:"#ch1", description:"ch1 is nice!"))
-        ch2 = saveSurely(createChannel(name:"#ch2", description:"ch2 is nice!"))
-        ch3 = saveSurely(createChannel(name:"#ch3", description:"ch3 is nice!"))
+        ch1 = createChannel(name:"#ch1", description:"ch1 is nice!").save(failOnError:true)
+        ch2 = createChannel(name:"#ch2", description:"ch2 is nice!").save(failOnError:true)
+        ch3 = createChannel(name:"#ch3", description:"ch3 is nice!").save(failOnError:true)
     }
     private setUpPerson() {
         admin = Person.findByLoginName("admin") // setup in Bootstrap
         def roleUser = Role.findByName("ROLE_USER")
         ["1", "2", "3", "X"].each { id ->
-            def user = saveSurely(createPerson(loginName:"user${id}"))
+            def user = createPerson(loginName:"user${id}").save(failOnError:true)
             user.addToRoles(roleUser)
             this."user${id}" = user
         }
@@ -124,6 +124,6 @@ class SummaryServiceTests {
             type: "PRIVMSG",
         ]
         def mergedMap = defaultMap + propMap
-        return saveSurely(createIrclog(mergedMap))
+        return createIrclog(mergedMap).save(failOnError:true)
     }
 }

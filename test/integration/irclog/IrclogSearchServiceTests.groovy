@@ -422,7 +422,7 @@ class IrclogSearchServiceTests {
 
     private setUpChannel() {
         (1..3).each { num ->
-            this."ch${num}" = saveSurely(createChannel(name:"#ch${num}", description:"${10 - num}"))
+            this."ch${num}" = createChannel(name:"#ch${num}", description:"${10 - num}").save(failOnError:true)
         }
     }
 
@@ -430,7 +430,7 @@ class IrclogSearchServiceTests {
         admin = Person.findByLoginName("admin") // setup in Bootstrap
         def roleUser = Role.findByName("ROLE_USER")
         ["1", "2", "3", "X"].each { id ->
-            def user = saveSurely(createPerson(loginName:"user${id}"))
+            def user = createPerson(loginName:"user${id}").save(failOnError:true)
             user.addToRoles(roleUser)
             this."user${id}" = user
         }
@@ -468,7 +468,7 @@ class IrclogSearchServiceTests {
         def mergedMap = defaultMap + propMap
         def permaId =  mergedMap.toString() // to avoid stack overflow 
         mergedMap.permaId = permaId
-        return saveSurely(createIrclog(mergedMap))
+        return createIrclog(mergedMap).save(failOnError:true)
     }
 
     private createCriterion(map = [:]) {
