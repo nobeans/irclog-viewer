@@ -114,7 +114,7 @@ class SummaryService {
      *         チャンネル追加時に全サマリ更新処理を実行するため、対応は不要。(A)(B)のみとする。
      * それ以外の場合は、今日のサマリのみを更新する。
      */
-    private void updateSummary() {
+    private synchronized void updateSummary() {
         def baseDate = DateUtils.today
         def df = new SimpleDateFormat("yyyy-MM-dd")
         def baseDateFormatted = df.format(baseDate)
@@ -183,7 +183,7 @@ class SummaryService {
 
         // タイミングによっては重複したINSERTが実行されることもありうるため、排他的テーブルロックを取得する。
         def db = new Sql(dataSource)
-        db.execute("lock table summary in exclusive mode")
+        db.execute("select * from summary for update")
         int resultDeleted = db.executeUpdate("delete from summary")
         int resultInserted = db.executeUpdate("""
             insert into summary
