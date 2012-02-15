@@ -1,24 +1,19 @@
 dataSource {
-    pooled = true
-    driverClassName = "org.postgresql.Driver"
+    driverClassName = "org.h2.Driver"
     username = "postgres"
     password = ""
 }
 hibernate {
     cache.use_second_level_cache = true
     cache.use_query_cache = true
-    cache.provider_class = 'net.sf.ehcache.hibernate.EhCacheProvider'
+    cache.region.factory_class = 'net.sf.ehcache.hibernate.EhCacheRegionFactory'
 }
 // environment specific settings
 environments {
     development {
         dataSource {
-            //url = "jdbc:postgresql://localhost:5432/irclog_dev"
-            driverClassName = "org.h2.Driver"
-            dbCreate = "create" // one of 'create', 'create-drop','update'
+            dbCreate = "create"
             url = "jdbc:h2:mem:irclog_dev"
-            username = "sa"
-            password = ""
             //loggingSql = true
         }
     }
@@ -26,14 +21,24 @@ environments {
         dataSource {
             driverClassName = "org.h2.Driver"
             dbCreate = "update"
-            url = "jdbc:h2:mem:irclog_test"
-            username = "sa"
-            password = ""
+            url = "jdbc:h2:mem:irclog_test;MVCC=TRUE"
         }
     }
     production {
         dataSource {
-            url = "jdbc:postgresql://localhost:5432/irclog"
+            dbCreate = "update"
+            url = "jdbc:h2:irclog;MVCC=TRUE"
+            pooled = true
+            properties {
+               maxActive = -1
+               minEvictableIdleTimeMillis=1800000
+               timeBetweenEvictionRunsMillis=1800000
+               numTestsPerEvictionRun=3
+               testOnBorrow=true
+               testWhileIdle=true
+               testOnReturn=true
+               validationQuery="SELECT 1"
+            }
         }
     }
 }

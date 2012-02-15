@@ -2,6 +2,8 @@ grails.servlet.version = "2.5" // Change depending on target container complianc
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
+grails.project.target.level = 1.6
+grails.project.source.level = 1.6
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
 grails.project.dependency.resolution = {
@@ -32,15 +34,22 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         // runtime 'mysql:mysql-connector-java:5.1.5'
-        runtime "postgresql:postgresql:9.0-801.jdbc4"
+        //runtime "postgresql:postgresql:9.0-801.jdbc4"
     }
 
     plugins {
-        compile ":hibernate:$grailsVersion"
-        compile ":jquery:1.6.1.1"
-        compile ":jquery-ui:1.8.15"
-        compile ":resources:1.0.2"
+        runtime ":hibernate:$grailsVersion"
+        runtime ":jquery:1.7.1"
+        runtime ":resources:1.1.6"
+
+        runtime ":jquery-ui:1.8.15"
         compile ":spring-security-core:1.2.1"
+
+        // Uncomment these (or add new ones) to enable additional resources capabilities
+        //runtime ":zipped-resources:1.0"
+        //runtime ":cached-resources:1.0"
+        //runtime ":yui-minify-resources:0.1.4"
+
         build ":tomcat:$grailsVersion"
     }
 }

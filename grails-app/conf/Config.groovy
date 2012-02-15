@@ -6,7 +6,7 @@
 //                             "file:${userHome}/.grails/${appName}-config.properties",
 //                             "file:${userHome}/.grails/${appName}-config.groovy"]
 
-// if(System.properties["${appName}.config.location"]) {
+// if (System.properties["${appName}.config.location"]) {
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
 
@@ -53,6 +53,7 @@ grails.resources.modules = {
     }
 }
 
+
 // The default codec used to encode data with ${}
 grails.views.default.codec = "none" // none, html, base64
 grails.views.gsp.encoding = "UTF-8"
@@ -74,17 +75,20 @@ grails.web.disable.multipart=false
 // request parameters to mask when logging exceptions
 grails.exceptionresolver.params.exclude = ['password']
 
+// enable query caching by default
+grails.hibernate.cache.queries = true
+
 // auto flush
 grails.gorm.autoFlush = true
 
 // set per-environment serverURL stem for creating absolute links
 environments {
     development {
-        grails.logging.jul.usebridge = false
+        grails.logging.jul.usebridge = true
     }
     production {
         grails.logging.jul.usebridge = false
-        grails.serverURL = "http://www.changeme.com"
+        // TODO: grails.serverURL = "http://www.changeme.com"
     }
 }
 
