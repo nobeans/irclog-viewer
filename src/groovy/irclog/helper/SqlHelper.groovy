@@ -4,7 +4,7 @@ import groovy.sql.Sql
 
 class SqlHelper {
 
-    def dataSource
+    def sessionFactory
 
     void execute(query, option = null) {
         withSql { Sql sql ->
@@ -27,8 +27,16 @@ class SqlHelper {
     }
 
     def withSql(Closure closure) {
-        def sql = new Sql(dataSource)
-        return closure.call(sql)
+        def sql = new Sql(sessionFactory.currentSession.connection())
+        try {
+            return closure.call(sql)
+        } finally {
+            // clear caches to get latest value from database via Hibernate
+            sessionFactory.currentSession.clear()
+
+            // the connection should not be closed because it's managed by sessionFactory
+            //sql.close()
+        }
     }
 
 }
