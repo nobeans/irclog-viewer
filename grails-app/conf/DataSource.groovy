@@ -1,6 +1,6 @@
 dataSource {
     driverClassName = "org.h2.Driver"
-    username = "postgres"
+    username = ""
     password = ""
 }
 hibernate {
@@ -13,20 +13,19 @@ environments {
     development {
         dataSource {
             dbCreate = "create"
-            url = "jdbc:h2:mem:irclog_dev"
+            url = "jdbc:h2:mem:irclog_dev;MVCC=TRUE"
             //loggingSql = true
         }
     }
     test {
         dataSource {
-            driverClassName = "org.h2.Driver"
-            dbCreate = "update"
+            dbCreate = "create-drop"
             url = "jdbc:h2:mem:irclog_test;MVCC=TRUE"
         }
     }
     production {
         dataSource {
-            dbCreate = "update"
+            //dbCreate = "update"
             url = "jdbc:h2:irclog;MVCC=TRUE"
             pooled = true
             properties {
