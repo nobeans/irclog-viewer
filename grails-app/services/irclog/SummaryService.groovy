@@ -1,6 +1,5 @@
 package irclog
 
-import groovy.sql.Sql
 import irclog.utils.DateUtils
 import java.text.SimpleDateFormat
 
@@ -11,7 +10,7 @@ class SummaryService {
 
     static transactional = true
 
-    def dataSource
+    def sqlHelper
 
     /**
      * Top 5 topics within a week in accessible channels are returned.
@@ -143,8 +142,7 @@ class SummaryService {
         def df = new SimpleDateFormat("yyyy-MM-dd")
         def baseDateFormatted = df.format(baseDate)
 
-        def db = new Sql(dataSource)
-        int result = db.executeUpdate("""
+        int result = sqlHelper.executeUpdate("""
             update
                 summary
             set
@@ -182,10 +180,9 @@ class SummaryService {
         def df = new SimpleDateFormat("yyyy-MM-dd")
 
         // タイミングによっては重複したINSERTが実行されることもありうるため、排他的テーブルロックを取得する。
-        def db = new Sql(dataSource)
-        db.execute("select * from summary for update")
-        int resultDeleted = db.executeUpdate("delete from summary")
-        int resultInserted = db.executeUpdate("""
+        sqlHelper.execute("select * from summary for update")
+        int resultDeleted = sqlHelper.executeUpdate("delete from summary")
+        int resultInserted = sqlHelper.executeUpdate("""
             insert into summary
                 (id, channel_id, last_updated, today_, yesterday, two_days_ago, three_days_ago, four_days_ago, five_days_ago, six_days_ago, total_before_yesterday, latest_irclog_id) 
             select
