@@ -11,7 +11,7 @@ class Person {
     String nicks // commpa separated nicks
     String color // for coloring on screen
 
-    boolean enabled   // user staus (wether an user can login)
+    Boolean enabled = true  // user staus (wether an user can login)
     final accountExpired = false
     final accountLocked = false
     final passwordExpired = false
