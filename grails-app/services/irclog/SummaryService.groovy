@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat
 
 class SummaryService {
 
-    /** 基本種別をIN句で使うための文字列 */
     private static final String IN_ESSENTIAL_TYPES = "(" + Irclog.ESSENTIAL_TYPES.collect{"'${it}'"}.join(', ') + ")"
 
     static transactional = true
@@ -29,26 +28,20 @@ class SummaryService {
         }
     }
 
-    /** アクセス可能な全チャンネルのサマリ情報を取得する。 */
     List<Summary> getAccessibleSummaryList(params, accessibleChannelList) {
         // 全てのサマリを取得して、アクセス可能な範囲に絞り込む
         def summaryList = getAllSummaryList(params).findAll{it.channel in accessibleChannelList}
 
-        // FIXME: 単に表示しない、というだけで良い気がする。後で削除するかも。
         // 何らかの原因でサマリが存在しないチャンネルがある場合、ダミーサマリを登録
         // ただし、ソート順序は反映されず、一番下に不要なものが並ぶだけとなる。
-        accessibleChannelList.findAll{!(it in summaryList.channel)}.sort{it.name}.each { channel ->
+        accessibleChannelList.findAll{!(it in summaryList.channel)}.sort{ it.name }.each { channel ->
             summaryList << new Summary(channel:channel, lastUpdated:DateUtils.today)
         }
 
         return summaryList
     }
 
-    /** 全チャンネルのサマリ情報を取得する。 */
     private List<Summary> getAllSummaryList(params) {
-        // サマリ更新
-        updateSummary()
-
         // ソート条件を解決してから、サマリを取得
         def originalSort = resolveSortCondition(params)
         def summaryList = Summary.list(params)
@@ -103,41 +96,7 @@ class SummaryService {
         }
     }
 
-    /**
-     * サマリを更新する。
-     * 以下のいずれかの場合は、全てのサマリを更新する。
-     * - (A) サマリが0件の場合
-     * - (B) lastUpdatedが今日以外のサマリレコードが1件以上存在する場合
-     * - (C) サマリレコード件数がirclogテーブル上にログが存在するチャンネル総数と一致しない場合
-     *       →これで救えるのは追加されたばかりのチャンネルに対する過去ログレコードのサマリ情報であるが、
-     *         チャンネル追加時に全サマリ更新処理を実行するため、対応は不要。(A)(B)のみとする。
-     * それ以外の場合は、今日のサマリのみを更新する。
-     */
-    private synchronized void updateSummary() {
-        def baseDate = DateUtils.today
-        def df = new SimpleDateFormat("yyyy-MM-dd")
-        def baseDateFormatted = df.format(baseDate)
-
-        // (A) サマリが0件の場合
-        if (Summary.count() == 0) {
-            log.info "サマリが0件のため、全サマリを更新します。"
-            updateAllSummary()
-            return
-        }
-
-        // (B) lastUpdatedが今日以外のサマリレコードが1件以上存在するかどうか
-        int summaryCountInPast = Summary.executeQuery("select count(*) from Summary as s where s.lastUpdated < '${baseDateFormatted} %'")[0]
-        if (summaryCountInPast > 0) {
-            log.info "lastUpdatedが今日以外のサマリレコードが1件以上存在するため、全サマリを更新します。"
-            updateAllSummary()
-            return
-        }
-
-        updateTodaySummary()
-    }
-
-    /** 今日の分のサマリを更新する。 */
-    private void updateTodaySummary() {
+    void updateTodaySummary() {
         def baseDate = DateUtils.today
         def df = new SimpleDateFormat("yyyy-MM-dd")
         def baseDateFormatted = df.format(baseDate)
@@ -174,39 +133,40 @@ class SummaryService {
         log.info "Updated today's summary: " + result
     }
 
-    /** 全ての分のサマリを更新する。 */
     void updateAllSummary() {
         def baseDate = DateUtils.today
         def df = new SimpleDateFormat("yyyy-MM-dd")
 
         // タイミングによっては重複したINSERTが実行されることもありうるため、排他的テーブルロックを取得する。
-        sqlHelper.execute("select * from summary for update")
-        int resultDeleted = sqlHelper.executeUpdate("delete from summary")
-        int resultInserted = sqlHelper.executeUpdate("""
-            insert into summary
-                (id, channel_id, last_updated, today_, yesterday, two_days_ago, three_days_ago, four_days_ago, five_days_ago, six_days_ago, total_before_yesterday, latest_irclog_id) 
-            select
-                nextval('hibernate_sequence') as id,
-                channel_id,
-                timestamp '${new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(baseDate)}' as last_updated,
-                sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate)}'     then 1 else 0 end) as today_,
-                sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate - 1)}' then 1 else 0 end) as yesterday,
-                sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate - 2)}' then 1 else 0 end) as two_days_ago,
-                sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate - 3)}' then 1 else 0 end) as three_days_ago,
-                sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate - 4)}' then 1 else 0 end) as four_days_ago,
-                sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate - 5)}' then 1 else 0 end) as five_days_ago,
-                sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate - 6)}' then 1 else 0 end) as six_days_ago,
-                count(*) as total_before_yesterday,
-                (select id from irclog as i where i.channel_id = irclog.channel_id and i.time = max(irclog.time) order by time desc limit 1) as latest_irclog_id
-            from
-                irclog
-            where
-                channel_id is not null
-            and
-                type in ${IN_ESSENTIAL_TYPES}
-            group by
-                channel_id
-        """.toString())
-        log.info "Updated all summary: deleted(${resultDeleted}), inserted(${resultInserted})"
+        sqlHelper.withSql { sql ->
+            sql.execute("select * from summary for update")
+            int resultDeleted = sql.executeUpdate("delete from summary")
+            int resultInserted = sql.executeUpdate("""
+                insert into summary
+                    (id, channel_id, last_updated, today_, yesterday, two_days_ago, three_days_ago, four_days_ago, five_days_ago, six_days_ago, total_before_yesterday, latest_irclog_id) 
+                select
+                    nextval('hibernate_sequence') as id,
+                    channel_id,
+                    timestamp '${new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(baseDate)}' as last_updated,
+                    sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate)}'     then 1 else 0 end) as today_,
+                    sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate - 1)}' then 1 else 0 end) as yesterday,
+                    sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate - 2)}' then 1 else 0 end) as two_days_ago,
+                    sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate - 3)}' then 1 else 0 end) as three_days_ago,
+                    sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate - 4)}' then 1 else 0 end) as four_days_ago,
+                    sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate - 5)}' then 1 else 0 end) as five_days_ago,
+                    sum(case when date_trunc('day', time) = timestamp '${df.format(baseDate - 6)}' then 1 else 0 end) as six_days_ago,
+                    count(*) as total_before_yesterday,
+                    (select id from irclog as i where i.channel_id = irclog.channel_id and i.time = max(irclog.time) order by time desc limit 1) as latest_irclog_id
+                from
+                    irclog
+                where
+                    channel_id is not null
+                and
+                    type in ${IN_ESSENTIAL_TYPES}
+                group by
+                    channel_id
+            """.toString())
+            log.info "Updated all summary: deleted(${resultDeleted}), inserted(${resultInserted})"
+        }
     }
 }
