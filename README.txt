@@ -10,7 +10,6 @@ Getting start
 
 To try it, clone this repository from github and execute the following command:
 
-  $ grails irclog-import-dummydata
   $ grails run-app
 
 so the application will be started, and you can access to http://localhost:8080/irclog.
