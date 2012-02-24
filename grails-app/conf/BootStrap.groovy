@@ -19,16 +19,21 @@ class BootStrap {
     }
 
     private void setupRolesIfNotExists() {
-        if (Role.count() == 0) {
-            createRole(name:Role.USER,  description:'User').save(failOnError:true)
-            createRole(name:Role.ADMIN, description:'Administrator').save(failOnError:true)
-        }
+        if (!Role.findByName(Role.USER)) createRole(name:Role.USER).save(failOnError:true)
+        if (!Role.findByName(Role.ADMIN)) createRole(name:Role.ADMIN).save(failOnError:true)
     }
 
     private void setupDefaultAdminUserIfNotExists() {
-        if (Person.findByLoginName("admin") == null) {
-            def role = Role.findByName(Role.ADMIN)
-            def admin = createPerson(loginName:"admin", realName:"Administrator", password:"admin00", enabled:true, nicks:"", color:"", roles:[role]).save(failOnError:true)
+        if (!Person.findByLoginName("admin")) {
+            createPerson(
+                loginName: "admin",
+                realName: "Administrator",
+                password: "admin00",
+                enabled: true,
+                nicks: "",
+                color: "",
+                roles: Role.findAllByName(Role.ADMIN),
+            ).save(failOnError:true)
         }
     }
 

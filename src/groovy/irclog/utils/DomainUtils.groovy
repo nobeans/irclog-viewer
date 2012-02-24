@@ -44,7 +44,6 @@ class DomainUtils {
         def name = propertyMap.name ?: "#role${id}"
         def defaultProps = [
             name: name,
-            description: "${name} is nice!",
         ]
         new Role(defaultProps + propertyMap)
     }
