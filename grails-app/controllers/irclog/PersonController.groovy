@@ -36,7 +36,7 @@ class PersonController {
                 redirect(action:'list')
                 return
             }
-            person.delete(flush:true)
+            person.delete()
             flash.message = "person.deleted"
             flash.args = [params.id]
             redirect(action:'list')
@@ -56,7 +56,7 @@ class PersonController {
         withPerson(params.id) { person ->
             // 更新する。
             person.properties = params
-            person.save(flush:true)
+            person.save()
             if (person.hasErrors()) {
                 render(view:'edit', model:[person:person])
                 return
@@ -82,7 +82,7 @@ class PersonController {
 
         // 登録する。
         def person = new Person(params)
-        person.save(flush:true)
+        person.save()
         if (person.hasErrors()) {
             render(view:'create', model:[person:person])
             return

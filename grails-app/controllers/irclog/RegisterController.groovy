@@ -31,7 +31,7 @@ class RegisterController {
 
             // 更新する。
             person.properties = params
-            person.save(flush:true)
+            person.save()
             if (person.hasErrors()) {
                 render(view:'edit', model:[person:person])
                 return
@@ -62,7 +62,7 @@ class RegisterController {
 
         // 登録する。
         def person = new Person(params)
-        person.save(flush:true)
+        person.save()
         if (person.hasErrors()) {
             render(view:'create', model:[person:person])
             return

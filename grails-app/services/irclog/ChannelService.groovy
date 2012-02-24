@@ -103,7 +103,7 @@ class ChannelService {
         }
 
         // チャンネルを削除する。
-        channel.delete(flush:true)
+        channel.delete()
     }
 
     /**
