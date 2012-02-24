@@ -19,7 +19,8 @@ class IrclogSearchServiceTests {
         setUpRelationBetweenPersonAndChannel()
     }
 
-    void testSearch_period_all() {
+    @Test
+    void search_period_all() {
         // Setup
         setUpTodayOfDateUtils("2011-01-01 12:34:56")
         def expected = []
@@ -32,7 +33,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_period_year() {
+    @Test
+    void search_period_year() {
         // Setup
         setUpTodayOfDateUtils("2011-01-01 12:34:56")
         def expected = []
@@ -46,7 +48,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_period_halfyear() {
+    @Test
+    void search_period_halfyear() {
         // Setup
         setUpTodayOfDateUtils("2011-01-01 12:34:56")
         def expected = []
@@ -59,7 +62,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_period_month() {
+    @Test
+    void search_period_month() {
         // Setup
         setUpTodayOfDateUtils("2011-01-01 12:34:56")
         def expected = []
@@ -72,7 +76,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_period_week() {
+    @Test
+    void search_period_week() {
         // Setup
         setUpTodayOfDateUtils("2011-01-01 12:34:56")
         def expected = []
@@ -86,7 +91,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_period_oneday() {
+    @Test
+    void search_period_oneday() {
         // Setup
         setUpTodayOfDateUtils("2011-01-01 12:34:56")
         def expected = []
@@ -102,7 +108,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_period_today() {
+    @Test
+    void search_period_today() {
         // Setup
         setUpTodayOfDateUtils("2011-01-01 12:34:56")
         def expected = []
@@ -116,19 +123,22 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_period_nullShouldBeError() {
+    @Test
+    void search_period_nullShouldBeError() {
         shouldFail(AssertionError) {
             irclogSearchService.search(admin, createCriterion(period:null), [:], 'asc')
         }
     }
 
-    void testSearch_period_emptyShouldBeError() {
+    @Test
+    void search_period_emptyShouldBeError() {
         shouldFail(AssertionError) {
             irclogSearchService.search(admin, createCriterion(period:''), [:], 'asc')
         }
     }
 
-    void testSearch_channel_all_generalUser_joinedToSomeChannels() {
+    @Test
+    void search_channel_all_generalUser_joinedToSomeChannels() {
         // Setup
         def expected = []
         expected << saveIrclog(channel:ch1)
@@ -140,7 +150,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_channel_all_generalUser_notJoinedToAnyChannels() {
+    @Test
+    void search_channel_all_generalUser_notJoinedToAnyChannels() {
         // Setup
         def expected = []
         saveIrclog(channel:ch1)
@@ -152,7 +163,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_channel_all_admin() {
+    @Test
+    void search_channel_all_admin() {
         // Setup
         def expected = []
         expected << saveIrclog(channel:ch1)
@@ -164,7 +176,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_channel_specifiedChannel_generalUser_joinedToSomeChannels() {
+    @Test
+    void search_channel_specifiedChannel_generalUser_joinedToSomeChannels() {
         // Setup
         def expected = []
         saveIrclog(channel:ch1)
@@ -176,7 +189,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_channel_specifiedChannel_generalUser_notJoinedToAnyChannels() {
+    @Test
+    void search_channel_specifiedChannel_generalUser_notJoinedToAnyChannels() {
         // Setup
         def expected = []
         saveIrclog(channel:ch1)
@@ -188,7 +202,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_channel_specifiedChannel_admin() {
+    @Test
+    void search_channel_specifiedChannel_admin() {
         // Setup
         def expected = []
         saveIrclog(channel:ch1)
@@ -200,19 +215,22 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_channel_nullShouldBeError() {
+    @Test
+    void search_channel_nullShouldBeError() {
         shouldFail(AssertionError) {
             irclogSearchService.search(admin, createCriterion(channel:null), [:], 'asc')
         }
     }
 
-    void testSearch_channel_emptyShouldBeError() {
+    @Test
+    void search_channel_emptyShouldBeError() {
         shouldFail(AssertionError) {
             irclogSearchService.search(admin, createCriterion(channel:''), [:], 'asc')
         }
     }
 
-    void testSearch_type_all() {
+    @Test
+    void search_type_all() {
         // Setup
         def expected = []
         Irclog.ESSENTIAL_TYPES.each{ expected << saveIrclog(type:it) }
@@ -223,7 +241,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_type_filtered() {
+    @Test
+    void search_type_filtered() {
         // Setup
         def expected = []
         Irclog.ESSENTIAL_TYPES.each{ expected << saveIrclog(type:it) }
@@ -234,7 +253,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_type_specifiedOneType_JOIN() {
+    @Test
+    void search_type_specifiedOneType_JOIN() {
         // Setup
         def expected = []
         Irclog.ESSENTIAL_TYPES.each{ saveIrclog(type:it) }
@@ -246,19 +266,22 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_type_nullShouldBeError() {
+    @Test
+    void search_type_nullShouldBeError() {
         shouldFail(AssertionError) {
             irclogSearchService.search(admin, createCriterion(type:null), [:], 'asc')
         }
     }
 
-    void testSearch_type_emptyShouldBeError() {
+    @Test
+    void search_type_emptyShouldBeError() {
         shouldFail(AssertionError) {
             irclogSearchService.search(admin, createCriterion(type:''), [:], 'asc')
         }
     }
 
-    void testSearch_nick_matchToPartOfNick() {
+    @Test
+    void search_nick_matchToPartOfNick() {
         // Setup
         def expected = []
         expected << saveIrclog(nick:"john")
@@ -270,7 +293,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_nick_matchToNothing() {
+    @Test
+    void search_nick_matchToNothing() {
         // Setup
         def expected = []
         saveIrclog(nick:"john")
@@ -282,7 +306,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_nick_null_meansAll() {
+    @Test
+    void search_nick_null_meansAll() {
         // Setup
         def expected = []
         expected << saveIrclog(nick:"john")
@@ -294,7 +319,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_nick_empty_meansAll() {
+    @Test
+    void search_nick_empty_meansAll() {
         // Setup
         def expected = []
         expected << saveIrclog(nick:"john")
@@ -306,7 +332,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_message_matchToPartOfNick() {
+    @Test
+    void search_message_matchToPartOfNick() {
         // Setup
         def expected = []
         expected << saveIrclog(message:"Hello, john")
@@ -318,7 +345,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_message_matchToNothing() {
+    @Test
+    void search_message_matchToNothing() {
         // Setup
         def expected = []
         saveIrclog(message:"Hello, john")
@@ -330,7 +358,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_message_null_meansAll() {
+    @Test
+    void search_message_null_meansAll() {
         // Setup
         def expected = []
         expected << saveIrclog(message:"Hello, john")
@@ -342,7 +371,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_message_empty_meansAll() {
+    @Test
+    void search_message_empty_meansAll() {
         // Setup
         def expected = []
         expected << saveIrclog(message:"Hello, john")
@@ -354,7 +384,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_sortDirection_desc() {
+    @Test
+    void search_sortDirection_desc() {
         // Setup
         def expected = []
         expected << saveIrclog(time:"2010-01-01 00:00:03")
@@ -366,7 +397,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_sortDirection_asc() {
+    @Test
+    void search_sortDirection_asc() {
         // Setup
         def expected = []
         expected << saveIrclog(time:"2010-01-01 00:00:01")
@@ -378,7 +410,8 @@ class IrclogSearchServiceTests {
         assertSearchResult(expected, actual)
     }
 
-    void testSearch_max() {
+    @Test
+    void search_max() {
         // Setup
         def expected = []
         expected << saveIrclog(time:"2010-01-01 00:00:01")
@@ -391,7 +424,8 @@ class IrclogSearchServiceTests {
         assert actual.totalCount == 3
     }
 
-    void testSearch_offset() {
+    @Test
+    void search_offset() {
         // Setup
         def expected = []
         saveIrclog(time:"2010-01-01 00:00:01")
@@ -404,7 +438,8 @@ class IrclogSearchServiceTests {
         assert actual.totalCount == 3
     }
 
-    void testSearch_offsetAndMax() {
+    @Test
+    void search_offsetAndMax() {
         // Setup
         def expected = []
         saveIrclog(time:"2010-01-01 00:00:01")

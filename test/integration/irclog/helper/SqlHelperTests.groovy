@@ -3,7 +3,7 @@ package irclog.helper
 import groovy.sql.Sql
 import org.junit.*
 
-class SqlHelperTest {
+class SqlHelperTests {
 
     def dataSource
     def sqlHelper
@@ -24,35 +24,40 @@ class SqlHelperTest {
         sql.close()
     }
 
-    void testExecute_WithoutArgs() {
+    @Test
+    void execute_WithoutArgs() {
         // Exercise
         sqlHelper.execute("UPDATE hoge SET value = 'X' WHERE id = 1")
         // Verify
         assert new Sql(dataSource.connection).firstRow("SELECT * FROM hoge WHERE id = 1").value == 'X'
     }
 
-    void testExecute_WithArgs() {
+    @Test
+    void execute_WithArgs() {
         // Exercise
         sqlHelper.execute("UPDATE hoge SET value = ? WHERE id = ?", ["X", 1])
         // Verify
         assert new Sql(dataSource.connection).firstRow("SELECT * FROM hoge WHERE id = 1").value == 'X'
     }
 
-    void testExecuteUpdate_WithoutArgs() {
+    @Test
+    void executeUpdate_WithoutArgs() {
         // Exercise
         assert sqlHelper.executeUpdate("UPDATE hoge SET value = 'X' WHERE id = 1") == 1
         // Verify
         assert new Sql(dataSource.connection).firstRow("SELECT * FROM hoge WHERE id = 1").value == 'X'
     }
 
-    void testExecuteUpdate_WithArgs() {
+    @Test
+    void executeUpdate_WithArgs() {
         // Exercise
         assert sqlHelper.executeUpdate("UPDATE hoge SET value = ? WHERE id = ?", ["X", 1]) == 1
         // Verify
         assert new Sql(dataSource.connection).firstRow("SELECT * FROM hoge WHERE id = 1").value == 'X'
     }
 
-    void testWithSql_allAreWithinBlock() {
+    @Test
+    void withSql_allAreWithinBlock() {
         // Exercise
         sqlHelper.withSql { sql ->
             def rows = sql.rows("SELECT * FROM hoge")
@@ -63,7 +68,8 @@ class SqlHelperTest {
         }
     }
 
-    void testWithSql_BlockReturnResultValue() {
+    @Test
+    void withSql_BlockReturnResultValue() {
         // Exercise
         def rows = sqlHelper.withSql { sql ->
             sql.rows("SELECT * FROM hoge")

@@ -53,28 +53,32 @@ class ChannelServiceTests {
         createSummary(channel:ch3, latestIrclog:Irclog.findByPermaId("log:ch3:0")).save(failOnError:true)
     }
 
-    void testGetAccessibleChannelList_admin() {
+    @Test
+    void getAccessibleChannelList_admin() {
         // Exercise
         def channels = channelService.getAccessibleChannelList(admin, [:])
         // Verify
         assert channels == [ch1, ch2, ch3]
     }
 
-    void testGetAccessibleChannelList_admin_sortByNameDesc() {
+    @Test
+    void getAccessibleChannelList_admin_sortByNameDesc() {
         // Exercise
         def channels = channelService.getAccessibleChannelList(admin, [sort:'name', order:'desc'])
         // Verify
         assert channels == [ch3, ch2, ch1]
     }
 
-    void testGetAccessibleChannelList_admin_sortByDescriptionAsc() {
+    @Test
+    void getAccessibleChannelList_admin_sortByDescriptionAsc() {
         // Exercise
         def channels = channelService.getAccessibleChannelList(admin, [sort:'description', order:'asc'])
         // Verify
         assert channels == [ch3, ch2, ch1]
     }
 
-    void testGetAccessibleChannelList_user1() {
+    @Test
+    void getAccessibleChannelList_user1() {
         // Setup
         def user1 = Person.findByLoginName("user1")
         // Exercise
@@ -83,21 +87,24 @@ class ChannelServiceTests {
         assert channels == [ch1]
     }
 
-    void testGetJoinedPersons_test1() {
+    @Test
+    void getJoinedPersons_test1() {
         // Exercise
         def persons = channelService.getJoinedPersons(ch1)
         // Verify
         assert persons == [user1]
     }
 
-    void testGetJoinedPersons_test3() {
+    @Test
+    void getJoinedPersons_test3() {
         // Exercise
         def persons = channelService.getJoinedPersons(ch3)
         // Verify
         assert persons == [user3, userX]
     }
 
-    void testGetAllJoinedPersons() {
+    @Test
+    void getAllJoinedPersons() {
         // Exercise
         def channels = channelService.getAllJoinedPersons()
         // Verify
@@ -107,7 +114,8 @@ class ChannelServiceTests {
         assert channels[ch3] == [user3, userX]
     }
 
-    void testRelateToIrclog() {
+    @Test
+    void relateToIrclog() {
         // Setup
         createIrclog(permaId:"log:ch1/ch2", channelName:ch1.name, channel:ch2).save(failOnError:true)
         // Verify Fixture
@@ -124,7 +132,8 @@ class ChannelServiceTests {
         assert Irclog.findByPermaId("log:ch1/ch2").channel == ch2
     }
 
-    void testDeleteChannel() {
+    @Test
+    void deleteChannel() {
         // Verify Fixture
         assert Person.findByLoginName("user3").channels.contains(ch3)
         assert Person.findByLoginName("userX").channels.contains(ch3)
@@ -143,7 +152,8 @@ class ChannelServiceTests {
         assert Channel.get(ch3.id) == null
     }
 
-    void testGetBeforeDate_IgnoredOptionType_TRUE() {
+    @Test
+    void getBeforeDate_IgnoredOptionType_TRUE() {
         // Setup
         createIrclogAs(ch2, "2010-10-01 12:34:56", "PRIVMSG")
         createIrclogAs(ch2, "2010-10-03 23:59:59", "NOTICE")
@@ -156,7 +166,8 @@ class ChannelServiceTests {
         assert date == toDate("2010-10-03 00:00:00")
     }
 
-    void testGetBeforeDate_IgnoredOptionType_FALSE() {
+    @Test
+    void getBeforeDate_IgnoredOptionType_FALSE() {
         // Setup
         createIrclogAs(ch2, "2010-10-01 12:34:56", "PRIVMSG")
         createIrclogAs(ch2, "2010-10-03 23:59:59", "NOTICE")
@@ -169,7 +180,8 @@ class ChannelServiceTests {
         assert date == toDate("2010-10-05 00:00:00")
     }
 
-    void testGetBeforeDate_Empty() {
+    @Test
+    void getBeforeDate_Empty() {
         // Exercise
         boolean isIgnoredOptionType = true
         Date date = channelService.getBeforeDate("1999-01-01", ch2, isIgnoredOptionType)
@@ -177,7 +189,8 @@ class ChannelServiceTests {
         assert date == null
     }
 
-    void testGetAfterDate_IgnoredOptionType_TRUE() {
+    @Test
+    void getAfterDate_IgnoredOptionType_TRUE() {
         // Setup
         createIrclogAs(ch2, "2010-10-01 12:34:56", "PRIVMSG")
         createIrclogAs(ch2, "2010-10-03 23:59:59", "OTHER")
@@ -190,7 +203,8 @@ class ChannelServiceTests {
         assert date == toDate("2010-10-05 00:00:00")
     }
 
-    void testGetAfterDate_IgnoredOptionType_FALSE() {
+    @Test
+    void getAfterDate_IgnoredOptionType_FALSE() {
         // Setup
         createIrclogAs(ch2, "2010-10-01 12:34:56", "PRIVMSG")
         createIrclogAs(ch2, "2010-10-03 23:59:59", "OTHER")
@@ -203,7 +217,8 @@ class ChannelServiceTests {
         assert date == toDate("2010-10-03 00:00:00")
     }
 
-    void testGetAfterDate_Empty() {
+    @Test
+    void getAfterDate_Empty() {
         // Exercise
         boolean isIgnoredOptionType = true
         Date date = channelService.getAfterDate("2999-01-01", ch2, isIgnoredOptionType)
@@ -211,7 +226,8 @@ class ChannelServiceTests {
         assert date == null
     }
 
-    void testGetLatestDate_IgnoredOptionType_TRUE() {
+    @Test
+    void getLatestDate_IgnoredOptionType_TRUE() {
         // Setup
         createIrclogAs(ch2, "2010-10-01 12:34:56", "PRIVMSG")
         createIrclogAs(ch2, "2010-10-03 23:59:59", "OTHER")
@@ -224,7 +240,8 @@ class ChannelServiceTests {
         assert date == toDate("2010-10-05 00:00:00")
     }
 
-    void testGetLatestDate_IgnoredOptionType_FALSE() {
+    @Test
+    void getLatestDate_IgnoredOptionType_FALSE() {
         // Setup
         createIrclogAs(ch2, "2010-10-01 12:34:56", "PRIVMSG")
         createIrclogAs(ch2, "2010-10-03 23:59:59", "OTHER")
@@ -237,7 +254,8 @@ class ChannelServiceTests {
         assert date == toDate("2010-10-07 00:00:00")
     }
 
-    void testGetLatestDate_Empty() {
+    @Test
+    void getLatestDate_Empty() {
         // Exercise
         boolean isIgnoredOptionType = true
         Date date = channelService.getLatestDate("2999-01-01", ch2, isIgnoredOptionType)
@@ -245,7 +263,8 @@ class ChannelServiceTests {
         assert date == null
     }
 
-    void testGetRelatedDates() {
+    @Test
+    void getRelatedDates() {
         // Setup
         createIrclogAs(ch2, "2010-10-01 12:34:56", "PRIVMSG")
         createIrclogAs(ch2, "2010-10-03 23:59:59", "OTHER")
