@@ -90,6 +90,7 @@ class ChannelService {
         sqlHelper.withSql { sql ->
             // チャンネルとユーザの関連付けを削除する。
             // 関連付けレコード自体を削除する。
+            // TODO カスケード削除
             sql.executeUpdate("delete from person_channel where channel_id = ${channel.id}")
 
             // チャンネルとログの関連付けを削除する。
@@ -97,11 +98,12 @@ class ChannelService {
             sql.executeUpdate("update irclog set channel_id = null where channel_id = ${channel.id}")
 
             // サマリが存在している場合は削除する。
+            // TODO カスケード削除
             sql.executeUpdate("delete from summary where channel_id = ${channel.id}")
         }
 
         // チャンネルを削除する。
-        channel.delete()
+        channel.delete(flush:true)
     }
 
     /**
