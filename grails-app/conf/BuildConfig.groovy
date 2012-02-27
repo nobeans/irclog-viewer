@@ -44,7 +44,6 @@ grails.project.dependency.resolution = {
         runtime ":jquery-ui:1.8.15"
         compile ":spring-security-core:1.2.1"
         compile ":quartz:0.4.2"
-        compile ":webxml:1.4.1"
 
         // Uncomment these (or add new ones) to enable additional resources capabilities
         //runtime ":zipped-resources:1.0"
