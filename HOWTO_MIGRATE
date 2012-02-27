@@ -7,4 +7,5 @@ Change database scheme
 ALTER TABLE summary RENAME today TO today_;
 ALTER TABLE role_person RENAME roles_id TO person_id;
 ALTER TABLE role_person RENAME persons_id TO role_id;
+ALTER TABLE role DROP COLUMN description;
 
