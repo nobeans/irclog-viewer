@@ -142,7 +142,6 @@ irclog {
     viewer.defaultMax = 100
     viewer.typeVisible = true
     viewer.defaultTargetUrl = "/summary"
-    session.maxInactiveInterval = 24 * 60 * 60 // [sec] => 1day
 }
 
 //------------------------------------------

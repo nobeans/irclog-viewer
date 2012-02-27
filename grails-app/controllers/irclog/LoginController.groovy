@@ -17,10 +17,6 @@ class LoginController {
         if (request.isLoggedIn) {
             flash.message = null
             flash.errors = null
-
-            // セッション有効期間をカスタマイズ
-            session.maxInactiveInterval = grailsApplication.config.irclog.session.maxInactiveInterval
-
             log.info "Logged in by ${request.loginUserName}"
             redirect(uri: grailsApplication.config.irclog.viewer.defaultTargetUrl)
         }
