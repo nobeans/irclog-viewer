@@ -13,7 +13,7 @@ environments {
     development {
         dataSource {
             dbCreate = "create"
-            url = "jdbc:h2:mem:irclog_dev;MVCC=TRUE"
+            url = "jdbc:h2:file:db/irclog_dev;MVCC=TRUE"
             //loggingSql = true
         }
     }
