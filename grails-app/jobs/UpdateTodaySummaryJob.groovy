@@ -1,11 +1,17 @@
 package irclog
 
+import grails.util.Environment
+
 class UpdateTodaySummaryJob {
 
     def concurrent = false
 
     static triggers = {
-        cron name: 'updateTodaySummary', cronExpression: "0 */1 * * * ?"
+        if (Environment.current == Environment.DEVELOPMENT) {
+            cron name: 'updateTodaySummary', cronExpression: "*/15 * * * * ?"
+        } else {
+            cron name: 'updateTodaySummary', cronExpression: "0 */1 * * * ?"
+        }
     }
 
     def summaryService

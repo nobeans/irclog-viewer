@@ -5,9 +5,9 @@ import static irclog.utils.DomainUtils.*
 import grails.test.*
 import org.junit.*
 
-class SummaryServiceTests {
+class TopicServiceTests {
 
-    def summaryService
+    def topicService
     def ch1, ch2, ch3
     def user1, user2, user3, userX, admin
     def originalGetToday
@@ -60,7 +60,7 @@ class SummaryServiceTests {
         saveIrclog(time:"2010-12-24 00:00:00", type:"TOPIC")
         saveIrclog(time:"2010-12-24 12:34:56", type:"TOPIC")
         // Exercise
-        def topics = summaryService.getHotTopicList(ch2)
+        def topics = topicService.getHotTopicList(ch2)
         // Verify
         assert topics == expected
     }
@@ -76,7 +76,7 @@ class SummaryServiceTests {
             saveIrclog(time:"2011-01-01 12:34:56", type:type)
         }
         // Exercise
-        def topics = summaryService.getHotTopicList(ch2)
+        def topics = topicService.getHotTopicList(ch2)
         // Verify
         assert topics == expected
     }
@@ -92,7 +92,7 @@ class SummaryServiceTests {
             saveIrclog(time:"2011-01-01 12:34:56", type:type)
         }
         // Exercise
-        def topics = summaryService.getHotTopicList([ch2, ch3])
+        def topics = topicService.getHotTopicList([ch2, ch3])
         // Verify
         assert topics == expected
     }
@@ -104,7 +104,7 @@ class SummaryServiceTests {
         saveIrclog(time:"2011-01-01 12:34:56", type:"TOPIC", channel:ch2)
         saveIrclog(time:"2011-01-01 12:34:56", type:"TOPIC", channel:ch3)
         // Exercise
-        def topics = summaryService.getHotTopicList([])
+        def topics = topicService.getHotTopicList([])
         // Verify
         assert topics == []
     }

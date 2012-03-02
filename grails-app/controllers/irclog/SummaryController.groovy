@@ -2,15 +2,16 @@ package irclog
 
 class SummaryController {
 
-    def summaryService
     def channelService
+    def summaryService
+    def topicService
 
     def index() {
         def channelList = channelService.getAccessibleChannelList(request.loginUserDomain, [:]).grep{!it.isArchived}
         [
             summaryList: summaryService.getAccessibleSummaryList(params, channelList),
             nickPersonList: Person.list(),
-            topicList: summaryService.getHotTopicList(channelList)
+            topicList: topicService.getHotTopicList(channelList)
         ]
     }
 }
