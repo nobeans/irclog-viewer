@@ -17,6 +17,16 @@ environments {
             //loggingSql = true
         }
     }
+    postgres {
+        dataSource {
+            driverClassName = "org.postgresql.Driver"
+            username = "postgres"
+            password = ""
+            url = "jdbc:postgresql://localhost:5432/irclog_dev"
+            dbCreate = "create"
+            //loggingSql = true
+        }
+    }
     test {
         dataSource {
             dbCreate = "create-drop"
