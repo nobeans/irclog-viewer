@@ -128,12 +128,13 @@ log4j = {
         'grails.app.service',
         'grails.app.filter',
         'grails.app.views',
+        'irclog',
     ]
     root {
         warn 'stdout', 'file'
     }
     warn   grailsDefaultsLoggingTargets
-    info   myAppTargets
+    debug  myAppTargets
     debug  'grails.app.filters.RequestTracelogFilters'
 }
 
