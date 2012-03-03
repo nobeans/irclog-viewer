@@ -2,6 +2,8 @@ package irclog
 
 class UpdateTodaySummaryJob {
 
+    def concurrent = false
+
     static triggers = {
         cron name: 'updateTodaySummary', cronExpression: "0 */1 * * * ?"
     }

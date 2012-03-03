@@ -2,6 +2,8 @@ package irclog
 
 class UpdateAllSummaryJob {
 
+    def concurrent = false
+
     static triggers = {
         cron name: 'updateAllSummary', cronExpression: "0 0 1 * * ?"
     }
