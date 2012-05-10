@@ -5,3 +5,6 @@ web-app/plugins
 classes
 target
 tags
+.classpath
+.project
+.settings
