@@ -7,7 +7,7 @@ class Person {
     String loginName
     String realName
     String password
-    def repassword // for confirmation (not storing to database)
+    String repassword // for confirmation (not storing to database)
     String nicks // commpa separated nicks
     String color // for coloring on screen
 
@@ -16,12 +16,16 @@ class Person {
     final accountLocked = false
     final passwordExpired = false
 
+
+    static transients = ['repassword']
+
     static hasMany = [channels:Channel, roles:Role]
 
     static constraints = {
         loginName(blank:false, matches:"[a-zA-Z0-9_-]{3,}", unique:true, maxSize:100)
         realName(blank:false, unique:true, maxSize:100)
         password(blank:false, minSize:6, maxSize:100, validator:{ val, obj -> obj.repassword == val })
+        repassword(bindable:true)
         nicks(matches:"[ 0-9a-zA-Z_-]+", validator:{ val, obj ->
             val == "" || val.split(/ +/).every{ it.startsWith(obj.loginName) }
         }, maxSize:200)
