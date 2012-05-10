@@ -1,6 +1,5 @@
 package irclog.utils
 
-import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger
 import grails.test.*
 import irclog.*
