@@ -5,8 +5,7 @@ import static irclog.utils.DomainUtils.*
 import grails.test.mixin.*
 import org.junit.*
 
-@TestFor(IrclogSearchService)
-class IrclogSearchServiceTests {
+class IrclogSearchServiceTests extends GroovyTestCase {
 
     def irclogSearchService
     def ch1, ch2, ch3
@@ -483,7 +482,9 @@ class IrclogSearchServiceTests {
     }
 
     private setUpTodayOfDateUtils(dateStr) {
-        mockFor(DateUtils).demand.static.getToday(1..100) {-> return DateUtils.toDate(dateStr) }
+        DateUtils.metaClass.static.getToday = {->
+            return DateUtils.toDate(dateStr)
+        }
     }
 
     private saveIrclog(propMap = [:]) {

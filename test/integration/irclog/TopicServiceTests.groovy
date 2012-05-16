@@ -5,7 +5,7 @@ import static irclog.utils.DomainUtils.*
 import grails.test.*
 import org.junit.*
 
-class TopicServiceTests {
+class TopicServiceTests extends GroovyTestCase {
 
     def topicService
     def ch1, ch2, ch3
