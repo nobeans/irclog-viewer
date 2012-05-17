@@ -1,5 +1,8 @@
 package irclog
 
+import groovy.transform.ToString
+
+@ToString
 class Channel {
 
     String name
@@ -9,11 +12,11 @@ class Channel {
     String secretKey
 
     static constraints = {
-        name(blank:false, unique:true, maxSize:100, matches:"^#.*")
+        name(blank: false, unique: true, maxSize: 100, matches: "^#.*")
         description()
         isPrivate()
         isArchived()
-        secretKey(maxSize:100, validator:{ val, obj ->
+        secretKey(maxSize: 100, validator: { val, obj ->
             if (obj.isPrivate) {
                 return val != ''
             } else {
@@ -22,18 +25,7 @@ class Channel {
         })
     }
 
-    static mapping = { description(type:'text') }
-
-    @Override
-    String toString() {
-        return """${name} {
-            |    id: ${id}
-            |    description: ${description}
-            |    isPrivate: ${isPrivate}
-            |    isArchived: ${isArchived}
-            |    secretKey: ${(secretKey) ? '****' : ''}
-            |}""".stripMargin()
-    }
+    static mapping = { description(type: 'text') }
 
     @Override
     boolean equals(obj) {
