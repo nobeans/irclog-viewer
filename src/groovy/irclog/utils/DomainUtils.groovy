@@ -32,13 +32,16 @@ class DomainUtils {
             loginName: loginName,
             realName: "Mr. <${loginName}}>",
             password: "123456",
-            repassword: propertyMap.password ?: "123456",
+            repassword: "123456",
             enabled: true,
             nicks: "${loginName}_",
             color: "#fff",
             roles: [propertyMap.roles ?: createRole()],
             channels: [],
         ]
+        if (propertyMap.password != null && propertyMap.repassword == null) {
+            propertyMap.repassword = propertyMap.password
+        }
         new Person(defaultProps + propertyMap)
     }
 
@@ -68,14 +71,14 @@ class DomainUtils {
     static Summary createSummary(propertyMap = [:]) {
         def id = counter.getAndIncrement()
         def defaultProps = [
-            today:1,
-            yesterday:2,
-            twoDaysAgo:3,
-            threeDaysAgo:4,
-            fourDaysAgo:5,
-            fiveDaysAgo:6,
-            sixDaysAgo:7,
-            totalBeforeYesterday:8,
+            today: 1,
+            yesterday: 2,
+            twoDaysAgo: 3,
+            threeDaysAgo: 4,
+            fourDaysAgo: 5,
+            fiveDaysAgo: 6,
+            sixDaysAgo: 7,
+            totalBeforeYesterday: 8,
             lastUpdate: new Date(id),
             latestIrclog: null,
             channel: null,

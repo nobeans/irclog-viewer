@@ -1,5 +1,7 @@
 package irclog.test
 
+import irclog.Role
+import irclog.utils.DomainUtils
 import spock.lang.Specification
 
 abstract class ConstraintUnitSpec extends Specification {
@@ -8,6 +10,18 @@ abstract class ConstraintUnitSpec extends Specification {
         def longString = ""
         length.times { longString += "a" }
         longString
+    }
+
+    Role getRole(String roleName) {
+        DomainUtils.createRole(name: roleName)
+    }
+
+    Role getAdminRole() {
+        getRole(Role.ADMIN)
+    }
+
+    Role getUserRole() {
+        getRole(Role.USER)
     }
 
     void validateConstraints(obj, field, error) {

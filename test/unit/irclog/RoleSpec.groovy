@@ -36,7 +36,7 @@ class RoleSpec extends ConstraintUnitSpec {
         'name' | 'valid'    | 'ROLE_ADMIN'
         'name' | 'nullable' | null
         'name' | 'blank'    | ''
-        'name' | 'matches'  | 'NOT_STARTING_BY_ROLE_PREFIX'
+        'name' | 'matches'  | 'NOT_STARTING_WITH_ROLE_PREFIX'
         'name' | 'matches'  | 'ROLE_ HAS SPACE'
         'name' | 'unique'   | 'ROLE_EXISTED'
         'name' | 'valid'    | 'ROLE_'.padRight(100, 'x')
