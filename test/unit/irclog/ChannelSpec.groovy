@@ -15,19 +15,19 @@ class ChannelSpec extends ConstraintUnitSpec {
     }
 
     def "validate: DomainUtils' default values are all valid"() {
-        when:
+        given:
         Channel channel = DomainUtils.createChannel()
 
-        then:
-        assert channel.validate()
+        expect:
+        channel.validate()
     }
 
     @Unroll
-    def "validate: #field is #error"() {
-        when:
+    def "validate: #field is #error when value is '#value'"() {
+        given:
         Channel channel = DomainUtils.createChannel("$field": value)
 
-        then:
+        expect:
         validateConstraints(channel, field, error)
 
         where:
@@ -37,7 +37,9 @@ class ChannelSpec extends ConstraintUnitSpec {
         'name'        | 'unique'   | '#EXISTED_CHANNEL'
         'name'        | 'valid'    | '#' * 100
         'name'        | 'maxSize'  | '#' * 101
+        'name'        | 'matches'  | '#'
         'name'        | 'matches'  | 'NO_HASH'
+        'name'        | 'matches'  | '# HAS SPACE'
         'description' | 'nullable' | null
         'isPrivate'   | 'nullable' | null
         'isArchived'  | 'nullable' | null
@@ -47,13 +49,13 @@ class ChannelSpec extends ConstraintUnitSpec {
 
     @Unroll
     def "validate: secretKey is #error when isPrivate is #isPrivate"() {
-        when:
+        given:
         Channel channel = DomainUtils.createChannel(
             isPrivate: isPrivate,
             secretKey: secretKey
         )
 
-        then:
+        expect:
         validateConstraints(channel, 'secretKey', error)
 
         where:
@@ -65,11 +67,11 @@ class ChannelSpec extends ConstraintUnitSpec {
     }
 
     def "two channel instances which have same name equal"() {
-        when:
+        given:
         def channel1 = DomainUtils.createChannel(name: name1)
         def channel2 = DomainUtils.createChannel(name: name2)
 
-        then:
+        expect:
         (channel1 == channel2) == equality
 
         where:
