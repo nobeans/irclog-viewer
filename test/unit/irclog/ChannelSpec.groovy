@@ -1,16 +1,16 @@
 package irclog
 
-import spock.lang.Unroll
 import grails.test.mixin.TestFor
-import irclog.utils.DomainUtils
 import irclog.test.ConstraintUnitSpec
+import irclog.utils.DomainUtils
+import spock.lang.Unroll
 
 @TestFor(Channel)
 class ChannelSpec extends ConstraintUnitSpec {
 
     def setup() {
         mockForConstraintsTests(Channel, [
-            DomainUtils.createChannel(name:"#EXISTED_CHANNEL")
+            DomainUtils.createChannel(name: "#EXISTED_CHANNEL")
         ])
     }
 
@@ -31,18 +31,18 @@ class ChannelSpec extends ConstraintUnitSpec {
         validateConstraints(channel, field, error)
 
         where:
-        field            | error      | value
-        'name'           | 'nullable' | null
-        'name'           | 'blank'    | ''
-        'name'           | 'unique'   | '#EXISTED_CHANNEL'
-        'name'           | 'valid'    | '#'*100
-        'name'           | 'maxSize'  | '#'*101
-        'name'           | 'matches'  | 'NO_HASH'
-        'description'    | 'nullable' | null
-        'isPrivate'      | 'nullable' | null
-        'isArchived'     | 'nullable' | null
-        'secretKey'      | 'valid'    | '#'*100
-        'secretKey'      | 'maxSize'  | '#'*101
+        field         | error      | value
+        'name'        | 'nullable' | null
+        'name'        | 'blank'    | ''
+        'name'        | 'unique'   | '#EXISTED_CHANNEL'
+        'name'        | 'valid'    | '#' * 100
+        'name'        | 'maxSize'  | '#' * 101
+        'name'        | 'matches'  | 'NO_HASH'
+        'description' | 'nullable' | null
+        'isPrivate'   | 'nullable' | null
+        'isArchived'  | 'nullable' | null
+        'secretKey'   | 'valid'    | '#' * 100
+        'secretKey'   | 'maxSize'  | '#' * 101
     }
 
     @Unroll
@@ -57,17 +57,17 @@ class ChannelSpec extends ConstraintUnitSpec {
         validateConstraints(channel, 'secretKey', error)
 
         where:
-        isPrivate | secretKey           | error
-        true      | '1234'              | 'valid'
-        false     | ''                  | 'valid'
-        true      | ''                  | 'validator'
-        false     | 'SHOULD_BE_EMPTY'   | 'validator'
+        isPrivate | secretKey         | error
+        true      | '1234'            | 'valid'
+        false     | ''                | 'valid'
+        true      | ''                | 'validator'
+        false     | 'SHOULD_BE_EMPTY' | 'validator'
     }
 
     def "two channel instances which have same name equal"() {
         when:
-        def channel1 = DomainUtils.createChannel(name:name1)
-        def channel2 = DomainUtils.createChannel(name:name2)
+        def channel1 = DomainUtils.createChannel(name: name1)
+        def channel2 = DomainUtils.createChannel(name: name2)
 
         then:
         (channel1 == channel2) == equality
