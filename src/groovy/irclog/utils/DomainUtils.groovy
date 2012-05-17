@@ -1,8 +1,12 @@
 package irclog.utils
 
+import irclog.Channel
+import irclog.Irclog
+import irclog.Person
+import irclog.Role
+import irclog.Summary
+
 import java.util.concurrent.atomic.AtomicInteger
-import grails.test.*
-import irclog.*
 
 class DomainUtils {
 
@@ -40,7 +44,7 @@ class DomainUtils {
 
     static Role createRole(propertyMap = [:]) {
         def id = counter.getAndIncrement()
-        def name = propertyMap.name ?: "#role${id}"
+        def name = propertyMap.name ?: "ROLE_${id}"
         def defaultProps = [
             name: name,
         ]

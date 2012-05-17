@@ -8,13 +8,14 @@ class Role {
     String name
 
     static constraints = {
-        name(blank:false, unique:true)
+        name blank: false, unique: true, maxSize: 100, matches: /^ROLE_[^\s]*$/
     }
 
     static mapping = {
     }
 
     String toString() {
+        // TODO i18n解決
         name
     }
 }
