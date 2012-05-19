@@ -11,7 +11,6 @@ class Irclog {
     String message
     String nick
     String permaId // permanent ID for perma-link
-
     String channelName // just store channel name imported from log
     Channel channel    // make relation if channel has registered yet
 
