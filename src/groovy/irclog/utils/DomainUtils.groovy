@@ -80,8 +80,8 @@ class DomainUtils {
             sixDaysAgo: 7,
             totalBeforeYesterday: 8,
             lastUpdate: new Date(id),
-            latestIrclog: null,
-            channel: null,
+            latestIrclog: createIrclog(),
+            channel: createChannel(),
         ]
         new Summary(defaultProps + propertyMap)
     }
