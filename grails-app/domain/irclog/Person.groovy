@@ -74,4 +74,15 @@ class Person {
         if (!role) throw new RuntimeException("User role not found in database")
         addToRoles(role)
     }
+
+    @Override
+    boolean equals(obj) {
+        if (!(obj instanceof Person)) return false
+        return (obj.loginName == this.loginName)
+    }
+
+    @Override
+    int hashCode() {
+        return (this.loginName ?: "?").hashCode() * 17
+    }
 }
