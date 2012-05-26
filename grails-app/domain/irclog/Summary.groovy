@@ -40,7 +40,7 @@ class Summary {
     static belongsTo = Channel
 
     static constraints = {
-        channel()
+        channel unique: true
         lastUpdated()
         today()
         yesterday()

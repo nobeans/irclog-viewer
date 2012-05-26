@@ -10,8 +10,13 @@ import static irclog.utils.DomainUtils.*
 @TestFor(Summary)
 class SummarySpec extends ConstraintUnitSpec {
 
+    def channel
+
     def setup() {
-        mockForConstraintsTests(Summary)
+        channel = DomainUtils.createChannel(name: "EXISTED_CHANNEL")
+        mockForConstraintsTests(Summary, [
+            DomainUtils.createSummary(channel: channel)
+        ])
     }
 
     def "validate: DomainUtils' default values are all valid"() {
@@ -26,7 +31,6 @@ class SummarySpec extends ConstraintUnitSpec {
     def "validate: #field is #error when value is '#value'"() {
         given:
         Summary summary = DomainUtils.createSummary(("$field" as String): value)
-        println summary.toString()
 
         expect:
         validateConstraints(summary, field, error)
@@ -44,6 +48,14 @@ class SummarySpec extends ConstraintUnitSpec {
         'sixDaysAgo'           | 'nullable' | null
         'totalBeforeYesterday' | 'nullable' | null
         'latestIrclog'         | 'nullable' | null
+    }
+
+    def "validate: channel is unique in case of summary for existed channel"() {
+        given:
+        Summary summary = DomainUtils.createSummary(channel: channel)
+
+        expect:
+        validateConstraints(summary, 'channel', 'unique')
     }
 
     @Unroll
