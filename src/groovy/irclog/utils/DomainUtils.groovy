@@ -30,19 +30,19 @@ class DomainUtils {
         def loginName = propertyMap.loginName ?: "LOGIN_NAME${id}"
         def defaultProps = [
             loginName: loginName,
-            realName: "Mr. <${loginName}}>",
+            realName: "Mr. <${loginName}>",
             password: "123456",
-            repassword: "123456",
+            //repassword: "123456",
             enabled: true,
             nicks: "${loginName}_",
             color: "#fff",
             roles: [propertyMap.roles ?: createRole()],
             channels: [],
         ]
-        if (propertyMap.password != null && propertyMap.repassword == null) {
-            propertyMap.repassword = propertyMap.password
-        }
-        new Person(defaultProps + propertyMap)
+        def person = new Person(defaultProps + propertyMap)
+        // explicitly assign to property for a curious behavior of 'bindable'
+        person.repassword = propertyMap.repassword ?: propertyMap.password ?: "123456"
+        person
     }
 
     static Role createRole(propertyMap = [:]) {
