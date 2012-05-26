@@ -1,5 +1,8 @@
 package irclog
 
+import groovy.transform.ToString
+
+@ToString
 class Person {
 
     def springSecurityService

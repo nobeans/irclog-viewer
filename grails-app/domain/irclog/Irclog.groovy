@@ -1,9 +1,12 @@
 package irclog
 
+import groovy.transform.ToString
+
+@ToString
 class Irclog {
 
     static final ESSENTIAL_TYPES = ['PRIVMSG', 'NOTICE', 'TOPIC']
-    static final OPTION_TYPES = [ 'JOIN', 'NICK', 'QUIT', 'PART', 'KICK', 'MODE', 'SYSTEM', 'OTHER', 'SIMPLE' ]
+    static final OPTION_TYPES = ['JOIN', 'NICK', 'QUIT', 'PART', 'KICK', 'MODE', 'SYSTEM', 'OTHER', 'SIMPLE']
     static final ALL_TYPES = ESSENTIAL_TYPES + OPTION_TYPES
 
     Date time
@@ -18,21 +21,16 @@ class Irclog {
 
     static constraints = {
         time()
-        type(inList:ALL_TYPES)
+        type inList: ALL_TYPES
         message()
-        nick(blank:false)
-        permaId(unique:true)
-        channelName(blank:false)
-        channel(nullable:true)
+        nick blank: false
+        permaId unique: true
+        channelName blank: false
+        channel nullable: true
     }
 
     static mapping = {
-        version(false)
-        message(type:'text')
-    }
-
-    @Override
-    String toString() {
-        "[${new java.text.SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(time)}] ${type?.toUpperCase()} <${nick}:${channelName}> ${message}"
+        version false
+        message type: 'text'
     }
 }
