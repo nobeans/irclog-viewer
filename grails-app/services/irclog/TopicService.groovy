@@ -1,7 +1,6 @@
 package irclog
 
 import irclog.utils.DateUtils
-import java.text.SimpleDateFormat
 
 class TopicService {
 
@@ -18,9 +17,11 @@ class TopicService {
             and {
                 'in'('channel', accessibleChannelList)
                 eq('type', 'TOPIC')
-                ge('time', DateUtils.today - 7)
+                ge('time', getToday() - 7)
             }
             maxResults(5)
         }
     }
+
+    private getToday = { DateUtils.today }
 }
