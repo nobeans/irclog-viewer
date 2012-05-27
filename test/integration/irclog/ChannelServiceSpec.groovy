@@ -23,6 +23,14 @@ class ChannelServiceSpec extends IntegrationSpec {
         setupSummary()
     }
 
+    def cleanupSpec() {
+        // cleanupSpec is out of the transaction for test
+        Summary.list()*.delete()
+        Irclog.list()*.delete()
+        Person.list()*.delete()
+        Channel.list()*.delete()
+    }
+
     @Unroll
     def "getAccessibleChannelList: returns channel list which is accessible for #person, ordered by #orderBy"() {
         expect:
