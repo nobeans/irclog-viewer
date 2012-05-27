@@ -20,6 +20,7 @@ class TopicService {
                 ge('time', getToday() - 7)
             }
             maxResults(5)
+            order('time', 'desc')
         }
     }
 
