@@ -32,18 +32,18 @@ class ChannelServiceSpec extends IntegrationSpec {
     }
 
     @Unroll
-    def "getAccessibleChannelList: returns channel list which is accessible for #person, ordered by #orderBy"() {
+    def "getAccessibleChannelList: returns channel list which is accessible for #personLabel, ordered by #orderByLabel"() {
         expect:
         channelService.getAccessibleChannelList(person, orderBy) == expected
 
         where:
-        person | orderBy                             | expected
-        admin  | [:]                                 | [ch1, ch2, ch3]
-        admin  | [sort: 'name', order: 'desc']       | [ch3, ch2, ch1]
-        admin  | [sort: 'description', order: 'asc'] | [ch3, ch2, ch1]
-        user1  | [:]                                 | [ch1]
-        user2  | [:]                                 | [ch2]
-        user3  | [:]                                 | [ch3]
+        personLabel | person | orderByLabel      | orderBy                             | expected
+        "admin"     | admin  | "nothing"         | [:]                                 | [ch1, ch2, ch3]
+        "admin"     | admin  | "name desc"       | [sort: 'name', order: 'desc']       | [ch3, ch2, ch1]
+        "admin"     | admin  | "description asc" | [sort: 'description', order: 'asc'] | [ch3, ch2, ch1]
+        "user1"     | user1  | "nothing"         | [:]                                 | [ch1]
+        "user2"     | user2  | "nothing"         | [:]                                 | [ch2]
+        "user3"     | user3  | "nothing"         | [:]                                 | [ch3]
     }
 
     @Unroll
