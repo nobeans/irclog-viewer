@@ -9,7 +9,7 @@ grails.project.source.level = 1.6
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
     inherits("global") {
-        // uncomment to disable ehcache
+        // specify dependency exclusions here; for example, uncomment this to disable ehcache:
         // excludes 'ehcache'
     }
     log "error" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
@@ -20,8 +20,8 @@ grails.project.dependency.resolution = {
         grailsPlugins()
         grailsHome()
         grailsCentral()
-        mavenCentral()
         mavenLocal()
+        mavenCentral()
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
@@ -39,6 +39,8 @@ grails.project.dependency.resolution = {
         //test ":auto-test:1.0.1"
         compile ":spock:0.6"
         build ":tomcat:$grailsVersion"
+        runtime ":database-migration:1.1"
+        compile ':cache:1.0.0.RC1'
 
         // Uncomment these (or add new ones) to enable additional resources capabilities
         //runtime ":zipped-resources:1.0"
