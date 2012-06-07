@@ -3,19 +3,16 @@ package irclog
 import grails.plugin.spock.IntegrationSpec
 import irclog.utils.DateUtils
 import irclog.utils.DomainUtils
-import spock.lang.Shared
 import spock.lang.Unroll
 
 class ChannelServiceSpec extends IntegrationSpec {
 
     def channelService
 
-    @Shared
     def ch1, ch2, ch3
-    @Shared
     def user1, user2, user3, userX, admin
 
-    def setupSpec() {
+    def setup() {
         setupChannel()
         setupPerson()
         setupRelationBetweenPersonAndChannel()
@@ -23,42 +20,34 @@ class ChannelServiceSpec extends IntegrationSpec {
         setupSummary()
     }
 
-    def cleanupSpec() {
-        // cleanupSpec is out of the transaction for test
-        Summary.list()*.delete()
-        Irclog.list()*.delete()
-        Person.list()*.delete()
-        Channel.list()*.delete()
-    }
-
     @Unroll
-    def "getAccessibleChannelList: returns channel list which is accessible for #personLabel, ordered by #orderByLabel"() {
+    def "getAccessibleChannelList: returns channel list which is accessible for #person, ordered by #orderByLabel"() {
         expect:
-        channelService.getAccessibleChannelList(person, orderBy) == expected
+        channelService.getAccessibleChannelList(this[person], orderBy) == expected.collect { this[it] }
 
         where:
-        personLabel | person | orderByLabel      | orderBy                             | expected
-        "admin"     | admin  | "nothing"         | [:]                                 | [ch1, ch2, ch3]
-        "admin"     | admin  | "name desc"       | [sort: 'name', order: 'desc']       | [ch3, ch2, ch1]
-        "admin"     | admin  | "description asc" | [sort: 'description', order: 'asc'] | [ch3, ch2, ch1]
-        "user1"     | user1  | "nothing"         | [:]                                 | [ch1]
-        "user2"     | user2  | "nothing"         | [:]                                 | [ch2]
-        "user3"     | user3  | "nothing"         | [:]                                 | [ch3]
+        person  | orderByLabel      | orderBy                             | expected
+        "admin" | "nothing"         | [:]                                 | ["ch1", "ch2", "ch3"]
+        "admin" | "name desc"       | [sort: 'name', order: 'desc']       | ["ch3", "ch2", "ch1"]
+        "admin" | "description asc" | [sort: 'description', order: 'asc'] | ["ch3", "ch2", "ch1"]
+        "user1" | "nothing"         | [:]                                 | ["ch1"]
+        "user2" | "nothing"         | [:]                                 | ["ch2"]
+        "user3" | "nothing"         | [:]                                 | ["ch3"]
     }
 
     @Unroll
     def "getJoinedPersons: returns person list on #channel specified"() {
         expect:
-        channelService.getJoinedPersons(channel) == expected
+        channelService.getJoinedPersons(this[channel]) == expected.collect { this[it] }
 
         where:
         channel | expected
-        ch1     | [user1]
-        ch2     | [user2]
-        ch3     | [user3, userX]
+        "ch1"   | ["user1"]
+        "ch2"   | ["user2"]
+        "ch3"   | ["user3", "userX"]
     }
 
-    def "getAllJoinedPersons returns all person list who has been already joined any channel"() {
+    def "getAllJoinedPersons: returns all person list who has been already joined any channel"() {
         when:
         def channels = channelService.getAllJoinedPersons()
 
@@ -125,12 +114,12 @@ class ChannelServiceSpec extends IntegrationSpec {
         createIrclog(ch2, "2010-10-07 01:23:45", "PRIVMSG")
 
         expect:
-        channelService.getBeforeDate("2010-10-06", ch2, isIgnoredOptionType) == expected
+        channelService.getBeforeDate("2010-10-06", ch2, isIgnoredOptionType) == DateUtils.toDate(expected)
 
         where:
         isIgnoredOptionType | expected
-        true                | DateUtils.toDate("2010-10-03 00:00:00")
-        false               | DateUtils.toDate("2010-10-05 00:00:00")
+        true                | "2010-10-03 00:00:00"
+        false               | "2010-10-05 00:00:00"
     }
 
     def "getBeforeDate: returns null when there isn't no date which has any stored irclog"() {
@@ -147,12 +136,12 @@ class ChannelServiceSpec extends IntegrationSpec {
         createIrclog(ch2, "2010-10-07 01:23:45", "PRIVMSG")
 
         expect:
-        channelService.getAfterDate("2010-10-02", ch2, isIgnoredOptionType) == expected
+        channelService.getAfterDate("2010-10-02", ch2, isIgnoredOptionType) == DateUtils.toDate(expected)
 
         where:
         isIgnoredOptionType | expected
-        true                | DateUtils.toDate("2010-10-05 00:00:00")
-        false               | DateUtils.toDate("2010-10-03 00:00:00")
+        true                | "2010-10-05 00:00:00"
+        false               | "2010-10-03 00:00:00"
     }
 
     def "getAfterDate: returns null when there isn't no date which has any stored irclog"() {
@@ -169,12 +158,12 @@ class ChannelServiceSpec extends IntegrationSpec {
         createIrclog(ch2, "2010-10-07 01:23:45", "OTHER")
 
         expect:
-        channelService.getLatestDate("2010-10-02", ch2, isIgnoredOptionType) == expected
+        channelService.getLatestDate("2010-10-02", ch2, isIgnoredOptionType) == DateUtils.toDate(expected)
 
         where:
         isIgnoredOptionType | expected
-        true                | DateUtils.toDate("2010-10-05 00:00:00")
-        false               | DateUtils.toDate("2010-10-07 00:00:00")
+        true                | "2010-10-05 00:00:00"
+        false               | "2010-10-07 00:00:00"
     }
 
     def "getLatestDate: returns null when there isn't no date which has any stored irclog"() {
