@@ -36,23 +36,23 @@ class IrclogSearchService {
         ]
 
         // 対象期間
-        assert (criterion.period) : 'required'
+        assert (criterion.period): 'required'
         query.hql += " and i.time >= ? and i.time < ?"
         query.args << "resolveBeginDate_${criterion.period}"(criterion)
         query.args << "resolveEndDate_${criterion.period}"(criterion)
 
         // チャンネル
-        assert (criterion.channel) : 'required'
+        assert (criterion.channel): 'required'
         def accesibleChannels = channelService.getAccessibleChannelList(person, criterion)
         if (criterion.channel == 'all') { // 許可されたチャンネルすべて
             if (accesibleChannels) {
-                query.hql += " and ( " + accesibleChannels.collect{"i.channel.id = ?"}.join(" or ") + " )"
-                query.args.addAll(accesibleChannels.collect{it.id})
+                query.hql += " and ( " + accesibleChannels.collect {"i.channel.id = ?"}.join(" or ") + " )"
+                query.args.addAll(accesibleChannels.collect {it.id})
             } else {
                 query.hql += " and 1 = 0" // 許可されたチャンネルが0件であれば、絶対にヒットさせない
             }
         } else { // 指定された1つのチャンネル
-            def channel = accesibleChannels.find{ it.name == criterion.channel }
+            def channel = accesibleChannels.find { it.name == criterion.channel }
             if (!channel) {
                 // 許可されていない場合は、何事もなかったかのように、とぼける。
                 query.hql += " and 1 = 0" // 許可されたチャンネルが0件であれば、絶対にヒットさせない
@@ -63,7 +63,7 @@ class IrclogSearchService {
         }
 
         // 種別
-        assert (criterion.type) : 'required'
+        assert (criterion.type): 'required'
         if (criterion.type != 'all') { // すべての種別であれば条件なし
             if (criterion.type == 'filtered') { // 限定条件を追加する。
                 query.hql += " and i.type in " + IN_ESSENTIAL_TYPES
@@ -76,21 +76,21 @@ class IrclogSearchService {
         // ニックネーム
         if (criterion.nick) {
             def nicks = criterion.nick?.split(/\s+/) as List // スペース区切りで複数OR指定可能
-            query.hql += " and ( " + nicks.collect{"lower(i.nick) like lower(?)"}.join(" or ") + " )"
-            query.args.addAll(nicks.collect{"%${it}%"})
+            query.hql += " and ( " + nicks.collect {"lower(i.nick) like lower(?)"}.join(" or ") + " )"
+            query.args.addAll(nicks.collect {"%${it}%"})
         }
 
         // メッセージ
         if (criterion.message) {
             def messages = criterion.message?.split(/\s+/) as List // スペース区切りで複数OR指定可能
-            query.hql += " and ( " + messages.collect{"lower(i.message) like lower(?)"}.join(" or ") + " )"
-            query.args.addAll(messages.collect{"%${it}%"})
+            query.hql += " and ( " + messages.collect {"lower(i.message) like lower(?)"}.join(" or ") + " )"
+            query.args.addAll(messages.collect {"%${it}%"})
         }
 
         // GString→String変換
         [
             hql: query.hql.toString(),
-            args: query.args.collect{
+            args: query.args.collect {
                 (it instanceof GString) ? it.toString() : it
             }
         ]
@@ -101,6 +101,7 @@ class IrclogSearchService {
     private resolveBeginDate_today(criterion) {
         getCalendarAtZeroHourOfToday().getTime()
     }
+
     private resolveBeginDate_oneday(criterion) {
         try {
             return new java.text.SimpleDateFormat('yyyy-MM-dd').parse(criterion['period-oneday-date'] ?: '')
@@ -110,26 +111,31 @@ class IrclogSearchService {
             return cal.getTime()
         }
     }
+
     private resolveBeginDate_week(criterion) {
         def cal = getCalendarAtZeroHourOfToday()
         cal.add(Calendar.DATE, -7)
         cal.getTime()
     }
+
     private resolveBeginDate_month(criterion) {
         def cal = getCalendarAtZeroHourOfToday()
         cal.add(Calendar.MONTH, -1)
         cal.getTime()
     }
+
     private resolveBeginDate_halfyear(criterion) {
         def cal = getCalendarAtZeroHourOfToday()
         cal.add(Calendar.MONTH, -6)
         cal.getTime()
     }
+
     private resolveBeginDate_year(criterion) {
         def cal = getCalendarAtZeroHourOfToday()
         cal.add(Calendar.YEAR, -1)
         cal.getTime()
     }
+
     private resolveBeginDate_all(criterion) {
         DateUtils.epoch
     }
@@ -139,6 +145,7 @@ class IrclogSearchService {
     private resolveEndDate_today(criterion) {
         getCalendarAtZeroHourOfTomorrow().getTime()
     }
+
     private resolveEndDate_oneday(criterion) {
         try {
             def onedayDate = new java.text.SimpleDateFormat('yyyy-MM-dd').parse(criterion['period-oneday-date'] ?: '')
@@ -150,18 +157,23 @@ class IrclogSearchService {
             return DateUtils.epoch // force never to match
         }
     }
+
     private resolveEndDate_week(criterion) {
         getCalendarAtZeroHourOfTomorrow().getTime()
     }
+
     private resolveEndDate_month(criterion) {
         getCalendarAtZeroHourOfTomorrow().getTime()
     }
+
     private resolveEndDate_halfyear(criterion) {
         getCalendarAtZeroHourOfTomorrow().getTime()
     }
+
     private resolveEndDate_year(criterion) {
         getCalendarAtZeroHourOfTomorrow().getTime()
     }
+
     private resolveEndDate_all(criterion) {
         getCalendarAtZeroHourOfTomorrow().getTime()
     }
@@ -169,6 +181,7 @@ class IrclogSearchService {
     private getCalendarAtZeroHourOfToday(cal = DateUtils.toCalendar(DateUtils.today)) {
         DateUtils.resetTimeToOrigin(cal)
     }
+
     private getCalendarAtZeroHourOfTomorrow() {
         def cal = getCalendarAtZeroHourOfToday()
         cal.add(Calendar.DATE, 1) // 翌日
