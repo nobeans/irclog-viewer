@@ -11,9 +11,9 @@ class TopicServiceSpec extends IntegrationSpec {
     def user1, user2, user3, userX, admin
 
     def setup() {
-        setUpChannel()
-        setUpPerson()
-        setUpRelationBetweenPersonAndChannel()
+        setupChannel()
+        setupPerson()
+        setupRelationBetweenPersonAndChannel()
 
         topicService.getToday = { DateUtils.toDate("2011-01-01 12:34:56") }
     }
@@ -85,13 +85,13 @@ class TopicServiceSpec extends IntegrationSpec {
     //--------------------------------------
     // Helper methods
 
-    private setUpChannel() {
+    private setupChannel() {
         ch1 = DomainUtils.createChannel(name: "#ch1", description: "ch1 is nice!").save(failOnError: true)
         ch2 = DomainUtils.createChannel(name: "#ch2", description: "ch2 is nice!").save(failOnError: true)
         ch3 = DomainUtils.createChannel(name: "#ch3", description: "ch3 is nice!").save(failOnError: true)
     }
 
-    private setUpPerson() {
+    private setupPerson() {
         admin = Person.findByLoginName("admin") // setup in Bootstrap
         def roleUser = Role.findByName("ROLE_USER")
         ["1", "2", "3", "X"].each { id ->
@@ -101,7 +101,7 @@ class TopicServiceSpec extends IntegrationSpec {
         }
     }
 
-    private setUpRelationBetweenPersonAndChannel() {
+    private setupRelationBetweenPersonAndChannel() {
         // #ch1[user1], #ch2[user2], #ch3[user3, userX]
         user1.addToChannels(ch1)
         user2.addToChannels(ch2)
