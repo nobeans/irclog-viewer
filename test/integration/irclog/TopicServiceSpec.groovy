@@ -18,7 +18,7 @@ class TopicServiceSpec extends IntegrationSpec {
         topicService.getToday = { DateUtils.toDate("2011-01-01 12:34:56") }
     }
 
-    def "getHotTopicList: returns topic list which are after a week ago"() {
+    def "getHotTopicList() should return topic list which are after a week ago"() {
         given:
         def expected = []
         expected << saveIrclog(time: "2011-01-01 12:34:56", type: "TOPIC")
@@ -35,7 +35,7 @@ class TopicServiceSpec extends IntegrationSpec {
         topics == expected
     }
 
-    def "getHotTopicList: returns topic list which are only TOPIC type"() {
+    def "getHotTopicList() should return topic list which are only TOPIC type"() {
         given:
         def expected = []
         expected << saveIrclog(time: "2011-01-01 12:34:56", type: "TOPIC")
@@ -52,7 +52,7 @@ class TopicServiceSpec extends IntegrationSpec {
         topics == expected
     }
 
-    def "getHotTopicList: returns topic list which are only in accessible channels"() {
+    def "getHotTopicList() should return topic list which are only in accessible channels"() {
         given:
         def expected = []
         saveIrclog(time: "2011-01-01 12:34:56", type: "TOPIC", channel: ch1)
@@ -69,7 +69,7 @@ class TopicServiceSpec extends IntegrationSpec {
         topics == expected
     }
 
-    def "getHotTopicList: returns empty list when there no topic in accessible channels"() {
+    def "getHotTopicList() should return empty list when there no topic in accessible channels"() {
         given:
         saveIrclog(time: "2011-01-01 12:34:56", type: "TOPIC", channel: ch1)
         saveIrclog(time: "2011-01-01 12:34:56", type: "TOPIC", channel: ch2)
