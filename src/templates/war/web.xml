@@ -69,10 +69,12 @@
         <url-pattern>*.gsp</url-pattern>
     </servlet-mapping>
 
+    <!-- 30 minutes -->
+    <!--
     <session-config>
-        <!-- 30 minutes -->
         <session-timeout>30</session-timeout>
     </session-config>
+    -->
 
     <welcome-file-list>
         <!--
