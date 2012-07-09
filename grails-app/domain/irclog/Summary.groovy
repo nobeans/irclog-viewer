@@ -1,6 +1,7 @@
 package irclog
 
 import groovy.transform.ToString
+import irclog.utils.DateUtils
 
 /**
  * Summary for each channel
@@ -9,56 +10,30 @@ import groovy.transform.ToString
 class Summary {
 
     Channel channel
-    Date lastUpdated  // = origin = today
+    Date lastUpdated = DateUtils.epoch  // = origin = today
 
     // Counts
-    Integer today         // = origin
-    Integer yesterday
-    Integer twoDaysAgo
-    Integer threeDaysAgo
-    Integer fourDaysAgo
-    Integer fiveDaysAgo
-    Integer sixDaysAgo
-    Integer totalBeforeYesterday  // total of all count of past days except today
+    Integer today = 0  // = origin
+    Integer yesterday = 0
+    Integer twoDaysAgo = 0
+    Integer threeDaysAgo = 0
+    Integer fourDaysAgo = 0
+    Integer fiveDaysAgo = 0
+    Integer sixDaysAgo = 0
+    Integer totalBeforeYesterday = 0  // total of all count of past days except today
+    Integer total = 0
 
     Irclog latestIrclog
-
-    static final SORTABLE = [
-        'channel',
-        'lastUpdated',
-        'today',
-        'yesterday',
-        'twoDaysAgo',
-        'threeDaysAgo',
-        'fourDaysAgo',
-        'fiveDaysAgo',
-        'sixDaysAgo',
-        'totalBeforeYesterday',
-        'latestIrclog'
-    ]
 
     static belongsTo = Channel
 
     static constraints = {
         channel unique: true
-        lastUpdated()
-        today()
-        yesterday()
-        twoDaysAgo()
-        threeDaysAgo()
-        fourDaysAgo()
-        fiveDaysAgo()
-        sixDaysAgo()
-        totalBeforeYesterday()
-        latestIrclog()
     }
 
     static mapping = {
-        version(false)
-        today(column: 'today_')
-    }
-
-    int total() {
-        return today + totalBeforeYesterday
+        id generator: 'sequence', params: [sequence: 'summary_seq']
+        version false
+        today column: 'today_'
     }
 }

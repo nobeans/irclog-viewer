@@ -14,12 +14,12 @@ class UpdateAllSummaryJob {
         }
     }
 
-    def summaryService
+    def summaryUpdateService
 
     def execute() {
         log.info "Begin updating all summary..."
         try {
-            summaryService.updateAllSummary()
+            summaryUpdateService.updateAllSummary()
         } finally {
             log.info "End updating all summary."
         }

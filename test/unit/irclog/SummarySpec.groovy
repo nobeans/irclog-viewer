@@ -5,8 +5,6 @@ import irclog.test.ConstraintUnitSpec
 import irclog.utils.DomainUtils
 import spock.lang.Unroll
 
-import static irclog.utils.DomainUtils.*
-
 @TestFor(Summary)
 class SummarySpec extends ConstraintUnitSpec {
 
@@ -56,21 +54,5 @@ class SummarySpec extends ConstraintUnitSpec {
 
         expect:
         validateConstraints(summary, 'channel', 'unique')
-    }
-
-    @Unroll
-    def "total: total of today's #today and totalBeforeYesterday's #totalBeforeYesterday is #total"() {
-        given:
-        Summary summary = createSummary(today: today, totalBeforeYesterday: totalBeforeYesterday)
-
-        expect:
-        summary.total() == total
-
-        where:
-        today | totalBeforeYesterday | total
-        1     | 2                    | 3
-        0     | 2                    | 2
-        1     | 0                    | 1
-        1     | 8                    | 9
     }
 }

@@ -1,81 +1,12 @@
 package irclog
 
 import irclog.utils.DateUtils
-import java.text.SimpleDateFormat
 
-class SummaryService {
+class SummaryUpdateService {
 
     static transactional = true
 
     def sqlHelper
-
-    List<Summary> getAccessibleSummaryList(params, accessibleChannelList) {
-        // 全てのサマリを取得して、アクセス可能な範囲に絞り込む
-        def summaryList = getAllSummaryList(params).findAll{it.channel in accessibleChannelList}
-
-        // 何らかの原因でサマリが存在しないチャンネルがある場合、ダミーサマリを登録
-        // ただし、ソート順序は反映されず、一番下に不要なものが並ぶだけとなる。
-        accessibleChannelList.findAll{!(it in summaryList.channel)}.sort{ it.name }.each { channel ->
-            summaryList << new Summary(channel:channel, lastUpdated:DateUtils.today)
-        }
-
-        return summaryList
-    }
-
-    private List<Summary> getAllSummaryList(params) {
-        // ソート条件を解決してから、サマリを取得
-        def originalSort = resolveSortCondition(params)
-        def summaryList = Summary.list(params)
-
-        // 独自ソート
-        // チャンネル名(channel)
-        //  - 関連テーブルの条件になるため、params.sortで指定できないようだ。
-        if (params.sort == 'channel') {
-            summaryList.sort{it.channel.name}
-            return (params.order == 'desc') ? summaryList.reverse() : summaryList
-        }
-
-        // 独自ソート
-        // 累積件素(total/totalBeforeYesterday)
-        //  - 今日の件数を加えた累積件数(total)はDB上に存在しないため、totalBeforeYesterdayに差し替えしている。
-        //  - このソート結果自体は不要であるが、他のUI上も有効なソートキーとは異なるキーでなければならない。
-        //  - ここでは、使われたソートキーがtotalBeforeYesterdayの場合、total()を使って再ソートする。
-        if (originalSort == 'total') {
-            params.sort = 'total' // UI上のソートキーに戻す
-            summaryList.sort{it.total()}
-            return (params.order == 'desc') ? summaryList.reverse() : summaryList
-        }
-
-        // 独自ソート
-        // 最新のログ(latestIrclog)
-        //  - DB上のlatest_irclog_idでソートすると、通常の運用ではIDは発言順に払い出されるため、
-        //    ほぼ正しく最新発言日時順にソートされる。
-        //  - しかし、バッチインポートによって過去のログをINSERTすると、IDでは期待されたソートはできなくなる。
-        //  - とはいえ、その後オンラインインポートによって誰かのログがINSERTされれば、再び期待通りとなる。
-        //  - それほど問題とはならないと考えるため、現時点では対処しないこととする。
-
-        return summaryList
-    }
-
-    private String resolveSortCondition(params) {
-        // orderの指定がないか不正値の場合は、desc固定とする。
-        // この表ではチャンネル以外は降順(desc)の方がわかりやすい。
-        // 実際はデフォルト時以外は、どちらかがパラメータで指定されているはずである。
-        // デフォルトの場合は、後述のswitch文でorderも再設定する。
-        if (!params.order || !['asc', 'desc'].contains(params.order)) params.order = 'desc'
-
-        switch (params.sort) {
-            case 'total': // UI上では単にtotalであるが、内部的にはいったんtotalBeforeYesterdayにする
-                params.sort = 'totalBeforeYesterday' // 何でも良い
-                return 'total'
-            case Summary.SORTABLE:
-                return params.sort // そのまま
-            default:
-                params.sort = 'latestIrclog'
-                params.order = 'desc'
-                break
-        }
-    }
 
     void updateTodaySummary() {
         def today = DateUtils.today
@@ -113,10 +44,6 @@ class SummaryService {
     }
 
     void updateAllSummary() {
-
-        println "HOGEHGE"
-
-
         def resultDeleted = 1
         def resultInserted = 1
 

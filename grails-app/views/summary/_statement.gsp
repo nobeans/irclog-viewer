@@ -45,7 +45,7 @@
           <td class="count"><my:summaryLink count="${summary.fourDaysAgo}"  channelName="${channel.name}" time="${summary.lastUpdated - 4}" /></td>
           <td class="count"><my:summaryLink count="${summary.fiveDaysAgo}"  channelName="${channel.name}" time="${summary.lastUpdated - 5}" /></td>
           <td class="count"><my:summaryLink count="${summary.sixDaysAgo}"   channelName="${channel.name}" time="${summary.lastUpdated - 6}" /></td>
-          <td class="totalCount">${summary.total()}</td>
+          <td class="totalCount">${summary.total}</td>
           <td class="latestIrclog" title="${summary?.latestIrclog?.message?.encodeAsHTML() ?: ''}">
             <g:if test="${summary?.latestIrclog}">
               <span class="time">${summary?.latestIrclog?.time?.format('yyyy-MM-dd HH:mm:ss')}</span>

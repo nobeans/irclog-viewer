@@ -7,7 +7,6 @@ class ChannelController {
 
     static allowedMethods = [delete:'POST', save:'POST', update:'POST', join:'POST']
     def channelService
-    def summaryService
 
     def index() { redirect(action:'list', params:params) }
 
@@ -90,8 +89,7 @@ class ChannelController {
                 Person.get(request.loginUserDomain.id).addToChannels(channel)
             }
 
-            // 全サマリ更新を実行して、新規チャンネルのログが既に存在する場合にサマリも生成する。
-            summaryService.updateAllSummary()
+            // TODO 全サマリが更新されるのは深夜のバッチの後だ、というメッセージを表示する
 
             flash.message = "channel.created"
             flash.args = [channel.id]
