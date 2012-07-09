@@ -238,8 +238,10 @@ class ChannelServiceSpec extends IntegrationSpec {
     }
 
     private setupSummary() {
-        DomainUtils.createSummary(channel: ch1, latestIrclog: Irclog.findByChannel(ch1)).save(failOnError: true)
-        DomainUtils.createSummary(channel: ch2, latestIrclog: Irclog.findByChannel(ch2)).save(failOnError: true)
-        DomainUtils.createSummary(channel: ch3, latestIrclog: Irclog.findByChannel(ch3)).save(failOnError: true)
+        [ch1, ch2, ch3].each { ch ->
+            def summary = Summary.findByChannel(ch)
+            summary.latestIrclog = Irclog.findByChannel(ch)
+            summary.save(failOnError: true)
+        }
     }
 }

@@ -35,22 +35,8 @@ class SummaryListServiceSpec extends IntegrationSpec {
         channelLabel       | channelNameList       | expectedLabel   | expected
         "empty list is"    | []                    | "empty list"    | []
         "one channel is"   | ["ch1"]               | "one summary"   | ["summary1"]
-        "two channels are" | ["ch1", "ch3"]        | "two summaries" | ["summary3", "summary1"]
-        "all channels are" | ["ch1", "ch2", "ch3"] | "all summaries" | ["summary3", "summary2", "summary1"]
-    }
-
-    def "getSummaryList() should return all summary including dummy summary as last element when a channel which has no summary is specified"() {
-        given:
-        def params = [:]
-        def channelList = [ch1, ch2, ch3, ch4]
-
-        when:
-        def actual = summaryListService.getSummaryList(params, channelList)
-
-        then:
-        actual[0..2] == [summary3, summary2, summary1]
-        actual[3].channel == ch4
-        actual[3].lastUpdated == DateUtils.epoch
+        "two channels are" | ["ch1", "ch3"]        | "two summaries" | ["summary1", "summary3"]
+        "all channels are" | ["ch1", "ch2", "ch3"] | "all summaries" | ["summary1", "summary2", "summary3"]
     }
 
     // -------------------------------------
@@ -95,9 +81,8 @@ class SummaryListServiceSpec extends IntegrationSpec {
     }
 
     private Summary saveSummary(ch, latestIrclog) {
-        DomainUtils.createSummary(
-            channel: ch,
-            latestIrclog: latestIrclog,
-        ).save(failOnError: true)
+        def summary = Summary.findByChannel(ch)
+        summary.latestIrclog = latestIrclog
+        summary.save(failOnError: true)
     }
 }

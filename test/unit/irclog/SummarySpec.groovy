@@ -45,7 +45,7 @@ class SummarySpec extends ConstraintUnitSpec {
         'fiveDaysAgo'          | 'nullable' | null
         'sixDaysAgo'           | 'nullable' | null
         'totalBeforeYesterday' | 'nullable' | null
-        'latestIrclog'         | 'nullable' | null
+        'latestIrclog'         | 'valid'    | null
     }
 
     def "validate: channel is unique in case of summary for existed channel"() {

@@ -29,6 +29,7 @@ class Summary {
 
     static constraints = {
         channel unique: true
+        latestIrclog nullable: true
     }
 
     static mapping = {

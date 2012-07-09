@@ -39,4 +39,11 @@ class Channel {
     int hashCode() {
         return (this.name ?: "?").hashCode() * 17
     }
+
+    def afterInsert() {
+        // Summary is necessary for Channel.
+        Summary.withNewSession {
+            new Summary(channel: this).save(failOnError: true)
+        }
+    }
 }
