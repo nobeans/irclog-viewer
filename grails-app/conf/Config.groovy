@@ -95,11 +95,6 @@ environments {
 
 // log4j configuration
 log4j = {
-    // Example of changing the log pattern for the default console appender:
-    //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
     appenders {
         console     name:'stdout',
                     layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{1}) %m%n')
@@ -110,32 +105,39 @@ log4j = {
                     file:'log/stacktrace.log', maxFileSize:'10MB', maxBackupIndex:5,
                     layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n')
     }
-    def grailsDefaultsLoggingTargets = [
-        'org.codehaus.groovy.grails.web.servlet',        //  controllers
-        'org.codehaus.groovy.grails.web.pages',          //  GSP
-        'org.codehaus.groovy.grails.web.sitemesh',       //  layouts
-        'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-        'org.codehaus.groovy.grails.web.mapping',        // URL mapping
-        'org.codehaus.groovy.grails.commons',            // core / classloading
-        'org.codehaus.groovy.grails.plugins',            // plugins
-        'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
-        'org.springframework',
-        'org.hibernate',
-        'net.sf.ehcache.hibernate',
-    ]
-    def myAppTargets = [
-        'grails.app.controller',
-        'grails.app.service',
-        'grails.app.filter',
-        'grails.app.views',
-        'irclog',
-    ]
+
     root {
-        warn 'stdout', 'file'
+        info 'stdout', 'file'
     }
-    warn   grailsDefaultsLoggingTargets
-    debug  myAppTargets
-    debug  'grails.app.filters.RequestTracelogFilters'
+
+    warn 'org.codehaus.groovy.grails.web.servlet',        //  controllers
+         'org.codehaus.groovy.grails.web.pages',          //  GSP
+         'org.codehaus.groovy.grails.web.sitemesh',       //  layouts
+         'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+         'org.codehaus.groovy.grails.web.mapping',        // URL mapping
+         'org.codehaus.groovy.grails.commons',            // core / classloading
+         'org.codehaus.groovy.grails.plugins',            // plugins
+         'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
+         'org.springframework',
+         'org.hibernate',
+         'net.sf.ehcache.hibernate'
+
+    development {
+        debug 'grails.app.controller',
+              'grails.app.service',
+              'grails.app.filter',
+              'grails.app.views',
+              'irclog',
+              'grails.app.filters.RequestTracelogFilters'
+    }
+    production {
+        info  'grails.app.controller',
+              'grails.app.service',
+              'grails.app.filter',
+              'grails.app.views',
+              'irclog',
+              'grails.app.filters.RequestTracelogFilters'
+    }
 }
 
 // irclog-viewer
