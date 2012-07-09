@@ -1,7 +1,6 @@
 package irclog
 
 import groovy.transform.ToString
-import irclog.utils.DateUtils
 
 /**
  * Summary for each channel
@@ -10,7 +9,7 @@ import irclog.utils.DateUtils
 class Summary {
 
     Channel channel
-    Date lastUpdated = DateUtils.epoch  // = origin = today
+    Date lastUpdated
 
     // Counts
     Integer today = 0  // = origin
