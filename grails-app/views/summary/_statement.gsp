@@ -12,7 +12,7 @@
           <th class="searchAllLogs" title="${message(code:'summary.searchAllLogs')}">
             <img src="${resource(dir:'images',file:'singleTitle.png')}" alt="Search all logs" />
           </th>
-          <my:sortableColumn action="index" defaultOrder="asc" property="channel" code="summary.channel" />
+          <my:sortableColumn action="index" defaultOrder="asc" property="channel.name" code="summary.channel" />
           <% def today = new Date() %>
           <% def dateBefore = { delta -> (today - delta).format('M/d(E)') } %>
           <my:sortableColumn class="count" action="index" defaultOrder="desc" property="today" code="summary.today" title="${dateBefore(0)}" />
