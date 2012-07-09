@@ -12,18 +12,18 @@
           <th class="searchAllLogs" title="${message(code:'summary.searchAllLogs')}">
             <img src="${resource(dir:'images',file:'singleTitle.png')}" alt="Search all logs" />
           </th>
-          <my:sortableColumn action="index" defaultOrder="asc" property="channel.name" code="summary.channel" />
+          <g:sortableColumn action="index" defaultOrder="asc" property="channel.name" titleKey="summary.channel" />
           <% def today = new Date() %>
           <% def dateBefore = { delta -> (today - delta).format('M/d(E)') } %>
-          <my:sortableColumn class="count" action="index" defaultOrder="desc" property="today" code="summary.today" title="${dateBefore(0)}" />
-          <my:sortableColumn class="count" action="index" defaultOrder="desc" property="yesterday">${dateBefore(1)}</my:sortableColumn>
-          <my:sortableColumn class="count" action="index" defaultOrder="desc" property="twoDaysAgo">${dateBefore(2)}</my:sortableColumn>
-          <my:sortableColumn class="count" action="index" defaultOrder="desc" property="threeDaysAgo">${dateBefore(3)}</my:sortableColumn>
-          <my:sortableColumn class="count" action="index" defaultOrder="desc" property="fourDaysAgo">${dateBefore(4)}</my:sortableColumn>
-          <my:sortableColumn class="count" action="index" defaultOrder="desc" property="fiveDaysAgo">${dateBefore(5)}</my:sortableColumn>
-          <my:sortableColumn class="count" action="index" defaultOrder="desc" property="sixDaysAgo">${dateBefore(6)}</my:sortableColumn>
-          <my:sortableColumn class="count" action="index" defaultOrder="desc" property="total" code="summary.total" titleKey="summary.total.tooltips" />
-          <my:sortableColumn class="latestIrclog" action="index" defaultOrder="desc" property="latestIrclog" code="summary.latestIrclog" titleKey="summary.latestIrclog.tooltips" />
+          <g:sortableColumn class="count" action="index" defaultOrder="desc" property="today" titleKey="summary.today" />
+          <g:sortableColumn class="count" action="index" defaultOrder="desc" property="yesterday" title="${dateBefore(1)}"/>
+          <g:sortableColumn class="count" action="index" defaultOrder="desc" property="twoDaysAgo" title="${dateBefore(2)}"/>
+          <g:sortableColumn class="count" action="index" defaultOrder="desc" property="threeDaysAgo" title="${dateBefore(3)}"/>
+          <g:sortableColumn class="count" action="index" defaultOrder="desc" property="fourDaysAgo" title="${dateBefore(4)}"/>
+          <g:sortableColumn class="count" action="index" defaultOrder="desc" property="fiveDaysAgo" title="${dateBefore(5)}"/>
+          <g:sortableColumn class="count" action="index" defaultOrder="desc" property="sixDaysAgo" title="${dateBefore(6)}"/>
+          <g:sortableColumn class="count" action="index" defaultOrder="desc" property="total" titleKey="summary.total" />
+          <g:sortableColumn class="latestIrclog" action="index" defaultOrder="desc" property="latestIrclog" titleKey="summary.latestIrclog" />
         </tr>
       </thead>
       <tbody>
