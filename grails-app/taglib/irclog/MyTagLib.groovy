@@ -6,6 +6,8 @@ class MyTagLib {
 
     static namespace = 'my'
 
+    def springSecurityService
+
     def singleLink = { attrs, body ->
         if (!attrs.channelName || !attrs.time) return
         def shortDate = attrs.time.format("yyyyMMdd")
@@ -110,5 +112,9 @@ class MyTagLib {
     }
     def help = { attrs, body ->
         out << """<div class="help-caption" id="${attrs.for}-caption" ${(attrs.visible == 'true') ? '' : 'style="display:none"'}>${body()}</div>"""
+    }
+
+    def loggedInPersonInfo = { attrs ->
+        out << springSecurityService.currentUser[attrs.field]
     }
 }
