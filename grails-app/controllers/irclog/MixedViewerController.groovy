@@ -10,6 +10,7 @@ class MixedViewerController {
 
     def irclogSearchService
     def channelService
+    def springSecurityService
 
     final SELECTABLE_PERIODS = [ 'all', 'year', 'halfyear', 'month', 'week', 'today', 'oneday' ]
     static final String SESSION_KEY_CRITERION = 'criterion'
@@ -25,7 +26,7 @@ class MixedViewerController {
         def criterion = parseCriterion()
 
         // ログ一覧を取得する。
-        def searchResult = irclogSearchService.search(request.loginUserDomain, criterion, [max:params.max, offset:params.offset])
+        def searchResult = irclogSearchService.search(authenticatedUser, criterion, [max:params.max, offset:params.offset])
         flash.message = null
 
         // モデルを作成して、デフォルトビューへ。
@@ -97,7 +98,7 @@ class MixedViewerController {
     private getSelectableChannels() {
         def channels = [:]
         channels['all'] = message(code:'mixedViewer.search.channel.all')
-        channelService.getAccessibleChannelList(request.loginUserDomain, params).grep{ !it.isArchived }.each{ channels[it.name] = it.name }
+        channelService.getAccessibleChannelList(authenticatedUser, params).grep{ !it.isArchived }.each{ channels[it.name] = it.name }
         channels
     }
 

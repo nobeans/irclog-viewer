@@ -76,8 +76,7 @@ class RegisterController {
     }
 
     private withLoginPerson(closure) {
-        def personId = request.loginUserDomain?.id
-        def person = Person.get(personId)
+        def person = authenticatedUser
         if (!person) {
             flash.errors = ["register.not.found"]
             flash.args = [personId]

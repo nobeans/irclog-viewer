@@ -17,7 +17,7 @@ class LoginController {
         if (request.isLoggedIn) {
             flash.message = null
             flash.errors = null
-            log.info "Logged in by ${request.loginUserName}"
+            log.info "Logged in by ${principal.username}"
             redirect(uri: grailsApplication.config.irclog.viewer.defaultTargetUrl)
         }
         else {
@@ -27,7 +27,7 @@ class LoginController {
 
     /** アクセス不許可 */
     def denied() {
-        log.warn "Denied to access: ${request['javax.servlet.forward.request_uri']} by ${request.loginUserName}"
+        log.warn "Denied to access: ${request['javax.servlet.forward.request_uri']} by ${principal.username}"
         def statusCode = request['javax.servlet.error.status_code']
         if (statusCode) {
             flash.errors = ['login.accessDenied.error.' + statusCode]

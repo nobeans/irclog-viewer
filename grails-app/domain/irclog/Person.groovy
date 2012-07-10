@@ -4,7 +4,7 @@ import groovy.transform.ToString
 import groovy.transform.EqualsAndHashCode
 
 @ToString
-@EqualsAndHashCode(includes = "loginName")
+@EqualsAndHashCode(includes = "id")
 class Person {
 
     def springSecurityService

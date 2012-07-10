@@ -6,13 +6,15 @@ package irclog
 class ChannelController {
 
     static allowedMethods = [delete:'POST', save:'POST', update:'POST', join:'POST']
+
     def channelService
+    def springSecurityService
 
     def index() { redirect(action:'list', params:params) }
 
     def list() {
         [
-            channelList: channelService.getAccessibleChannelList(request.loginUserDomain, params),
+            channelList: channelService.getAccessibleChannelList(authenticatedUser, params),
             allJoinedPersons: channelService.getAllJoinedPersons(),
             nickPersonList: Person.list()
         ]
@@ -55,7 +57,7 @@ class ChannelController {
                 // 間違って非公開→公開→非公開とすると、関連付けが全部クリアされてしまい
                 // 運用上困るかもしれないため、関連付けはそのまま残す。
                 if (channel.isPrivate) {
-                    Person.get(request.loginUserDomain.id).addToChannels(channel) // TODO: request.loginUserDomain.addToChannels()ではどうか？
+                    authenticatedUser.addToChannels(channel)
                 }
 
                 flash.message = "channel.updated"
@@ -86,7 +88,7 @@ class ChannelController {
             // 間違って非公開→公開→非公開とすると、関連付けが全部クリアされてしまい
             // 運用上困るかもしれないため、関連付けはそのまま残す。
             if (channel.isPrivate) {
-                Person.get(request.loginUserDomain.id).addToChannels(channel)
+                authenticatedUser.addToChannels(channel)
             }
 
             // TODO 全サマリが更新されるのは深夜のバッチの後だ、というメッセージを表示する
@@ -106,7 +108,7 @@ class ChannelController {
             flash.errors = ["channel.join.error"]
             flash.args = [params.channelName]
         } else {
-            Person.get(request.loginUserDomain.id).addToChannels(channel)
+            authenticatedUser.addToChannels(channel)
             flash.message = "channel.joined"
             flash.args = [params.channelName]
         }
@@ -115,7 +117,7 @@ class ChannelController {
 
     def part() {
         withChannel(params.id) { channel ->
-            Person.get(request.loginUserDomain.id).removeFromChannels(channel)
+            authenticatedUser.removeFromChannels(channel)
             flash.message = "channel.parted"
             redirect(action:'show', id:channel.id)
         }
@@ -149,6 +151,6 @@ class ChannelController {
     }
 
     private isAccessibleChannel(channel) {
-        channelService.getAccessibleChannelList(request.loginUserDomain, params).contains(channel)
+        channelService.getAccessibleChannelList(authenticatedUser, params).contains(channel)
     }
 }

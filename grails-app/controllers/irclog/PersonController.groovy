@@ -5,10 +5,12 @@ package irclog
  */
 class PersonController {
 
-    def index() { redirect(action:'list', params:params) }
-
     // the delete, save and update actions only accept POST requests
     static allowedMethods = [delete:'POST', save:'POST', update:'POST']
+
+    def springSecurityService
+
+    def index() { redirect(action:'list', params:params) }
 
     def list() {
         def defaultMax = grailsApplication.config.irclog.viewer.defaultMax
@@ -30,7 +32,7 @@ class PersonController {
 
     def delete() {
         withPerson(params.id) { person ->
-            if (person.id == request.loginUserDomain?.id) {
+            if (person == authenticatedUser) {
                 flash.message = "person.deleted.loggedInUser.error"
                 flash.args = [params.id]
                 redirect(action:'list')
@@ -103,7 +105,7 @@ class PersonController {
 
     def toUser() {
         withPerson(params.id) { person ->
-            if (person.id == request.loginUserDomain?.id) {
+            if (person == authenticatedUser) {
                 flash.message = "person.toUser.loggedInUser.error"
                 flash.args = [params.id]
                 redirect(action:'show', id:person.id)
