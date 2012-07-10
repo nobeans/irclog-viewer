@@ -1,8 +1,10 @@
 package irclog
 
 import groovy.transform.ToString
+import groovy.transform.EqualsAndHashCode
 
 @ToString
+@EqualsAndHashCode(includes = "name")
 class Channel {
 
     String name
@@ -27,17 +29,6 @@ class Channel {
 
     static mapping = {
         description type: 'text'
-    }
-
-    @Override
-    boolean equals(obj) {
-        if (!(obj instanceof Channel)) return false
-        return (obj.name == this.name)
-    }
-
-    @Override
-    int hashCode() {
-        return (this.name ?: "?").hashCode() * 17
     }
 
     def afterInsert() {

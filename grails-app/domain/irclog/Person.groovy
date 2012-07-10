@@ -1,8 +1,10 @@
 package irclog
 
 import groovy.transform.ToString
+import groovy.transform.EqualsAndHashCode
 
 @ToString
+@EqualsAndHashCode(includes = "loginName")
 class Person {
 
     def springSecurityService
@@ -73,16 +75,5 @@ class Person {
         def role = Role.findByName(Role.USER)
         if (!role) throw new RuntimeException("User role not found in database")
         addToRoles(role)
-    }
-
-    @Override
-    boolean equals(obj) {
-        if (!(obj instanceof Person)) return false
-        return (obj.loginName == this.loginName)
-    }
-
-    @Override
-    int hashCode() {
-        return (this.loginName ?: "?").hashCode() * 17
     }
 }
