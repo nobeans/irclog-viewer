@@ -29,7 +29,6 @@
     </div>
     <g:layoutBody />
     <div class="footer" role="contentinfo">
-      <a id="linkeToTop" href="#"><img src="${resource(dir:'images',file:'top.png')}" title="${message(code:"footer.linkToTop.tooltips")}" alt="To top" /></a>
       <div class="right">
         <div id="poweredBy"><g:message code="footer.poweredBy" /></div>
         <div id="responseTime">
