@@ -206,7 +206,7 @@ class ChannelServiceSpec extends IntegrationSpec {
 
     private setupChannel() {
         (1..3).each { num ->
-            this."ch${num}" = DomainUtils.createChannel(name: "#ch${num}", description: "${10 - num}").save(failOnError: true)
+            this."ch${num}" = DomainUtils.createChannel(name: "#ch${num}", description: "${10 - num}").saveWithSummary(failOnError: true)
         }
     }
 

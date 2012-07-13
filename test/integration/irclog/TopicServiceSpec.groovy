@@ -86,9 +86,9 @@ class TopicServiceSpec extends IntegrationSpec {
     // Helper methods
 
     private setupChannel() {
-        ch1 = DomainUtils.createChannel(name: "#ch1", description: "ch1 is nice!").save(failOnError: true)
-        ch2 = DomainUtils.createChannel(name: "#ch2", description: "ch2 is nice!").save(failOnError: true)
-        ch3 = DomainUtils.createChannel(name: "#ch3", description: "ch3 is nice!").save(failOnError: true)
+        ch1 = DomainUtils.createChannel(name: "#ch1", description: "ch1 is nice!").saveWithSummary(failOnError: true)
+        ch2 = DomainUtils.createChannel(name: "#ch2", description: "ch2 is nice!").saveWithSummary(failOnError: true)
+        ch3 = DomainUtils.createChannel(name: "#ch3", description: "ch3 is nice!").saveWithSummary(failOnError: true)
     }
 
     private setupPerson() {

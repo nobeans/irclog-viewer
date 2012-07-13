@@ -44,7 +44,7 @@ class SummaryListServiceSpec extends IntegrationSpec {
 
     private setupChannel() {
         (1..4).each { num ->
-            this."ch${num}" = DomainUtils.createChannel(name: "#ch${num}", description: "${10 - num}").save(failOnError: true)
+            this."ch${num}" = DomainUtils.createChannel(name: "#ch${num}", description: "${10 - num}").saveWithSummary(failOnError: true)
         }
     }
 

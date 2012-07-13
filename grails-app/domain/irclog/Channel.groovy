@@ -31,10 +31,15 @@ class Channel {
         description type: 'text'
     }
 
-    def afterInsert() {
-        // Summary is necessary for Channel.
-        Summary.withNewSession {
-            new Summary(channel: this).save(failOnError: true)
+    Summary getSummary() {
+        Summary.findByChannel(this)
+    }
+
+    def saveWithSummary(options = [:]) {
+        def saved = this.save(options)
+        if (saved && !summary) {
+            new Summary(channel: this).save(failOnError: true) // should not be failed
         }
+        saved
     }
 }
