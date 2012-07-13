@@ -38,7 +38,7 @@ class BootStrap {
     }
 
     private setupForDevelopmentEnv() {
-        if (Environment.current == Environment.DEVELOPMENT) { // only in development mode
+        if (Environment.isDevelopmentMode()) {
             def channelTest1 = createChannel(name:"#test1", isPrivate:true).save(failOnError:true)
             def channelTest2 = createChannel(name:"#test2", isPrivate:false, secretKey:"").save(failOnError:true)
             def channelTest3 = createChannel(name:"#test3", isPrivate:true).save(failOnError:true)
