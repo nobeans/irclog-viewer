@@ -32,7 +32,6 @@ class Summary {
     }
 
     static mapping = {
-        id generator: 'sequence', params: [sequence: 'summary_seq']
         version false
         today column: 'today_'
     }
