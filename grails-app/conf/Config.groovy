@@ -97,7 +97,7 @@ environments {
 log4j = {
     appenders {
         console     name:'stdout',
-                    layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{1}) %m%n')
+                    layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n')
         rollingFile name:'file',
                     file:'log/irclog.log', maxFileSize:'10MB', maxBackupIndex:5,
                     layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n')
@@ -110,9 +110,9 @@ log4j = {
         info 'stdout', 'file'
     }
 
-    warn 'org.codehaus.groovy.grails.web.servlet',        //  controllers
-         'org.codehaus.groovy.grails.web.pages',          //  GSP
-         'org.codehaus.groovy.grails.web.sitemesh',       //  layouts
+    warn 'org.codehaus.groovy.grails.web.servlet',        // controllers
+         'org.codehaus.groovy.grails.web.pages',          // GSP
+         'org.codehaus.groovy.grails.web.sitemesh',       // layouts
          'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
          'org.codehaus.groovy.grails.web.mapping',        // URL mapping
          'org.codehaus.groovy.grails.commons',            // core / classloading
@@ -122,21 +122,29 @@ log4j = {
          'org.hibernate',
          'net.sf.ehcache.hibernate'
 
-    development {
-        debug 'grails.app.controller',
-              'grails.app.service',
-              'grails.app.filter',
-              'grails.app.views',
-              'irclog',
-              'grails.app.filters.RequestTracelogFilters'
-    }
-    production {
-        info  'grails.app.controller',
-              'grails.app.service',
-              'grails.app.filter',
-              'grails.app.views',
-              'irclog',
-              'grails.app.filters.RequestTracelogFilters'
+    environments {
+        development {
+            debug 'grails.app.conf',
+                  'grails.app.filters',
+                  'grails.app.taglib',
+                  'grails.app.services',
+                  'grails.app.controllers',
+                  'grails.app.domain',
+                  'grails.app.views',
+                  'irclog',
+                  'grails.app.filters.RequestTracelogFilters'
+        }
+        production {
+            info  'grails.app.conf',
+                  'grails.app.filters',
+                  'grails.app.taglib',
+                  'grails.app.services',
+                  'grails.app.controllers',
+                  'grails.app.domain',
+                  'grails.app.views',
+                  'irclog',
+                  'grails.app.filters.RequestTracelogFilters'
+        }
     }
 }
 
