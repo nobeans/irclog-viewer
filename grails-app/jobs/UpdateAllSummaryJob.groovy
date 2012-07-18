@@ -8,9 +8,9 @@ class UpdateAllSummaryJob {
 
     static triggers = {
         if (Environment.current == Environment.DEVELOPMENT) {
-            cron name: 'updateAllSummary', cronExpression: "0 * * * * ?"
+            cron name: 'updateAllSummary', startDelay: 10000, cronExpression: "0 * * * * ?"
         } else {
-            cron name: 'updateAllSummary', cronExpression: "0 0 1 * * ?"
+            cron name: 'updateAllSummary', startDelay: 60000, cronExpression: "0 0 1 * * ?"
         }
     }
 
