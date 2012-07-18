@@ -2,9 +2,9 @@ package irclog
 
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
-class MyTagLib {
+class IrclogTagLib {
 
-    static namespace = 'my'
+    static namespace = 'irclog'
 
     def springSecurityService
 

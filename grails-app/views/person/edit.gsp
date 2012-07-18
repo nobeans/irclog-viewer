@@ -6,7 +6,7 @@
   </head>
   <body>
     <div class="body">
-      <my:flashMessage bean="${person}" />
+      <irclog:flashMessage bean="${person}" />
       <h1><g:message code="person.edit" default="Edit Person" /></h1>
       <g:form method="post" >
         <input type="hidden" name="id" value="${person?.id}" />

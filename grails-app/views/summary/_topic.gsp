@@ -1,16 +1,16 @@
 <div class="summary-topic">
-  <my:withHelp id="summary-topic-help">
+  <irclog:withHelp id="summary-topic-help">
     <h1><g:message code="summary.topic" /></h1>
-  </my:withHelp>
-  <my:help for="summary-topic-help">
+  </irclog:withHelp>
+  <irclog:help for="summary-topic-help">
     <g:message code="summary.topic.caption" />
-  </my:help>
+  </irclog:help>
   <ul class="list">
     <g:each in="${topicList}" var="irclog">
       <li>
-        <my:singleLink permaId="${irclog.permaId}" time="${irclog.time}" channelName="${irclog.channel.name}">
+        <irclog:singleLink permaId="${irclog.permaId}" time="${irclog.time}" channelName="${irclog.channel.name}">
           [${irclog.time.format('yyyy-MM-dd HH:mm:ss')}] ${irclog.channelName} ${irclog.message}
-        </my:singleLink>
+        </irclog:singleLink>
       </li>
     </g:each>
     <li class="summary-topic-search">

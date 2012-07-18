@@ -1,10 +1,10 @@
 <div class="caption">
   <g:select id="select-single" name="channel" from="${selectableChannels}" value="${criterion.channel}" optionKey="key" optionValue="value" />
   at
-  <my:singleLink time="${relatedDates.before}" channelName="${criterion.channel}" image="singleBefore.png" />
+  <irclog:singleLink time="${relatedDates.before}" channelName="${criterion.channel}" image="singleBefore.png" />
   <span id="currentDate">${criterion['period-oneday-date']}</span>
-  <my:singleLink time="${relatedDates.after}" channelName="${criterion.channel}" image="singleAfter.png" />
-  <my:singleLink time="${relatedDates.latest}" channelName="${criterion.channel}" image="singleToday.png" />
+  <irclog:singleLink time="${relatedDates.after}" channelName="${criterion.channel}" image="singleAfter.png" />
+  <irclog:singleLink time="${relatedDates.latest}" channelName="${criterion.channel}" image="singleToday.png" />
   <input type="text" class="datepicker" style="display:none" value="${criterion['period-oneday-date']}" />
 </div>
 <div class="list">
@@ -48,7 +48,7 @@
             ${isDefaultHiddenType(irclog.type) ? 'style="display:none"' : ''} >
           <td class="irclog-time">${irclog.time.format("HH:mm:ss")}</td>
           <td class="irclog-nick ${irclog.nick?.encodeAsHTML()}" title="${getPersonByNick(irclog.nick)?.realName?.encodeAsHTML() ?: ''}">${irclog.nick?.encodeAsHTML()}</td>
-          <td class="irclog-message wordBreak"><my:messageFormat value="${irclog.message}" /></td>
+          <td class="irclog-message wordBreak"><irclog:messageFormat value="${irclog.message}" /></td>
         </tr>
       </g:each>
     </tbody>

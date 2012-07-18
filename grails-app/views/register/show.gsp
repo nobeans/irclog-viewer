@@ -7,7 +7,7 @@
   </head>
   <body>
     <div class="body">
-      <my:flashMessage bean="${person}" />
+      <irclog:flashMessage bean="${person}" />
       <h1><g:message code="register.show" /></h1>
       <div class="dialog">
         <table>

@@ -7,7 +7,7 @@
   </head>
   <body>
     <div class="body channel">
-      <my:flashMessage />
+      <irclog:flashMessage />
       <h1><g:message code="channel.show" default="Show Channel" /></h1>
       <div class="dialog">
         <table>

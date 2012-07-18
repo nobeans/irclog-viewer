@@ -6,7 +6,7 @@
   </head>
   <body>
     <div class="body">
-      <my:flashMessage bean="${person}" />
+      <irclog:flashMessage bean="${person}" />
       <h1><g:message code="person.create" default="Create Person" /></h1>
       <g:form action="save" method="post" >
         <div class="dialog">

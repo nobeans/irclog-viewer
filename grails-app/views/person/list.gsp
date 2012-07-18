@@ -6,7 +6,7 @@
   </head>
   <body>
     <div class="body">
-      <my:flashMessage />
+      <irclog:flashMessage />
       <h1><g:message code="person.list" default="Person List" /></h1>
       <div class="list">
         <table>
@@ -53,7 +53,7 @@
       </div>
       <div class="buttons">
         <span class="menuButton"><g:link class="create" action="create"><g:message code="create" default="New Person" /></g:link></span>
-        <span class="menuButton"><my:createNavLinkIfNotCurrent controller="register" action="show" /></span>
+        <span class="menuButton"><irclog:createNavLinkIfNotCurrent controller="register" action="show" /></span>
       </div>
     </div>
   </body>

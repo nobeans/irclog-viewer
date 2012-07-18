@@ -3,19 +3,19 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="layout" content="main" />
     <title><g:message code="channel.list" default="Channel List" /></title>
-    <my:nickStyle persons="${nickPersonList}" classPrefix=".channel " />
+    <irclog:nickStyle persons="${nickPersonList}" classPrefix=".channel " />
     <r:require module="channel" />
   </head>
   <body>
     <div class="body channel">
-      <my:flashMessage />
-      <my:withHelp id="channel-list-help">
+      <irclog:flashMessage />
+      <irclog:withHelp id="channel-list-help">
         <h1><g:message code="channel.list" default="Channel List" /></h1>
-      </my:withHelp>
-      <my:help for="channel-list-help">
+      </irclog:withHelp>
+      <irclog:help for="channel-list-help">
         <sec:ifLoggedIn><g:message code="channel.list.caption.isLoggedIn" /></sec:ifLoggedIn>
         <sec:ifNotLoggedIn><g:message code="channel.list.caption.isNotLoggedIn" /></sec:ifNotLoggedIn>
-      </my:help>
+      </irclog:help>
       <div class="list">
         <table>
           <thead>

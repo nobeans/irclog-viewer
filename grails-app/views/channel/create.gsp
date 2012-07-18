@@ -6,13 +6,13 @@
   </head>
   <body>
     <div class="body channel">
-      <my:flashMessage bean="${channel}" />
-      <my:withHelp id="channel-create-help">
+      <irclog:flashMessage bean="${channel}" />
+      <irclog:withHelp id="channel-create-help">
         <h1><g:message code="channel.create" default="Create Channel" /></h1>
-      </my:withHelp>
-      <my:help for="channel-create-help" visible="true">
+      </irclog:withHelp>
+      <irclog:help for="channel-create-help" visible="true">
         <g:message code="channel.create.caption" />
-      </my:help>
+      </irclog:help>
       <g:form action="save" method="post" >
         <div class="dialog">
           <table>
