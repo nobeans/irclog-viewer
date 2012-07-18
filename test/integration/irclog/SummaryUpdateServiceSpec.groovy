@@ -3,119 +3,174 @@ package irclog
 import grails.plugin.spock.IntegrationSpec
 import irclog.utils.DateUtils
 import irclog.utils.DomainUtils
+import spock.lang.Shared
 
 class SummaryUpdateServiceSpec extends IntegrationSpec {
 
-    static OTHER_COUNTS = ['yesterday', 'twoDaysAgo', 'threeDaysAgo', 'fourDaysAgo', 'fiveDaysAgo', 'sixDaysAgo', 'totalBeforeYesterday', 'total']
+    static OTHER_COUNTS = ['yesterday', 'twoDaysAgo', 'threeDaysAgo', 'fourDaysAgo', 'fiveDaysAgo', 'sixDaysAgo', 'totalBeforeYesterday']
 
     SummaryUpdateService summaryUpdateService
 
-    def ch1, ch2, ch3, ch4
+    @Shared
+    def ch1, ch2, ch3
 
-    def setup() {
+    def setupSpec() {
+        // To insert many Irclogs is very slow and these test cases access
+        // to Channel and Irclog as read-only. So the fixture is setup at setupSpec.
         setupChannel()
         setupIrclog()
     }
 
-    def "updateTodaySummary() updates only today's count"() {
-        given:
-        assert Summary.list().every { summary ->
-            summary.today == 0
-        }
+    def setup() {
+        resetSummary()
+    }
 
+    def cleanupSpec() {
+        Irclog.executeUpdate("delete from Irclog")
+        Summary.executeUpdate("delete from Summary")
+        Channel.executeUpdate("delete from Channel")
+    }
+
+    def "updateTodaySummary() updates only today's count"() {
         when:
         summaryUpdateService.updateTodaySummary()
 
-        then: "ESSENTIAL_TYPES are counted"
-        ch1.summary.today == Irclog.ESSENTIAL_TYPES.size()
+        then: "ch1's today and total are updated"
+        assertSummary(ch1.summary, [
+            today: 3,
+            yesterday: 0,
+            twoDaysAgo: 0,
+            threeDaysAgo: 0,
+            fourDaysAgo: 0,
+            fiveDaysAgo: 0,
+            sixDaysAgo: 0,
+            totalBeforeYesterday: 0,
+            total: 3,
+        ])
 
-        and: "OPTION_TYPES are not counted"
-        ch2.summary.today == 0
+        and: "ch2's today and total are updated"
+        assertSummary(ch2.summary, [
+            today: 6,
+            yesterday: 0,
+            twoDaysAgo: 0,
+            threeDaysAgo: 0,
+            fourDaysAgo: 0,
+            fiveDaysAgo: 0,
+            sixDaysAgo: 0,
+            totalBeforeYesterday: 0,
+            total: 6,
+        ])
 
-        and: "only ESSENTIAL_TYPES are counted"
-        ch3.summary.today == Irclog.ESSENTIAL_TYPES.size()
+        and: "ch3's summary is all empty because there is no irclog"
+        assertSummary(ch3.summary, [
+            today: 0,
+            yesterday: 0,
+            twoDaysAgo: 0,
+            threeDaysAgo: 0,
+            fourDaysAgo: 0,
+            fiveDaysAgo: 0,
+            sixDaysAgo: 0,
+            totalBeforeYesterday: 0,
+            total: 0,
+        ])
 
-        and: "empty channel is zero"
-        ch4.summary.today == 0
-
-        and: "other counts are zero"
-        [ch1, ch2, ch3, ch4].every { ch ->
-            OTHER_COUNTS.every { prop -> ch.summary[prop] == 0 }
-        }
+        and: "latestirclog are updated"
+        ch1.summary.latestIrclog != null
+        ch2.summary.latestIrclog != null
+        ch3.summary.latestIrclog == null
     }
 
     def "updateAllSummary() updates all count"() {
-        given:
-        assert Summary.list().every { summary ->
-            summary.today == 0
-        }
-        assert [ch1, ch2, ch3, ch4].every { ch ->
-            OTHER_COUNTS.every { prop -> ch.summary[prop] == 0 }
-        }
-
         when:
         summaryUpdateService.updateAllSummary()
 
-        then: "ESSENTIAL_TYPES are counted"
-        ch1.summary.today == Irclog.ESSENTIAL_TYPES.size()
+        then: "ch1's summary is updated"
+        assertSummary(ch1.summary, [
+            today: 3,
+            yesterday: 6,
+            twoDaysAgo: 9,
+            threeDaysAgo: 12,
+            fourDaysAgo: 15,
+            fiveDaysAgo: 18,
+            sixDaysAgo: 21,
+            totalBeforeYesterday: 105,
+            total: 108,
+        ])
 
-        and: "OPTION_TYPES are not counted"
-        ch2.summary.today == 0
+        and: "ch2's summary is updated"
+        assertSummary(ch2.summary, [
+            today: 6,
+            yesterday: 9,
+            twoDaysAgo: 12,
+            threeDaysAgo: 15,
+            fourDaysAgo: 18,
+            fiveDaysAgo: 21,
+            sixDaysAgo: 24,
+            totalBeforeYesterday: 126,
+            total: 132,
+        ])
 
-        and: "only ESSENTIAL_TYPES are counted"
-        ch3.summary.today == Irclog.ESSENTIAL_TYPES.size()
+        and: "ch3's summary is all empty because there is no irclog"
+        assertSummary(ch3.summary, [
+            today: 0,
+            yesterday: 0,
+            twoDaysAgo: 0,
+            threeDaysAgo: 0,
+            fourDaysAgo: 0,
+            fiveDaysAgo: 0,
+            sixDaysAgo: 0,
+            totalBeforeYesterday: 0,
+            total: 0,
+        ])
 
-        and: "empty channel is zero"
-        ch4.summary.today == 0
-
-        and: "other counts are zero"
-        [ch1, ch2, ch3, ch4].every { ch ->
-            OTHER_COUNTS.every { prop -> ch.summary[prop] == 0 }
-        }
+        and: "latestirclog are updated"
+        ch1.summary.latestIrclog != null
+        ch2.summary.latestIrclog != null
+        ch3.summary.latestIrclog == null
     }
 
     // -------------------------------------
     // Test helpers
 
-    private setupChannel() {
-        (1..4).each { num ->
-            this."ch${num}" = DomainUtils.createChannel(name: "#ch${num}", description: "${10 - num}").saveWithSummary(failOnError: true)
+    private assertSummary(summary, expected) {
+        ['today', 'yesterday', 'twoDaysAgo', 'threeDaysAgo', 'fourDaysAgo', 'fiveDaysAgo', 'sixDaysAgo', 'totalBeforeYesterday', 'total', 'latestIrclog'].each { prop ->
+            summary[prop] == expected[prop]
         }
+    }
+
+    private setupChannel() {
+        ch1 = DomainUtils.createChannel(name: "#ch1").saveWithSummary(failOnError: true)
+        ch2 = DomainUtils.createChannel(name: "#ch2").saveWithSummary(failOnError: true)
+        ch3 = DomainUtils.createChannel(name: "#ch3").saveWithSummary(failOnError: true)
     }
 
     private setupIrclog() {
-        def today = DateUtils.today
-        def times = (0..7).collect { today - it }
-        times.each { time ->
-            Irclog.ESSENTIAL_TYPES.each { type ->
-                saveIrclog(ch1, [type: type, time: time])
-            }
-            Irclog.OPTION_TYPES.each { type ->
-                saveIrclog(ch2, [type: type, time: time])
-            }
-            Irclog.ALL_TYPES.each { type ->
-                saveIrclog(ch3, [type: type, time: time])
+        (0..7).each { dateDelta ->
+            [ch1, ch2].eachWithIndex { channel, index ->
+                Irclog.ALL_TYPES.each { type ->
+                    (index + dateDelta + 1).times {
+                        def time = DateUtils.today - dateDelta
+                        DomainUtils.createIrclog(
+                            channelName: channel.name,
+                            channel: channel,
+                            type: type,
+                            time: time,
+                        ).save(failOnError: true)
+                    }
+                }
             }
         }
     }
 
-    private saveIrclog(ch, propMap = [:]) {
-        if (propMap.time in String) {
-            propMap.time = DateUtils.toDate(propMap.time)
+    private resetSummary() {
+        // Summary was already created when Channel was created.
+        // this method resets all counts to zero and latestIrclog to null.
+        Summary.list().each { summary ->
+            summary.today = 0
+            OTHER_COUNTS.each { prop -> summary[prop] = 0 }
+            summary.total = 0
+            summary.totalBeforeYesterday = 0
+            summary.latestIrclog = null
         }
-        if (propMap.channel) {
-            propMap.channelName = propMap.channel.name
-        }
-        def defaultMap = [
-            channel: ch,
-            channelName: ch.name,
-            time: DateUtils.today,
-            nick: "user1",
-            type: "PRIVMSG",
-        ]
-        def mergedMap = defaultMap + propMap
-        def permaId = mergedMap.toString() // to avoid stack overflow
-        mergedMap.permaId = permaId
-        return DomainUtils.createIrclog(mergedMap).save(failOnError: true)
     }
 }

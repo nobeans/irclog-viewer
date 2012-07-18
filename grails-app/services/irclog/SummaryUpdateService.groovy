@@ -6,103 +6,56 @@ class SummaryUpdateService {
 
     static transactional = true
 
-    def sqlHelper
-
     void updateTodaySummary() {
-        def today = DateUtils.today
-        def from = today.clearTime()
-        def to = (today + 1).clearTime()
+        def yesterdayMidnight = DateUtils.today.clearTime()
+        def todayMidnight = yesterdayMidnight + 1
 
-        def result = Summary.list().collect { summary ->
-            def criteria = Irclog.createCriteria()
+        updateSpecifiedSummary(column:'today', from: yesterdayMidnight, to:todayMidnight)
 
-            // count
-            sumary.today = criteria.get {
-                rowCount()
-                eq('channel', summary.channel)
-                isNotNull('channel') // TODO is needs?
-                'in'('type', Irclog.ESSENTIAL_TYPES)
-                between('time', from, to)
+        Summary.list().collect { summary ->
+            summary.latestIrclog = Irclog.withCriteria(uniqueResult: true) {
+                maxResults 1
+                eq 'channel', summary.channel
+                'in' 'type', Irclog.ESSENTIAL_TYPES
+                order 'time', 'desc'
             }
-
-            // latest message
-            summary.latestIrclog = criteria.get {
-                eq('channel', summary.channel)
-                'in'('type', Irclog.ESSENTIAL_TYPES)
-                order('time', 'desc')
-            }
-
-            // last updated date
-            summary.lastUpdated = today // TODO to use auto timestamping
-
             summary.save()
-
-            return 1
+            log.debug "Updated latest irclog of ${summary.channel.name}: ${summary.latestIrclog?.id}"
         }
-
-        log.info "Updated today's summary: " + result
     }
 
     void updateAllSummary() {
-        def resultDeleted = 1
-        def resultInserted = 1
-
-        log.info "Updated all summary: deleted(${resultDeleted}), inserted(${resultInserted})"
-
-//        def baseDate = DateUtils.today
-//        sqlHelper.withSql { sql ->
-//            int resultDeleted = sql.executeUpdate("delete from summary")
-//            int resultInserted = sql.executeUpdate("""\
-//                |insert into summary (
-//                |    id,
-//                |    channel_id,
-//                |    last_updated,
-//                |    today_,
-//                |    yesterday,
-//                |    two_days_ago,
-//                |    three_days_ago,
-//                |    four_days_ago,
-//                |    five_days_ago,
-//                |    six_days_ago,
-//                |    total_before_yesterday,
-//                |    latest_irclog_id
-//                |)
-//                |select
-//                |    nextval('hibernate_sequence') as id,
-//                |    channel_id,
-//                |    timestamp ? as last_updated,
-//                |    sum(case when date_trunc('day', time) = timestamp ? then 1 else 0 end) as today_,
-//                |    sum(case when date_trunc('day', time) = timestamp ? then 1 else 0 end) as yesterday,
-//                |    sum(case when date_trunc('day', time) = timestamp ? then 1 else 0 end) as two_days_ago,
-//                |    sum(case when date_trunc('day', time) = timestamp ? then 1 else 0 end) as three_days_ago,
-//                |    sum(case when date_trunc('day', time) = timestamp ? then 1 else 0 end) as four_days_ago,
-//                |    sum(case when date_trunc('day', time) = timestamp ? then 1 else 0 end) as five_days_ago,
-//                |    sum(case when date_trunc('day', time) = timestamp ? then 1 else 0 end) as six_days_ago,
-//                |    count(*) as total_before_yesterday,
-//                |    '' as latest_irclog_id
-//                |from
-//                |    irclog
-//                |where
-//                |    channel_id is not null
-//                |and
-//                |    type in (${expandPlaceholders(Irclog.ESSENTIAL_TYPES)})
-//                |group by
-//                |    channel_id
-//                """.stripMargin(), [
-//                    baseDate.format("yyyy-MM-dd HH:mm:ss"),
-//                    df.format(baseDate),
-//                    df.format(baseDate - 1),
-//                    df.format(baseDate - 2),
-//                    df.format(baseDate - 3),
-//                    df.format(baseDate - 4),
-//                    df.format(baseDate - 5),
-//                    df.format(baseDate - 6),
-//                    *Irclog.ESSENTIAL_TYPES,
-//                ])
-//        }
+        def yesterdayMidnight = DateUtils.today.clearTime()
+        [
+            [column: 'yesterday', from: yesterdayMidnight - 1, to: yesterdayMidnight],
+            [column: 'twoDaysAgo', from: yesterdayMidnight - 2, to: yesterdayMidnight - 1],
+            [column: 'threeDaysAgo', from: yesterdayMidnight - 3, to: yesterdayMidnight - 2],
+            [column: 'fourDaysAgo', from: yesterdayMidnight - 4, to: yesterdayMidnight - 3],
+            [column: 'fiveDaysAgo', from: yesterdayMidnight - 5, to: yesterdayMidnight - 4],
+            [column: 'sixDaysAgo', from: yesterdayMidnight - 6, to: yesterdayMidnight - 5],
+            [column: 'totalBeforeYesterday', from: DateUtils.epoch, to: yesterdayMidnight],
+        ].each {
+            updateSpecifiedSummary(it)
+        }
+        updateTodaySummary()
+        log.debug "Updated all summary"
     }
 
-    private expandPlaceholders(list) {
-        (["?"] * list.size()).join(", ")
+    private void updateSpecifiedSummary(map) {
+        Irclog.withCriteria {
+            projections {
+                groupProperty('channel')
+                rowCount()
+            }
+            between 'time', map.from, map.to
+            'in' 'type', Irclog.ESSENTIAL_TYPES
+        }.each { result ->
+            def channel = result[0]
+            def count = result[1]
+            def summary = channel.summary
+            summary[map.column] = count
+            summary.save()
+            log.debug "Updated ${map.column}'s summary of ${channel.name}: ${count}"
+        }
     }
 }

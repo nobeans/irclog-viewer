@@ -35,4 +35,8 @@ class Summary {
         version false
         today column: 'today_'
     }
+
+    def beforeUpdate() {
+        total = today + totalBeforeYesterday
+    }
 }
