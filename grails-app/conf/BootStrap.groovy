@@ -4,6 +4,7 @@ import irclog.Role
 import irclog.Person
 import irclog.utils.DateUtils
 import static irclog.utils.DomainUtils.*
+import irclog.Irclog
 
 class BootStrap {
 
@@ -19,8 +20,8 @@ class BootStrap {
     }
 
     private void setupRolesIfNotExists() {
-        if (!Role.findByName(Role.USER)) createRole(name:Role.USER).save(failOnError:true)
-        if (!Role.findByName(Role.ADMIN)) createRole(name:Role.ADMIN).save(failOnError:true)
+        if (!Role.findByName(Role.USER)) createRole(name: Role.USER).save(failOnError: true)
+        if (!Role.findByName(Role.ADMIN)) createRole(name: Role.ADMIN).save(failOnError: true)
     }
 
     private void setupDefaultAdminUserIfNotExists() {
@@ -33,29 +34,31 @@ class BootStrap {
                 nicks: "",
                 color: "",
                 roles: Role.findAllByName(Role.ADMIN),
-            ).save(failOnError:true)
+            ).save(failOnError: true)
         }
     }
 
     private setupForDevelopmentEnv() {
         if (Environment.isDevelopmentMode()) {
-            def channelTest1 = createChannel(name:"#test1", isPrivate:true).saveWithSummary(failOnError:true)
-            def channelTest2 = createChannel(name:"#test2", isPrivate:false, secretKey:"").saveWithSummary(failOnError:true)
-            def channelTest3 = createChannel(name:"#test3", isPrivate:true).saveWithSummary(failOnError:true)
-            30.times {
-                (-2..0).each { dateDelta ->
-                    def today = DateUtils.today
-                    createIrclog(channelName:"#test1", channel:channelTest1, type:"PRIVMSG", time:today + dateDelta).save(failOnError:true)
+            def channels = [
+                createChannel(name: "#test1", isPrivate: true),
+                createChannel(name: "#test2", isPrivate: false, secretKey: ""),
+                createChannel(name: "#test3", isPrivate: true),
+            ].collect { it.saveWithSummary(failOnError: true) }
 
-                    createIrclog(channelName:"#test2", channel:channelTest2, type:"TOPIC", time:today + dateDelta).save(failOnError:true)
-                    createIrclog(channelName:"#test2", channel:channelTest2, type:"PRIVMSG", time:today + dateDelta).save(failOnError:true)
-                    createIrclog(channelName:"#test2", channel:channelTest2, type:"NOTICE", time:today + dateDelta).save(failOnError:true)
-                    createIrclog(channelName:"#test2", channel:channelTest2, type:"JOIN", time:today + dateDelta).save(failOnError:true)
-
-                    createIrclog(channelName:"#test3", channel:channelTest3, type:"PRIVMSG", time:today + dateDelta, message:'つhttp://localhost:8080/irclog/!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~  !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~').save(failOnError:true)
-                    createIrclog(channelName:"#test3", channel:channelTest3, type:"TOPIC", time:today + dateDelta, message:'つhttp://localhost:8080/irclog/!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~   !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~').save(failOnError:true)
-                    createIrclog(channelName:"#test3", channel:channelTest3, type:"PRIVMSG", time:today + dateDelta, message:'!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ ').save(failOnError:true)
-                    createIrclog(channelName:"#test3", channel:channelTest3, type:"TOPIC", time:today + dateDelta, message:'!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ ').save(failOnError:true)
+            (0..7).each { dateDelta ->
+                channels.eachWithIndex { channel, index ->
+                    Irclog.ALL_TYPES.each { type ->
+                        (index + dateDelta + 1).times {
+                            def time = DateUtils.today - dateDelta
+                            createIrclog(
+                                channelName: channel.name,
+                                channel: channel,
+                                type: type,
+                                time: time,
+                            ).save(failOnError: true)
+                        }
+                    }
                 }
             }
         }
