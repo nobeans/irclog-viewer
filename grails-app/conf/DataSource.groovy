@@ -21,6 +21,7 @@ environments {
             dbCreate = "create"
             url = "jdbc:postgresql://localhost:5432/irclog_dev"
             //loggingSql = true
+            //formatSql = true
         }
     }
     test {
