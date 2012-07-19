@@ -17,9 +17,11 @@ grails.project.dependency.resolution = {
 
     repositories {
         inherits true // Whether to inherit repository definitions from plugins
+
         grailsPlugins()
         grailsHome()
         grailsCentral()
+
         mavenLocal()
         mavenCentral()
     }
@@ -31,21 +33,21 @@ grails.project.dependency.resolution = {
 
     plugins {
         runtime ":hibernate:$grailsVersion"
+        runtime ":jquery:1.7.2"
         runtime ":resources:1.1.6"
-        runtime ":jquery:1.7.1"
         runtime ":jquery-ui:1.8.15"
         compile ":spring-security-core:1.2.1"
         compile ":quartz:0.4.2"
-        //test ":auto-test:1.0.1"
         compile ":spock:0.6"
-        build ":tomcat:$grailsVersion"
-        runtime ":database-migration:1.1"
-        compile ':cache:1.0.0.RC1'
 
         // Uncomment these (or add new ones) to enable additional resources capabilities
         //runtime ":zipped-resources:1.0"
         //runtime ":cached-resources:1.0"
         //runtime ":yui-minify-resources:0.1.4"
+
+        build ":tomcat:$grailsVersion"
+        runtime ":database-migration:1.1"
+        compile ':cache:1.0.0'
     }
 }
 grails.plugin.location."request-tracelog" = "./plugins/request-tracelog-0.3"
