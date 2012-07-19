@@ -31,7 +31,7 @@
         <% def channel = summary.channel %>
         <tr class="${(i % 2) == 0 ? 'odd' : 'even'} ${(summary) ? '' : 'summaryNotFound'}">
           <td class="searchAllLogs">
-            <a href="${my.searchAllLogsLink(channel:channel)}" title="${message(code:'summary.searchAllLogs')}">
+            <a href="${irclog.searchAllLogsLink(channel:channel)}" title="${message(code:'summary.searchAllLogs')}">
               <img src="${resource(dir:'images', file:'search.png')}" alt="Search all logs" />
             </a>
           </td>

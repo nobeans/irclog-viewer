@@ -34,7 +34,7 @@
           <g:each in="${channelList}" status="i" var="channel">
             <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
               <td>
-                <a href="${my.searchAllLogsLink(channel:channel)}" title="${message(code:'channel.searchAllLogs')}">
+                <a href="${irclog.searchAllLogsLink(channel:channel)}" title="${message(code:'channel.searchAllLogs')}">
                   <img src="${resource(dir:'images', file:'search.png')}" alt="Search all logs" />
                 </a>
               </td>
