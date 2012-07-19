@@ -165,10 +165,13 @@ grails.plugins.springsecurity.interceptUrlMap = [
     '/channel/list/**':     ['permitAll'],
     '/channel/show/**':     ['permitAll'],
     '/channel/kick/**':     ['hasRole("ROLE_ADMIN")'],
-    '/channel/**':          ['hasAnyRole("ROLE_USER","ROLE_ADMIN")'],
+    '/channel/**':          ['hasRole("ROLE_USER")'],
     '/register/create/**':  ['permitAll'],
     '/register/save/**':    ['permitAll'],
-    '/register/**':         ['hasAnyRole("ROLE_USER","ROLE_ADMIN")'],
+    '/register/**':         ['hasRole("ROLE_USER")'],
     '/person/**':           ['hasRole("ROLE_ADMIN")'],
     '/**':                  ['permitAll']
 ]
+grails.plugins.springsecurity.roleHierarchy = '''
+   ROLE_ADMIN > ROLE_USER
+'''
