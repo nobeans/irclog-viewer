@@ -21,9 +21,11 @@ class Person {
     final accountLocked = false
     final passwordExpired = false
 
-    static transients = ["repassword"]
+    Role role
 
-    static hasMany = [channels: Channel, roles: Role]
+    static transients = ['repassword', 'roles']
+
+    static hasMany = [channels: Channel]
 
     static constraints = {
         loginName blank: false, unique: true, maxSize: 100, matches: /[a-zA-Z0-9_-]{3,}/
@@ -39,24 +41,25 @@ class Person {
         enabled()
         channels()
 
+        role nullable: false, bindable: true
+    }
+
+    def getRoles() {
         // In this application, the relation between person and role is one-to-one.
-        // But spring-security requires has-many relationship, so it is.
-        // TODO in case of the hasMany's field, it seems that nullable:true is default...
-        roles nullable: false, size: 1..1
+        [role]
     }
 
     static mapping = {
-        roles column: 'person_id', joinTable: 'role_person'
         channels column: 'person_channels_id', joinTable: 'person_channel'
     }
 
     boolean isAdmin() {
-        return roles?.any { it.name == Role.ADMIN }
+        return role.name == Role.ADMIN
     }
 
     def beforeInsert() {
         encodePassword()
-        addUserRole()
+        setDefaultRole()
     }
 
     def beforeUpdate() {
@@ -70,10 +73,9 @@ class Person {
         repassword = password
     }
 
-    private void addUserRole() {
-        if (roles) return
-        def role = Role.findByName(Role.USER)
+    private void setDefaultRole() {
+        def user = Role.findByName(Role.USER)
         if (!role) throw new RuntimeException("User role not found in database")
-        addToRoles(role)
+        role = user
     }
 }

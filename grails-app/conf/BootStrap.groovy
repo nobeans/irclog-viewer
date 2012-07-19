@@ -33,7 +33,7 @@ class BootStrap {
                 enabled: true,
                 nicks: "",
                 color: "",
-                roles: Role.findAllByName(Role.ADMIN),
+                role: Role.findByName(Role.ADMIN),
             ).save(failOnError: true)
         }
     }

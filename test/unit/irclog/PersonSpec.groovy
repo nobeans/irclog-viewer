@@ -28,7 +28,9 @@ class PersonSpec extends ConstraintUnitSpec {
     @Unroll
     def "validate: #field is #error when value is '#value'"() {
         given:
-        Person person = DomainUtils.createPerson(("$field" as String): value)
+        Person person = DomainUtils.createPerson()
+        person[field] = value
+        person.repassword = person.password // not to confirm the mismatch them on this test case
 
         expect:
         validateConstraints(person, field, error)
@@ -70,9 +72,8 @@ class PersonSpec extends ConstraintUnitSpec {
         'color'     | 'valid'    | '#abcdef'
         'color'     | 'valid'    | '#ABCDEF'
         'color'     | 'matches'  | '000'
-        'roles'     | 'nullable' | null
-        'roles'     | 'size'     | []
-        'roles'     | 'size'     | [DomainUtils.createRole(), DomainUtils.createRole()]
+        'role'      | 'nullable' | null
+        'role'      | 'valid'    | DomainUtils.createRole()
     }
 
     @Unroll
@@ -84,10 +85,10 @@ class PersonSpec extends ConstraintUnitSpec {
         validateConstraints(person, 'password', error)
 
         where:
-        error       | password    | repassword
-        'valid'     | '123456'    | '123456'
-        'valid'     | '123456789' | '123456789'
-        'validator' | '123456'    | '12345x'
+        error       | password         | repassword
+        'valid'     | '123456'         | '123456'
+        'valid'     | '123456789'      | '123456789'
+        'validator' | '123456'         | '12345x'
     }
 
     @Unroll
@@ -112,19 +113,17 @@ class PersonSpec extends ConstraintUnitSpec {
     }
 
     @Unroll
-    def "isAdmin: a person who has #roles #isAdmin an admin"() {
+    def "isAdmin: a person who has #role #isAdmin an admin"() {
         given:
-        Person person = DomainUtils.createPerson(roles: roles)
-        def hoge = isAdmin
+        Person person = DomainUtils.createPerson(role: role)
 
         expect:
         person.isAdmin() == (isAdmin == 'is')
 
         where:
-        roles                 | isAdmin
-        [adminRole]           | 'is'
-        [adminRole, userRole] | 'is'
-        [userRole]            | "isn't"
-        []                    | "isn't"
+        role      | isAdmin
+        adminRole | 'is'
+        userRole  | "isn't"
+        null      | "isn't"
     }
 }

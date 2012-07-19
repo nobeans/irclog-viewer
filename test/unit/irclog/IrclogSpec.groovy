@@ -27,7 +27,8 @@ class IrclogSpec extends ConstraintUnitSpec {
     @Unroll
     def "validate: #field is #error when value is '#value'"() {
         given:
-        Irclog irclog = DomainUtils.createIrclog(("$field" as String): value)
+        Irclog irclog = DomainUtils.createIrclog()
+        irclog[field] = value
 
         expect:
         validateConstraints(irclog, field, error)

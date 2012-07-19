@@ -36,12 +36,13 @@ class DomainUtils {
             enabled: true,
             nicks: "${loginName}_",
             color: "#fff",
-            roles: [propertyMap.roles ?: createRole()],
+            //role: propertyMap.role ?: createRole(),
             channels: [],
         ]
         def person = new Person(defaultProps + propertyMap)
         // explicitly assign to property for a curious behavior of 'bindable'
         person.repassword = propertyMap.repassword ?: propertyMap.password ?: "123456"
+        person.role = propertyMap.role ?: createRole()
         person
     }
 
