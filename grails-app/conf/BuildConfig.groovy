@@ -50,5 +50,5 @@ grails.project.dependency.resolution = {
         compile ':cache:1.0.0'
     }
 }
-grails.plugin.location."request-tracelog" = "./plugins/request-tracelog-0.3"
+grails.plugin.location."request-tracelog" = "./plugins/request-tracelog"
 
