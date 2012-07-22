@@ -138,7 +138,7 @@ class SummaryUpdateServiceSpec extends IntegrationSpec {
             dateDeltaList.each { dateDelta ->
                 Irclog.ALL_TYPES.each { type ->
                     (ordinal + dateDelta).times {
-                        def time = DateUtils.today - dateDelta
+                        def time = DateUtils.today.clearTime() - dateDelta
                         DomainUtils.createIrclog(
                             channelName: channel.name,
                             channel: channel,

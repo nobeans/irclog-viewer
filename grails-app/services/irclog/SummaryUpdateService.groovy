@@ -50,7 +50,8 @@ class SummaryUpdateService {
                 groupProperty('channel')
                 rowCount()
             }
-            between 'time', map.from, map.to
+            ge 'time', map.from
+            lt 'time', map.to
             'in' 'type', Irclog.ESSENTIAL_TYPES
             isNotNull "channel"
         }.collectEntries { row ->
