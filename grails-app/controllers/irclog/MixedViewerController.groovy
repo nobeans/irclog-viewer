@@ -44,7 +44,7 @@ class MixedViewerController {
         render(view:'index', model:model)
     }
 
-    /** 
+    /**
      * セッション上の検索条件を削除して、リダイレクトする。
      */
     def clearCriterion() {
