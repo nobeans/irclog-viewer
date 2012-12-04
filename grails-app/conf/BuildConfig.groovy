@@ -48,6 +48,7 @@ grails.project.dependency.resolution = {
         build ":tomcat:$grailsVersion"
         runtime ":database-migration:1.1"
         compile ':cache:1.0.0'
+        build ":improx:0.1"
     }
 }
 grails.plugin.location."request-tracelog" = "./plugins/request-tracelog"
