@@ -237,8 +237,10 @@ class IrclogSearchServiceSpec extends IntegrationSpec {
         admin = Person.findByLoginName("admin") // setup in Bootstrap
         def roleUser = Role.findByName("ROLE_USER")
         ["1", "2", "3", "X"].each { id ->
-            def user = DomainUtils.createPerson(loginName: "user${id}").save(failOnError: true)
-            user.addToRoles(roleUser)
+            def user = DomainUtils.createPerson(
+                loginName: "user${id}",
+                role: roleUser,
+            ).save(failOnError: true)
             this."user${id}" = user
         }
     }

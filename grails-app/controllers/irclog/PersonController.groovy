@@ -96,8 +96,7 @@ class PersonController {
 
     def toAdmin() {
         withPerson(params.id) { person ->
-            person.removeFromRoles(Role.findByName(Role.USER))
-            person.addToRoles(Role.findByName(Role.ADMIN))
+            person.role = Role.findByName(Role.ADMIN)
             flash.message = "person.toAdmin.roleChanged"
             redirect(action:'show', id:person.id)
         }
@@ -111,8 +110,7 @@ class PersonController {
                 redirect(action:'show', id:person.id)
                 return
             }
-            person.removeFromRoles(Role.findByName(Role.ADMIN))
-            person.addToRoles(Role.findByName(Role.USER))
+            person.role = Role.findByName(Role.USER)
             flash.message = "person.toUser.roleChanged"
             redirect(action:'show', id:person.id)
         }
