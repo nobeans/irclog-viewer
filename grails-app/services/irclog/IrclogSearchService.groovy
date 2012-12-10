@@ -14,12 +14,12 @@ class IrclogSearchService {
     def search(person, criterion, params, direction = 'desc') {
         def query = createQuery(person, criterion)
         [
-            list: findAll(query, params, direction),
+            list: findAllIrclogs(query, params, direction),
             totalCount: count(query)
         ]
     }
 
-    private findAll(query, params, direction) {
+    private findAllIrclogs(query, params, direction) {
         // ソート条件(固定)
         // 時系列ですべての許可されたログをソートする。チャンネル別にしないところがポイント。
         Irclog.findAll(query.hql + " order by i.time ${direction}", query.args, params)
