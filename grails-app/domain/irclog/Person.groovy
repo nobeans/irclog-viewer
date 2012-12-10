@@ -59,7 +59,7 @@ class Person {
 
     def beforeInsert() {
         encodePassword()
-        setDefaultRole()
+        setDefaultRoleIfHavingNoRole()
     }
 
     def beforeUpdate() {
@@ -73,9 +73,10 @@ class Person {
         repassword = password
     }
 
-    private void setDefaultRole() {
+    private void setDefaultRoleIfHavingNoRole() {
+        if (role) return
         def user = Role.findByName(Role.USER)
-        if (!role) throw new RuntimeException("User role not found in database")
+        if (!user) throw new RuntimeException("User role not found in database")
         role = user
     }
 }
