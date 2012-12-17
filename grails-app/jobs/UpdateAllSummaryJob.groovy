@@ -8,20 +8,20 @@ class UpdateAllSummaryJob {
 
     static triggers = {
         if (Environment.current == Environment.DEVELOPMENT) {
-            cron name: 'updateAllSummary', startDelay: 10000, cronExpression: "0 * * * * ?"
+            simple startDelay: 30 * 1000, repeatInterval: 1 * 60 * 1000
         } else {
-            cron name: 'updateAllSummary', startDelay: 60000, cronExpression: "0 0 1 * * ?"
+            cron startDelay: 60 * 1000, cronExpression: "0 0 1 * * ?"
         }
     }
 
     def summaryUpdateService
 
     def execute() {
-        log.info "Begin updating all summary..."
+        log.info "Begin updating all summaries..."
         try {
             summaryUpdateService.updateAllSummary()
         } finally {
-            log.info "End updating all summary."
+            log.info "End updating all summaries."
         }
     }
 }
