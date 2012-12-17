@@ -1,5 +1,3 @@
-@charset "utf-8";
-
 /* General */
 
 html * {
@@ -9,7 +7,7 @@ html * {
 
     /* 全要素の基本フォントサイズを統一して、扱いやすくする。 */
     /* IEでのフォントサイズが不安定になる事象を抑止する効果もある。 */
-    font-size: 100%;
+    font-size: 14px;
 }
 html {
     position: relative;
@@ -67,7 +65,7 @@ input:focus, select:focus, textarea:focus {
     border: 1px solid #b2d1ff;
     background-color: #feb;
 }
-}
+
 label {
     vertical-align: middle;
 }
@@ -139,7 +137,7 @@ input.image {
 
 .nav {
     position: relative;
-    background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
+    background: #eee;
     border: 1px solid #bbb;
     border-style: solid none solid none;
     padding: 3px 18px;
@@ -162,7 +160,7 @@ input.image {
     right: 2em;
 }
 .nav #login-info li {
-    margin: 0;
+    margin: 8px 0;
     padding: 0;
 }
 .nav #login-info img {
@@ -267,7 +265,7 @@ td {
     padding: 3px 6px;
 }
 th {
-    background: transparent url(../images/skin/shadow.jpg) bottom repeat-x;
+    background: #eee;
     line-height: 1.3em;
     text-align: left;
     padding: 3px 6px;
@@ -327,7 +325,7 @@ html>/**/body .list tr:hover {
 
 .paginateButtons {
     position: relative;
-    background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
+    background: #eee;
     border: 1px solid #bbb;
     padding: 3px 6px;
     height: 1em;
@@ -399,7 +397,7 @@ html>/**/body .list tr:hover {
 /* Action Buttons */
 
 .buttons {
-    background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
+    background: #eee;
     border: 1px solid #bbb;
     overflow: hidden;
     margin: -1px 0 0 -1px;
@@ -729,7 +727,7 @@ html>/**/body .viewer .list tr:hover.highlight.optionType td.irclog-message {
     z-index: 999;
 }
 #joinToSecretChannel .button input {
-    background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
+    background: #eee;
 }
 
 /* Login */
@@ -773,7 +771,7 @@ html>/**/body .viewer .list tr:hover.highlight.optionType td.irclog-message {
     padding: 5px;
 }
 #login .inner .button input {
-    background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
+    background: #eee;
     padding: 0 .3em;
 }
 
@@ -979,7 +977,8 @@ img {
 	padding: 0;
 }
 
-.nav a {
+.nav li a,
+.nav li.active {
 	color: #666666;
 	display: block;
 	padding: 0.25em 0.7em;
@@ -991,6 +990,10 @@ img {
 
 .nav a:active, .nav a:visited {
 	color: #666666;
+}
+
+.nav li.active {
+	color: #ffffff;
 }
 
 .nav a:focus, .nav a:hover {
