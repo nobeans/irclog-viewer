@@ -140,14 +140,8 @@ grails.plugins.springsecurity.userLookup.authoritiesPropertyName = 'roles'
 grails.plugins.springsecurity.authority.className = 'irclog.Role'
 grails.plugins.springsecurity.authority.nameField = 'name'
 
-// failureHandler
-grails.plugins.springsecurity.failureHandler.defaultFailureUrl = '/login/denied'
-
-// successHandler
-grails.plugins.springsecurity.successHandler.defaultTargetUrl = '/login/auth'
-
 // passwordEncoder
-grails.plugins.springsecurity.password.algorithm = 'MD5'
+grails.plugins.springsecurity.password.algorithm = 'MD5' // FIXME deprecated...
 grails.plugins.springsecurity.password.encodeHashAsBase64 = false
 
 // use RequestMap from DomainClass
