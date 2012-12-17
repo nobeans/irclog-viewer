@@ -25,7 +25,7 @@ class LoginController {
         }
     }
 
-    /** アクセス不許可 */
+    /** Accedd denied. */
     def denied() {
         log.warn "Denied to access: ${request['javax.servlet.forward.request_uri']} by ${principal.username}"
         def statusCode = request['javax.servlet.error.status_code']

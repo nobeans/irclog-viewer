@@ -15,7 +15,6 @@ class Role {
     }
 
     String toString() {
-        // TODO i18n解決
         name
     }
 }
