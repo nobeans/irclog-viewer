@@ -80,10 +80,10 @@ log4j = {
                     layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n')
         rollingFile name:'file',
                     file:'log/irclog.log', maxFileSize:'10MB', maxBackupIndex:5,
-                    layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n')
+                    layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c) %m%n')
         rollingFile name:'stacktrace',
                     file:'log/stacktrace.log', maxFileSize:'10MB', maxBackupIndex:5,
-                    layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n')
+                    layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c) %m%n')
     }
 
     root {
@@ -98,30 +98,22 @@ log4j = {
          'org.codehaus.groovy.grails.commons',            // core / classloading
          'org.codehaus.groovy.grails.plugins',            // plugins
          'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
+         'org.codehaus.groovy.grails.compiler',
          'org.springframework',
          'org.hibernate',
-         'net.sf.ehcache.hibernate'
+         'net.sf.ehcache.hibernate',
+         'org.grails.plugin',
+         'grails.app.taglib.org.grails.plugin.resource',
+         'grails.app.resourceMappers.org.grails.plugin'
 
     environments {
         development {
-            debug 'grails.app.conf',
-                  'grails.app.filters',
-                  'grails.app.taglib',
-                  'grails.app.services',
-                  'grails.app.controllers',
-                  'grails.app.domain',
-                  'grails.app.views',
+            debug 'grails.app',
                   'irclog',
                   'grails.app.filters.RequestTracelogFilters'
         }
         production {
-            info  'grails.app.conf',
-                  'grails.app.filters',
-                  'grails.app.taglib',
-                  'grails.app.services',
-                  'grails.app.controllers',
-                  'grails.app.domain',
-                  'grails.app.views',
+            info  'grails.app',
                   'irclog',
                   'grails.app.filters.RequestTracelogFilters'
         }
