@@ -29,7 +29,7 @@ environments {
         //    //loggingSql = true
         //}
         dataSource {
-            //dbCreate = "create"
+            dbCreate = "create"
             url = "jdbc:postgresql://localhost:5432/irclog_dev"
             //loggingSql = true
             //formatSql = true
@@ -40,7 +40,7 @@ environments {
             driverClassName = "org.h2.Driver"
             username = "sa"
             password = ""
-            //dbCreate = "create-drop"
+            dbCreate = "create-drop"
             url = "jdbc:h2:mem:irclog_test;MVCC=TRUE;LOCK_TIMEOUT=10000"
             pooled = true
         }
