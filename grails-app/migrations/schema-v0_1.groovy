@@ -1,6 +1,56 @@
+import liquibase.precondition.core.PreconditionContainer
+
 databaseChangeLog = {
+
     changeSet(author: "irclog", id: "1355792844804-1") {
         comment "basic data structure for v0.1"
+
+        // to skip this changeSet when being already suitable for v0.1
+        preConditions {
+            grailsPrecondition {
+                check {
+                    def allTables = {
+                        def tableNames = []
+                        def rs
+                        try {
+                            rs = connection.metaData.getTables(null, null, null, null)
+                            while (rs.next()) {
+                                tableNames << rs.getString("TABLE_NAME")
+                            }
+                        } finally {
+                            rs?.close()
+                        }
+                        return tableNames
+                    }()
+
+                    // this check isn't strict but almost okay.
+                    def requiredTables = [
+                        "channel",
+                        "hibernate_sequence",
+                        "irclog",
+                        "person",
+                        "person_channel",
+                        "role",
+                        "role_person",
+                        "summary",
+                    ]
+
+                    def notExistedTables = requiredTables - allTables
+                    if (notExistedTables && notExistedTables == requiredTables) {
+                        // to apply this changeSet
+                    }
+                    if (notExistedTables && notExistedTables != requiredTables) {
+                        fail "Cannot continue because database is invalid: not found: ${notExistedTables}"
+                    }
+                    if (notExistedTables.empty) {
+                        // already suitable for v0.1
+                        // to continue when error/fail occurs
+                        changeSet.preconditions.onFail = PreconditionContainer.FailOption.MARK_RAN
+                        fail "Skipping..."
+                    }
+                }
+            }
+        }
 
         createTable(tableName: "channel") {
             column(name: "id", type: "int8") {
