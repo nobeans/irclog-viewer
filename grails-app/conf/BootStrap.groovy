@@ -1,5 +1,3 @@
-import grails.util.Environment
-import irclog.Channel
 import irclog.Role
 import irclog.Person
 import irclog.utils.DateUtils
@@ -8,12 +6,14 @@ import irclog.Irclog
 
 class BootStrap {
 
-    def springSecurityService
-
     def init = { servletContext ->
         setupRolesIfNotExists()
         setupDefaultAdminUserIfNotExists()
-        setupForDevelopmentEnv()
+        environments {
+            development {
+                setupForDevelopmentEnv()
+            }
+        }
     }
 
     def destroy = {
@@ -39,25 +39,23 @@ class BootStrap {
     }
 
     private setupForDevelopmentEnv() {
-        if (Environment.isDevelopmentMode()) {
-            def channels = [
-                createChannel(name: "#test1", isPrivate: true),
-                createChannel(name: "#test2", isPrivate: false, secretKey: ""),
-                createChannel(name: "#test3", isPrivate: true),
-            ].collect { it.saveWithSummary(failOnError: true) }
+        def channels = [
+            createChannel(name: "#test1", isPrivate: true),
+            createChannel(name: "#test2", isPrivate: false, secretKey: ""),
+            createChannel(name: "#test3", isPrivate: true),
+        ].collect { it.saveWithSummary(failOnError: true) }
 
-            (0..7).each { dateDelta ->
-                channels.eachWithIndex { channel, index ->
-                    Irclog.ALL_TYPES.each { type ->
-                        (index + dateDelta + 1).times {
-                            def time = DateUtils.today - dateDelta
-                            createIrclog(
-                                channelName: channel.name,
-                                channel: channel,
-                                type: type,
-                                time: time,
-                            ).save(failOnError: true)
-                        }
+        (0..7).each { dateDelta ->
+            channels.eachWithIndex { channel, index ->
+                Irclog.ALL_TYPES.each { type ->
+                    (index + dateDelta + 1).times {
+                        def time = DateUtils.today - dateDelta
+                        createIrclog(
+                            channelName: channel.name,
+                            channel: channel,
+                            type: type,
+                            time: time,
+                        ).save(failOnError: true)
                     }
                 }
             }
