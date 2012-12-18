@@ -171,4 +171,8 @@ databaseChangeLog = {
 
         createSequence(schemaName: "public", sequenceName: "hibernate_sequence")
     }
+
+    changeSet(author: "irclog", id: "1355792844804-99") {
+        tagDatabase(tag: "v0.1")
+    }
 }

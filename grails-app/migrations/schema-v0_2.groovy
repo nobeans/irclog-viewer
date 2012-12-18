@@ -135,4 +135,8 @@ databaseChangeLog = {
             }
         }
     }
+
+    changeSet(author: "irclog", id: "1355793743722-99") {
+        tagDatabase(tag: "v0.2")
+    }
 }
