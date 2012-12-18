@@ -24,11 +24,16 @@ grails.project.dependency.resolution = {
 
         mavenLocal()
         mavenCentral()
+
+        mavenRepo "https://repository-kobo.forge.cloudbees.com/snapshot/"
+        mavenRepo "https://repository-kobo.forge.cloudbees.com/release/"
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         runtime "postgresql:postgresql:9.0-801.jdbc4"
+
+        build "org.jggug.kobo:gircbot:0.1-SNAPSHOT"
     }
 
     plugins {
