@@ -1,17 +1,13 @@
 import irclog.Irclog
-import irclog.IrclogAppendService
 import irclog.Person
 import irclog.Role
 import irclog.utils.DateUtils
-import org.jggug.kobo.gircbot.builder.GircBotBuilder
-import org.jggug.kobo.gircbot.reactors.Logger
 
 import static irclog.utils.DomainUtils.*
 
 class BootStrap {
 
     def grailsApplication
-    def irclogAppendService
     def ircbot
 
     def init = { servletContext ->
@@ -20,24 +16,24 @@ class BootStrap {
         environments {
             development {
                 setupForDevelopmentEnv()
-                startBot()
+                ircbot.start()
             }
             production {
-                startBot()
+                ircbot.start()
             }
         }
     }
 
     def destroy = {
-        stopBot()
+        ircbot.stop()
     }
 
-    private void setupRolesIfNotExists() {
+    private static void setupRolesIfNotExists() {
         if (!Role.findByName(Role.USER)) createRole(name: Role.USER).save(failOnError: true)
         if (!Role.findByName(Role.ADMIN)) createRole(name: Role.ADMIN).save(failOnError: true)
     }
 
-    private void setupDefaultAdminUserIfNotExists() {
+    private static void setupDefaultAdminUserIfNotExists() {
         if (!Person.findByLoginName("admin")) {
             createPerson(
                 loginName: "admin",
@@ -51,7 +47,7 @@ class BootStrap {
         }
     }
 
-    private setupForDevelopmentEnv() {
+    private static setupForDevelopmentEnv() {
         def channels = [
             createChannel(name: "#test1", isPrivate: true),
             createChannel(name: "#test2", isPrivate: false, secretKey: ""),
@@ -73,17 +69,5 @@ class BootStrap {
                 }
             }
         }
-    }
-
-    private startBot() {
-        if (Boolean.valueOf(System.properties["ircbot.disable"])) return
-        ircbot = new GircBotBuilder()
-        Map configMap = grailsApplication.config.irclog.ircbot.flatten()
-        configMap.reactors << new Logger(irclogAppendService)
-        ircbot.config(configMap).start()
-    }
-
-    private stopBot() {
-        ircbot?.stop()
     }
 }
