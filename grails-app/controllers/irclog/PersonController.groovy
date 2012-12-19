@@ -74,16 +74,8 @@ class PersonController {
     }
 
     def save() {
-        // ユーザロールを取得する。
-        def role = Role.findByName(Role.USER)
-        if (!role) {
-            flash.message = 'register.userRoleNotFound.'
-            redirect(controller:'top')
-            return
-        }
-
-        // 登録する。
         def person = new Person(params)
+        person.toUser()
         person.save()
         if (person.hasErrors()) {
             render(view:'create', model:[person:person])
@@ -96,7 +88,8 @@ class PersonController {
 
     def toAdmin() {
         withPerson(params.id) { person ->
-            person.role = Role.findByName(Role.ADMIN)
+            person.toAdmin().save()
+            println person.errors
             flash.message = "person.toAdmin.roleChanged"
             redirect(action:'show', id:person.id)
         }
@@ -110,7 +103,7 @@ class PersonController {
                 redirect(action:'show', id:person.id)
                 return
             }
-            person.role = Role.findByName(Role.USER)
+            person.toUser().save()
             flash.message = "person.toUser.roleChanged"
             redirect(action:'show', id:person.id)
         }

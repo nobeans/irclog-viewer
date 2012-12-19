@@ -41,7 +41,7 @@ class Person {
         enabled()
         channels()
 
-        role nullable: false, bindable: true
+        role bindable: false
     }
 
     def getRoles() {
@@ -59,7 +59,6 @@ class Person {
 
     def beforeInsert() {
         encodePassword()
-        setDefaultRoleIfHavingNoRole()
     }
 
     def beforeUpdate() {
@@ -68,15 +67,22 @@ class Person {
         }
     }
 
+    def afterLoad() {
+        repassword = password
+    }
+
     private void encodePassword() {
         password = springSecurityService.encodePassword(password)
         repassword = password
     }
 
-    private void setDefaultRoleIfHavingNoRole() {
-        if (role) return
-        def user = Role.findByName(Role.USER)
-        if (!user) throw new RuntimeException("User role not found in database")
-        role = user
+    Person toUser() {
+        role = Role.findByName(Role.USER)
+        return this
+    }
+
+    Person toAdmin() {
+        role = Role.findByName(Role.ADMIN)
+        return this
     }
 }

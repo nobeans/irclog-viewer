@@ -62,6 +62,7 @@ class RegisterController {
 
         // 登録する。
         def person = new Person(params)
+        person.toUser()
         person.save()
         if (person.hasErrors()) {
             render(view:'create', model:[person:person])
