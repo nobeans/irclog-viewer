@@ -1,7 +1,5 @@
 package irclog
 
-import grails.plugin.cache.CacheEvict
-
 import static irclog.utils.DateUtils.*
 
 class ChannelService {
@@ -88,7 +86,6 @@ class ChannelService {
      * 指定のチャンネルを削除する。
      * 各種の関連付けを適切に削除する。
      */
-    @CacheEvict(value = "channel", key = "#channel.name")
     void deleteChannel(channel) {
         sqlHelper.withSql { sql ->
             // チャンネルとユーザの関連付けを削除する。
@@ -122,7 +119,7 @@ class ChannelService {
     Map<String, Date> getRelatedDates(date, channel, isIgnoredOptionType) {
         [
             before: getBeforeDate(date, channel, isIgnoredOptionType),
-            after:  getAfterDate(date, channel, isIgnoredOptionType),
+            after:  getAfterDate (date, channel, isIgnoredOptionType),
             latest: getLatestDate(date, channel, isIgnoredOptionType),
         ]
     }

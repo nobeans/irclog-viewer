@@ -1,18 +1,16 @@
 package irclog
 
-import grails.plugin.cache.CacheEvict
 import irclog.utils.DateUtils
 
 class SummaryUpdateService {
 
     static transactional = true
 
-    @CacheEvict(value = "summary", allEntries = true)
     void updateTodaySummary() {
         def yesterdayMidnight = DateUtils.today.clearTime()
         def todayMidnight = yesterdayMidnight + 1
 
-        updateSpecifiedSummary(column: 'today', from: yesterdayMidnight, to: todayMidnight)
+        updateSpecifiedSummary(column:'today', from: yesterdayMidnight, to:todayMidnight)
 
         Summary.list().collect { summary ->
             summary.latestIrclog = Irclog.withCriteria(uniqueResult: true) {
@@ -26,7 +24,6 @@ class SummaryUpdateService {
         }
     }
 
-    @CacheEvict(value = "summary", allEntries = true)
     void updateAllSummary() {
         def yesterdayMidnight = DateUtils.today.clearTime()
         [
