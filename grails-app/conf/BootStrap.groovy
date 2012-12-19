@@ -1,10 +1,18 @@
-import irclog.Role
-import irclog.Person
-import irclog.utils.DateUtils
-import static irclog.utils.DomainUtils.*
 import irclog.Irclog
+import irclog.IrclogAppendService
+import irclog.Person
+import irclog.Role
+import irclog.utils.DateUtils
+import org.jggug.kobo.gircbot.builder.GircBotBuilder
+import org.jggug.kobo.gircbot.reactors.Logger
+
+import static irclog.utils.DomainUtils.*
 
 class BootStrap {
+
+    def grailsApplication
+    def irclogAppendService
+    def ircbot
 
     def init = { servletContext ->
         setupRolesIfNotExists()
@@ -12,11 +20,16 @@ class BootStrap {
         environments {
             development {
                 setupForDevelopmentEnv()
+                startBot()
+            }
+            production {
+                startBot()
             }
         }
     }
 
     def destroy = {
+        stopBot()
     }
 
     private void setupRolesIfNotExists() {
@@ -33,7 +46,7 @@ class BootStrap {
                 enabled: true,
                 nicks: "",
                 color: "",
-                role: Role.findByName(Role.ADMIN),
+                role: Role.findByName(Role.ADMIN)
             ).save(failOnError: true)
         }
     }
@@ -54,11 +67,22 @@ class BootStrap {
                             channelName: channel.name,
                             channel: channel,
                             type: type,
-                            time: time,
+                            time: time
                         ).save(failOnError: true)
                     }
                 }
             }
         }
+    }
+
+    private startBot() {
+        ircbot = new GircBotBuilder()
+        Map configMap = grailsApplication.config.irclog.ircbot.flatten()
+        configMap.reactors << new Logger(irclogAppendService)
+        ircbot.config(configMap).start()
+    }
+
+    private stopBot() {
+        ircbot?.stop()
     }
 }
