@@ -10,7 +10,7 @@ class UpdateTodaySummaryJob {
         if (Environment.current == Environment.DEVELOPMENT) {
             simple startDelay: 60 * 1000, repeatInterval: 1 * 60 * 1000
         } else {
-            cron startDelay: 60 * 1000, cronExpression: "0 */5 * * * ?"
+            cron startDelay: 60 * 1000, cronExpression: "0 * * * * ?"
         }
     }
 
