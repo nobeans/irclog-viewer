@@ -166,9 +166,33 @@ log4j = {
 
 // irclog-viewer
 irclog {
-    viewer.defaultMax = 100
-    viewer.typeVisible = true
-    viewer.defaultTargetUrl = "/summary"
+    viewer {
+        defaultMax = 100
+        typeVisible = true
+        defaultTargetUrl = "/summary"
+    }
+
+    ircbot {
+        server {
+            host = "localhost"
+            port = 6667
+        }
+        nick = "ircbot"
+        channel {
+            autoJoinTo = ["#test1", "#test2"]
+            defaultForLogging = "#lounge"
+        }
+        reactors = [
+            new Dictionary(new File("${userHome}/.gircbot-dictionary")),
+            new OpDistributor(),
+            new InviteAndByeResponder(),
+            new Debugger(),
+            // Logger is added on BootStrap because it requires IrclogAppendService
+        ]
+        jobs = [
+            new Reminder(new File("${userHome}/.gircbot-reminder")),
+        ]
+    }
 }
 
 //------------------------------------------
