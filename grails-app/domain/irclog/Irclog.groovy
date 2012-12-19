@@ -6,7 +6,7 @@ import groovy.transform.ToString
 class Irclog {
 
     static final ESSENTIAL_TYPES = ['PRIVMSG', 'NOTICE', 'TOPIC']
-    static final OPTION_TYPES = ['JOIN', 'NICK', 'QUIT', 'PART', 'KICK', 'MODE', 'SYSTEM', 'OTHER', 'SIMPLE']
+    static final OPTION_TYPES = ['JOIN', 'NICK', 'QUIT', 'PART', 'KICK', 'MODE', 'SYSTEM', 'OTHER', 'SIMPLE', 'INVITE']
     static final ALL_TYPES = ESSENTIAL_TYPES + OPTION_TYPES
 
     Date time
