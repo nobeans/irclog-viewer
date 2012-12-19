@@ -12,6 +12,7 @@ class Role {
     }
 
     static mapping = {
+        cache true
     }
 
     String toString() {
