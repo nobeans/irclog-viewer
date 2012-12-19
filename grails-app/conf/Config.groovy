@@ -74,48 +74,86 @@ grails.plugin.databasemigration.updateOnStart = true
 grails.plugin.databasemigration.updateOnStartFileNames = ["changelog.groovy"]
 
 // log4j configuration
+import org.apache.log4j.rolling.RollingFileAppender
+import org.apache.log4j.rolling.TimeBasedRollingPolicy
+
 log4j = {
+    def createRollingFile = { name, dir, fileName, conversionPattern = '%d{yyyy-MM-dd HH:mm:ss,SSS} [%p] (%c) %m%n' ->
+        def rollingPolicy = new TimeBasedRollingPolicy(fileNamePattern: "${dir}/${fileName}.%d{yyyy-MM-dd}.log")
+        rollingPolicy.activateOptions()
+        return new RollingFileAppender(
+            name: name,
+            layout: pattern(conversionPattern: conversionPattern),
+            rollingPolicy: rollingPolicy,
+        )
+    }
+
     appenders {
-        console     name:'stdout',
-                    layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c{2}) %m%n')
-        rollingFile name:'file',
-                    file:'log/irclog.log', maxFileSize:'10MB', maxBackupIndex:5,
-                    layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c) %m%n')
-        rollingFile name:'stacktrace',
-                    file:'log/stacktrace.log', maxFileSize:'10MB', maxBackupIndex:5,
-                    layout:pattern(conversionPattern: '%d{yyyy-MMM-dd HH:mm:ss,SSS} [%p] (%c) %m%n')
+        def logDir = 'log'
+        environments {
+            production {
+                logDir = "/var/log/${appName}"
+            }
+        }
+        appender createRollingFile('operation', logDir, 'operation', '%d{yyyy-MM-dd HH:mm:ss,SSS} %m%n')
+        appender createRollingFile('application', logDir, 'application')
+        appender createRollingFile('stacktrace', logDir, 'stacktrace')
+        console name: 'stdout', layout: pattern(conversionPattern: '%d{yyyy-MM-dd HH:mm:ss,SSS} [%p] (%c{1}) %m%n')
     }
 
-    root {
-        info 'stdout', 'file'
+    // default
+    error 'org.codehaus.groovy.grails.web.servlet',  //  controllers
+        'org.codehaus.groovy.grails.web.pages', //  GSP
+        'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+        'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+        'org.codehaus.groovy.grails.web.mapping', // URL mapping
+        'org.codehaus.groovy.grails.commons', // core / classloading
+        'org.codehaus.groovy.grails.plugins', // plugins
+        'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+        'org.springframework',
+        'org.hibernate',
+        'net.sf.ehcache.hibernate',
+        'grails.app.services.org.grails.plugin.resource',
+        'grails.app.taglib.org.grails.plugin.resource',
+        'grails.app.resourceMappers.org.grails.plugin.resource',
+        'grails.app.services.NavigationService'
+
+    // for SQL
+    // http://yamkazu.hatenablog.com/entry/2012/10/20/133945
+    if (Boolean.valueOf(System.properties['debug.sql'])) {
+        trace 'org.hibernate.type.descriptor.sql.BasicBinder'
+        debug 'org.hibernate.SQL'
+        debug 'groovy.sql.Sql'
     }
 
-    warn 'org.codehaus.groovy.grails.web.servlet',        // controllers
-         'org.codehaus.groovy.grails.web.pages',          // GSP
-         'org.codehaus.groovy.grails.web.sitemesh',       // layouts
-         'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-         'org.codehaus.groovy.grails.web.mapping',        // URL mapping
-         'org.codehaus.groovy.grails.commons',            // core / classloading
-         'org.codehaus.groovy.grails.plugins',            // plugins
-         'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
-         'org.codehaus.groovy.grails.compiler',
-         'org.springframework',
-         'org.hibernate',
-         'net.sf.ehcache.hibernate',
-         'org.grails.plugin',
-         'grails.app.taglib.org.grails.plugin.resource',
-         'grails.app.resourceMappers.org.grails.plugin'
+    // for resources plugin
+    //debug 'org.grails.plugin.resource'
 
     environments {
-        development {
-            debug 'grails.app',
-                  'irclog',
-                  'grails.app.filters.RequestTracelogFilters'
+        ['development', 'test'].each { env ->
+            "$env" {
+                root {
+                    info 'application', 'stdout'
+                }
+
+                debug 'grails.app',
+                      'irclog',
+                      'grails.app.filters.RequestTracelogFilters'
+            }
         }
         production {
-            info  'grails.app',
-                  'irclog',
-                  'grails.app.filters.RequestTracelogFilters'
+            root {
+                info 'application'
+            }
+
+            info 'grails.app',
+                 'irclog',
+                 'grails.app.filters.RequestTracelogFilters'
+
+            // unfortunately grails would write a log ERROR level just when SQL error ocurring, so set to off.
+            // but it keeps as default at development/test for debugging.
+            off 'org.codehaus.groovy.grails.orm.hibernate.events.PatchedDefaultFlushEventListener'
+            off 'org.hibernate.util.JDBCExceptionReporter'
         }
     }
 }

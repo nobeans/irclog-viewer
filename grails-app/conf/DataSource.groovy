@@ -19,6 +19,8 @@ hibernate {
     cache.use_second_level_cache = true
     cache.use_query_cache = false
     cache.region.factory_class = 'net.sf.ehcache.hibernate.EhCacheRegionFactory'
+    format_sql = true
+    use_sql_comments = true
 }
 // environment specific settings
 environments {
@@ -26,13 +28,10 @@ environments {
         //dataSource {
         //    dbCreate = "create"
         //    url = "jdbc:h2:file:db/irclog_dev;MVCC=TRUE;LOCK_TIMEOUT=10000"
-        //    //loggingSql = true
         //}
         dataSource {
             dbCreate = "create"
             url = "jdbc:postgresql://localhost:5432/irclog_dev"
-            //loggingSql = true
-            //formatSql = true
         }
     }
     test {
@@ -47,7 +46,6 @@ environments {
     }
     production {
         dataSource {
-            //dbCreate = "update"
             url = "jdbc:postgresql://localhost:5432/irclog"
         }
     }

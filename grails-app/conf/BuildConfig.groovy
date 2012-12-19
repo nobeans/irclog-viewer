@@ -34,6 +34,10 @@ grails.project.dependency.resolution = {
         runtime "postgresql:postgresql:9.0-801.jdbc4"
 
         build "org.jggug.kobo:gircbot:0.1-SNAPSHOT"
+
+        compile 'log4j:apache-log4j-extras:1.1', { // for logging
+            excludes 'log4j'
+        }
     }
 
     plugins {
