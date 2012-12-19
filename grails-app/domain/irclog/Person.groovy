@@ -9,6 +9,7 @@ class Person {
 
     def springSecurityService
 
+    Long id // defined explicitly for EqualsAndHashCode
     String loginName
     String realName
     String password
