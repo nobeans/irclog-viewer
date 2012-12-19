@@ -76,6 +76,7 @@ class BootStrap {
     }
 
     private startBot() {
+        if (Boolean.valueOf(System.properties["ircbot.disable"])) return
         ircbot = new GircBotBuilder()
         Map configMap = grailsApplication.config.irclog.ircbot.flatten()
         configMap.reactors << new Logger(irclogAppendService)
