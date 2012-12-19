@@ -49,6 +49,7 @@ class SummaryUpdateService {
             }
             between 'time', map.from, map.to
             'in' 'type', Irclog.ESSENTIAL_TYPES
+            isNotNull "channel"
         }.each { result ->
             def channel = result[0]
             def count = result[1]
