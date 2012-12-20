@@ -1,8 +1,5 @@
 package irclog
 
-import groovy.transform.ToString
-
-@ToString
 class Irclog {
 
     static final ESSENTIAL_TYPES = ['PRIVMSG', 'NOTICE', 'TOPIC']
@@ -32,5 +29,9 @@ class Irclog {
     static mapping = {
         version false
         message type: 'text'
+    }
+
+    String toString() {
+        "[${time.format('yyyy-MM-dd HH:mm:ss:SSS')}] ${type} #${permaId} ${channelName}(${channel?.id}) <${nick}> ${message}"
     }
 }
