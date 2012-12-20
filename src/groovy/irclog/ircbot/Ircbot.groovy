@@ -1,22 +1,24 @@
 package irclog.ircbot
 
 import grails.util.Holders
-import irclog.IrclogAppendService
 import org.jggug.kobo.gircbot.builder.GircBotBuilder
 import org.jggug.kobo.gircbot.reactors.Logger
 
 class Ircbot {
 
     GircBotBuilder builder
-    IrclogAppendService irclogAppendService
+    IrclogLogAppender irclogLogAppender
 
     void start() {
         if (disable) return
 
         builder = new GircBotBuilder()
+
         Map configMap = Holders.config.irclog.ircbot.flatten()
-        configMap.reactors << new Logger(irclogAppendService)
-        builder.config(configMap).start()
+        configMap.reactors << new Logger(irclogLogAppender)
+        builder.config(configMap)
+
+        builder.start()
     }
 
     private static boolean isDisable() {

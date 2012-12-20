@@ -1,15 +1,24 @@
-package irclog
+package irclog.ircbot
 
-import grails.util.Holders
+import groovy.util.logging.Commons
+import irclog.Channel
+import irclog.Irclog
 import org.jggug.kobo.gircbot.reactors.LogAppender
 
 import java.security.MessageDigest
 
-class IrclogAppendService implements LogAppender {
+@Commons
+class IrclogLogAppender implements LogAppender {
 
-    String defaultChannelName = Holders.config.irclog.ircbot.channel.defaultForLogging
+    String defaultChannelName
 
     void append(String type, String channelName, String nick, String message) {
+        Irclog.withNewTransaction {
+            appendForEachTx(type, channelName, nick, message)
+        }
+    }
+
+    private void appendForEachTx(String type, String channelName, String nick, String message) {
         def params = [
             type: type,
             channelName: channelName ?: defaultChannelName,
@@ -19,8 +28,12 @@ class IrclogAppendService implements LogAppender {
         ]
         params.permaId = createPermaId(params)
         params.channel = Channel.findByName(params.channelName) // nullable
+
         try {
-            new Irclog(params).save(failOnError: true)
+            def irclog = new Irclog(params)
+            irclog.save(failOnError: true)
+            log.debug "Appended: $irclog"
+
         } catch (e) {
             log.error("Failed to insert into database", e)
 

@@ -75,7 +75,7 @@ grails.plugin.databasemigration.updateOnStartFileNames = ["changelog.groovy"]
 
 // log4j configuration
 import grails.plugins.springsecurity.SecurityConfigType
-import irclog.IrclogAppendService
+import irclog.ircbot.IrclogLogAppender
 import org.apache.log4j.rolling.RollingFileAppender
 import org.apache.log4j.rolling.TimeBasedRollingPolicy
 import org.jggug.kobo.gircbot.jobs.Reminder

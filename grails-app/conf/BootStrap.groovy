@@ -1,14 +1,15 @@
 import irclog.Irclog
 import irclog.Person
 import irclog.Role
+import irclog.ircbot.Ircbot
 import irclog.utils.DateUtils
+import org.codehaus.groovy.grails.commons.GrailsApplication
 
 import static irclog.utils.DomainUtils.*
 
 class BootStrap {
 
-    def grailsApplication
-    def ircbot
+    Ircbot ircbot
 
     def init = { servletContext ->
         setupRolesIfNotExists()
