@@ -27,7 +27,7 @@ environments {
     development {
         //dataSource {
         //    dbCreate = "create"
-        //    url = "jdbc:h2:file:db/irclog_dev;MVCC=TRUE;LOCK_TIMEOUT=10000"
+        //    url = "jdbc:h2:file:db/irclog_dev;MVCC=TRUE;LOCK_TIMEOUT=10000;MODE=PostgreSQL"
         //}
         dataSource {
             dbCreate = "create"
@@ -40,7 +40,7 @@ environments {
             username = "sa"
             password = ""
             dbCreate = "create-drop"
-            url = "jdbc:h2:mem:irclog_test;MVCC=TRUE;LOCK_TIMEOUT=10000"
+            url = "jdbc:h2:mem:irclog_test;MVCC=TRUE;LOCK_TIMEOUT=10000;MODE=PostgreSQL"
             pooled = true
         }
     }
