@@ -22,7 +22,7 @@ class IrclogSearchService {
     private findAllIrclogs(query, params, direction) {
         // ソート条件(固定)
         // 時系列ですべての許可されたログをソートする。チャンネル別にしないところがポイント。
-        Irclog.findAll(query.hql + " order by i.time ${direction}", query.args, params)
+        Irclog.findAll(query.hql + " order by i.time ${direction}, i.id ${direction}", query.args, params)
     }
 
     private count(query) {
