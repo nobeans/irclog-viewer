@@ -152,6 +152,7 @@ class IrclogSearchServiceSpec extends IntegrationSpec {
         ""         | "all irclog list because blank is included in all nick"   | ["john", "jojo", "mike"]
     }
 
+    @Unroll
     def "search(message:'#message') should return #expectedLabel"() {
         given:
         def logs = ["john", "jojo", "mike"].collectEntries { nick ->
