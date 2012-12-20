@@ -14,7 +14,7 @@ class LoginController {
      * Show the login page.
      */
     def auth() {
-        if (request.isLoggedIn) {
+        if (loggedIn) {
             flash.message = null
             flash.errors = null
             log.info "Logged in by ${principal.username}"

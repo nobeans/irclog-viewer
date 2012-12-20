@@ -51,7 +51,7 @@ class RegisterController {
 
     def save() {
         // 未ログインかどうか。
-        if (request.isLoggedIn) {
+        if (loggedIn) {
             log.info('ログイン済みのため、ユーザ情報参照にリダイレクトします。')
             redirect(action:'show')
             return
