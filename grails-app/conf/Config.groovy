@@ -133,6 +133,9 @@ log4j = {
     // for resources plugin
     //debug 'org.grails.plugin.resource'
 
+    // for quartz plugin
+    debug 'grails.app.jobs'
+
     environments {
         ['development', 'test'].each { env ->
             "$env" {
@@ -161,6 +164,14 @@ log4j = {
             off 'org.codehaus.groovy.grails.orm.hibernate.events.PatchedDefaultFlushEventListener'
             off 'org.hibernate.util.JDBCExceptionReporter'
         }
+    }
+}
+
+// for quartz plugin
+quartz.autoStartup = true
+environments {
+    test {
+        quartz.autoStartup = false
     }
 }
 
