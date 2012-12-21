@@ -38,6 +38,8 @@ grails.project.dependency.resolution = {
         compile 'log4j:apache-log4j-extras:1.1', { // for logging
             excludes 'log4j'
         }
+
+        test "org.spockframework:spock-grails-support:0.7-groovy-2.0"
     }
 
     plugins {
@@ -47,7 +49,10 @@ grails.project.dependency.resolution = {
         runtime ":jquery-ui:1.8.15"
         compile ":spring-security-core:1.2.7.3"
         compile ":quartz:0.4.2"
-        compile ":spock:0.6"
+
+        test(":spock:0.7") {
+          exclude "spock-grails-support"
+        }
 
         // Uncomment these (or add new ones) to enable additional resources capabilities
         //runtime ":zipped-resources:1.0"
