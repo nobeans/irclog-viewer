@@ -197,9 +197,13 @@ irclog {
             new Dictionary(new File("${userHome}/.gircbot-dictionary")),
             new OpDistributor(),
             new InviteAndByeResponder(),
-            new Debugger(),
             // Logger is added on BootStrap because it requires IrclogAppendService
         ]
+        environments {
+            development {
+                reactors << new Debugger()
+            }
+        }
         jobs = [
             new Reminder(new File("${userHome}/.gircbot-reminder")),
         ]
