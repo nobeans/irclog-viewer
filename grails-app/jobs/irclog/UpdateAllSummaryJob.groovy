@@ -9,7 +9,8 @@ class UpdateAllSummaryJob {
     static triggers = {
         if (Environment.current == Environment.DEVELOPMENT) {
             simple startDelay: 30 * 1000, repeatInterval: 1 * 60 * 1000
-        } else {
+        }
+        if (Environment.current == Environment.PRODUCTION) {
             cron startDelay: 60 * 1000, cronExpression: "0 0 1 * * ?"
         }
     }
