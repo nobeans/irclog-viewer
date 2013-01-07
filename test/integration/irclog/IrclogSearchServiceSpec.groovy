@@ -293,10 +293,9 @@ class IrclogSearchServiceSpec extends IntegrationSpec {
         ] + map
     }
 
-    private assertSearchResult(expected, actual, expectedTotalCount = null) {
+    private void assertSearchResult(expected, actual, expectedTotalCount = null) {
         assert actual.list*.id == expected*.id
         assert actual.totalCount == (expectedTotalCount ?: expected.size())
-        true
     }
 
 }

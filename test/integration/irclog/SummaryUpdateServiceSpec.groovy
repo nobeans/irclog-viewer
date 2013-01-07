@@ -123,7 +123,7 @@ class SummaryUpdateServiceSpec extends IntegrationSpec {
             total: 0,
         ])
 
-        and: "latestirclog are updated"
+        and: "latest irclog are updated"
         ch1.summary.latestIrclog != null
         ch2.summary.latestIrclog != null
         ch3.summary.latestIrclog == null
@@ -132,10 +132,10 @@ class SummaryUpdateServiceSpec extends IntegrationSpec {
     // -------------------------------------
     // Test helpers
 
-    private assertSummary(summary, expected) {
-        ['today', 'yesterday', 'twoDaysAgo', 'threeDaysAgo', 'fourDaysAgo', 'fiveDaysAgo', 'sixDaysAgo', 'totalBeforeYesterday', 'total', 'latestIrclog'].each { prop ->
-            summary[prop] == expected[prop]
-        }
+    private void assertSummary(summary, expected) { // except latestIrclog
+        def keys = ['today', 'yesterday', 'twoDaysAgo', 'threeDaysAgo', 'fourDaysAgo', 'fiveDaysAgo', 'sixDaysAgo', 'totalBeforeYesterday', 'total']
+        def toMap = { target -> keys.collectEntries { key -> [key, target[key]] } }
+        assert toMap(summary) == toMap(expected)
     }
 
     private setupChannel() {
@@ -145,21 +145,23 @@ class SummaryUpdateServiceSpec extends IntegrationSpec {
     }
 
     private setupIrclog() {
-        (0..7).each { dateDelta ->
-            [ch1, ch2].eachWithIndex { channel, index ->
+        def saveIrclog = { ordinal, channel, dateDeltaList ->
+            dateDeltaList.each { dateDelta ->
                 Irclog.ALL_TYPES.each { type ->
-                    (index + dateDelta + 1).times {
+                    (ordinal + dateDelta).times {
                         def time = DateUtils.today - dateDelta
                         DomainUtils.createIrclog(
                             channelName: channel.name,
                             channel: channel,
                             type: type,
-                            time: time,
+                            time: time
                         ).save(failOnError: true)
                     }
                 }
             }
         }
+        saveIrclog(1, ch1, (0..7))
+        saveIrclog(2, ch2, (0..7))
     }
 
     private resetSummary() {
