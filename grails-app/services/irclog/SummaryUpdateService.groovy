@@ -10,18 +10,8 @@ class SummaryUpdateService {
         def yesterdayMidnight = DateUtils.today.clearTime()
         def todayMidnight = yesterdayMidnight + 1
 
-        updateSpecifiedSummary(column:'today', from: yesterdayMidnight, to:todayMidnight)
-
-        Summary.list().collect { summary ->
-            summary.latestIrclog = Irclog.withCriteria(uniqueResult: true) {
-                maxResults 1
-                eq 'channel', summary.channel
-                'in' 'type', Irclog.ESSENTIAL_TYPES
-                order 'time', 'desc'
-            }
-            summary.save()
-            log.debug "Updated latest irclog of ${summary.channel.name}: ${summary.latestIrclog?.id}"
-        }
+        updateSpecifiedSummary(column: 'today', from: yesterdayMidnight, to: todayMidnight)
+        updateLatestIrclog()
     }
 
     void updateAllSummary() {
@@ -41,8 +31,21 @@ class SummaryUpdateService {
         log.debug "Updated all summary"
     }
 
+    private void updateLatestIrclog() {
+        Summary.list().each { summary ->
+            summary.latestIrclog = Irclog.withCriteria(uniqueResult: true) {
+                maxResults 1
+                eq 'channel', summary.channel
+                'in' 'type', Irclog.ESSENTIAL_TYPES
+                order 'time', 'desc'
+            }
+            summary.save()
+            log.debug "Updated latest irclog of ${summary.channel.name}: ${summary.latestIrclog?.id}"
+        }
+    }
+
     private void updateSpecifiedSummary(map) {
-        Irclog.withCriteria {
+        def countsPerChannel = Irclog.withCriteria {
             projections {
                 groupProperty('channel')
                 rowCount()
@@ -50,13 +53,15 @@ class SummaryUpdateService {
             between 'time', map.from, map.to
             'in' 'type', Irclog.ESSENTIAL_TYPES
             isNotNull "channel"
-        }.each { result ->
-            def channel = result[0]
-            def count = result[1]
-            def summary = channel.summary
+        }.collectEntries { row ->
+            [row[0], row[1]] // [channel:Channel, count:int]
+        }.withDefault { 0 }
+
+        Summary.list().each { summary ->
+            int count = countsPerChannel[summary.channel]
             summary[map.column] = count
             summary.save()
-            log.debug "Updated ${map.column}'s summary of ${channel.name}: ${count}"
+            log.debug "Updated ${map.column}'s summary of ${summary.channel.name}: ${count}"
         }
     }
 }
