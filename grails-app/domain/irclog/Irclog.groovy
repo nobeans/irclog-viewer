@@ -42,6 +42,10 @@ class Irclog {
         updatePermaId()
     }
 
+    def beforeUpdate() {
+        throw new UnsupportedOperationException("UDPATE is not supported. INSERT is only allowed.")
+    }
+
     private updatePermaId() {
         def base = "${time},${channelName},${nick},${type},${message}"
         this.permaId = MessageDigest.getInstance("MD5").digest(base.getBytes("UTF-8")).collect { String.format("%02x", it & 0xff) }.join()
