@@ -1,5 +1,7 @@
 package irclog
 
+import java.security.MessageDigest
+
 class Irclog {
 
     static final ESSENTIAL_TYPES = ['PRIVMSG', 'NOTICE', 'TOPIC']
@@ -31,7 +33,18 @@ class Irclog {
         message type: 'text'
     }
 
+    @Override
     String toString() {
         "[${time.format('yyyy-MM-dd HH:mm:ss:SSS')}] ${type} #${permaId} ${channelName}(${channel?.id}) <${nick}> ${message}"
+    }
+
+    def beforeValidate() {
+        updatePermaId()
+    }
+
+    private updatePermaId() {
+        def base = "${time},${channelName},${nick},${type},${message}"
+        this.permaId = MessageDigest.getInstance("MD5").digest(base.getBytes("UTF-8")).collect { String.format("%02x", it & 0xff) }.join()
+        assert permaId.size() == 32
     }
 }

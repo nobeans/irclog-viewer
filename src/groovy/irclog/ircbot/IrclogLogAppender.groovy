@@ -6,8 +6,6 @@ import irclog.Irclog
 import irclog.utils.DateUtils
 import org.jggug.kobo.gircbot.reactors.LogAppender
 
-import java.security.MessageDigest
-
 @Commons
 class IrclogLogAppender implements LogAppender {
 
@@ -27,7 +25,6 @@ class IrclogLogAppender implements LogAppender {
             message: message,
             time: DateUtils.today,
         ]
-        params.permaId = generatePermaId(params)
         params.channel = Channel.findByName(params.channelName) // nullable
 
         try {
@@ -43,10 +40,4 @@ class IrclogLogAppender implements LogAppender {
         }
     }
 
-    private static generatePermaId(params) {
-        def base = "${params.time},${params.channelName},${params.nick},${params.type},${params.message}"
-        def permaId = MessageDigest.getInstance("MD5").digest(base.getBytes("UTF-8")).collect { String.format("%02x", it & 0xff) }.join()
-        assert permaId.size() == 32
-        return permaId
-    }
 }

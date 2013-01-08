@@ -62,7 +62,7 @@ class DomainUtils {
             type: "PRIVMSG",
             message: "Hello, ${id}!",
             nick: "user_for_${id}",
-            permaId: "PERMID${id}",
+            //permaId: "PERMID${id}", // should be automatically updated
             channelName: "#channel",
             channel: null,
         ]
