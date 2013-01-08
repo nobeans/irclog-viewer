@@ -1,6 +1,6 @@
 package irclog
 
-import static irclog.utils.DateUtils.*
+import static irclog.utils.DateUtils.toDate
 
 class ChannelService {
 
@@ -136,7 +136,7 @@ class ChannelService {
             }
             order("time", "desc")
             maxResults(1)
-        }.collect { it.time.clearTime() }
+        }.collect { copyDateWithoutTime(it.time) }
         return list.getAt(0)
     }
     /** 現在の日付よりも後で、ログが存在する日付を取得する。*/
@@ -152,7 +152,7 @@ class ChannelService {
             }
             order("time", "asc")
             maxResults(1)
-        }.collect { it.time.clearTime() }
+        }.collect { copyDateWithoutTime(it.time) }
         return list.getAt(0)
     }
     /** 現在の日付よりも後で、ログが存在する最新日付を取得する。*/
@@ -168,7 +168,11 @@ class ChannelService {
             }
             order("time", "desc")
             maxResults(1)
-        }.collect { it.time.clearTime() }
+        }.collect { copyDateWithoutTime(it.time) }
         return list.getAt(0)
+    }
+
+    private static Date copyDateWithoutTime(date) {
+        new Date(date.time).clearTime()
     }
 }
