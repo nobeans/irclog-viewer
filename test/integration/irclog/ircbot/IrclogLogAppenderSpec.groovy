@@ -1,5 +1,4 @@
 package irclog.ircbot
-
 import grails.plugin.spock.IntegrationSpec
 import irclog.Channel
 import irclog.Irclog

@@ -3,6 +3,7 @@ package irclog.ircbot
 import groovy.util.logging.Commons
 import irclog.Channel
 import irclog.Irclog
+import irclog.utils.DateUtils
 import org.jggug.kobo.gircbot.reactors.LogAppender
 
 import java.security.MessageDigest
@@ -24,9 +25,9 @@ class IrclogLogAppender implements LogAppender {
             channelName: channelName ?: defaultChannelName,
             nick: nick,
             message: message,
-            time: new Date(),
+            time: DateUtils.today,
         ]
-        params.permaId = createPermaId(params)
+        params.permaId = generatePermaId(params)
         params.channel = Channel.findByName(params.channelName) // nullable
 
         try {
@@ -42,7 +43,7 @@ class IrclogLogAppender implements LogAppender {
         }
     }
 
-    private static createPermaId(params) {
+    private static generatePermaId(params) {
         def base = "${params.time},${params.channelName},${params.nick},${params.type},${params.message}"
         def permaId = MessageDigest.getInstance("MD5").digest(base.getBytes("UTF-8")).collect { String.format("%02x", it & 0xff) }.join()
         assert permaId.size() == 32
