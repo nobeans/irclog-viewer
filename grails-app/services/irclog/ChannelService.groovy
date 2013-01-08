@@ -136,7 +136,7 @@ class ChannelService {
             }
             order("time", "desc")
             maxResults(1)
-        }.collect { resetTimeToOrigin(it.time) }
+        }.collect { it.time.clearTime() }
         return list.getAt(0)
     }
     /** 現在の日付よりも後で、ログが存在する日付を取得する。*/
@@ -152,7 +152,7 @@ class ChannelService {
             }
             order("time", "asc")
             maxResults(1)
-        }.collect { resetTimeToOrigin(it.time) }
+        }.collect { it.time.clearTime() }
         return list.getAt(0)
     }
     /** 現在の日付よりも後で、ログが存在する最新日付を取得する。*/
@@ -168,7 +168,7 @@ class ChannelService {
             }
             order("time", "desc")
             maxResults(1)
-        }.collect { resetTimeToOrigin(it.time) }
+        }.collect { it.time.clearTime() }
         return list.getAt(0)
     }
 }

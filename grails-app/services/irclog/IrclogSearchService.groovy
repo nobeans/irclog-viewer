@@ -149,7 +149,7 @@ class IrclogSearchService {
     private resolveEndDate_oneday(criterion) {
         try {
             def onedayDate = new java.text.SimpleDateFormat('yyyy-MM-dd').parse(criterion['period-oneday-date'] ?: '')
-            def cal = DateUtils.toCalendar(DateUtils.today)
+            def cal = DateUtils.today.toCalendar()
             cal.setTime(onedayDate)
             cal.add(Calendar.DATE, 1)
             return cal.getTime()
@@ -178,8 +178,8 @@ class IrclogSearchService {
         getCalendarAtZeroHourOfTomorrow().getTime()
     }
 
-    private getCalendarAtZeroHourOfToday(cal = DateUtils.toCalendar(DateUtils.today)) {
-        DateUtils.resetTimeToOrigin(cal)
+    private getCalendarAtZeroHourOfToday() {
+        DateUtils.today.toCalendar().clearTime()
     }
 
     private getCalendarAtZeroHourOfTomorrow() {

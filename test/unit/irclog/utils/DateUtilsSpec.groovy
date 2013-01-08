@@ -37,44 +37,6 @@ class DateUtilsSpec extends Specification {
         ]
     }
 
-    @Unroll
-    def "toCalendar: '#dateString' as String is converted to '#expected'"() {
-        expect:
-        DateUtils.toCalendar(dateString, extraMap) == expected.toCalendar()
-
-        where:
-        dateString            | extraMap                                                                 | expected
-        "2010-10-18"          | null                                                                     | getDate("2010-10-18 00:00:00")
-        "2010-10-18"          | [year: 1234, date: 31, minute: 59]                                       | getDate("1234-10-31 00:59:00")
-        "2010-10-18"          | [year: 1234, month: 11, date: 31, hourOfDay: 23, minute: 59, second: 45] | getDate("1234-12-31 23:59:45")
-        "2010-10-18 01:23:45" | null                                                                     | getDate("2010-10-18 01:23:45")
-        "2010-10-18 01:23:45" | [year: 1234, date: 31, minute: 59]                                       | getDate("1234-10-31 01:59:45")
-        "2010-10-18 01:23:45" | [year: 1234, month: 11, date: 31, hourOfDay: 23, minute: 59, second: 45] | getDate("1234-12-31 23:59:45")
-    }
-
-    @Unroll
-    def "toCalendar: '#dateString' as Date is converted to '#expected'"() {
-        expect:
-        DateUtils.toCalendar(dateString, extraMap) == expected.toCalendar()
-
-        where:
-        dateString                     | extraMap                                                                 | expected
-        getDate("2010-10-18 01:23:45") | null                                                                     | getDate("2010-10-18 01:23:45")
-        getDate("2010-10-18 01:23:45") | [year: 1234, date: 31, minute: 59]                                       | getDate("1234-10-31 01:59:45")
-        getDate("2010-10-18 01:23:45") | [year: 1234, month: 11, date: 31, hourOfDay: 23, minute: 59, second: 45] | getDate("1234-12-31 23:59:45")
-    }
-
-    @Unroll
-    def "resetTimeToOrigin: #before is reset to #after"() {
-        expect:
-        DateUtils.resetTimeToOrigin(before) == after
-
-        where:
-        before                                     | after
-        getDate("2010-10-18 01:23:45")             | getDate("2010-10-18 00:00:00")
-        getDateWithMsec("2010-10-18 01:23:45.678") | getDateWithMsec("2010-10-18 00:00:00.000")
-    }
-
     def "getToday: you can get current date"() {
         given:
         def before = new Date()
