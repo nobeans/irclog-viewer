@@ -12,9 +12,6 @@
     <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.png')}" type="image/x-icon" />
     <link rel="apple-touch-icon" href="${resource(dir: 'images', file: 'apple-touch-icon.png')}">
     <link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
-    <link rel="stylesheet" href="${resource(dir:'css',file:'main.css')}" media="all" />
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile.css')}" type="text/css">
-    <link rel="stylesheet" href="${resource(dir:'css', file:'print.css')}" media="print" />
     <r:require module="application" />
     <g:layoutHead />
     <r:layoutResources/>
@@ -41,5 +38,5 @@
     </div>
     <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
     <r:layoutResources/>
-  </body>	
+  </body>
 </html>

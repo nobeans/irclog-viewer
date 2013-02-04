@@ -1,3 +1,5 @@
+import grails.util.Environment
+
 grails.servlet.version = "2.5" // Change depending on target container compliance (2.5 or 3.0)
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
@@ -51,13 +53,15 @@ grails.project.dependency.resolution = {
         compile ":quartz:1.0-RC2"
 
         test(":spock:0.7") {
-          exclude "spock-grails-support"
+            exclude "spock-grails-support"
         }
 
-        // Uncomment these (or add new ones) to enable additional resources capabilities
-        //runtime ":zipped-resources:1.0"
-        //runtime ":cached-resources:1.0"
-        //runtime ":yui-minify-resources:0.1.4"
+        if (Environment.current == Environment.PRODUCTION) {
+            runtime ":zipped-resources:1.0"
+            runtime ":cached-resources:1.0"
+            runtime ":yui-minify-resources:0.1.4"
+        }
+        compile ":lesscss-resources:1.3.1"
 
         build ":tomcat:$grailsVersion"
 
