@@ -21,6 +21,7 @@ hibernate {
     cache.region.factory_class = 'net.sf.ehcache.hibernate.EhCacheRegionFactory'
     format_sql = true
     use_sql_comments = true
+    jdbc.batch_size = 50
 }
 // environment specific settings
 environments {
