@@ -30,8 +30,8 @@ class BootStrap {
     }
 
     private static void setupRolesIfNotExists() {
-        if (!Role.findByName(Role.USER)) createRole(name: Role.USER).save(failOnError: true)
-        if (!Role.findByName(Role.ADMIN)) createRole(name: Role.ADMIN).save(failOnError: true)
+        if (!Role.findByName(Role.USER)) createRole(name: Role.USER).save(failOnError: true, flush: true)
+        if (!Role.findByName(Role.ADMIN)) createRole(name: Role.ADMIN).save(failOnError: true, flush: true)
     }
 
     private static void setupDefaultAdminUserIfNotExists() {
@@ -44,7 +44,7 @@ class BootStrap {
                 nicks: "",
                 color: "",
                 role: Role.findByName(Role.ADMIN)
-            ).save(failOnError: true)
+            ).save(failOnError: true, flush: true)
         }
     }
 
@@ -53,7 +53,7 @@ class BootStrap {
             createChannel(name: "#test1", isPrivate: true),
             createChannel(name: "#test2", isPrivate: false, secretKey: ""),
             createChannel(name: "#test3", isPrivate: true),
-        ].collect { it.saveWithSummary(failOnError: true) }
+        ].collect { it.saveWithSummary(failOnError: true, flush: true) }
 
         (0..7).each { dateDelta ->
             channels.eachWithIndex { channel, index ->
@@ -65,7 +65,7 @@ class BootStrap {
                             channel: channel,
                             type: type,
                             time: time
-                        ).save(failOnError: true)
+                        ).save(failOnError: true, flush: true)
                     }
                 }
             }
