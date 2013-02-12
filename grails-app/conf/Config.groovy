@@ -131,7 +131,7 @@ log4j = {
     }
 
     // for resources plugin
-    debug 'org.grails.plugin.resource'
+    //debug 'org.grails.plugin.resource'
 
     // for quartz plugin
     debug 'grails.app.jobs'
