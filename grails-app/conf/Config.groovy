@@ -56,7 +56,7 @@ grails.exceptionresolver.params.exclude = ['password']
 grails.hibernate.cache.queries = false
 
 // auto flush
-grails.gorm.autoFlush = true
+//grails.gorm.autoFlush = true
 
 // set per-environment serverURL stem for creating absolute links
 environments {
