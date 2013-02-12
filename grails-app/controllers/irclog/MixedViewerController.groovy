@@ -1,7 +1,6 @@
 package irclog
 
-import java.text.ParseException
-import java.text.SimpleDateFormat
+import grails.converters.JSON
 
 /**
  * IRCログのミックス表示モード用コントローラ。
@@ -12,7 +11,7 @@ class MixedViewerController {
     def channelService
     def springSecurityService
 
-    final SELECTABLE_PERIODS = [ 'all', 'year', 'halfyear', 'month', 'week', 'today', 'oneday' ]
+    final SELECTABLE_PERIODS = ['all', 'year', 'halfyear', 'month', 'week', 'today', 'oneday']
     static final String SESSION_KEY_CRITERION = 'criterion'
 
     /**
@@ -26,7 +25,7 @@ class MixedViewerController {
         def criterion = parseCriterion()
 
         // ログ一覧を取得する。
-        def searchResult = irclogSearchService.search(authenticatedUser, criterion, [max:params.max, offset:params.offset])
+        def searchResult = irclogSearchService.search(authenticatedUser, criterion, [max: params.max, offset: params.offset])
         flash.message = null
 
         // モデルを作成して、デフォルトビューへ。
@@ -41,7 +40,22 @@ class MixedViewerController {
             nickPersonList: nickPersonList,
             getPersonByNick: createGetPersonByNickClosure(nickPersonList)
         ]
-        render(view:'index', model:model)
+        render(view: 'index', model: model)
+    }
+
+    def search() {
+        // パラメータを正規化する。
+        normalizeParams()
+
+        // 検索条件をパースする。
+        def criterion = parseCriterion()
+
+        // ログ一覧を取得する。
+        def searchResult = irclogSearchService.search(authenticatedUser, criterion, [max: params.max, offset: params.offset])
+
+        render searchResult.list.collect { Irclog irclog ->
+            irclog.properties["time", "type", "message", "nick", "permaId", "channelName"]
+        } as JSON
     }
 
     /**
@@ -49,7 +63,7 @@ class MixedViewerController {
      */
     def clearCriterion() {
         session.removeAttribute(SESSION_KEY_CRITERION)
-        redirect(action:'index')
+        redirect(action: 'index')
     }
 
     private normalizeParams() {
@@ -77,11 +91,11 @@ class MixedViewerController {
         // 新しくリクエストパラメータからパースする。
         log.debug "Criterion parsed from params."
         def criterion = [
-            period:    params.period ?: 'today',
-            channel:   params.channel ?: 'all',
-            type:      params.type ?: 'filtered',
-            nick:      params.nick,
-            message:   params.message
+            period: params.period ?: 'today',
+            channel: params.channel ?: 'all',
+            type: params.type ?: 'filtered',
+            nick: params.nick,
+            message: params.message
         ]
         if (criterion.period == 'oneday') {
             criterion['period-oneday-date'] = params['period-oneday-date']
@@ -97,8 +111,8 @@ class MixedViewerController {
 
     private getSelectableChannels() {
         def channels = [:]
-        channels['all'] = message(code:'mixedViewer.search.channel.all')
-        channelService.getAccessibleChannelList(authenticatedUser, params).grep{ !it.isArchived }.each{ channels[it.name] = it.name }
+        channels['all'] = message(code: 'mixedViewer.search.channel.all')
+        channelService.getAccessibleChannelList(authenticatedUser, params).grep { !it.isArchived }.each { channels[it.name] = it.name }
         channels
     }
 
@@ -108,7 +122,7 @@ class MixedViewerController {
             if (cache.containsKey(nick)) {
                 return cache[nick]
             } else {
-                def person = nickPersonList.find{ (it.nicks.split(/\s+/) as List).contains(nick) }
+                def person = nickPersonList.find { (it.nicks.split(/\s+/) as List).contains(nick) }
                 cache[nick] = person
                 return person
             }
