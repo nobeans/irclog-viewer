@@ -27,6 +27,6 @@ modules = {
     }
 
     channel {
-        resource url: 'js/channel.js'
+        resource url: 'cs/channel.coffee'
     }
 }
