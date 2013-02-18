@@ -22,7 +22,7 @@ modules = {
 
     mixedViewer {
         dependsOn 'jquery-ui'
-        resource url: 'js/mixedViewer.js'
+        resource url: 'cs/mixedViewer.coffee'
         resource url: 'js/jquery.highlight-3.js'
     }
 
