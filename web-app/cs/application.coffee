@@ -1,9 +1,9 @@
 jQuery ->
-    (->
-        $('#spinner')
-            .ajaxStart ->
-                $(@).fadeIn()
-            .ajaxStop  ->
-                $(@).fadeOut()
-    )()
+  (->
+    $('#spinner')
+      .ajaxStart ->
+        $(@).fadeIn()
+      .ajaxStop ->
+        $(@).fadeOut()
+  )()
 
