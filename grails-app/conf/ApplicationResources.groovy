@@ -2,9 +2,9 @@ modules = {
     application {
         dependsOn 'jquery'
         dependsOn 'my-less'
-        resource url: 'cs/application.coffee'
-        resource url: 'cs/common.coffee'
-        resource url: 'js/jquery_kill_referrer.js'
+        resource url: 'cs/application.coffee', bundle: 'application'
+        resource url: 'cs/common.coffee', bundle: 'application'
+        resource url: 'js/jquery_kill_referrer.js', bundle: 'application'
     }
 
     'my-less' {
