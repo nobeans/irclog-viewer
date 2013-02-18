@@ -17,7 +17,7 @@ modules = {
 
     singleViewer {
         dependsOn 'jquery-ui'
-        resource url: 'js/singleViewer.js'
+        resource url: 'cs/singleViewer.coffee'
     }
 
     mixedViewer {
