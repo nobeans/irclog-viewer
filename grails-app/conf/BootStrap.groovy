@@ -3,7 +3,6 @@ import irclog.Person
 import irclog.Role
 import irclog.ircbot.Ircbot
 import irclog.utils.DateUtils
-import org.codehaus.groovy.grails.commons.GrailsApplication
 
 import static irclog.utils.DomainUtils.*
 
@@ -53,7 +52,7 @@ class BootStrap {
             createChannel(name: "#test1", isPrivate: true),
             createChannel(name: "#test2", isPrivate: false, secretKey: ""),
             createChannel(name: "#test3", isPrivate: true),
-        ].collect { it.saveWithSummary(failOnError: true, flush: true) }
+        ].collect { it.saveWithSummary(failOnError: true, flush: false) }
 
         (0..7).each { dateDelta ->
             channels.eachWithIndex { channel, index ->
@@ -65,7 +64,7 @@ class BootStrap {
                             channel: channel,
                             type: type,
                             time: time
-                        ).save(failOnError: true, flush: true)
+                        ).save(failOnError: true, flush: false)
                     }
                 }
             }
