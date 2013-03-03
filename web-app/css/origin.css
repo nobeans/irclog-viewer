@@ -40,7 +40,7 @@ body {
 	background: #ffffff;
 	color: #333333;
 	margin: 0 auto;
-	max-width: 960px;
+	max-width: 1280px;
 	overflow-x: hidden; /* prevents box-shadow causing a horizontal scrollbar in firefox when viewport < 960px wide */
 	   -moz-box-shadow: 0 0 0.3em #255b17;
 	-webkit-box-shadow: 0 0 0.3em #255b17;
@@ -157,7 +157,8 @@ img {
 	padding: 0;
 }
 
-.nav a {
+.nav li a,
+.nav li.active {
 	color: #666666;
 	display: block;
 	padding: 0.25em 0.7em;
@@ -169,6 +170,10 @@ img {
 
 .nav a:active, .nav a:visited {
 	color: #666666;
+}
+
+.nav li.active {
+	color: #ffffff;
 }
 
 .nav a:focus, .nav a:hover {
