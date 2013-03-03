@@ -139,6 +139,14 @@ input.image {
   background-color: #ffd;
 }
 
+tr:nth-child(odd) {
+  background: #f7f7f7;
+}
+
+tr:nth-child(even) {
+  background: #ffffff;
+}
+
 /* Navigation Menu */
 
 .nav {
@@ -322,6 +330,10 @@ th.desc a {
   background-image: url(../images/skin/sorted_desc.gif);
 }
 
+.hidden {
+  display: none;
+}
+
 /* List */
 
 .list table {
@@ -395,12 +407,6 @@ th.desc a {
   padding: 0px 5px;
   color: #f60;
   font-weight: bold;
-}
-
-.paginateButtons .count {
-  padding: 0px 3px;
-  position: absolute;
-  right: 4px;
 }
 
 /* Dialog */
@@ -625,151 +631,201 @@ th.desc a {
   width: 7em;
 }
 
+.mixedViewer .paginateButtons .count {
+  padding: 0px 3px;
+  position: absolute;
+  right: 4px;
+}
+
 /* SingleViewer */
 
-.singleViewer .caption {
-  padding: 15px 0 5px 0;
-  line-height: 1.5em;
-  font-size: 1.5em;
-}
+.singleViewer {
 
-.singleViewer .caption select,
-.singleViewer .caption option {
-  font-size: 1em;
-  vertical-align: baseline;
-}
+  .ui-datepicker-trigger {
+    cursor: pointer;
+  }
 
-.singleViewer .caption img {
-  vertical-align: middle;
-  margin: 0 -2px;
-}
+  .caption {
+    padding: 15px 0 5px 0;
+    line-height: 1.5em;
+    font-size: 1.5em;
 
-.singleViewer .optionButtons {
-  position: absolute;
-  right: 3em;
-}
+    select,
+    option {
+      font-size: 1em;
+      vertical-align: baseline;
+    }
 
-.singleViewer .optionButtons button {
-  font-size: .75em;
-  vertical-align: top;
-  cursor: pointer;
-  border: 1px solid #aaa;
-  background-color: #ddd;
-  margin: 0 2px;
-  text-align: center;
-  color: #333;
-}
+    img {
+      vertical-align: middle;
+      margin: 0 -2px;
+    }
+  }
 
-.singleViewer .optionButtons button:disabled {
-  background-color: #ddd;
-  color: #999;
-}
+  .optionButtons {
+    position: absolute;
+    right: 3em;
 
-* html .singleViewer .optionButtons {
-  right: 1em;
-}
+    button {
+      font-size: .75em;
+      vertical-align: top;
+      cursor: pointer;
+      border: 1px solid #aaa;
+      background-color: #ddd;
+      margin: 0 2px;
+      text-align: center;
+      color: #333;
+    }
 
-* html .singleViewer .optionButtons button {
-  width: 8em;
-  line-height: .8em;
-}
+    button:disabled {
+      background-color: #ddd;
+      color: #999;
+    }
+  }
 
-*:first-child+html.singleViewer .optionButtons button {
-  width: 1em;
-}
+  .list tbody tr {
+    cursor: pointer;
+  }
 
-.singleViewer .list tbody tr {
-  cursor: pointer;
+  .paginateButtons {
+    .count-info {
+      position: absolute;
+      padding: 0px 3px;
+      right: 0;
+
+      .count {
+        display: inline;
+      }
+      .showingAllTypes {
+        margin: 0 1em 0 1em;
+        display: inline;
+      }
+    }
+  }
 }
 
 /* Viewer (Mixed/Single) */
 
-.viewer .list {
-  margin: 0;
-}
+.viewer {
+  .list {
+    margin: 0;
 
-.viewer .list td {
-  padding: 1px 10px 1px 5px;
-}
+    td {
+      padding: 1px 10px 1px 5px;
 
-.viewer .list td strong {
-/* deprecated */
-  background-color: yellow;
-  color: red;
-  font-weight: bold;
-}
+      strong {
+      /* deprecated */
+        background-color: yellow;
+        color: red;
+        font-weight: bold;
+      }
 
-.viewer .list td .highlight {
-  background-color: yellow;
-  color: red;
-  font-weight: bold;
-}
+      .highlight {
+        background-color: yellow;
+        color: red;
+        font-weight: bold;
+      }
+    }
 
-.viewer .list .irclog-time {
-  white-space: nowrap;
-  width: 190px;
-}
+    .irclog-time {
+      white-space: nowrap;
+      width: 190px;
+    }
 
-.viewer .list .irclog-channel {
-  white-space: nowrap;
-}
+    .irclog-channel {
+      white-space: nowrap;
+    }
 
-.viewer .list .irclog-nick {
-  white-space: nowrap;
-  text-align: right;
-}
+    .irclog-nick {
+      white-space: nowrap;
+      text-align: right;
+    }
 
-.viewer .list td.irclog-message {
-  width: 90%;
-  white-space: pre-wrap;
-}
+    td.irclog-message {
+      width: 90%;
+      white-space: pre-wrap;
+    }
 
-.viewer .list tr.PRIVMSG td.irclog-message {
-  font-style: normal;
-  background-color: transparent;
-}
+    tr.PRIVMSG td.irclog-message {
+      font-style: normal;
+      background-color: transparent;
+    }
 
-.viewer .list tr.NOTICE td.irclog-message {
-  font-style: italic;
-  background-color: #ffd;
-  padding-left: 4em;
-}
+    tr.NOTICE td.irclog-message {
+      font-style: italic;
+      background-color: #ffd;
+      padding-left: 4em;
+    }
 
-.viewer .list tr.TOPIC td.irclog-message {
-  color: #c33;
-  font-weight: bold;
-  background-color: #fdd;
-}
+    tr.TOPIC td.irclog-message {
+      color: #c33;
+      font-weight: bold;
+      background-color: #fdd;
+    }
 
-.viewer .list tr.optionType td.irclog-message {
-  color: #888;
-  font-style: italic;
-  text-align: right;
-  background-color: #efefef;
-}
+    tr.optionType td.irclog-message {
+      color: #888;
+      font-style: italic;
+      text-align: right;
+      background-color: #efefef;
+    }
 
-.viewer .list tr.KICK td.irclog-message {
-  color: red;
-}
+    tr.KICK td.irclog-message {
+      color: red;
+    }
 
-.viewer .list tr.highlight {
-  background-color: #ff0;
-}
+    tr.highlight {
+      background-color: #ff0;
+    }
 
-.viewer .list tr.PRIVMSG.highlight td.irclog-message {
-  background-color: #ff0;
-}
+    tr.PRIVMSG.highlight td.irclog-message {
+      background-color: #ff0;
+    }
 
-.viewer .list tr.NOTICE.highlight td.irclog-message {
-  background-color: #fe8;
-}
+    tr.NOTICE.highlight td.irclog-message {
+      background-color: #fe8;
+    }
 
-.viewer .list tr.TOPIC.highlight td.irclog-message {
-  background-color: #fb7;
-}
+    tr.TOPIC.highlight td.irclog-message {
+      background-color: #fb7;
+    }
 
-.viewer .list tr.optionType.highlight td.irclog-message {
-  background-color: #ee9;
+    tr.optionType.highlight td.irclog-message {
+      background-color: #ee9;
+    }
+
+    tr:hover {
+      background: #ddf;
+    }
+    tr:hover.PRIVMSG td.irclog-message {
+      background: #ddf;
+    }
+    tr:hover.NOTICE td.irclog-message {
+      background: #dcf;
+    }
+    tr:hover.TOPIC td.irclog-message {
+      background: #baf;
+    }
+    tr:hover.optionType td.irclog-message {
+      background: #dde;
+    }
+
+    tr:hover.highlight {
+      background-color: #dbf;
+    }
+    tr:hover.highlight.PRIVMSG td.irclog-message {
+      background-color: #dbf;
+    }
+    tr:hover.highlight.NOTICE td.irclog-message {
+      background-color: #bad;
+    }
+    tr:hover.highlight.TOPIC td.irclog-message {
+      background-color: #98d;
+    }
+    tr:hover.highlight.optionType td.irclog-message {
+      background-color: #ccd;
+    }
+  }
 }
 
 /* Channel */

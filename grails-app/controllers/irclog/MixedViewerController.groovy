@@ -14,6 +14,10 @@ class MixedViewerController {
     final SELECTABLE_PERIODS = ['all', 'year', 'halfyear', 'month', 'week', 'today', 'oneday']
     static final String SESSION_KEY_CRITERION = 'criterion'
 
+    def redirectToLatestUrl() {
+        redirect action: "index", params: params
+    }
+
     /**
      * ログ一覧を表示する。
      */
@@ -43,7 +47,7 @@ class MixedViewerController {
         render(view: 'index', model: model)
     }
 
-    def search() {
+    def irclogList() {
         // パラメータを正規化する。
         normalizeParams()
 

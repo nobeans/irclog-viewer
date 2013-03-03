@@ -1,5 +1,7 @@
 package irclog
 
+import grails.converters.JSON
+
 /**
  * IRCログの単独表示モード用コントローラ
  */
@@ -9,7 +11,41 @@ class SingleViewerController {
     def channelService
     def springSecurityService
 
+    def redirectToLatestUrl() {
+        redirect action: "index", params: [channel: params.channel, date: normalizeDate(params.date)]
+    }
+
     def index() {
+        // パラメータを正規化する。
+        normalizeParams()
+
+        // 検索条件をパースする。
+        def criterion = parseCriterion()
+
+        // モデルを作成して、デフォルトビューへ。
+        def nickPersonList = Person.list()
+        def model = [
+            essentialTypes: Irclog.ESSENTIAL_TYPES,
+            criterion: criterion,
+            nickPersonList: nickPersonList,
+            getPersonByNick: createGetPersonByNickClosure(nickPersonList),
+        ]
+        render(view: 'index', model: model)
+    }
+
+    def relatedDateList() {
+        def isIgnoredOptionType = getCurrentTypeInMixed() != 'all'
+        def channel = Channel.findByName(normalizeChannelName(params.channel))
+        render channelService.getRelatedDates(normalizeDate(params.date), channel, isIgnoredOptionType).collectEntries { String key, Date date ->
+            [key, date?.format('yyyy-MM-dd')]
+        } as JSON
+    }
+
+    def channelList() {
+        render selectableChannels as JSON
+    }
+
+    def irclogList() {
         // パラメータを正規化する。
         normalizeParams()
 
@@ -18,29 +54,10 @@ class SingleViewerController {
 
         // ログ一覧を取得する。
         def searchResult = irclogSearchService.search(authenticatedUser, criterion, [:], 'asc')
-        flash.message = null
-        if (searchResult.totalCount == 0) {
-            flash.message = 'singleViewer.search.error.empty'
-        }
 
-        // アクセス可能なチャンネルを取得する。
-        def selectableChannels = getSelectableChannels(criterion.channel)
-
-        // リンク用の関連日付を取得する。
-        def relatedDates = channelService.getRelatedDates(params.date, Channel.findByName(params.channel), criterion.isIgnoredOptionType)
-
-        // モデルを作成して、デフォルトビューへ。
-        def nickPersonList = Person.list()
-        def model = [
-            irclogList: searchResult.list,
-            essentialTypes: Irclog.ESSENTIAL_TYPES,
-            selectableChannels: selectableChannels,
-            criterion: criterion,
-            relatedDates: relatedDates,
-            nickPersonList: nickPersonList,
-            getPersonByNick: createGetPersonByNickClosure(nickPersonList),
-        ]
-        render(view:'index', model:model)
+        render searchResult.list.collect { Irclog irclog ->
+            irclog.properties["type", "message", "nick", "permaId", "channelName"] + [time: irclog.time.format('HH:mm:ss')]
+        } as JSON
     }
 
     private normalizeParams() {
@@ -49,11 +66,16 @@ class SingleViewerController {
         params.date = normalizeDate(params.date)
         log.debug "Normalized params: " + params
     }
+
     private normalizeChannelName(channelName) {
         channelName.startsWith('#') ? channelName : '#' + channelName
     }
+
     private normalizeDate(date) { // YYYYMMDD -> YYYY-MM-DD
-        date.replaceAll(/(\d{4})(\d{2})(\d{2})/, "\$1-\$2-\$3")
+        if (date =~ /\d{8}/) {
+            return date.replaceAll(/(\d{4})(\d{2})(\d{2})/, "\$1-\$2-\$3")
+        }
+        return date
     }
 
     private parseCriterion() {
@@ -69,11 +91,8 @@ class SingleViewerController {
         criterion
     }
 
-    private getSelectableChannels(specifiedChannel) {
-        def channels = [:]
-        channels[specifiedChannel] = specifiedChannel // 指定されたチャンネルは必ず表示(書庫対応)
-        channelService.getAccessibleChannelList(authenticatedUser, params).grep{!it.isArchived}.each{ channels[it.name] = it.name }
-        channels.sort{it.key}
+    private getSelectableChannels() {
+        channelService.getAccessibleChannelList(authenticatedUser, params).grep { !it.isArchived }.collect { it.name }
     }
 
     /** mixed側での現在のtype条件がallかどうか。*/
@@ -87,7 +106,7 @@ class SingleViewerController {
             if (cache.containsKey(nick)) {
                 return cache[nick]
             } else {
-                def person = nickPersonList.find{ (it.nicks.split(/\s+/) as List).contains(nick) }
+                def person = nickPersonList.find { (it.nicks.split(/\s+/) as List).contains(nick) }
                 cache[nick] = person
                 return person
             }

@@ -1,7 +1,5 @@
 package irclog
 
-import org.springframework.web.servlet.support.RequestContextUtils as RCU
-
 class IrclogTagLib {
 
     static namespace = 'irclog'
@@ -10,13 +8,11 @@ class IrclogTagLib {
 
     def singleLink = { attrs, body ->
         if (!attrs.channelName || !attrs.time) return
-        def shortDate = attrs.time.format("yyyyMMdd")
-        def fullDate =  attrs.time.format("yyyy-MM-dd")
-        def anchor = (attrs.permaId) ?  "#pid-${attrs.permaId}" : ''
+        def fullDate = attrs.time.format("yyyy-MM-dd")
         def title = "${attrs.channelName}@${fullDate}"
-        out << g.link(url:"/irclog/the/${attrs.channelName.substring(1)}/${shortDate}/${anchor}", title:"${title}") {
+        out << g.link(controller: "singleViewer", action: "index", params: [date: fullDate, channel: attrs.channelName.substring(1), permaId: attrs.permaId], title: title) {
             if (attrs.image) {
-                return """<img src="${resource(dir:'images', file:attrs.image)}" alt="Link to ${title}" />"""
+                return """<img src="${resource(dir: 'images', file: attrs.image)}" alt="Link to ${title}" />"""
             } else if (attrs.text) {
                 return attrs.text
             } else {
@@ -30,10 +26,10 @@ class IrclogTagLib {
         if (!attrs.time) return
         def today = DateUtils.today
         def shortToday = today.format("yyyyMMdd")
-        def shortDate =  attrs.time.format("yyyyMMdd")
+        def shortDate = attrs.time.format("yyyyMMdd")
         if (shortToday == shortDate) return
         attrs.time = today
-        out << singleLink([*:attrs, time:today])
+        out << singleLink([*: attrs, time: today])
     }
 
     def timeLink = { attrs ->
@@ -41,13 +37,13 @@ class IrclogTagLib {
         def onedayDate = attrs.time.format("yyyy-MM-dd")
         def timeHHmmss = attrs.time.format("HH:mm:ss")
 
-        out << g.link(controller:'mixedViewer', action:'index', params:[*:attrs.params, period:'oneday', 'period-oneday-date':onedayDate]) { "${onedayDate}" }
+        out << g.link(controller: 'mixedViewer', action: 'index', params: [*: attrs.params, period: 'oneday', 'period-oneday-date': onedayDate]) { "${onedayDate}" }
         out << '&nbsp;' << '&nbsp;' << timeHHmmss
     }
 
     def channelLink = { attrs ->
-        def params = [*:attrs.params, channel:"${attrs.channel.name}" ]
-        out << g.link(controller:'mixedViewer', action:'index', params:params) { "${attrs.channel.name}" }
+        def params = [*: attrs.params, channel: "${attrs.channel.name}"]
+        out << g.link(controller: 'mixedViewer', action: 'index', params: params) { "${attrs.channel.name}" }
     }
 
     def messageFormat = { attrs ->
@@ -57,38 +53,39 @@ class IrclogTagLib {
 
     def createNavLinkIfNotCurrent = { attrs ->
         def controlName = request['org.codehaus.groovy.grails.CONTROLLER_NAME_ATTRIBUTE']
-        def actionName  = request['org.codehaus.groovy.grails.ACTION_NAME_ATTRIBUTE']
+        def actionName = request['org.codehaus.groovy.grails.ACTION_NAME_ATTRIBUTE']
         def actualKey = controlName + (attrs.action ? '.' + actionName : '')
         def key = attrs.controller + (attrs.action ? '.' + attrs.action : '')
         if (actualKey == key) {
-            out << """ <li class="menuButton active">${g.message(code:key)}</li> """
+            out << """ <li class="menuButton active">${g.message(code: key)}</li> """
         } else {
-            out << """ <li class="menuButton">${g.link(class:key, controller:attrs.controller, action:attrs.action) { g.message(code:key) }}</li> """
+            out << """ <li class="menuButton">${g.link(class: key, controller: attrs.controller, action: attrs.action) { g.message(code: key) }}</li> """
         }
     }
 
     def flashMessage = { attrs ->
         if (flash.message) {
-            out << """<div class="message">${g.message(code:flash.message, args:flash.args, default:flash.defaultMessage)}</div>"""
+            out << """<div class="message">${g.message(code: flash.message, args: flash.args, default: flash.defaultMessage)}</div>"""
         }
         if (flash.errors) {
             out << """<div class="errors"><ul>"""
-            out << flash.errors.collect{ """<li>${g.message(code:it, args:flash.args)}</li>"""
+            out << flash.errors.collect {
+                """<li>${g.message(code: it, args: flash.args)}</li>"""
             }.join("")
             out << """</ul></div>"""
         }
         if (attrs.bean && attrs.bean.hasErrors()) {
-            out << """<div class="errors">${g.renderErrors(bean:attrs.bean, as:'list')}</div>"""
+            out << """<div class="errors">${g.renderErrors(bean: attrs.bean, as: 'list')}</div>"""
         }
     }
 
-    def nickStyle = { attrs  ->
+    def nickStyle = { attrs ->
         out << """<style type="text/css">"""
-        attrs.persons.each{ person ->
+        attrs.persons.each { person ->
             if (person && person.color) {
                 def nicks = [person.loginName] as Set // 重複除外のためSetに
-                nicks.addAll(person.nicks.split(/\s+/)*.trim().findAll{it})
-                out << nicks.sort().collect{ "${attrs.classPrefix ?: ''}.${it}" }.join(",") + "{color:${person.color} !important} "
+                nicks.addAll(person.nicks.split(/\s+/)*.trim().findAll { it })
+                out << nicks.sort().collect { "${attrs.classPrefix ?: ''}.${it}" }.join(",") + "{color:${person.color} !important} "
             }
         }
         out << """</style>"""
@@ -99,14 +96,14 @@ class IrclogTagLib {
     }
 
     def summaryLink = { attrs ->
-        out << ((attrs.count == 0) ? 0 : singleLink([*:attrs, text:attrs.count]))
+        out << ((attrs.count == 0) ? 0 : singleLink([*: attrs, text: attrs.count]))
     }
 
     def withHelp = { attrs, body ->
         out << """
             <div class="with-help">
               ${body()}
-              <img class="help-button" src="${resource(dir:'images', file:'help.gif')}" alt="help" id="${attrs.id}" />
+              <img class="help-button" src="${resource(dir: 'images', file: 'help.gif')}" alt="help" id="${attrs.id}" />
             </div>
         """
     }
