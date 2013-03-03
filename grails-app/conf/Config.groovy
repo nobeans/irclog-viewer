@@ -11,18 +11,18 @@ grails.project.groupId = 'irclog' // change this to alter the default package na
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.use.accept.header = false
 grails.mime.types = [
-    all:           '*/*',
-    atom:          'application/atom+xml',
-    css:           'text/css',
-    csv:           'text/csv',
-    form:          'application/x-www-form-urlencoded',
-    html:          ['text/html','application/xhtml+xml'],
-    js:            'text/javascript',
-    json:          ['application/json', 'text/json'],
+    all: '*/*',
+    atom: 'application/atom+xml',
+    css: 'text/css',
+    csv: 'text/csv',
+    form: 'application/x-www-form-urlencoded',
+    html: ['text/html', 'application/xhtml+xml'],
+    js: 'text/javascript',
+    json: ['application/json', 'text/json'],
     multipartForm: 'multipart/form-data',
-    rss:           'application/rss+xml',
-    text:          'text/plain',
-    xml:           ['text/xml', 'application/xml']
+    rss: 'application/rss+xml',
+    text: 'text/plain',
+    xml: ['text/xml', 'application/xml']
 ]
 
 // URL Mapping Cache Max Size, defaults to 5000
@@ -47,7 +47,7 @@ grails.enable.native2ascii = true
 // packages to include in Spring bean scanning
 grails.spring.bean.packages = []
 // whether to disable processing of multi part requests
-grails.web.disable.multipart=false
+grails.web.disable.multipart = false
 
 // request parameters to mask when logging exceptions
 grails.exceptionresolver.params.exclude = ['password']
@@ -75,11 +75,9 @@ grails.plugin.databasemigration.updateOnStartFileNames = ["changelog.groovy"]
 
 // log4j configuration
 import grails.plugins.springsecurity.SecurityConfigType
-import irclog.ircbot.IrclogLogAppender
 import org.apache.log4j.rolling.RollingFileAppender
 import org.apache.log4j.rolling.TimeBasedRollingPolicy
 import org.jggug.kobo.gircbot.jobs.Reminder
-import org.jggug.kobo.gircbot.reactors.*
 
 log4j = {
     def createRollingFile = { name, dir, fileName, conversionPattern = '%d{yyyy-MM-dd HH:mm:ss,SSS} [%p] (%c) %m%n' ->
@@ -107,20 +105,20 @@ log4j = {
 
     // default
     error 'org.codehaus.groovy.grails.web.servlet',  //  controllers
-          'org.codehaus.groovy.grails.web.pages', //  GSP
-          'org.codehaus.groovy.grails.web.sitemesh', //  layouts
-          'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-          'org.codehaus.groovy.grails.web.mapping', // URL mapping
-          'org.codehaus.groovy.grails.commons', // core / classloading
-          'org.codehaus.groovy.grails.plugins', // plugins
-          'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
-          'org.springframework',
-          'org.hibernate',
-          'net.sf.ehcache.hibernate',
-          'grails.app.services.org.grails.plugin.resource',
-          'grails.app.taglib.org.grails.plugin.resource',
-          'grails.app.resourceMappers.org.grails.plugin.resource',
-          'grails.app.services.NavigationService'
+        'org.codehaus.groovy.grails.web.pages', //  GSP
+        'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+        'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+        'org.codehaus.groovy.grails.web.mapping', // URL mapping
+        'org.codehaus.groovy.grails.commons', // core / classloading
+        'org.codehaus.groovy.grails.plugins', // plugins
+        'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+        'org.springframework',
+        'org.hibernate',
+        'net.sf.ehcache.hibernate',
+        'grails.app.services.org.grails.plugin.resource',
+        'grails.app.taglib.org.grails.plugin.resource',
+        'grails.app.resourceMappers.org.grails.plugin.resource',
+        'grails.app.services.NavigationService'
 
     // for SQL
     // http://yamkazu.hatenablog.com/entry/2012/10/20/133945
@@ -144,9 +142,9 @@ log4j = {
                 }
 
                 debug 'grails.app',
-                      'irclog',
-                      'grails.app.filters.RequestTracelogFilters',
-                      'org.jggug.kobo.gircbot'
+                    'irclog',
+                    'grails.app.filters.RequestTracelogFilters',
+                    'org.jggug.kobo.gircbot'
             }
         }
         production {
@@ -155,9 +153,9 @@ log4j = {
             }
 
             info 'grails.app',
-                 'irclog',
-                 'grails.app.filters.RequestTracelogFilters',
-                 'org.jggug.kobo.gircbot'
+                'irclog',
+                'grails.app.filters.RequestTracelogFilters',
+                'org.jggug.kobo.gircbot'
 
             // unfortunately grails would write a log ERROR level just when SQL error ocurring, so set to off.
             // but it keeps as default at development/test for debugging.
@@ -213,7 +211,10 @@ irclog {
 //------------------------------------------
 // SpringSecurity
 //------------------------------------------
-import grails.plugins.springsecurity.SecurityConfigType
+import org.jggug.kobo.gircbot.reactors.Debugger
+import org.jggug.kobo.gircbot.reactors.Dictionary
+import org.jggug.kobo.gircbot.reactors.InviteAndByeResponder
+import org.jggug.kobo.gircbot.reactors.OpDistributor
 
 // user and role class properties
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'irclog.Person'
@@ -230,16 +231,16 @@ grails.plugins.springsecurity.password.encodeHashAsBase64 = false
 // use RequestMap from DomainClass
 grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
 grails.plugins.springsecurity.interceptUrlMap = [
-    '/channel/index/**':    ['permitAll'],
-    '/channel/list/**':     ['permitAll'],
-    '/channel/show/**':     ['permitAll'],
-    '/channel/kick/**':     ['hasRole("ROLE_ADMIN")'],
-    '/channel/**':          ['hasRole("ROLE_USER")'],
-    '/register/create/**':  ['permitAll'],
-    '/register/save/**':    ['permitAll'],
-    '/register/**':         ['hasRole("ROLE_USER")'],
-    '/person/**':           ['hasRole("ROLE_ADMIN")'],
-    '/**':                  ['permitAll']
+    '/channel/index/**': ['permitAll'],
+    '/channel/list/**': ['permitAll'],
+    '/channel/show/**': ['permitAll'],
+    '/channel/kick/**': ['hasRole("ROLE_ADMIN")'],
+    '/channel/**': ['hasRole("ROLE_USER")'],
+    '/register/create/**': ['permitAll'],
+    '/register/save/**': ['permitAll'],
+    '/register/**': ['hasRole("ROLE_USER")'],
+    '/person/**': ['hasRole("ROLE_ADMIN")'],
+    '/**': ['permitAll']
 ]
 grails.plugins.springsecurity.roleHierarchy = '''
    ROLE_ADMIN > ROLE_USER
