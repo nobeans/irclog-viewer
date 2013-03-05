@@ -80,6 +80,11 @@ jQuery ->
       state = {date: DateHolder.current(), channel: Channel.current(), permaId: Irclog.selectedPermaId()}
       History.pushState state, @pageName(), @pageContextPath()
 
+    reloadIfNotSupportedPushState: ->
+      location.href = @pageContextPath() if not History.enabled
+
+    @instance: new WindowViewModel()
+
   class ChannelListViewModel
     constructor: (channelShortName) ->
       Channel.current channelShortName
@@ -92,6 +97,7 @@ jQuery ->
 
     changeChannel: ->
       Irclog.selectedPermaId null
+      WindowViewModel.instance.reloadIfNotSupportedPushState()
       Irclog.event "need_update"
       DateHolder.event "need_update"
 
@@ -125,8 +131,9 @@ jQuery ->
     toLatestDate: -> @changeDate DateHolder.latest()
     changeDate: (date) ->
       DateHolder.current date
-      DateHolder.event "need_update"
       Irclog.selectedPermaId null
+      WindowViewModel.instance.reloadIfNotSupportedPushState()
+      DateHolder.event "need_update"
       Irclog.event "need_update"
 
   class IrclogViewModel
@@ -148,7 +155,8 @@ jQuery ->
     isEssentialType: -> $("#essentialTypes option[value=#{@irclog.type}]").size() > 0
     toggleHighlight: ->
       Irclog.selectedPermaId if @highlighted() then null else @permaId
-      Irclog.event("changed_highlight")
+      WindowViewModel.instance.reloadIfNotSupportedPushState()
+      Irclog.event "changed_highlight"
 
   class IrclogListViewModel
     constructor: (permaId) ->
@@ -191,7 +199,6 @@ jQuery ->
   # initial condition from URI
   [whole, date, channelShortName, permaId] = location.pathname.match(/^.*\/(\d{4}-\d{2}-\d{2})\/([^/]*)(?:\/([^/]*))?$/)
 
-  windowViewModel = new WindowViewModel()
   ko.applyBindings new ChannelListViewModel(channelShortName), $("#condition-channel")[0]
   ko.applyBindings new DateViewModel(date), $("#condition-date")[0]
   ko.applyBindings new IrclogListViewModel(permaId), $(".list")[0]
