@@ -26,7 +26,7 @@ jQuery ->
         @latest data.latest
       @event "updated"
     @event: ko.observable "not_initialized"
-    @debugMode: -> @event.subscribe (event) => console.log "#{@name}:#{event}"
+    @debugMode: -> @event.subscribe (event) => console.log "DateHolder:#{event}"
 
   class Irclog
     constructor: (@time, @nick, @message, @type, @permaId) ->
@@ -40,7 +40,7 @@ jQuery ->
         $.each data, (i, irclog) => @list.push new Irclog(irclog.time, irclog.nick, irclog.message, irclog.type, irclog.permaId)
         @event("updated")
     @event: ko.observable("not_initialized")
-    @debugMode: -> @event.subscribe (event) => console.log "#{@name}:#{event}"
+    @debugMode: -> @event.subscribe (event) => console.log "Irclog:#{event}"
 
   #--------------------------------------------------
   # View Model
@@ -53,17 +53,17 @@ jQuery ->
         "/irclog/#{DateHolder.current()}/#{Channel.current()}" + if Irclog.selectedPermaId() then "/#{Irclog.selectedPermaId()}" else ''
       @needPushState = ko.observable(false)
 
-      $(window).on 'popstate', (event) =>
-        state = event?.originalEvent?.state
-        if state
-          DateHolder.current state.date
-          Channel.current state.channel
-          Irclog.selectedPermaId state.permaId
+      History.Adapter.bind window, 'statechange', =>
+        state = History.getState()
+        console.log 'statechange', state.data
+        DateHolder.current state.data.date
+        Channel.current state.data.channel
+        Irclog.selectedPermaId state.data.permaId
 
-          # avoid pushState temporarily for popstate
-          @needPushState false
-          DateHolder.event "need_update"
-          Irclog.event "need_update"
+        # avoid pushState temporarily for popstate
+        @needPushState false
+        DateHolder.event "need_update"
+        Irclog.event "need_update"
 
       Irclog.event.subscribe (event) =>
         if event in ["displayed", "changed_highlight"]
@@ -74,11 +74,11 @@ jQuery ->
           # it's important doing after pushState/replaceState.
           document.title = @pageName()
 
-          @needPushState true
+        @needPushState true
 
     pushState: ->
       state = {date: DateHolder.current(), channel: Channel.current(), permaId: Irclog.selectedPermaId()}
-      history.pushState(state, null, @pageContextPath())
+      History.pushState state, @pageName(), @pageContextPath()
 
   class ChannelListViewModel
     constructor: (channelShortName) ->

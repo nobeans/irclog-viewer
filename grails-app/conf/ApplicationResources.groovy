@@ -12,6 +12,7 @@ modules = {
     singleViewer {
         dependsOn 'jquery-ui'
         resource url: 'js/knockout-2.2.1.js'
+        resource url: 'js/jquery.history.js'
         resource url: 'coffee/singleViewer.coffee'
     }
 
