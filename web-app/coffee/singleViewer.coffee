@@ -1,4 +1,5 @@
 jQuery ->
+  console.log = -> null
 
   #--------------------------------------------------
   # Model
@@ -52,6 +53,8 @@ jQuery ->
       @pageContextPath = ko.computed =>
         "/irclog/#{DateHolder.current()}/#{Channel.current()}" + if Irclog.selectedPermaId() then "/#{Irclog.selectedPermaId()}" else ''
       @needPushState = ko.observable(false)
+      @permaLink = ko.computed => "#{location.protocol}//#{location.host}#{@pageContextPath()}"
+      @isSupportPushState = ko.computed => History.enabled
 
       History.Adapter.bind window, 'statechange', =>
         state = History.getState()
@@ -80,9 +83,6 @@ jQuery ->
       state = {date: DateHolder.current(), channel: Channel.current(), permaId: Irclog.selectedPermaId()}
       History.pushState state, @pageName(), @pageContextPath()
 
-    reloadIfNotSupportedPushState: ->
-      location.href = @pageContextPath() if not History.enabled
-
     @instance: new WindowViewModel()
 
   class ChannelListViewModel
@@ -97,7 +97,6 @@ jQuery ->
 
     changeChannel: ->
       Irclog.selectedPermaId null
-      WindowViewModel.instance.reloadIfNotSupportedPushState()
       Irclog.event "need_update"
       DateHolder.event "need_update"
 
@@ -132,7 +131,6 @@ jQuery ->
     changeDate: (date) ->
       DateHolder.current date
       Irclog.selectedPermaId null
-      WindowViewModel.instance.reloadIfNotSupportedPushState()
       DateHolder.event "need_update"
       Irclog.event "need_update"
 
@@ -155,7 +153,6 @@ jQuery ->
     isEssentialType: -> $("#essentialTypes option[value=#{@irclog.type}]").size() > 0
     toggleHighlight: ->
       Irclog.selectedPermaId if @highlighted() then null else @permaId
-      WindowViewModel.instance.reloadIfNotSupportedPushState()
       Irclog.event "changed_highlight"
 
   class IrclogListViewModel
@@ -163,6 +160,9 @@ jQuery ->
       Irclog.selectedPermaId permaId
 
       @irclogList = ko.observableArray()
+
+      @showPermaLink = ko.computed => !WindowViewModel.instance.isSupportPushState()
+      @permaLink = WindowViewModel.instance.permaLink
 
       @countEssentialTypes = ko.computed => (irclog for irclog in @irclogList() when irclog.isEssentialType()).length
       @countAllTypes = ko.computed => @irclogList().length
@@ -188,6 +188,9 @@ jQuery ->
           Irclog.event "initialized"
 
       Irclog.event "need_update"
+
+    focusPermaLink: ->
+      $(".permaLink input").select()
 
   #--------------------------------------------------
   # Setup

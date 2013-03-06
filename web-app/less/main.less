@@ -688,16 +688,40 @@ th.desc a {
   }
 
   .paginateButtons {
+    magin-left: 0px;
+    padding: 0;
+    height: 1.5em;
+
+    .permaLink {
+      top: 0;
+      margin: 0 5px;
+      font-size: 10px;
+      color: #666;
+
+      input {
+        margin: 2px 0;
+        padding: 1px 5px;
+        height: 1em;
+        width: 50em;
+        font-size: 12px;
+        font-family: Monaco, "Liberation Mono", Courier, monospace;
+      }
+    }
+
     .count-info {
       position: absolute;
       padding: 0px 3px;
+      margin: 3px 0;
       right: 0;
 
       .count {
         display: inline;
+        padding: 0;
       }
+
       .showingAllTypes {
-        margin: 0 1em 0 1em;
+        margin: 0 5px 0 1em;
+        padding: 0;
         display: inline;
       }
     }
