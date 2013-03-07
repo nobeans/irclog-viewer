@@ -12,7 +12,7 @@ class SingleViewerController {
     def springSecurityService
 
     def redirectToLatestUrl() {
-        redirect action: "index", params: [channel: params.channel, date: normalizeDate(params.date)]
+        render view: "redirectV02"
     }
 
     def index() {
