@@ -16,7 +16,7 @@ class BootStrap {
         environments {
             development {
                 setupForDevelopmentEnv()
-                //ircbot.start()
+                ircbot.start()
             }
             production {
                 ircbot.start()
