@@ -77,7 +77,6 @@ grails.plugin.databasemigration.updateOnStartFileNames = ["changelog.groovy"]
 import grails.plugins.springsecurity.SecurityConfigType
 import org.apache.log4j.rolling.RollingFileAppender
 import org.apache.log4j.rolling.TimeBasedRollingPolicy
-import org.jggug.kobo.gircbot.jobs.Reminder
 
 log4j = {
     def createRollingFile = { name, dir, fileName, conversionPattern = '%d{yyyy-MM-dd HH:mm:ss,SSS} [%p] (%c) %m%n' ->
@@ -174,6 +173,12 @@ environments {
 }
 
 // irclog-viewer
+import org.jggug.kobo.gircbot.jobs.Reminder
+import org.jggug.kobo.gircbot.reactors.Debugger
+import org.jggug.kobo.gircbot.reactors.Dictionary
+import org.jggug.kobo.gircbot.reactors.InviteAndByeResponder
+import org.jggug.kobo.gircbot.reactors.OpDistributor
+
 irclog {
     viewer {
         defaultMax = 100
@@ -182,6 +187,7 @@ irclog {
     }
 
     ircbot {
+        //disabled = false
         server {
             host = "localhost"
             port = 6667
@@ -211,10 +217,6 @@ irclog {
 //------------------------------------------
 // SpringSecurity
 //------------------------------------------
-import org.jggug.kobo.gircbot.reactors.Debugger
-import org.jggug.kobo.gircbot.reactors.Dictionary
-import org.jggug.kobo.gircbot.reactors.InviteAndByeResponder
-import org.jggug.kobo.gircbot.reactors.OpDistributor
 
 // user and role class properties
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'irclog.Person'
