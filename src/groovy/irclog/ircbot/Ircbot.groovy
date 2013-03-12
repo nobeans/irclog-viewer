@@ -22,11 +22,7 @@ class Ircbot {
     }
 
     private static boolean isDisabled() {
-        def disabled = Holders.config.irclog.ircbot.disabled || System.getProperty("ircbot.disabled")
-        if (disabled) {
-            return Boolean.valueOf(disabled)
-        }
-        return false
+        return Holders.config.irclog.ircbot.enable || false
     }
 
     void stop() {
