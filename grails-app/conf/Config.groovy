@@ -187,7 +187,6 @@ irclog {
     }
 
     ircbot {
-        //disabled = false
         server {
             host = "localhost"
             port = 6667
