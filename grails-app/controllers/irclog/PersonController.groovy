@@ -6,18 +6,18 @@ package irclog
 class PersonController {
 
     // the delete, save and update actions only accept POST requests
-    static allowedMethods = [delete:'POST', save:'POST', update:'POST']
+    static allowedMethods = [delete: 'POST', save: 'POST', update: 'POST']
 
     def springSecurityService
 
-    def index() { redirect(action:'list', params:params) }
+    def index() { redirect(action: 'list', params: params) }
 
     def list() {
         def defaultMax = grailsApplication.config.irclog.viewer.defaultMax
-        params.max    = params.max?.toInteger() ? Math.min(params.max?.toInteger(), defaultMax) : defaultMax
+        params.max = params.max?.toInteger() ? Math.min(params.max?.toInteger(), defaultMax) : defaultMax
         params.offset = params.offset?.toInteger() ?: 0
-        params.sort   = params.sort ?: "loginName"
-        params.order  = params.order ?: "asc"
+        params.sort = params.sort ?: "loginName"
+        params.order = params.order ?: "asc"
         [
             personList: Person.list(params),
             personCount: Person.count()
@@ -26,7 +26,7 @@ class PersonController {
 
     def show() {
         withPerson(params.id) { person ->
-            return [person:person]
+            return [person: person]
         }
     }
 
@@ -35,13 +35,13 @@ class PersonController {
             if (person == authenticatedUser) {
                 flash.message = "person.deleted.loggedInUser.error"
                 flash.args = [params.id]
-                redirect(action:'list')
+                redirect(action: 'list')
                 return
             }
             person.delete()
             flash.message = "person.deleted"
             flash.args = [params.id]
-            redirect(action:'list')
+            redirect(action: 'list')
         }
     }
 
@@ -50,7 +50,7 @@ class PersonController {
             // DB上にはrepasswordは存在しないので、画面上の初期表示のためにpasswordからコピーする。
             person.repassword = person.password
 
-            return [person:person]
+            return [person: person]
         }
     }
 
@@ -60,17 +60,17 @@ class PersonController {
             person.properties = params
             person.save()
             if (person.hasErrors()) {
-                render(view:'edit', model:[person:person])
+                render(view: 'edit', model: [person: person])
                 return
             }
 
             flash.message = "person.updated"
-            redirect(action:'show', id:person.id)
+            redirect(action: 'show', id: person.id)
         }
     }
 
     def create() {
-        return [person:new Person()]
+        return [person: new Person()]
     }
 
     def save() {
@@ -78,12 +78,12 @@ class PersonController {
         person.toUser()
         person.save()
         if (person.hasErrors()) {
-            render(view:'create', model:[person:person])
+            render(view: 'create', model: [person: person])
             return
         }
 
         flash.message = "person.created"
-        redirect(action:'show', id:person.id)
+        redirect(action: 'show', id: person.id)
     }
 
     def toAdmin() {
@@ -91,7 +91,7 @@ class PersonController {
             person.toAdmin().save()
             println person.errors
             flash.message = "person.toAdmin.roleChanged"
-            redirect(action:'show', id:person.id)
+            redirect(action: 'show', id: person.id)
         }
     }
 
@@ -100,12 +100,12 @@ class PersonController {
             if (person == authenticatedUser) {
                 flash.message = "person.toUser.loggedInUser.error"
                 flash.args = [params.id]
-                redirect(action:'show', id:person.id)
+                redirect(action: 'show', id: person.id)
                 return
             }
             person.toUser().save()
             flash.message = "person.toUser.roleChanged"
-            redirect(action:'show', id:person.id)
+            redirect(action: 'show', id: person.id)
         }
     }
 
@@ -114,7 +114,7 @@ class PersonController {
         if (!person) {
             flash.errors = ["person.not.found"]
             flash.args = [personId]
-            redirect(action:'list')
+            redirect(action: 'list')
             return
         }
         return closure(person)

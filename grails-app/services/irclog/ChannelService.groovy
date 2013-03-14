@@ -1,6 +1,6 @@
 package irclog
 
-import static irclog.utils.DateUtils.toDate
+import static irclog.utils.DateUtils.*
 
 class ChannelService {
 
@@ -120,7 +120,7 @@ class ChannelService {
     Map<String, Date> getRelatedDates(date, channel, isIgnoredOptionType) {
         [
             before: getBeforeDate(date, channel, isIgnoredOptionType),
-            after:  getAfterDate (date, channel, isIgnoredOptionType),
+            after: getAfterDate(date, channel, isIgnoredOptionType),
             latest: getLatestDate(date, channel, isIgnoredOptionType),
         ]
     }

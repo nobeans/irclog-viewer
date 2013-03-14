@@ -7,11 +7,11 @@ class RegisterController {
 
     def springSecurityService
 
-    static allowedMethods = [save:'POST', update:'POST']
+    static allowedMethods = [save: 'POST', update: 'POST']
 
     def show() {
         withLoginPerson { person ->
-            [person:person]
+            [person: person]
         }
     }
 
@@ -20,7 +20,7 @@ class RegisterController {
             // DB上にはrepasswordは存在しないので、画面上の初期表示のためにpasswordからコピーする。
             person.repassword = person.password
 
-            [person:person]
+            [person: person]
         }
     }
 
@@ -33,7 +33,7 @@ class RegisterController {
             person.properties = params
             person.save()
             if (person.hasErrors()) {
-                render(view:'edit', model:[person:person])
+                render(view: 'edit', model: [person: person])
                 return
             }
 
@@ -41,19 +41,19 @@ class RegisterController {
             springSecurityService.reauthenticate(person.loginName)
 
             flash.message = 'register.updated'
-            redirect(action:'show', id:person.id)
+            redirect(action: 'show', id: person.id)
         }
     }
 
     def create() {
-        [person:new Person()]
+        [person: new Person()]
     }
 
     def save() {
         // 未ログインかどうか。
         if (loggedIn) {
             log.info('ログイン済みのため、ユーザ情報参照にリダイレクトします。')
-            redirect(action:'show')
+            redirect(action: 'show')
             return
         }
 
@@ -65,7 +65,7 @@ class RegisterController {
         person.toUser()
         person.save()
         if (person.hasErrors()) {
-            render(view:'create', model:[person:person])
+            render(view: 'create', model: [person: person])
             return
         }
 
@@ -73,7 +73,7 @@ class RegisterController {
         springSecurityService.reauthenticate(person.loginName)
 
         flash.message = "register.created"
-        redirect(action:'show')
+        redirect(action: 'show')
     }
 
     private withLoginPerson(closure) {
@@ -81,7 +81,7 @@ class RegisterController {
         if (!person) {
             flash.errors = ["register.not.found"]
             flash.args = [personId]
-            redirect(controller:'top')
+            redirect(controller: 'top')
             return
         }
         closure(person)

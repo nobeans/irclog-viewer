@@ -8,7 +8,7 @@ class SummaryController {
     def springSecurityService
 
     def index() {
-        def channelList = channelService.getAccessibleChannelList(authenticatedUser, [:]).grep{!it.isArchived}
+        def channelList = channelService.getAccessibleChannelList(authenticatedUser, [:]).grep { !it.isArchived }
         [
             summaryList: summaryListService.getSummaryList(params, channelList),
             nickPersonList: Person.list(),

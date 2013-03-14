@@ -5,12 +5,12 @@ package irclog
  */
 class ChannelController {
 
-    static allowedMethods = [delete:'POST', save:'POST', update:'POST', join:'POST']
+    static allowedMethods = [delete: 'POST', save: 'POST', update: 'POST', join: 'POST']
 
     def channelService
     def springSecurityService
 
-    def index() { redirect(action:'list', params:params) }
+    def index() { redirect(action: 'list', params: params) }
 
     def list() {
         [
@@ -34,13 +34,13 @@ class ChannelController {
             channelService.deleteChannel(channel)
             flash.message = "channel.deleted"
             flash.args = [params.id]
-            redirect(action:'list')
+            redirect(action: 'list')
         }
     }
 
     def edit() {
         withChannel(params.id) { channel ->
-            [channel:channel]
+            [channel: channel]
         }
     }
 
@@ -62,10 +62,9 @@ class ChannelController {
 
                 flash.message = "channel.updated"
                 flash.args = [channel.id]
-                redirect(action:'show', id:channel.id)
-            }
-            else {
-                render(view:'edit', model:[channel:channel])
+                redirect(action: 'show', id: channel.id)
+            } else {
+                render(view: 'edit', model: [channel: channel])
             }
         }
     }
@@ -73,7 +72,7 @@ class ChannelController {
     def create() {
         def channel = new Channel()
         channel.isPrivate = true // デフォルトは安全サイドに。
-        return ['channel':channel]
+        return ['channel': channel]
     }
 
     def save() {
@@ -95,10 +94,9 @@ class ChannelController {
 
             flash.message = "channel.created"
             flash.args = [channel.id]
-            redirect(action:'show', id:channel.id)
-        }
-        else {
-            render(view:'create', model:[channel:channel])
+            redirect(action: 'show', id: channel.id)
+        } else {
+            render(view: 'create', model: [channel: channel])
         }
     }
 
@@ -112,14 +110,14 @@ class ChannelController {
             flash.message = "channel.joined"
             flash.args = [params.channelName]
         }
-        redirect(action:'list')
+        redirect(action: 'list')
     }
 
     def part() {
         withChannel(params.id) { channel ->
             authenticatedUser.removeFromChannels(channel)
             flash.message = "channel.parted"
-            redirect(action:'show', id:channel.id)
+            redirect(action: 'show', id: channel.id)
         }
     }
 
@@ -129,13 +127,13 @@ class ChannelController {
             if (!person) {
                 flash.errors = ["person.not.found"]
                 flash.args = [personId]
-                redirect(action:'list')
+                redirect(action: 'list')
                 return
             }
             person.removeFromChannels(channel)
             flash.message = "channel.kicked"
             flash.args = [person.loginName]
-            redirect(action:'show', id:channel.id)
+            redirect(action: 'show', id: channel.id)
         }
     }
 
@@ -144,7 +142,7 @@ class ChannelController {
         if (!channel || !isAccessibleChannel(channel)) {
             flash.errors = ["channel.not.found"]
             flash.args = [channelId]
-            redirect(action:'list')
+            redirect(action: 'list')
             return
         }
         closure(channel)

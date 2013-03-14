@@ -46,8 +46,8 @@ class IrclogSearchService {
         def accesibleChannels = channelService.getAccessibleChannelList(person, criterion)
         if (criterion.channel == 'all') { // 許可されたチャンネルすべて
             if (accesibleChannels) {
-                query.hql += " and ( " + accesibleChannels.collect {"i.channel.id = ?"}.join(" or ") + " )"
-                query.args.addAll(accesibleChannels.collect {it.id})
+                query.hql += " and ( " + accesibleChannels.collect { "i.channel.id = ?" }.join(" or ") + " )"
+                query.args.addAll(accesibleChannels.collect { it.id })
             } else {
                 query.hql += " and 1 = 0" // 許可されたチャンネルが0件であれば、絶対にヒットさせない
             }
@@ -67,8 +67,7 @@ class IrclogSearchService {
         if (criterion.type != 'all') { // すべての種別であれば条件なし
             if (criterion.type == 'filtered') { // 限定条件を追加する。
                 query.hql += " and i.type in " + IN_ESSENTIAL_TYPES
-            }
-            else {
+            } else {
                 query.hql += " and i.type = '${criterion.type}'"
             }
         }
@@ -76,15 +75,15 @@ class IrclogSearchService {
         // ニックネーム
         if (criterion.nick) {
             def nicks = criterion.nick?.split(/\s+/) as List // スペース区切りで複数OR指定可能
-            query.hql += " and ( " + nicks.collect {"lower(i.nick) like lower(?)"}.join(" or ") + " )"
-            query.args.addAll(nicks.collect {"%${it}%"})
+            query.hql += " and ( " + nicks.collect { "lower(i.nick) like lower(?)" }.join(" or ") + " )"
+            query.args.addAll(nicks.collect { "%${it}%" })
         }
 
         // メッセージ
         if (criterion.message) {
             def messages = criterion.message?.split(/\s+/) as List // スペース区切りで複数OR指定可能
-            query.hql += " and ( " + messages.collect {"lower(i.message) like lower(?)"}.join(" or ") + " )"
-            query.args.addAll(messages.collect {"%${it}%"})
+            query.hql += " and ( " + messages.collect { "lower(i.message) like lower(?)" }.join(" or ") + " )"
+            query.args.addAll(messages.collect { "%${it}%" })
         }
 
         // GString→String変換
