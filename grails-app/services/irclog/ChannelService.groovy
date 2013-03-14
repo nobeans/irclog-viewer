@@ -99,7 +99,8 @@ class ChannelService {
 
             // サマリが存在している場合は削除する。
             // TODO カスケード削除
-            Summary.findAllByChannel(channel)*.delete()
+            //Summary.findAllByChannel(channel)*.delete()
+            sql.executeUpdate("delete from summary where channel_id = ${channel.id}")
         }
 
         // チャンネルを削除する。
