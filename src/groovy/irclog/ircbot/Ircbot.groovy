@@ -10,7 +10,7 @@ class Ircbot {
     IrclogLogAppender irclogLogAppender
 
     void start() {
-        if (disabled) return
+        if (!enabled) return
 
         builder = new GircBotBuilder()
 
@@ -21,7 +21,7 @@ class Ircbot {
         builder.start()
     }
 
-    private static boolean isDisabled() {
+    private static boolean isEnabled() {
         return Holders.config.irclog.ircbot.enable || false
     }
 
