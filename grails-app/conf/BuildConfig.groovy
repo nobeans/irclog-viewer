@@ -82,6 +82,7 @@ grails.project.dependency.resolution = {
             build ":improx:0.3"
             compile "org.jggug.kobo:request-tracelog:0.2"
         }
+        compile ":domain-locking:0.2"
     }
 }
 
