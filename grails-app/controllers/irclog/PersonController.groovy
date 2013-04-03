@@ -58,14 +58,22 @@ class PersonController {
         withPerson(params.id) { person ->
             // 更新する。
             person.properties = params
-            person.save()
-            if (person.hasErrors()) {
-                render(view: 'edit', model: [person: person])
-                return
-            }
 
-            flash.message = "person.updated"
-            redirect(action: 'show', id: person.id)
+            sleep 5000 // DEBUG
+
+            person.withOptimisticLock {
+                person.save(flush: true)
+                if (person.hasErrors()) {
+                    render(view: 'edit', model: [person: person])
+                    return
+                }
+
+                flash.message = "person.updated"
+                redirect(action: 'show', id: person.id)
+
+            }.onConflict {
+                render(view: 'edit', model: [person: person])
+            }
         }
     }
 
