@@ -77,7 +77,7 @@ class ChannelController {
 
     def save() {
         def channel = new Channel(params)
-        if (!channel.hasErrors() && channel.saveWithSummary()) {
+        if (!channel.hasErrors() && channel.saveWithSummary(flush: true)) {
             // インポート済みログに対して取りこぼしがあれば関連づける
             int relatedCount = channelService.relateToIrclog(channel)
             log.info("Count of irclog records related to the created channel: channel=${channel.name}, count=${relatedCount}")
