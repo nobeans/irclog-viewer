@@ -4,7 +4,6 @@ import irclog.Channel
 import irclog.Irclog
 import irclog.Person
 import irclog.Role
-import irclog.Summary
 
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -67,23 +66,5 @@ class DomainUtils {
             channel: null,
         ]
         new Irclog(defaultProps + propertyMap)
-    }
-
-    static Summary createSummary(propertyMap = [:]) {
-        def id = counter.getAndIncrement()
-        def defaultProps = [
-            today: 1,
-            yesterday: 2,
-            twoDaysAgo: 3,
-            threeDaysAgo: 4,
-            fourDaysAgo: 5,
-            fiveDaysAgo: 6,
-            sixDaysAgo: 7,
-            totalBeforeYesterday: 8,
-            lastUpdate: new Date(id),
-            latestIrclog: createIrclog(),
-            channel: createChannel(),
-        ]
-        new Summary(defaultProps + propertyMap)
     }
 }

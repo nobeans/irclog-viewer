@@ -13,13 +13,16 @@ class SummarySpec extends ConstraintUnitSpec {
     def setup() {
         channel = DomainUtils.createChannel(name: "EXISTED_CHANNEL")
         mockForConstraintsTests(Summary, [
-            DomainUtils.createSummary(channel: channel)
+            new Summary(channel: channel)
         ])
     }
 
     def "validate: DomainUtils' default values are all valid"() {
         given:
-        Summary summary = DomainUtils.createSummary()
+        Summary summary = new Summary()
+
+        and: "except channel because summary is naturally saved via cascade from channel"
+        summary.channel = new Channel()
 
         expect:
         summary.validate()
@@ -28,7 +31,7 @@ class SummarySpec extends ConstraintUnitSpec {
     @Unroll
     def "validate: #field is #error when value is '#value'"() {
         given:
-        Summary summary = DomainUtils.createSummary(("$field" as String): value)
+        Summary summary = new Summary(("$field" as String): value)
 
         expect:
         validateConstraints(summary, field, error)
@@ -50,7 +53,7 @@ class SummarySpec extends ConstraintUnitSpec {
 
     def "validate: channel is unique in case of summary for existed channel"() {
         given:
-        Summary summary = DomainUtils.createSummary(channel: channel)
+        Summary summary = new Summary(channel: channel)
 
         expect:
         validateConstraints(summary, 'channel', 'unique')
