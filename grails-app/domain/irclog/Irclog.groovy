@@ -14,9 +14,8 @@ class Irclog {
     String nick
     String permaId // permanent ID for perma-link
     String channelName // just store channel name imported from log
-    Channel channel    // make relation if channel has registered yet
 
-    static belongsTo = Channel
+    Channel channel // no cascading to channel
 
     static constraints = {
         time()
@@ -40,10 +39,6 @@ class Irclog {
 
     def beforeValidate() {
         updatePermaId()
-    }
-
-    def beforeUpdate() {
-        throw new UnsupportedOperationException("UDPATE is not supported. INSERT is only allowed.")
     }
 
     private updatePermaId() {

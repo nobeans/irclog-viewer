@@ -8,10 +8,18 @@ import groovy.transform.ToString
 class Channel {
 
     String name
-    String description
-    Boolean isPrivate
-    Boolean isArchived
-    String secretKey
+    String description = ""
+    Boolean isPrivate = false
+    Boolean isArchived = false
+    String secretKey = ""
+
+    Channel() {
+        // In case of assigning in beforeInsert, summary.channel will be null somehow.
+        summary = new Summary()
+    }
+
+    static hasOne = [summary: Summary]
+    static hasMany = [persons: Person, irclogs: Irclog]
 
     static constraints = {
         name blank: false, unique: true, maxSize: 100, matches: /^#[^\s]+$/
@@ -25,21 +33,18 @@ class Channel {
                 return val == ''
             }
         }
+        summary()
     }
 
     static mapping = {
         description type: 'text'
+
+        // no cascade to irclogs because they should live standalone without relation with channel.
+        irclogs cascade: 'none'
     }
 
-    Summary getSummary() {
-        Summary.findByChannel(this)
-    }
-
-    def saveWithSummary(options = [:]) {
-        def saved = this.save(options)
-        if (saved && !summary) {
-            new Summary(channel: this).save(failOnError: true) // should not be failed
-        }
-        saved
+    def beforeDelete() {
+        // to behave as ON DELETE SET NULL
+        Irclog.executeUpdate("update Irclog irclog set irclog.channel = null where irclog.channel = ?", [this])
     }
 }

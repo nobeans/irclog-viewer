@@ -9,102 +9,35 @@ class ChannelService {
     def sqlHelper
 
     /** アクセス可能な全チャンネルを取得する。 */
-    List<Channel> getAccessibleChannelList(person, params) {
+    List<Channel> getAccessibleChannelList(Person person, Map params) {
         if (!params.sort || !Channel.constraints.keySet().contains(params.sort)) params.sort = 'name'
         if (!params.order || !['asc', 'desc'].contains(params.order)) params.order = 'asc'
         if (person) {
             // 管理者ロールの場合は、全チャンネルにアクセス可能
-            if (person.isAdmin()) {
+            if (person.admin) {
                 return Channel.list(params)
             }
             // 利用者ロールの場合は、公開チャンネル＋関連付け有りの非公開チャンネル
-            return Person.executeQuery("""
-                select distinct
-                    ch
-                from
-                    Person as p
-                right outer join
-                    p.channels as ch
-                where
-                    p.id = ?
-                or
-                    ch.isPrivate = false
-                order by
-                    ch.${params.sort} ${params.order}
-            """, [person.id])
+            return Channel.findAllByIsPrivateOrIdInList(false, person.channels*.id as List, params)
         }
         // 未ログインユーザの場合は、公開チャンネルのみ
-        return Channel.executeQuery("""
-            select
-                ch
-            from
-                Channel as ch
-            where
-                ch.isPrivate = false
-            order by
-                ch.${params.sort} ${params.order}
-        """)
-    }
-
-    /**
-     * 指定されたチャンネルに対する関連付け済みのユーザを取得する。
-     * @return キー=Channel, 値=[Person...] のMap
-     */
-    List<Person> getJoinedPersons(Channel ch) {
-        Person.executeQuery("select p from Person as p join p.channels as c where c = ?", [ch])
-    }
-
-    /**
-     * すべてのチャンネルに対する関連付け済みのユーザを取得する。
-     * @return キー=Channel, 値=[Person...] のMap
-     */
-    Map<Channel, List<Person>> getAllJoinedPersons() {
-        def result = [:]
-        Channel.list().each { ch ->
-            result[ch] = getJoinedPersons(ch)
-        }
-        result
+        return Channel.findAllByIsPrivate(false, params)
     }
 
     /**
      * 現在のチャンネル定義を元に、まだチャンネルに関連付けできていないIrclogの関連更新を試みる。
      */
     int relateToIrclog(channel) {
-        return sqlHelper.executeUpdate("""
-            update
-                irclog as i
-            set
-                channel_id = ${channel.id}
-            where
-                i.channel_id is null
-            and
-                i.channel_name = ${channel.name}
-        """)
-    }
-
-    /**
-     * 指定のチャンネルを削除する。
-     * 各種の関連付けを適切に削除する。
-     */
-    void deleteChannel(channel) {
-        sqlHelper.withSql { sql ->
-            // チャンネルとユーザの関連付けを削除する。
-            // 関連付けレコード自体を削除する。
-            // TODO カスケード削除
-            sql.executeUpdate("delete from person_channel where channel_id = ${channel.id}")
-
-            // チャンネルとログの関連付けを削除する。
-            // nullで更新するだけで、ログレコードの削除はしない。
-            sql.executeUpdate("update irclog set channel_id = null where channel_id = ${channel.id}")
-
-            // サマリが存在している場合は削除する。
-            // TODO カスケード削除
-            //Summary.findAllByChannel(channel)*.delete()
-            sql.executeUpdate("delete from summary where channel_id = ${channel.id}")
-        }
-
-        // チャンネルを削除する。
-        channel.delete()
+        return sqlHelper.executeUpdate("""\
+            |update
+            |    irclog as i
+            |set
+            |    channel_id = ?
+            |where
+            |    i.channel_id is null
+            |and
+            |    i.channel_name = ?
+            |""".stripMargin(), [channel.id, channel.name])
     }
 
     /**

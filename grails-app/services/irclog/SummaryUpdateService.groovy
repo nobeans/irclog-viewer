@@ -32,15 +32,16 @@ class SummaryUpdateService {
     }
 
     private void updateLatestIrclog() {
-        Summary.list().each { summary ->
+        Channel.list().each { channel ->
+            def summary = channel.summary
             summary.latestIrclog = Irclog.withCriteria(uniqueResult: true) {
                 maxResults 1
                 eq 'channel', summary.channel
                 'in' 'type', Irclog.ESSENTIAL_TYPES
                 order 'time', 'desc'
             }
-            summary.save()
-            log.debug "Updated latest irclog of ${summary.channel.name}: ${summary.latestIrclog?.id}"
+            summary.save(flush: true)
+            log.debug "Updated latest irclog of ${channel.name}: ${summary.latestIrclog?.id}"
         }
     }
 
@@ -58,11 +59,12 @@ class SummaryUpdateService {
             [row[0], row[1]] // [channel:Channel, count:int]
         }.withDefault { 0 }
 
-        Summary.list().each { summary ->
-            int count = countsPerChannel[summary.channel]
+        Channel.list().each { channel ->
+            def summary = channel.summary
+            int count = countsPerChannel[channel]
             summary[map.column] = count
-            summary.save()
-            log.debug "Updated ${map.column}'s summary of ${summary.channel.name}: ${count}"
+            summary.save(flush: true)
+            log.debug "Updated ${map.column}'s summary of ${channel.name}: ${count}"
         }
     }
 }

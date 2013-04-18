@@ -8,7 +8,6 @@ import groovy.transform.ToString
 @ToString
 class Summary {
 
-    Channel channel
     Date lastUpdated
 
     // Counts
@@ -23,12 +22,11 @@ class Summary {
     Integer total = 0
 
     Irclog latestIrclog
-
-    static belongsTo = Channel
+    Channel channel
 
     static constraints = {
-        channel unique: true
         latestIrclog nullable: true
+        channel unique: true
     }
 
     static mapping = {

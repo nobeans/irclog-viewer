@@ -36,7 +36,7 @@
               <td valign="top" class="name"><g:message code="channel.joinedPersons" default="Joined Persons" />:</td>
               <td  valign="top" style="text-align:left;" class="value">
                 <ul>
-                  <g:each var="p" in="${joinedPersons.sort{it.loginName}}">
+                  <g:each var="p" in="${channel.persons.sort{it.loginName}}">
                     <li title="${p.realName.encodeAsHTML()}">
                       <sec:ifAnyGranted roles="ROLE_ADMIN">
                         <g:link controller="person" action="show" id="${p.id}">${p.loginName.encodeAsHTML()}</g:link>
@@ -50,7 +50,7 @@
                     </li>
                   </g:each>
                 </ul>
-                <% if (joinedPersons.empty) { %>
+                <% if (channel.persons.empty) { %>
                   <g:message code="empty" />
                 <% } %>
               </td>
@@ -65,7 +65,7 @@
           <sec:ifLoggedIn>
             <span class="button"><g:actionSubmit class="edit" action="edit" value="${message(code:'edit')}" /></span>
             <span class="button"><g:actionSubmit class="delete" action="delete" value="${message(code:'delete')}" onclick="return confirm('${message(code:'delete.confirm')}');" /></span>
-            <% if (joinedPersons.find{it.loginName == loginUserName} != null) { %>
+            <% if (channel.persons.find{it.loginName == loginUserName} != null) { %>
               <span class="button"><g:actionSubmit class="part" action="part" value="${message(code:'channel.part')}" onclick="return confirm('${message(code:'channel.part.confirm')}');" /></span>
             <% } %>
           </sec:ifLoggedIn>

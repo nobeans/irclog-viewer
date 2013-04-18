@@ -4,17 +4,19 @@ import grails.plugin.spock.IntegrationSpec
 import irclog.utils.DateUtils
 import irclog.utils.DomainUtils
 import spock.lang.Shared
+import spock.lang.Stepwise
 
+@Stepwise
 class SummaryUpdateServiceSpec extends IntegrationSpec {
 
     private static final int DEFAULT_COUNT_FOR_TEST = -1
     private static final PAST_COUNT_COLUMNS = ['yesterday', 'twoDaysAgo', 'threeDaysAgo', 'fourDaysAgo', 'fiveDaysAgo', 'sixDaysAgo', 'totalBeforeYesterday']
-    private static final ALL_COUNT_COLUMNS = ['today', *PAST_COUNT_COLUMNS, 'total']
+    private static final ALL_COUNT_COLUMNS = ['today', * PAST_COUNT_COLUMNS, 'total']
 
     SummaryUpdateService summaryUpdateService
 
     @Shared
-    def ch1, ch2, ch3
+    Channel ch1, ch2, ch3
 
     def setupSpec() {
         // To insert many Irclogs is very slow and these test cases access
@@ -28,10 +30,9 @@ class SummaryUpdateServiceSpec extends IntegrationSpec {
     }
 
     def cleanupSpec() {
-        // the order of calls is important for FK.
+        // HQL cannot be used to cascade correctly.
+        Channel.list()*.delete(flush: true)
         Irclog.executeUpdate("delete from Irclog")
-        Summary.executeUpdate("delete from Summary")
-        Channel.executeUpdate("delete from Channel")
     }
 
     def "updateTodaySummary() updates only today's count"() {
@@ -128,9 +129,9 @@ class SummaryUpdateServiceSpec extends IntegrationSpec {
 
     private setupChannel() {
         // summary records corresponding each channel are also created.
-        ch1 = DomainUtils.createChannel(name: "#ch1").saveWithSummary(failOnError: true)
-        ch2 = DomainUtils.createChannel(name: "#ch2").saveWithSummary(failOnError: true)
-        ch3 = DomainUtils.createChannel(name: "#ch3").saveWithSummary(failOnError: true)
+        ch1 = DomainUtils.createChannel(name: "#ch1").save(failOnError: true, flush: false) // flush:false is for performance.
+        ch2 = DomainUtils.createChannel(name: "#ch2").save(failOnError: true, flush: false)
+        ch3 = DomainUtils.createChannel(name: "#ch3").save(failOnError: true, flush: false)
     }
 
     private setupIrclog() {
@@ -150,7 +151,7 @@ class SummaryUpdateServiceSpec extends IntegrationSpec {
             }
         }
         saveIrclog(1, ch1, (0..7))
-        saveIrclog(2, ch2, (1..7)) // ch2 hasn't "today" irclog
+        saveIrclog(2, ch2, (1..7)) // ch2 hasn't TODAY's irclog
 
         Irclog.withSession { it.flush() }
     }
@@ -158,7 +159,8 @@ class SummaryUpdateServiceSpec extends IntegrationSpec {
     private resetAllSummary() {
         // Summary was already created when Channel was created.
         // this method resets all counts to zero and latestIrclog to null.
-        Summary.list().each { summary ->
+        [ch1, ch2, ch3].each { channel ->
+            def summary = channel.summary
             summary.today = DEFAULT_COUNT_FOR_TEST
             PAST_COUNT_COLUMNS.each { prop -> summary[prop] = DEFAULT_COUNT_FOR_TEST }
             summary.totalBeforeYesterday = DEFAULT_COUNT_FOR_TEST

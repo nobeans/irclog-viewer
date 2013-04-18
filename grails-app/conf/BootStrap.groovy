@@ -52,7 +52,7 @@ class BootStrap {
             createChannel(name: "#test1", isPrivate: true),
             createChannel(name: "#test2", isPrivate: false, secretKey: ""),
             createChannel(name: "#test3", isPrivate: true),
-        ].collect { it.saveWithSummary(failOnError: true, flush: false) }
+        ].collect { it.save(failOnError: true, flush: false) }
 
         (0..7).each { dateDelta ->
             channels.eachWithIndex { channel, index ->

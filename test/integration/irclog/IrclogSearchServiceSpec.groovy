@@ -230,7 +230,7 @@ class IrclogSearchServiceSpec extends IntegrationSpec {
 
     private setupChannel() {
         (1..3).each { num ->
-            this."ch${num}" = DomainUtils.createChannel(name: "#ch${num}", description: "${10 - num}").saveWithSummary(failOnError: true)
+            this."ch${num}" = DomainUtils.createChannel(name: "#ch${num}", description: "${10 - num}").save(failOnError: true)
         }
     }
 
@@ -249,12 +249,9 @@ class IrclogSearchServiceSpec extends IntegrationSpec {
     private setupRelationBetweenPersonAndChannel() {
         // #ch1[user1, user2, user3], #ch2[user2, user3], #ch3[user3]
         // userX isn't allowed to access any channel.
-        user1.addToChannels(ch1)
-        user2.addToChannels(ch1)
-        user2.addToChannels(ch2)
-        user3.addToChannels(ch1)
-        user3.addToChannels(ch2)
-        user3.addToChannels(ch3)
+        ch1.addToPersons(user1).addToPersons(user2).addToPersons(user3)
+        ch2.addToPersons(user2).addToPersons(user3)
+        ch3.addToPersons(user3)
     }
 
     private setupTodayOfDateUtils(dateStr) {

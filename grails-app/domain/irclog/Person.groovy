@@ -27,6 +27,7 @@ class Person {
     static transients = ['repassword', 'roles']
 
     static hasMany = [channels: Channel]
+    static belongsTo = Channel
 
     static constraints = {
         loginName blank: false, unique: true, maxSize: 100, matches: /[a-zA-Z0-9_-]{3,}/

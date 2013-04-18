@@ -3,14 +3,15 @@ package irclog
 import grails.plugin.spock.IntegrationSpec
 import irclog.utils.DateUtils
 import irclog.utils.DomainUtils
+import spock.lang.IgnoreRest
 import spock.lang.Unroll
 
 class ChannelServiceSpec extends IntegrationSpec {
 
-    def channelService
+    ChannelService channelService
 
-    def ch1, ch2, ch3
-    def user1, user2, user3, userX, admin
+    Channel ch1, ch2, ch3
+    Person user1, user2, user3, userX, admin
 
     def setup() {
         setupChannel()
@@ -35,29 +36,7 @@ class ChannelServiceSpec extends IntegrationSpec {
         "user3" | "nothing"         | [:]                                 | ["ch3"]
     }
 
-    @Unroll
-    def "getJoinedPersons() should return person list on #channel specified"() {
-        expect:
-        channelService.getJoinedPersons(this[channel]) == expected.collect { this[it] }
-
-        where:
-        channel | expected
-        "ch1"   | ["user1"]
-        "ch2"   | ["user2"]
-        "ch3"   | ["user3", "userX"]
-    }
-
-    def "getAllJoinedPersons() should return all person list who has been already joined any channel"() {
-        when:
-        def channels = channelService.getAllJoinedPersons()
-
-        then:
-        channels.size() == 3
-        channels[ch1] == [user1]
-        channels[ch2] == [user2]
-        channels[ch3] == [user3, userX]
-    }
-
+    @IgnoreRest
     def "relateToIrclog: makes irclog existed relate with a specified channel as argument"() {
         given:
         assert countIrclogOf("#ch1", null) == 2
@@ -77,32 +56,7 @@ class ChannelServiceSpec extends IntegrationSpec {
     }
 
     private countIrclogOf(String channelName, Channel ch) {
-        if (ch) {
-//            Irclog.countByChannelAndChannelName(ch, channelName) // FIXME it doesn't work expectedly
-            Irclog.findAllByChannelName(channelName).findAll { it.channel == ch }.size()
-        } else {
-//            Irclog.countByChannelNameAndChannelIsNull(channelName) // FIXME it doesn't work expectedly
-            Irclog.findAllByChannelName(channelName).findAll { it.channel == null }.size()
-        }
-    }
-
-    def "deleteChannel: deletes the specified channel and all relationship with it"() {
-        given:
-        assert Person.findByLoginName("user3").channels.contains(ch3)
-        assert Irclog.count() == 12
-        assert Irclog.findAllByChannelName("#ch3").any { it.channel == ch3 }
-        assert Summary.countByChannel(ch3) == 1
-        assert Channel.get(ch3.id) == ch3
-
-        when:
-        channelService.deleteChannel(ch3)
-
-        then:
-        Person.findByLoginName("user3").channels.contains(ch3) == false
-        Irclog.count() == 12
-        Irclog.findAllByChannelName("#ch3").every { it.channel == null }
-        Summary.countByChannel(ch3) == 0
-        Channel.get(ch3.id) == null
+        Irclog.findAllByChannelName(channelName).findAll { it.channel == ch }.size()
     }
 
     @Unroll
@@ -206,7 +160,7 @@ class ChannelServiceSpec extends IntegrationSpec {
 
     private setupChannel() {
         (1..3).each { num ->
-            this."ch${num}" = DomainUtils.createChannel(name: "#ch${num}", description: "${10 - num}").saveWithSummary(failOnError: true)
+            this."ch${num}" = DomainUtils.createChannel(name: "#ch${num}", description: "${10 - num}").save(failOnError: true)
         }
     }
 
@@ -224,10 +178,9 @@ class ChannelServiceSpec extends IntegrationSpec {
 
     private setupRelationBetweenPersonAndChannel() {
         // #ch1[user1], #ch2[user2], #ch3[user3, userX]
-        user1.addToChannels(ch1)
-        user2.addToChannels(ch2)
-        user3.addToChannels(ch3)
-        userX.addToChannels(ch3)
+        ch1.addToPersons(user1)
+        ch2.addToPersons(user2)
+        ch3.addToPersons(user3).addToPersons(userX)
     }
 
     private setupIrclog() {
@@ -241,9 +194,8 @@ class ChannelServiceSpec extends IntegrationSpec {
 
     private setupSummary() {
         [ch1, ch2, ch3].each { ch ->
-            def summary = Summary.findByChannel(ch)
-            summary.latestIrclog = Irclog.findByChannel(ch)
-            summary.save(failOnError: true)
+            ch.summary.latestIrclog = Irclog.findByChannel(ch)
+            ch.summary.save(failOnError: true)
         }
     }
 }

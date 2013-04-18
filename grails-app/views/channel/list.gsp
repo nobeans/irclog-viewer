@@ -43,7 +43,7 @@
               <td><g:message code="channel.isPrivate.${channel.isPrivate.toString()}" /></td>
               <td><g:message code="channel.isArchived.${channel.isArchived.toString()}" /></td>
               <td>
-                <% allJoinedPersons[channel].each{ person -> %>
+                <% channel.persons.sort { it.loginName }.each{ person -> %>
                   <span class="${person.loginName}" title="${person.realName.encodeAsHTML()}">
                     <sec:ifAnyGranted roles="ROLE_ADMIN">
                       <g:link controller="person" action="show" id="${person.id}">${person.loginName.encodeAsHTML()}</g:link>

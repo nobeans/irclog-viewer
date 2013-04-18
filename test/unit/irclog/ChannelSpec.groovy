@@ -1,5 +1,4 @@
 package irclog
-
 import grails.test.mixin.TestFor
 import irclog.test.ConstraintUnitSpec
 import irclog.utils.DomainUtils
