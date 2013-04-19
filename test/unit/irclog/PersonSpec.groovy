@@ -85,10 +85,10 @@ class PersonSpec extends ConstraintUnitSpec {
         validateConstraints(person, 'password', error)
 
         where:
-        error       | password         | repassword
-        'valid'     | '123456'         | '123456'
-        'valid'     | '123456789'      | '123456789'
-        'validator' | '123456'         | '12345x'
+        error       | password    | repassword
+        'valid'     | '123456'    | '123456'
+        'valid'     | '123456789' | '123456789'
+        'validator' | '123456'    | '12345x'
     }
 
     @Unroll

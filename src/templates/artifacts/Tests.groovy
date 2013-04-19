@@ -1,6 +1,6 @@
-@artifact.package@import grails.test.*
+@artifact.package @import grails.test.*
 
-class @artifact.name@ extends @artifact.superclass@ {
+class @artifact.name @extends @artifact.superclass @ {
     protected void setUp() {
         super.setUp()
     }

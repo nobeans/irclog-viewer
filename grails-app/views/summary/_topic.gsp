@@ -1,9 +1,9 @@
 <div class="summary-topic">
   <irclog:withHelp id="summary-topic-help">
-    <h1><g:message code="summary.topic" /></h1>
+    <h1><g:message code="summary.topic"/></h1>
   </irclog:withHelp>
   <irclog:help for="summary-topic-help">
-    <g:message code="summary.topic.caption" />
+    <g:message code="summary.topic.caption"/>
   </irclog:help>
   <ul class="list">
     <g:each in="${topicList}" var="irclog">
@@ -21,8 +21,8 @@
        // 将来的にtype検索を提供するのであれば、ここでもtype検索にすればよい。
        //def params = [type:"TOPIC", period:"all"]
       --%>
-      <g:link controller="mixedViewer" action="index" params="[message:'TOPIC:', period:'all']">
-        <g:message code="summary.topic.search" />
+      <g:link controller="mixedViewer" action="index" params="[message: 'TOPIC:', period: 'all']">
+        <g:message code="summary.topic.search"/>
       </g:link>
     </li>
   </ul>

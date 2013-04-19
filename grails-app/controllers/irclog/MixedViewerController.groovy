@@ -9,7 +9,6 @@ class MixedViewerController {
 
     def irclogSearchService
     def channelService
-    def springSecurityService
 
     final SELECTABLE_PERIODS = ['all', 'year', 'halfyear', 'month', 'week', 'today', 'oneday']
     static final String SESSION_KEY_CRITERION = 'criterion'
