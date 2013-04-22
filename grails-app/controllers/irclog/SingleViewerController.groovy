@@ -34,9 +34,8 @@ class SingleViewerController {
     }
 
     def relatedDateList() {
-        def isIgnoredOptionType = getCurrentTypeInMixed() != 'all'
         def channel = Channel.findByName(normalizeChannelName(params.channel))
-        render channelService.getRelatedDates(normalizeDate(params.date), channel, isIgnoredOptionType).collectEntries { String key, Date date ->
+        render channelService.getRelatedDates(normalizeDate(params.date), channel).collectEntries { String key, Date date ->
             [key, date?.format('yyyy-MM-dd')]
         } as JSON
     }
@@ -83,7 +82,6 @@ class SingleViewerController {
             period: 'oneday',
             channel: normalizeChannelName(params.channel),
             type: 'all',
-            isIgnoredOptionType: getCurrentTypeInMixed() != 'all'
         ]
         criterion['period-oneday-date'] = params.date
         criterion.remove('') // 値が空のものを除外

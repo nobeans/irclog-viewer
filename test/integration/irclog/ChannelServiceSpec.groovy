@@ -3,7 +3,6 @@ package irclog
 import grails.plugin.spock.IntegrationSpec
 import irclog.utils.DateUtils
 import irclog.utils.DomainUtils
-import spock.lang.IgnoreRest
 import spock.lang.Unroll
 
 class ChannelServiceSpec extends IntegrationSpec {
@@ -36,7 +35,6 @@ class ChannelServiceSpec extends IntegrationSpec {
         "user3" | "nothing"         | [:]                                 | ["ch3"]
     }
 
-    @IgnoreRest
     def "relateToIrclog: makes irclog existed relate with a specified channel as argument"() {
         given:
         assert countIrclogOf("#ch1", null) == 2
@@ -59,8 +57,7 @@ class ChannelServiceSpec extends IntegrationSpec {
         Irclog.findAllByChannelName(channelName).findAll { it.channel == ch }.size()
     }
 
-    @Unroll
-    def "getBeforeDate() should return a previous date of the specified one when ignoredOptionType is #isIgnoredOptionType"() {
+    def "getBeforeDate() should return a previous date of the specified one"() {
         given:
         createIrclog(ch2, "2010-10-01 12:34:56", "PRIVMSG")
         createIrclog(ch2, "2010-10-03 23:59:59", "NOTICE")
@@ -68,21 +65,15 @@ class ChannelServiceSpec extends IntegrationSpec {
         createIrclog(ch2, "2010-10-07 01:23:45", "PRIVMSG")
 
         expect:
-        channelService.getBeforeDate("2010-10-06", ch2, isIgnoredOptionType) == DateUtils.toDate(expected)
-
-        where:
-        isIgnoredOptionType | expected
-        true                | "2010-10-03 00:00:00"
-        false               | "2010-10-05 00:00:00"
+        channelService.getBeforeDate("2010-10-06", ch2) == DateUtils.toDate("2010-10-03 00:00:00")
     }
 
     def "getBeforeDate() should return null when there isn't no date which has any stored irclog"() {
         expect:
-        channelService.getBeforeDate("1999-01-01", ch2, true) == null
+        channelService.getBeforeDate("1999-01-01", ch2) == null
     }
 
-    @Unroll
-    def "getAfterDate() should return a previous date of the specified one when ignoredOptionType is #isIgnoredOptionType"() {
+    def "getAfterDate() should return a previous date of the specified one"() {
         given:
         createIrclog(ch2, "2010-10-01 12:34:56", "PRIVMSG")
         createIrclog(ch2, "2010-10-03 23:59:59", "OTHER")
@@ -90,21 +81,15 @@ class ChannelServiceSpec extends IntegrationSpec {
         createIrclog(ch2, "2010-10-07 01:23:45", "PRIVMSG")
 
         expect:
-        channelService.getAfterDate("2010-10-02", ch2, isIgnoredOptionType) == DateUtils.toDate(expected)
-
-        where:
-        isIgnoredOptionType | expected
-        true                | "2010-10-05 00:00:00"
-        false               | "2010-10-03 00:00:00"
+        channelService.getAfterDate("2010-10-02", ch2) == DateUtils.toDate("2010-10-05 00:00:00")
     }
 
     def "getAfterDate() should return null when there isn't no date which has any stored irclog"() {
         expect:
-        channelService.getAfterDate("2999-01-01", ch2, true) == null
+        channelService.getAfterDate("2999-01-01", ch2) == null
     }
 
-    @Unroll
-    def "getLatestDate() should return a previous date of the specified one when ignoredOptionType is #isIgnoredOptionType"() {
+    def "getLatestDate() should return a previous date of the specified one"() {
         given:
         createIrclog(ch2, "2010-10-01 12:34:56", "PRIVMSG")
         createIrclog(ch2, "2010-10-03 23:59:59", "OTHER")
@@ -112,17 +97,12 @@ class ChannelServiceSpec extends IntegrationSpec {
         createIrclog(ch2, "2010-10-07 01:23:45", "OTHER")
 
         expect:
-        channelService.getLatestDate("2010-10-02", ch2, isIgnoredOptionType) == DateUtils.toDate(expected)
-
-        where:
-        isIgnoredOptionType | expected
-        true                | "2010-10-05 00:00:00"
-        false               | "2010-10-07 00:00:00"
+        channelService.getLatestDate("2010-10-02", ch2) == DateUtils.toDate("2010-10-05 00:00:00")
     }
 
     def "getLatestDate() should return null when there isn't no date which has any stored irclog"() {
         expect:
-        channelService.getLatestDate("2999-01-01", ch2, true) == null
+        channelService.getLatestDate("2999-01-01", ch2) == null
     }
 
     def "getRelatedDates() should return all results of before, after and latest"() {
@@ -133,7 +113,7 @@ class ChannelServiceSpec extends IntegrationSpec {
         createIrclog(ch2, "2010-10-07 01:23:45", "TOPIC")
 
         when:
-        def result = channelService.getRelatedDates("2010-10-04", ch2, true)
+        def result = channelService.getRelatedDates("2010-10-04", ch2)
 
         then:
         result == [

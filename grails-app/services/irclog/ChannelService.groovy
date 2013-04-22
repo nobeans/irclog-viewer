@@ -50,23 +50,21 @@ class ChannelService {
      * </ul>
      * @param date "yyyy-MM-dd"
      */
-    Map<String, Date> getRelatedDates(date, channel, isIgnoredOptionType) {
+    Map<String, Date> getRelatedDates(Object date, Object channel) {
         [
-            before: getBeforeDate(date, channel, isIgnoredOptionType),
-            after: getAfterDate(date, channel, isIgnoredOptionType),
-            latest: getLatestDate(date, channel, isIgnoredOptionType),
+            before: getBeforeDate(date, channel),
+            after: getAfterDate(date, channel),
+            latest: getLatestDate(date, channel),
         ]
     }
     /** 現在の日付よりも前で、ログが存在する日付を取得する。 */
-    private Date getBeforeDate(dateStr, channel, isIgnoredOptionType) {
+    private Date getBeforeDate(Object dateStr, Object channel) {
         def c = Irclog.createCriteria()
         def list = c.list {
             and {
                 lt "time", toDate(dateStr + " 00:00:00")
                 eq "channel", channel
-                if (isIgnoredOptionType) {
-                    'in' "type", Irclog.ESSENTIAL_TYPES
-                }
+                'in' "type", Irclog.ESSENTIAL_TYPES
             }
             order("time", "desc")
             maxResults(1)
@@ -74,15 +72,13 @@ class ChannelService {
         return list.getAt(0)
     }
     /** 現在の日付よりも後で、ログが存在する日付を取得する。*/
-    private Date getAfterDate(dateStr, channel, isIgnoredOptionType) {
+    private Date getAfterDate(Object dateStr, Object channel) {
         def c = Irclog.createCriteria()
         def list = c.list {
             and {
                 gt "time", toDate(dateStr + " 23:59:59")
                 eq("channel", channel)
-                if (isIgnoredOptionType) {
-                    'in' "type", Irclog.ESSENTIAL_TYPES
-                }
+                'in' "type", Irclog.ESSENTIAL_TYPES
             }
             order("time", "asc")
             maxResults(1)
@@ -90,15 +86,13 @@ class ChannelService {
         return list.getAt(0)
     }
     /** 現在の日付よりも後で、ログが存在する最新日付を取得する。*/
-    private Date getLatestDate(dateStr, channel, isIgnoredOptionType) {
+    private Date getLatestDate(Object dateStr, Object channel) {
         def c = Irclog.createCriteria()
         def list = c.list {
             and {
                 gt "time", toDate(dateStr + " 23:59:59")
                 eq "channel", channel
-                if (isIgnoredOptionType) {
-                    'in' "type", Irclog.ESSENTIAL_TYPES
-                }
+                'in' "type", Irclog.ESSENTIAL_TYPES
             }
             order("time", "desc")
             maxResults(1)
