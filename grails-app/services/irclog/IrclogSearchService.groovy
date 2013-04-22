@@ -103,7 +103,7 @@ class IrclogSearchService {
 
     private resolveBeginDate_oneday(criterion) {
         try {
-            return new java.text.SimpleDateFormat('yyyy-MM-dd').parse(criterion['period-oneday-date'] ?: '')
+            return new java.text.SimpleDateFormat('yyyy-MM-dd').parse(criterion['periodOnedayDate'] ?: '')
         } catch (java.text.ParseException e) {
             def cal = getCalendarAtZeroHourOfToday()
             cal.add(Calendar.DATE, 1) // 絶対にヒットさせない
@@ -147,7 +147,7 @@ class IrclogSearchService {
 
     private resolveEndDate_oneday(criterion) {
         try {
-            def onedayDate = new java.text.SimpleDateFormat('yyyy-MM-dd').parse(criterion['period-oneday-date'] ?: '')
+            def onedayDate = new java.text.SimpleDateFormat('yyyy-MM-dd').parse(criterion['periodOnedayDate'] ?: '')
             def cal = DateUtils.today.toCalendar()
             cal.setTime(onedayDate)
             cal.add(Calendar.DATE, 1)

@@ -4,11 +4,11 @@
   <meta name="layout" content="main"/>
   <irclog:nickStyle persons="${nickPersonList}" classPrefix=".irclog-nick"/>
   <r:require module="singleViewer"/>
-  <title><g:message code="singleViewer" args="${[criterion?.channel + '@' + criterion['period-oneday-date']]}"/></title>
+  <title><g:message code="singleViewer" args="${[criterion?.channel + '@' + criterion['periodOnedayDate']]}"/></title>
 </head>
 
 <body>
-<h2 class="print"><g:message code="singleViewer" args="${[criterion?.channel + '@' + criterion['period-oneday-date']]}"/></h2>
+<h2 class="print"><g:message code="singleViewer" args="${[criterion?.channel + '@' + criterion['periodOnedayDate']]}"/></h2>
 
 <div class="body viewer singleViewer">
   <irclog:flashMessage/>

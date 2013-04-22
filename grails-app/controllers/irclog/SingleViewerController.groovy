@@ -1,15 +1,18 @@
 package irclog
 
 import grails.converters.JSON
+import grails.plugins.springsecurity.SpringSecurityService
+import irclog.search.SearchCriteriaStore
 
 /**
  * IRCログの単独表示モード用コントローラ
  */
 class SingleViewerController {
 
-    def irclogSearchService
-    def channelService
-    def springSecurityService
+    IrclogSearchService irclogSearchService
+    ChannelService channelService
+    SpringSecurityService springSecurityService
+    SearchCriteriaStore searchCriteriaStore
 
     def redirectToLatestUrl() {
         render view: "redirectV02"
@@ -52,7 +55,7 @@ class SingleViewerController {
         def criterion = parseCriterion()
 
         // ログ一覧を取得する。
-        def searchResult = irclogSearchService.search(authenticatedUser, criterion, [:], 'asc')
+        def searchResult = irclogSearchService.search(springSecurityService.currentUser, criterion, [:], 'asc')
 
         render searchResult.list.collect { Irclog irclog ->
             irclog.properties["type", "message", "nick", "permaId", "channelName"] + [time: irclog.time.format('HH:mm:ss')]
@@ -83,19 +86,14 @@ class SingleViewerController {
             channel: normalizeChannelName(params.channel),
             type: 'all',
         ]
-        criterion['period-oneday-date'] = params.date
+        criterion['periodOnedayDate'] = params.date
         criterion.remove('') // 値が空のものを除外
         log.debug "Criterion: " + criterion
         criterion
     }
 
     private getSelectableChannels() {
-        channelService.getAccessibleChannelList(authenticatedUser, params).grep { !it.isArchived }.collect { it.name }
-    }
-
-    /** mixed側での現在のtype条件がallかどうか。*/
-    private getCurrentTypeInMixed() {
-        session[MixedViewerController.SESSION_KEY_CRITERION]?.type ?: 'filtered'
+        channelService.getAccessibleChannelList(springSecurityService.currentUser, params).grep { !it.isArchived }.collect { it.name }
     }
 
     private createGetPersonByNickClosure(nickPersonList) {

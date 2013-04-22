@@ -60,7 +60,7 @@ class IrclogSearchServiceSpec extends IntegrationSpec {
         logs << saveIrclog(time: "2010-12-23 23:59:59")
 
         and:
-        def criterion = createCriterion(period: 'oneday', 'period-oneday-date': '2010-12-24')
+        def criterion = createCriterion(period: 'oneday', periodOnedayDate: '2010-12-24')
 
         when:
         def actual = irclogSearchService.search(user3, criterion, [:], 'desc')

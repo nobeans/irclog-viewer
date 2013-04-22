@@ -1,17 +1,14 @@
 package irclog
 
-import grails.converters.JSON
+import irclog.search.SearchCriteriaCommand
+import irclog.search.SearchCriteriaStore
 
 /**
  * IRCログのミックス表示モード用コントローラ。
  */
 class MixedViewerController {
 
-    def irclogSearchService
-    def channelService
-
-    final SELECTABLE_PERIODS = ['all', 'year', 'halfyear', 'month', 'week', 'today', 'oneday']
-    static final String SESSION_KEY_CRITERION = 'criterion'
+    SearchCriteriaStore searchCriteriaStore
 
     def redirectToLatestUrl() {
         redirect action: "index", params: params
@@ -20,106 +17,30 @@ class MixedViewerController {
     /**
      * ログ一覧を表示する。
      */
-    def index() {
-        // パラメータを正規化する。
-        normalizeParams()
-
-        // 検索条件をパースする。
-        def criterion = parseCriterion()
-
-        // ログ一覧を取得する。
-        def searchResult = irclogSearchService.search(authenticatedUser, criterion, [max: params.max, offset: params.offset])
-        flash.message = null
-
-        // モデルを作成して、デフォルトビューへ。
+    def index(SearchCriteriaCommand command) {
+        def searchResult = command.search(searchCriteriaStore)
         def nickPersonList = Person.list()
-        def model = [
+        return [
+            command: command,
+            criteriaMap: command.toMap(),
             irclogList: searchResult.list,
+            irclogTotalCount: searchResult.totalCount,
             essentialTypes: Irclog.ESSENTIAL_TYPES,
-            irclogCount: searchResult.totalCount,
-            selectableChannels: getSelectableChannels(),
-            selectablePeriods: SELECTABLE_PERIODS,
-            criterion: criterion,
             nickPersonList: nickPersonList,
-            getPersonByNick: createGetPersonByNickClosure(nickPersonList)
+            personOfNick: createPersonOfNickClosure(nickPersonList),
         ]
-        render(view: 'index', model: model)
-    }
-
-    def irclogList() {
-        // パラメータを正規化する。
-        normalizeParams()
-
-        // 検索条件をパースする。
-        def criterion = parseCriterion()
-
-        // ログ一覧を取得する。
-        def searchResult = irclogSearchService.search(authenticatedUser, criterion, [max: params.max, offset: params.offset])
-
-        render searchResult.list.collect { Irclog irclog ->
-            irclog.properties["time", "type", "message", "nick", "permaId", "channelName"]
-        } as JSON
     }
 
     /**
      * セッション上の検索条件を削除して、リダイレクトする。
      */
-    def clearCriterion() {
-        session.removeAttribute(SESSION_KEY_CRITERION)
+    def clearCriteria() {
+        searchCriteriaStore.clear()
         redirect(action: 'index')
     }
 
-    private normalizeParams() {
-        log.debug "Original params: " + params
-
-        // ページングのために、max/offsetをセットアップする。
-        def defaultMax = grailsApplication.config.irclog.viewer.defaultMax
-        params.max = params.max?.toInteger() ? Math.min(params.max?.toInteger(), defaultMax) : defaultMax
-        params.offset = params.offset?.toInteger() ?: 0
-
-        log.debug "Normalized params: " + params
-    }
-
-    // MEMO:
-    // paginateタグのparams属性でcriterionを渡すと、リクエストのparamsスコープのmax/offset値が
-    // params属性で渡したcriterion中のmax/offsetで上書きされてしまい、戻るボタンのページ遷移がおかしくなる。
-    // よって、max/offsetはcriterionとして取り扱わない。
-    private parseCriterion() {
-        // もし、今回検索条件が未指定の場合は、セッション上の検索条件を適用する。
-        if (!params.period && session[SESSION_KEY_CRITERION]) {
-            log.debug "Criterion restored from session."
-            return session[SESSION_KEY_CRITERION]
-        }
-
-        // 新しくリクエストパラメータからパースする。
-        log.debug "Criterion parsed from params."
-        def criterion = [
-            period: params.period ?: 'today',
-            channel: params.channel ?: 'all',
-            type: params.type ?: 'filtered',
-            nick: params.nick,
-            message: params.message
-        ]
-        if (criterion.period == 'oneday') {
-            criterion['period-oneday-date'] = params['period-oneday-date']
-        }
-        criterion.remove('') // 値が空のものを除外
-
-        // いったん別の画面から戻ってきた場合などのために、検索条件をセッションに待避する。
-        session[SESSION_KEY_CRITERION] = criterion
-
-        log.debug "Criterion: " + criterion
-        return criterion
-    }
-
-    private getSelectableChannels() {
-        def channels = [:]
-        channels['all'] = message(code: 'mixedViewer.search.channel.all')
-        channelService.getAccessibleChannelList(authenticatedUser, params).grep { !it.isArchived }.each { channels[it.name] = it.name }
-        channels
-    }
-
-    private createGetPersonByNickClosure(nickPersonList) {
+    // for Coloring of nick
+    private static createPersonOfNickClosure(nickPersonList) {
         def cache = [:] // ↓で作られるクロージャに対するグローバル的な変数
         return { nick ->
             if (cache.containsKey(nick)) {
