@@ -31,7 +31,6 @@ class SingleViewerController {
             essentialTypes: Irclog.ESSENTIAL_TYPES,
             criterion: criterion,
             nickPersonList: nickPersonList,
-            getPersonByNick: createGetPersonByNickClosure(nickPersonList),
         ]
         render(view: 'index', model: model)
     }

@@ -23,9 +23,9 @@
     </tr>
     </thead>
     <tbody data-bind="foreach: irclogList">
-    <tr data-bind="attr: { class: cssClass, id: permaId }, event: { click: toggleHighlight }">
+    <tr data-bind="attr: { class: cssClassOfRow, id: permaId }, event: { click: toggleHighlight }">
       <td class="irclog-time" data-bind="text: time"></td>
-      <td class="irclog-nick" data-bind="text: nick"></td>
+      <td class="" data-bind="text: nick, attr: { class: cssClassOfNick }"></td>
       <td class="irclog-message wordBreak" data-bind="text: message"></td>
     </tr>
     </tbody>

@@ -1,11 +1,13 @@
 jQuery ->
-  console.log = -> null
+  console.log = ->
+    null
 
   #--------------------------------------------------
   # Model
   #--------------------------------------------------
   class Channel
-    constructor: (@name) -> @shortName = @name.replace(/^#/, '')
+    constructor: (@name) ->
+      @shortName = @name.replace(/^#/, '')
 
     @list: ko.observableArray()
     @current: ko.observable()
@@ -13,7 +15,8 @@ jQuery ->
       # TODO append currentChannel for archived channel
       @list.removeAll()
       $.ajax async: false, url: '/irclog/singleViewer/channelList', success: (data) =>
-        $.each data, (i, channelName) => @list.push new Channel(channelName)
+        $.each data, (i, channelName) =>
+          @list.push new Channel(channelName)
 
   class DateHolder
     @before: ko.observable()
@@ -27,7 +30,9 @@ jQuery ->
         @latest data.latest
       @event "updated"
     @event: ko.observable "not_initialized"
-    @debugMode: -> @event.subscribe (event) => console.log "DateHolder:#{event}"
+    @debugMode: ->
+      @event.subscribe (event) =>
+        console.log "DateHolder:#{event}"
 
   class Irclog
     constructor: (@time, @nick, @message, @type, @permaId) ->
@@ -38,10 +43,13 @@ jQuery ->
       return unless Channel.current() or DateHolder.current()
       $.getJSON '/irclog/singleViewer/irclogList', {'channel': Channel.current(), 'date': DateHolder.current() }, (data) =>
         @list.removeAll()
-        $.each data, (i, irclog) => @list.push new Irclog(irclog.time, irclog.nick, irclog.message, irclog.type, irclog.permaId)
+        $.each data, (i, irclog) =>
+          @list.push new Irclog(irclog.time, irclog.nick, irclog.message, irclog.type, irclog.permaId)
         @event("updated")
     @event: ko.observable("not_initialized")
-    @debugMode: -> @event.subscribe (event) => console.log "Irclog:#{event}"
+    @debugMode: ->
+      @event.subscribe (event) =>
+        console.log "Irclog:#{event}"
 
   #--------------------------------------------------
   # View Model
@@ -53,8 +61,10 @@ jQuery ->
       @pageContextPath = ko.computed =>
         "/irclog/#{DateHolder.current()}/#{Channel.current()}" + if Irclog.selectedPermaId() then "/#{Irclog.selectedPermaId()}" else ''
       @needPushState = ko.observable(false)
-      @permaLink = ko.computed => "#{location.protocol}//#{location.host}#{@pageContextPath()}"
-      @isSupportPushState = ko.computed => History.enabled
+      @permaLink = ko.computed =>
+        "#{location.protocol}//#{location.host}#{@pageContextPath()}"
+      @isSupportPushState = ko.computed =>
+        History.enabled
 
       History.Adapter.bind window, 'statechange', =>
         state = History.getState()
@@ -104,9 +114,12 @@ jQuery ->
     constructor: (date) ->
       DateHolder.current date
 
-      @showBeforeDate = ko.computed => DateHolder.before()
-      @showAfterDate = ko.computed => DateHolder.after()
-      @showLatestDate = ko.computed => DateHolder.latest() and DateHolder.latest() != DateHolder.after()
+      @showBeforeDate = ko.computed =>
+        DateHolder.before()
+      @showAfterDate = ko.computed =>
+        DateHolder.after()
+      @showLatestDate = ko.computed =>
+        DateHolder.latest() and DateHolder.latest() != DateHolder.after()
       @currentDate = DateHolder.current
 
       DateHolder.event.subscribe (event) =>
@@ -125,9 +138,12 @@ jQuery ->
 
       DateHolder.event "need_update"
 
-    toBeforeDate: -> @changeDate DateHolder.before()
-    toAfterDate: -> @changeDate DateHolder.after()
-    toLatestDate: -> @changeDate DateHolder.latest()
+    toBeforeDate: ->
+      @changeDate DateHolder.before()
+    toAfterDate: ->
+      @changeDate DateHolder.after()
+    toLatestDate: ->
+      @changeDate DateHolder.latest()
     changeDate: (date) ->
       DateHolder.current date
       Irclog.selectedPermaId null
@@ -141,16 +157,21 @@ jQuery ->
       @message = @irclog.message
       @permaId = @irclog.permaId
 
-      @highlighted = ko.computed => Irclog.selectedPermaId() == @permaId
+      @highlighted = ko.computed =>
+        Irclog.selectedPermaId() == @permaId
 
-      @cssClass = ko.computed =>
+      @cssClassOfRow = ko.computed =>
         cssClass = ["irclog", @irclog.type]
         cssClass.push if @isEssentialType() then 'essentialType' else 'optionType'
         cssClass.push 'highlight' if @highlighted()
         cssClass.push 'hidden' if !@showingAllTypes() and !@isEssentialType()
         cssClass.join ' '
 
-    isEssentialType: -> $("#essentialTypes option[value=#{@irclog.type}]").size() > 0
+      @cssClassOfNick = ko.computed =>
+        'irclog-nick ' + @nick
+
+    isEssentialType: ->
+      $("#essentialTypes option[value=#{@irclog.type}]").size() > 0
     toggleHighlight: ->
       Irclog.selectedPermaId if @highlighted() then null else @permaId
       Irclog.event "changed_highlight"
@@ -161,11 +182,14 @@ jQuery ->
 
       @irclogList = ko.observableArray()
 
-      @showPermaLink = ko.computed => !WindowViewModel.instance.isSupportPushState()
+      @showPermaLink = ko.computed =>
+        !WindowViewModel.instance.isSupportPushState()
       @permaLink = WindowViewModel.instance.permaLink
 
-      @countEssentialTypes = ko.computed => (irclog for irclog in @irclogList() when irclog.isEssentialType()).length
-      @countAllTypes = ko.computed => @irclogList().length
+      @countEssentialTypes = ko.computed =>
+        (irclog for irclog in @irclogList() when irclog.isEssentialType()).length
+      @countAllTypes = ko.computed =>
+        @irclogList().length
 
       @showingAllTypes = ko.observable(false)
 

@@ -3,7 +3,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="layout" content="main"/>
   <title><g:message code="channel.list" default="Channel List"/></title>
-  <irclog:nickStyle persons="${nickPersonList}" classPrefix=".channel "/>
+  <g:external type="css" uri="${createLink(controller: "dynamicCss", action: "nickColors")}"/>
   <r:require module="channel"/>
 </head>
 

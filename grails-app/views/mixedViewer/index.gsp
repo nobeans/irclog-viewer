@@ -2,7 +2,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="layout" content="main"/>
-  <irclog:nickStyle persons="${nickPersonList}" classPrefix=".irclog-nick"/>
+  <g:external type="css" uri="${createLink(controller: "dynamicCss", action: "nickColors")}"/>
   <r:require module="mixedViewer"/>
   <title><g:message code="mixedViewer"/></title>
 </head>
