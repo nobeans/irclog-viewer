@@ -41,26 +41,28 @@ class ChannelController {
     }
 
     def update() {
-        withChannel(params.id) { channel ->
-            channel.properties = params
-            if (!channel.hasErrors() && channel.save()) {
-                // インポート済みログに対して取りこぼしがあれば関連づける
-                int relatedCount = channelService.relateToIrclog(channel)
-                log.info("Count of irclog records related to the updated channel: channel=${channel.name}, count=${relatedCount}")
+        Channel.withTransaction {
+            withChannel(params.id) { channel ->
+                channel.properties = params
+                if (!channel.hasErrors() && channel.save(flush: true)) {
+                    // インポート済みログに対して取りこぼしがあれば関連づける
+                    int relatedCount = channelService.relateToIrclog(channel)
+                    log.info("Count of irclog records related to the updated channel: channel=${channel.name}, count=${relatedCount}")
 
-                // 非公開チャンネルの場合、今のユーザを自動的に関連づける(上書き可)
-                // 公開チャンネルの場合、対象チャンネルに対する全関連付けを削除しても良いが、
-                // 間違って非公開→公開→非公開とすると、関連付けが全部クリアされてしまい
-                // 運用上困るかもしれないため、関連付けはそのまま残す。
-                if (channel.isPrivate) {
-                    channel.addToPersons(authenticatedUser)
+                    // 非公開チャンネルの場合、今のユーザを自動的に関連づける(上書き可)
+                    // 公開チャンネルの場合、対象チャンネルに対する全関連付けを削除しても良いが、
+                    // 間違って非公開→公開→非公開とすると、関連付けが全部クリアされてしまい
+                    // 運用上困るかもしれないため、関連付けはそのまま残す。
+                    if (channel.isPrivate) {
+                        channel.addToPersons(authenticatedUser)
+                    }
+
+                    flash.message = "channel.updated"
+                    flash.args = [channel.id]
+                    redirect(action: 'show', id: channel.id)
+                } else {
+                    render(view: 'edit', model: [channel: channel])
                 }
-
-                flash.message = "channel.updated"
-                flash.args = [channel.id]
-                redirect(action: 'show', id: channel.id)
-            } else {
-                render(view: 'edit', model: [channel: channel])
             }
         }
     }
