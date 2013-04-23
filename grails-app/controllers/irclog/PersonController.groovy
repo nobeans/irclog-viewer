@@ -13,7 +13,7 @@ class PersonController {
     def index() { redirect(action: 'list', params: params) }
 
     def list() {
-        def defaultMax = grailsApplication.config.irclog.viewer.DEFAULT_MAX
+        def defaultMax = grailsApplication.config.irclog.viewer.defaultMax
         params.max = params.max?.toInteger() ? Math.min(params.max?.toInteger(), defaultMax) : defaultMax
         params.offset = params.offset?.toInteger() ?: 0
         params.sort = params.sort ?: "loginName"
