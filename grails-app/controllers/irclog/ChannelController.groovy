@@ -14,7 +14,7 @@ class ChannelController {
 
     def list() {
         [
-            channelList: channelService.getAccessibleChannelList(authenticatedUser, params),
+            channelList: channelService.getAccessibleChannelList(currentUser, params),
             nickPersonList: Person.list()
         ]
     }
@@ -42,20 +42,12 @@ class ChannelController {
 
     def update() {
         Channel.withTransaction {
-            withChannel(params.id) { channel ->
+            withChannel(params.id) { Channel channel ->
                 channel.properties = params
-                if (!channel.hasErrors() && channel.save(flush: true)) {
+                if (channel.save(flush: true)) {
                     // インポート済みログに対して取りこぼしがあれば関連づける
                     int relatedCount = channelService.relateToIrclog(channel)
                     log.info("Count of irclog records related to the updated channel: channel=${channel.name}, count=${relatedCount}")
-
-                    // 非公開チャンネルの場合、今のユーザを自動的に関連づける(上書き可)
-                    // 公開チャンネルの場合、対象チャンネルに対する全関連付けを削除しても良いが、
-                    // 間違って非公開→公開→非公開とすると、関連付けが全部クリアされてしまい
-                    // 運用上困るかもしれないため、関連付けはそのまま残す。
-                    if (channel.isPrivate) {
-                        channel.addToPersons(authenticatedUser)
-                    }
 
                     flash.message = "channel.updated"
                     flash.args = [channel.id]
@@ -76,7 +68,7 @@ class ChannelController {
     def save() {
         Channel.withTransaction {
             def channel = new Channel(params)
-            if (!channel.hasErrors() && channel.save(flush: true)) {
+            if (channel.save(flush: true)) {
                 // インポート済みログに対して取りこぼしがあれば関連づける
                 int relatedCount = channelService.relateToIrclog(channel)
                 log.info("Count of irclog records related to the created channel: channel=${channel.name}, count=${relatedCount}")
@@ -86,7 +78,7 @@ class ChannelController {
                 // 間違って非公開→公開→非公開とすると、関連付けが全部クリアされてしまい
                 // 運用上困るかもしれないため、関連付けはそのまま残す。
                 if (channel.isPrivate) {
-                    channel.addToPersons(authenticatedUser)
+                    channel.addToPersons(currentUser)
                 }
 
                 // TODO 全サマリが更新されるのは深夜のバッチの後だ、というメッセージを表示する
@@ -106,7 +98,7 @@ class ChannelController {
             flash.errors = ["channel.join.error"]
             flash.args = [params.channelName]
         } else {
-            channel.addToPersons(authenticatedUser)
+            channel.addToPersons(currentUser)
             flash.message = "channel.joined"
             flash.args = [params.channelName]
         }
@@ -115,7 +107,7 @@ class ChannelController {
 
     def part() {
         withChannel(params.id) { channel ->
-            authenticatedUser.removeFromChannels(channel)
+            currentUser.removeFromChannels(channel)
             flash.message = "channel.parted"
             redirect(action: 'show', id: channel.id)
         }
@@ -139,7 +131,7 @@ class ChannelController {
 
     private withChannel(channelId, closure) {
         def channel = Channel.get(channelId)
-        if (!channel || !isAccessibleChannel(channel)) {
+        if (!channel || !channelService.getAccessibleChannelList(currentUser, [:]).contains(channel)) {
             flash.errors = ["channel.not.found"]
             flash.args = [channelId]
             redirect(action: 'list')
@@ -148,7 +140,7 @@ class ChannelController {
         closure(channel)
     }
 
-    private isAccessibleChannel(channel) {
-        channelService.getAccessibleChannelList(authenticatedUser, params).contains(channel)
+    private getCurrentUser() {
+        springSecurityService.currentUser
     }
 }
