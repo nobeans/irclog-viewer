@@ -20,13 +20,18 @@
 <body>
 <div class="header">
   <h1><img class="title" src="${resource(dir: 'images', file: 'headerTitle.png')}" alt="${message(code: "application.name")}"/></h1>
-
-  <div id="analog"><g:message code="header.analog"/></div>
 </div>
 
 <div class="nav">
   <g:render template="../layouts/nav"/>
 </div>
+
+<!--[if lte IE 8.0]>
+<div id="legacy-browser"><g:message code="header.legacy-browser.message"/></div>
+<![endif]-->
+
+<!--[if (gt IE 9)|!(IE)]><!-->
+
 <g:layoutBody/>
 <div class="footer" role="contentinfo">
   <div class="right">
@@ -43,5 +48,7 @@
 
 <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 <r:layoutResources/>
+
+<!--<![endif]-->
 </body>
 </html>
