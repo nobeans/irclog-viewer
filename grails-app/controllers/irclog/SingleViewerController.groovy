@@ -94,17 +94,4 @@ class SingleViewerController {
     private getSelectableChannels() {
         channelService.getAccessibleChannelList(springSecurityService.currentUser, params).grep { !it.isArchived }.collect { it.name }
     }
-
-    private createGetPersonByNickClosure(nickPersonList) {
-        def cache = [:] // ↓で作られるクロージャに対するグローバル的な変数
-        return { nick ->
-            if (cache.containsKey(nick)) {
-                return cache[nick]
-            } else {
-                def person = nickPersonList.find { (it.nicks.split(/\s+/) as List).contains(nick) }
-                cache[nick] = person
-                return person
-            }
-        }
-    }
 }
