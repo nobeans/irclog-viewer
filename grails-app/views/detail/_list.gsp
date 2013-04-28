@@ -1,14 +1,14 @@
 <div class="list">
   <div class="paginateButtons top">
     <span class="permaLink" data-bind="if: showPermaLink">
-      <g:message code="singleViewer.permaLink"/>
+      <g:message code="detail.permaLink"/>
       <input type="text" data-bind="value: permaLink, event: { click: focusPermaLink }" readonly="readonly"/>
     </span>
     <span class="count-info">
-      <span class="count"><g:message code="singleViewer.count"/></span>
+      <span class="count"><g:message code="detail.count"/></span>
       <label class="showingAllTypes">
         <input type="checkBox" data-bind="checked: showingAllTypes"/>
-        <g:message code="singleViewer.toggleTypeFilter.button.all"/>
+        <g:message code="detail.toggleTypeFilter.button.all"/>
       </label>
     </span>
   </div>

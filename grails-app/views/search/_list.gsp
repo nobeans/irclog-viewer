@@ -10,8 +10,8 @@
   <table>
     <thead>
     <tr>
-      <th class="irclog-single" title="${message(code: 'search.list.single.tooltips')}">
-        <img src="${resource(dir: 'images', file: 'singleTitle.png')}" alt="Link to single viewer"/>
+      <th class="irclog-detail" title="${message(code: 'search.list.detail.tooltips')}">
+        <img src="${resource(dir: 'images', file: 'detailTitle.png')}" alt="Link to detail viewer"/>
       </th>
       <th class="irclog-time" title="${message(code: 'search.list.time.tooltips')}"><g:message code="irclog.time"/></th>
       <th class="irclog-channel" title="${message(code: 'search.list.channel.tooltips')}"><g:message code="irclog.channel"/></th>
@@ -23,7 +23,7 @@
     <% def isEssentialType = { type -> essentialTypes.contains(type) } %>
     <g:each in="${irclogList}" status="i" var="irclog">
       <tr class="${(i % 2) == 0 ? 'odd' : 'even'} ${irclog.type} ${isEssentialType(irclog.type) ? 'essentialType' : 'optionType'}">
-        <td class="irclog-single"><irclog:singleLink permaId="${irclog.permaId}" time="${irclog.time}" channelName="${irclog.channel.name}" image="single.gif"/></td>
+        <td class="irclog-detail"><irclog:detailLink permaId="${irclog.permaId}" time="${irclog.time}" channelName="${irclog.channel.name}" image="detail.gif"/></td>
         <td class="irclog-time"><irclog:timeLink time="${irclog.time}" params="${criteriaMap}"/></td>
         <td class="irclog-channel" title="${irclog.channel.description}"><irclog:channelLink channel="${irclog.channel}" params="${criteriaMap}"/></td>
         <td class="irclog-nick ${irclog.nick?.encodeAsHTML()}">${irclog.nick?.encodeAsHTML()}</td>

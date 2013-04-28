@@ -10,7 +10,7 @@
       <thead>
       <tr>
         <th class="searchAllLogs" title="${message(code: 'summary.searchAllLogs')}">
-          <img src="${resource(dir: 'images', file: 'singleTitle.png')}" alt="Search all logs"/>
+          <img src="${resource(dir: 'images', file: 'detailTitle.png')}" alt="Search all logs"/>
         </th>
         <th class="count">${message(code: 'summary.channel')}</th>
         <% def today = new Date() %>

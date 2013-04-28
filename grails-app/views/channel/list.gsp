@@ -22,7 +22,7 @@
       <thead>
       <tr>
         <th class="searchAllLogs" title="${message(code: 'channel.searchAllLogs')}">
-          <img src="${resource(dir: 'images', file: 'singleTitle.png')}" alt="Search all logs"/>
+          <img src="${resource(dir: 'images', file: 'detailTitle.png')}" alt="Search all logs"/>
         </th>
         <g:sortableColumn property="name" title="Name" titleKey="channel.name"/>
         <g:sortableColumn property="description" title="Description" titleKey="channel.description"/>

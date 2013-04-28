@@ -3,7 +3,7 @@ package irclog
 import grails.converters.JSON
 import irclog.search.DetailQuery
 
-class SingleViewerController {
+class DetailController {
 
     def redirectToLatestUrl() {
         render view: "redirectV02"

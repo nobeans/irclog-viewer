@@ -14,7 +14,7 @@ jQuery ->
     @updateList: ->
       # TODO append currentChannel for archived channel
       @list.removeAll()
-      $.ajax async: false, url: '/irclog/singleViewer/channelList', success: (data) =>
+      $.ajax async: false, url: '/irclog/detail/channelList', success: (data) =>
         $.each data, (i, channelName) =>
           @list.push new Channel(channelName)
 
@@ -24,7 +24,7 @@ jQuery ->
     @latest: ko.observable()
     @current: ko.observable()
     @updateRelatedDates: ->
-      $.getJSON '/irclog/singleViewer/relatedDateList', {'channel': Channel.current(), 'date': @current()}, (data) =>
+      $.getJSON '/irclog/detail/relatedDateList', {'channel': Channel.current(), 'date': @current()}, (data) =>
         @before data.before
         @after data.after
         @latest data.latest
@@ -41,7 +41,7 @@ jQuery ->
     @selectedPermaId: ko.observable()
     @updateList: ->
       return unless Channel.current() or DateHolder.current()
-      $.getJSON '/irclog/singleViewer/irclogList', {'channel': Channel.current(), 'date': DateHolder.current() }, (data) =>
+      $.getJSON '/irclog/detail/irclogList', {'channel': Channel.current(), 'date': DateHolder.current() }, (data) =>
         @list.removeAll()
         $.each data, (i, irclog) =>
           @list.push new Irclog(irclog.time, irclog.nick, irclog.message, irclog.type, irclog.permaId)

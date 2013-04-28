@@ -6,11 +6,11 @@ class IrclogTagLib {
 
     def springSecurityService
 
-    def singleLink = { attrs, body ->
+    def detailLink = { attrs, body ->
         if (!attrs.channelName || !attrs.time) return
         def fullDate = attrs.time.format("yyyy-MM-dd")
         def title = "${attrs.channelName}@${fullDate}"
-        out << g.link(controller: "singleViewer", action: "index", params: [date: fullDate, channel: attrs.channelName.substring(1), permaId: attrs.permaId], title: title) {
+        out << g.link(controller: "detail", action: "index", params: [date: fullDate, channel: attrs.channelName.substring(1), permaId: attrs.permaId], title: title) {
             if (attrs.image) {
                 return """<img src="${resource(dir: 'images', file: attrs.image)}" alt="Link to ${title}" />"""
             } else if (attrs.text) {
@@ -21,7 +21,7 @@ class IrclogTagLib {
         }
     }
 
-    def singleTodayLink = { attrs ->
+    def detailTodayLink = { attrs ->
         // AfterDateが存在して、更にそれが「今日」でない場合に、一気に「今日」に勧める追加リンクを表示する。
         if (!attrs.time) return
         def today = DateUtils.today
@@ -29,7 +29,7 @@ class IrclogTagLib {
         def shortDate = attrs.time.format("yyyyMMdd")
         if (shortToday == shortDate) return
         attrs.time = today
-        out << singleLink([*: attrs, time: today])
+        out << detailLink([*: attrs, time: today])
     }
 
     def timeLink = { attrs ->
@@ -84,7 +84,7 @@ class IrclogTagLib {
     }
 
     def summaryLink = { attrs ->
-        out << ((attrs.count == 0) ? 0 : singleLink([*: attrs, text: attrs.count]))
+        out << ((attrs.count == 0) ? 0 : detailLink([*: attrs, text: attrs.count]))
     }
 
     def withHelp = { attrs, body ->

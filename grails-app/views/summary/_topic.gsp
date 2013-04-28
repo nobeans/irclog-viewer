@@ -8,9 +8,9 @@
   <ul class="list">
     <g:each in="${topicList}" var="irclog">
       <li>
-        <irclog:singleLink permaId="${irclog.permaId}" time="${irclog.time}" channelName="${irclog.channel.name}">
+        <irclog:detailLink permaId="${irclog.permaId}" time="${irclog.time}" channelName="${irclog.channel.name}">
           [${irclog.time.format('yyyy-MM-dd HH:mm:ss')}] ${irclog.channelName} ${irclog.message}
-        </irclog:singleLink>
+        </irclog:detailLink>
       </li>
     </g:each>
     <li class="summary-topic-search">

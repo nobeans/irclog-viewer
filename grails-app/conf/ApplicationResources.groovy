@@ -9,11 +9,11 @@ modules = {
         resource url: 'less/print.less', attrs: [media: 'print']
     }
 
-    singleViewer {
+    detail {
         dependsOn 'jquery-ui'
         resource url: 'js/knockout-2.2.1.js'
         resource url: 'js/jquery.history.js'
-        resource url: 'coffee/singleViewer.coffee'
+        resource url: 'coffee/detail.coffee'
     }
 
     search {
