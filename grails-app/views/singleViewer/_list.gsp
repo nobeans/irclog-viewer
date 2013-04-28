@@ -32,6 +32,6 @@
   </table>
 
   <div style="display:none">
-    <g:select name="essentialTypes" from="${essentialTypes}" disabled="true"></g:select>
+      <g:select name="essentialTypes" from="${essentialTypes}" disabled="true"></g:select>
   </div>
 </div>
