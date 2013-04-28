@@ -1,7 +1,7 @@
 <sec:ifNotLoggedIn>
   <ul>
     <irclog:createNavLinkIfNotCurrent controller="summary"/>
-    <irclog:createNavLinkIfNotCurrent controller="mixedViewer"/>
+    <irclog:createNavLinkIfNotCurrent controller="search"/>
     <irclog:createNavLinkIfNotCurrent controller="channel" action="list"/>
     <irclog:createNavLinkIfNotCurrent controller="register" action="create"/>
     <irclog:createNavLinkIfNotCurrent controller="login"/>
@@ -14,7 +14,7 @@
 <sec:ifLoggedIn>
   <ul>
     <irclog:createNavLinkIfNotCurrent controller="summary"/>
-    <irclog:createNavLinkIfNotCurrent controller="mixedViewer"/>
+    <irclog:createNavLinkIfNotCurrent controller="search"/>
     <irclog:createNavLinkIfNotCurrent controller="channel" action="list"/>
     <sec:ifAnyGranted roles="ROLE_ADMIN">
       <irclog:createNavLinkIfNotCurrent controller="person" action="list"/>

@@ -37,13 +37,13 @@ class IrclogTagLib {
         def onedayDate = attrs.time.format("yyyy-MM-dd")
         def timeHHmmss = attrs.time.format("HH:mm:ss")
 
-        out << g.link(controller: 'mixedViewer', action: 'index', params: [*: attrs.params, period: 'oneday', periodOnedayDate: onedayDate]) { "${onedayDate}" }
+        out << g.link(controller: 'search', action: 'index', params: [*: attrs.params, period: 'oneday', periodOnedayDate: onedayDate]) { "${onedayDate}" }
         out << '&nbsp;' << '&nbsp;' << timeHHmmss
     }
 
     def channelLink = { attrs ->
         def params = [*: attrs.params, channel: "${attrs.channel.name}"]
-        out << g.link(controller: 'mixedViewer', action: 'index', params: params) { "${attrs.channel.name}" }
+        out << g.link(controller: 'search', action: 'index', params: params) { "${attrs.channel.name}" }
     }
 
     def messageFormat = { attrs ->

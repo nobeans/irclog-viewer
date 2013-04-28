@@ -10,11 +10,11 @@
   <table>
     <thead>
     <tr>
-      <th class="irclog-single" title="${message(code: 'mixedViewer.list.single.tooltips')}">
+      <th class="irclog-single" title="${message(code: 'search.list.single.tooltips')}">
         <img src="${resource(dir: 'images', file: 'singleTitle.png')}" alt="Link to single viewer"/>
       </th>
-      <th class="irclog-time" title="${message(code: 'mixedViewer.list.time.tooltips')}"><g:message code="irclog.time"/></th>
-      <th class="irclog-channel" title="${message(code: 'mixedViewer.list.channel.tooltips')}"><g:message code="irclog.channel"/></th>
+      <th class="irclog-time" title="${message(code: 'search.list.time.tooltips')}"><g:message code="irclog.time"/></th>
+      <th class="irclog-channel" title="${message(code: 'search.list.channel.tooltips')}"><g:message code="irclog.channel"/></th>
       <th class="irclog-nick"><g:message code="irclog.nick"/></th>
       <th class="irclog-message"><g:message code="irclog.message"/></th>
     </tr>

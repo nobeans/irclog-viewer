@@ -4,8 +4,8 @@ class UrlMappings {
         "/"(controller: "top")
 
         // Mixed viewer
-        "/viewer/index?"(controller: "mixedViewer", action: "redirectToLatestUrl")
-        "/search"(controller: "mixedViewer", action: "index")
+        "/viewer/index?"(controller: "search", action: "redirectToLatestUrl")
+        "/search"(controller: "search", action: "index")
 
         // Single viewer
         "/the/$channel/$date"(controller: "singleViewer", action: "redirectToLatestUrl") {

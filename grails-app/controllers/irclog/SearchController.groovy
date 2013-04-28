@@ -3,7 +3,7 @@ package irclog
 import irclog.search.SearchCriteriaStore
 import irclog.search.SearchQuery
 
-class MixedViewerController {
+class SearchController {
 
     SearchCriteriaStore searchCriteriaStore
 

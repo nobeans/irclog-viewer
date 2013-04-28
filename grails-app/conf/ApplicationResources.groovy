@@ -16,9 +16,9 @@ modules = {
         resource url: 'coffee/singleViewer.coffee'
     }
 
-    mixedViewer {
+    search {
         dependsOn 'jquery-ui'
-        resource url: 'coffee/mixedViewer.coffee'
+        resource url: 'coffee/search.coffee'
         resource url: 'js/jquery.highlight-3.js'
     }
 

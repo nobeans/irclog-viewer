@@ -21,7 +21,7 @@
        // 将来的にtype検索を提供するのであれば、ここでもtype検索にすればよい。
        //def params = [type:"TOPIC", period:"all"]
       --%>
-      <g:link controller="mixedViewer" action="index" params="[message: 'TOPIC:', period: 'all']">
+      <g:link controller="search" action="index" params="[message: 'TOPIC:', period: 'all']">
         <g:message code="summary.topic.search"/>
       </g:link>
     </li>
