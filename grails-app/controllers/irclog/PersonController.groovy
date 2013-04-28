@@ -89,7 +89,6 @@ class PersonController {
     def toAdmin() {
         withPerson(params.id) { person ->
             person.toAdmin().save()
-            println person.errors
             flash.message = "person.toAdmin.roleChanged"
             redirect(action: 'show', id: person.id)
         }
