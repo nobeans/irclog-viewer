@@ -19,14 +19,12 @@ class MixedViewerController {
      */
     def index(SearchQuery query) {
         def searchResult = query.search(searchCriteriaStore)
-        def nickPersonList = Person.list()
         return [
             query: query,
             criteriaMap: query.toMap(),
             irclogList: searchResult.list,
             irclogTotalCount: searchResult.totalCount,
             essentialTypes: Irclog.ESSENTIAL_TYPES,
-            nickPersonList: nickPersonList,
         ]
     }
 
