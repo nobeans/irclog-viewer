@@ -1,8 +1,8 @@
 <div class="list">
   <div class="paginateButtons top">
-    <g:paginate total="${irclogTotalCount}" max="${command.max}" offset="${command.offset}" params="${criteriaMap}"/>
-    <% int beginIndex = Math.min(command.offset + 1, irclogTotalCount) %>
-    <% int endIndex = Math.min(command.offset + command.max, irclogTotalCount) %>
+    <g:paginate total="${irclogTotalCount}" max="${query.max}" offset="${query.offset}" params="${criteriaMap}"/>
+    <% int beginIndex = Math.min(query.offset + 1, irclogTotalCount) %>
+    <% int endIndex = Math.min(query.offset + query.max, irclogTotalCount) %>
     <% int totalCount = irclogTotalCount %>
     <span class="count"><g:message code="paginate.count" args="${[beginIndex, endIndex, totalCount]}"/></span>
   </div>
@@ -34,7 +34,7 @@
   </table>
 
   <div class="paginateButtons bottom">
-    <g:paginate total="${irclogTotalCount}" max="${command.max}" offset="${command.offset}" params="${criteriaMap}"/>
+    <g:paginate total="${irclogTotalCount}" max="${query.max}" offset="${query.offset}" params="${criteriaMap}"/>
     <span class="count"><g:message code="paginate.count" args="${[beginIndex, endIndex, totalCount]}"/></span>
   </div>
 </div>

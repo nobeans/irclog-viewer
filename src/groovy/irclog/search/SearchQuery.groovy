@@ -8,7 +8,7 @@ import irclog.IrclogSearchService
 import org.codehaus.groovy.grails.web.binding.DataBindingUtils
 
 @Validateable
-class SearchCriteriaCommand {
+class SearchQuery {
 
     private static final SELECTABLE_PERIODS = ['all', 'year', 'halfyear', 'month', 'week', 'today', 'oneday']
     private static final String DEFAULT_PERIOD = 'today'

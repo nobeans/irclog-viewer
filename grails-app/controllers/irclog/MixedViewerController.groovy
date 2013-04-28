@@ -1,7 +1,7 @@
 package irclog
 
-import irclog.search.SearchCriteriaCommand
 import irclog.search.SearchCriteriaStore
+import irclog.search.SearchQuery
 
 /**
  * IRCログのミックス表示モード用コントローラ。
@@ -17,12 +17,12 @@ class MixedViewerController {
     /**
      * ログ一覧を表示する。
      */
-    def index(SearchCriteriaCommand command) {
-        def searchResult = command.search(searchCriteriaStore)
+    def index(SearchQuery query) {
+        def searchResult = query.search(searchCriteriaStore)
         def nickPersonList = Person.list()
         return [
-            command: command,
-            criteriaMap: command.toMap(),
+            query: query,
+            criteriaMap: query.toMap(),
             irclogList: searchResult.list,
             irclogTotalCount: searchResult.totalCount,
             essentialTypes: Irclog.ESSENTIAL_TYPES,
