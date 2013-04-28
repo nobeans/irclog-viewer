@@ -3,9 +3,6 @@ package irclog
 import irclog.search.SearchCriteriaStore
 import irclog.search.SearchQuery
 
-/**
- * IRCログのミックス表示モード用コントローラ。
- */
 class MixedViewerController {
 
     SearchCriteriaStore searchCriteriaStore
@@ -14,9 +11,6 @@ class MixedViewerController {
         redirect action: "index", params: params
     }
 
-    /**
-     * ログ一覧を表示する。
-     */
     def index(SearchQuery query) {
         def searchResult = query.search(searchCriteriaStore)
         return [
@@ -28,9 +22,6 @@ class MixedViewerController {
         ]
     }
 
-    /**
-     * セッション上の検索条件を削除して、リダイレクトする。
-     */
     def clearCriteria() {
         searchCriteriaStore.clear()
         redirect(action: 'index')
