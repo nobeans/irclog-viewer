@@ -173,11 +173,13 @@ environments {
 }
 
 // irclog-viewer
-import org.jggug.kobo.gircbot.jobs.Reminder
 import org.jggug.kobo.gircbot.reactors.Debugger
 import org.jggug.kobo.gircbot.reactors.Dictionary
 import org.jggug.kobo.gircbot.reactors.InviteAndByeResponder
+import org.jggug.kobo.gircbot.reactors.Logger
 import org.jggug.kobo.gircbot.reactors.OpDistributor
+import org.jggug.kobo.gircbot.jobs.Reminder
+import irclog.ircbot.IrclogLogAppender
 
 irclog {
     viewer {
@@ -188,20 +190,20 @@ irclog {
 
     ircbot {
         enable = true
+        limitOfSavedStates = 7
         server {
             host = "localhost"
             port = 6667
         }
         nick = "ircbot"
         channel {
-            autoJoinTo = ["#test1", "#test2"]
-            defaultForLogging = "#lounge"
+            autoJoinTo = ["LATEST_SAVED_CHANNELS", "#test1", "#test2"]
         }
         reactors = [
             new Dictionary(new File("${userHome}/.gircbot-dictionary")),
             new OpDistributor(),
             new InviteAndByeResponder(),
-            // Logger is added on BootStrap because it requires IrclogAppendService
+            new Logger(new IrclogLogAppender("#lounge")),
         ]
         environments {
             development {

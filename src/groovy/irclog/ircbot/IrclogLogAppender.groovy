@@ -11,6 +11,11 @@ class IrclogLogAppender implements LogAppender {
 
     String defaultChannelName
 
+    IrclogLogAppender(String defaultChannelName) {
+        this.defaultChannelName = defaultChannelName
+    }
+
+    @Override
     void append(String type, String channelName, String nick, String message) {
         Irclog.withNewTransaction {
             appendForEachTx(type, channelName, nick, message)

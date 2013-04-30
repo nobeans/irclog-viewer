@@ -15,6 +15,7 @@ class IrclogLogAppenderSpec extends IntegrationSpec {
     def existedChannel
 
     def setup() {
+        irclogLogAppender = new IrclogLogAppender("#default")
         setupChannel()
         assert Irclog.count() == 0
     }

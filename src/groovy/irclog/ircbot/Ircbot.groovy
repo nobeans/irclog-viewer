@@ -1,32 +1,67 @@
 package irclog.ircbot
 
-import grails.util.Holders
+import irclog.IrcbotState
 import org.jggug.kobo.gircbot.builder.GircBotBuilder
-import org.jggug.kobo.gircbot.reactors.Logger
+import org.springframework.transaction.annotation.Transactional
 
 class Ircbot {
 
-    GircBotBuilder builder
-    IrclogLogAppender irclogLogAppender
+    static final String LATEST_SAVED_CHANNELS = 'LATEST_SAVED_CHANNELS'
 
-    void start() {
-        if (!enabled) return
+    GircBotBuilder gircBotBuilder
 
-        builder = new GircBotBuilder()
+    private final boolean enabled
+    private boolean started = false
+    int limitOfSavedStates = 1
 
-        Map configMap = Holders.config.irclog.ircbot.flatten()
-        configMap.reactors << new Logger(irclogLogAppender)
-        builder.config(configMap)
-
-        builder.start()
+    Ircbot(boolean enabled = false) {
+        // enabled flag can be specified only when constructor at once.
+        this.enabled = enabled
     }
 
-    private static boolean isEnabled() {
-        return Holders.config.irclog.ircbot.enable || false
+    synchronized void start() {
+        if (!enabled || started) return
+
+        resolveLatestSavedChannelsIfNeeds()
+        gircBotBuilder.start()
+        started = true
     }
 
-    void stop() {
-        builder?.stop()
+    private void resolveLatestSavedChannelsIfNeeds() {
+        def channels = gircBotBuilder.config["channel.autoJoinTo"]
+        if (!channels) return
+
+        gircBotBuilder.config["channel.autoJoinTo"] = channels.collect { channel ->
+            if (channel == LATEST_SAVED_CHANNELS) {
+                def latestState = IrcbotState.listOrderByDateCreated(order: 'desc')[0]
+                return latestState?.channels
+            }
+            return channel
+        }.flatten().findAll { it }.unique().sort()
     }
 
+    synchronized void stop() {
+        if (!enabled || !started) return
+
+        gircBotBuilder.stop()
+        started = false
+    }
+
+    @Transactional
+    synchronized void saveState() {
+        if (!enabled || !started) return
+
+        // Save a current state
+        def state = new IrcbotState()
+        gircBotBuilder.bot.channels.each { channelName ->
+            state.addToChannels channelName
+        }
+        state.save(flush: true)
+
+        // Dispose old states if needs
+        int countShouldDelete = IrcbotState.count() - limitOfSavedStates
+        if (countShouldDelete > 0) {
+            IrcbotState.listOrderByDateCreated(order: 'asc').take(countShouldDelete)*.delete(flush: true)
+        }
+    }
 }

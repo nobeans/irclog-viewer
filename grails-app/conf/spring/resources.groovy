@@ -1,5 +1,6 @@
 import grails.util.Holders
 import irclog.search.SearchCriteriaStore
+import org.jggug.kobo.gircbot.builder.GircBotBuilder
 
 beans = {
     searchCriteriaStore(SearchCriteriaStore) { bean ->
@@ -11,11 +12,15 @@ beans = {
         sessionFactory = ref('sessionFactory')
     }
 
-    irclogLogAppender(irclog.ircbot.IrclogLogAppender) { bean ->
-        defaultChannelName = Holders.config.irclog.ircbot.channel.defaultForLogging
-    }
-
     ircbot(irclog.ircbot.Ircbot) { bean ->
-        irclogLogAppender = ref('irclogLogAppender')
+        gircBotBuilder = new GircBotBuilder(config: Holders.config.irclog.ircbot.flatten())
+
+        if (Holders.config.irclog.ircbot.enable) {
+            bean.constructorArgs = [
+                Holders.config.irclog.ircbot.enable
+            ]
+        }
+
+        limitOfSavedStates = Holders.config.irclog.ircbot.limitOfSavedStates
     }
 }
