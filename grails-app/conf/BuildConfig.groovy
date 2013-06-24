@@ -77,7 +77,7 @@ grails.project.dependency.resolution = {
 
         compile ':cache:1.0.1'
 
-        build ":improx:0.2"
+        build ":improx:0.3"
 
         build ":console-enhancements:1.0"
     }
