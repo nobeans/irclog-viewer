@@ -68,8 +68,8 @@ grails.project.dependency.resolution = {
             runtime ":cached-resources:1.0"
             runtime ":yui-minify-resources:0.1.5"
         }
-        compile ":lesscss-resources:1.3.1"
-        compile ":coffeescript-resources:0.3.7"
+        compile ":lesscss-resources:1.3.3"
+        compile ":coffeescript-resources:0.3.8"
 
         build ":tomcat:$grailsVersion"
 
