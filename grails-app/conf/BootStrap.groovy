@@ -40,8 +40,8 @@ class BootStrap {
                 realName: "Administrator",
                 password: "admin00",
                 enabled: true,
-                nicks: "",
-                color: "",
+                nicks: "admin_test",
+                color: "#f00",
                 role: Role.findByName(Role.ADMIN)
             ).save(failOnError: true, flush: true)
         }
@@ -53,6 +53,21 @@ class BootStrap {
             createChannel(name: "#test2", isPrivate: false, secretKey: ""),
             createChannel(name: "#test3", isPrivate: true),
         ].collect { it.save(failOnError: true, flush: false) }
+
+        3.times { id ->
+            def user = createPerson(
+                loginName: "user0${id}",
+                realName: "User-0${id}",
+                password: "user0${id}",
+                enabled: true,
+                nicks: "user0${id}_test",
+                color: "#0f${id * 3}",
+                role: Role.findByName(Role.USER)
+            ).save(failOnError: true, flush: true)
+            channels.each { channel ->
+                channel.addToPersons(user)
+            }
+        }
 
         (0..7).each { dateDelta ->
             channels.eachWithIndex { channel, index ->
