@@ -51,10 +51,6 @@ class Person {
         [role]
     }
 
-    static mapping = {
-        channels column: 'person_channels_id', joinTable: 'person_channel'
-    }
-
     boolean isAdmin() {
         return role.name == Role.ADMIN
     }
