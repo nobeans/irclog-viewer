@@ -2,7 +2,6 @@ package irclog.ircbot
 
 import irclog.IrcbotState
 import org.jggug.kobo.gircbot.builder.GircBotBuilder
-import org.springframework.transaction.annotation.Transactional
 
 class Ircbot {
 
@@ -33,7 +32,7 @@ class Ircbot {
 
         gircBotBuilder.config["channel.autoJoinTo"] = channels.collect { channel ->
             if (channel == LATEST_SAVED_CHANNELS) {
-                def latestState = IrcbotState.listOrderByDateCreated(order: 'desc')[0]
+                def latestState = IrcbotState.list(sort: 'dateCreated', order: 'desc')[0]
                 return latestState?.channels
             }
             return channel
@@ -47,7 +46,6 @@ class Ircbot {
         started = false
     }
 
-    @Transactional
     synchronized void saveState() {
         if (!enabled || !started) return
 

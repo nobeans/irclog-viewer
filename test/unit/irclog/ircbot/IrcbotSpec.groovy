@@ -1,11 +1,11 @@
 package irclog.ircbot
+
 import grails.test.mixin.Mock
 import grails.test.mixin.TestMixin
 import grails.test.mixin.support.GrailsUnitTestMixin
 import irclog.IrcbotState
 import org.jggug.kobo.gircbot.builder.GircBotBuilder
 import org.jggug.kobo.gircbot.core.GircBot
-import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -192,7 +192,6 @@ class IrcbotSpec extends Specification {
         configMap['channel.autoJoinTo'] == []
     }
 
-    @Ignore
     def "'channel.autoJoinTo' is resolved to latest saved channels"() {
         given:
         configMap['channel.autoJoinTo'] = [Ircbot.LATEST_SAVED_CHANNELS]
@@ -201,7 +200,6 @@ class IrcbotSpec extends Specification {
         new IrcbotState(channels: ["#test1"]).save(flush: true)
         new IrcbotState(channels: ["#test2"]).save(flush: true)
         new IrcbotState(channels: ["#test3"]).save(flush: true)
-//        assert IrcbotState.listOrderByDateCreated(order: 'desc') == []
 
         when:
         ircbot.start()
