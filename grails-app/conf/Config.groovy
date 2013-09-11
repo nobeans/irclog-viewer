@@ -58,7 +58,7 @@ grails {
         }
     }
 }
- 
+
 grails.converters.encoding = "UTF-8"
 // scaffolding templates configuration
 grails.scaffolding.templates.domainSuffix = ''
@@ -91,6 +91,11 @@ environments {
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
 }
+
+// data binding
+// for compatibility for 2.2.x
+grails.databinding.trimStrings = false
+grails.databinding.convertEmptyStringsToNull = false
 
 // database migration
 grails.plugin.databasemigration.updateOnStart = true
