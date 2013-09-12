@@ -1,12 +1,12 @@
 package irclog.vertx
 
-import grails.plugin.spock.IntegrationSpec
 import irclog.Channel
 import irclog.Irclog
 import irclog.utils.DateUtils
 import irclog.utils.DomainUtils
+import spock.lang.Specification
 
-class VertxPublishLogAppenderSpec extends IntegrationSpec {
+class VertxPublishLogAppenderSpec extends Specification {
 
     // VertxPublishLogAppender works on a new transaction and it has been committed.
     // So in this test, a transaction needs be committed to interact

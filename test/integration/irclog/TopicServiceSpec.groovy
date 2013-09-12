@@ -1,10 +1,10 @@
 package irclog
 
-import grails.plugin.spock.IntegrationSpec
 import irclog.utils.DateUtils
 import irclog.utils.DomainUtils
+import spock.lang.Specification
 
-class TopicServiceSpec extends IntegrationSpec {
+class TopicServiceSpec extends Specification {
 
     def topicService
     def ch1, ch2, ch3

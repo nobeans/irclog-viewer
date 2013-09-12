@@ -1,9 +1,9 @@
 package irclog.helper
 
-import grails.plugin.spock.IntegrationSpec
 import groovy.sql.Sql
+import spock.lang.Specification
 
-class SqlHelperSpec extends IntegrationSpec {
+class SqlHelperSpec extends Specification {
 
     def dataSource
     SqlHelper sqlHelper

@@ -1,11 +1,11 @@
 package irclog
 
-import grails.plugin.spock.IntegrationSpec
 import irclog.utils.DateUtils
 import irclog.utils.DomainUtils
 import spock.lang.Unroll
+import spock.lang.Specification
 
-class IrclogSearchServiceSpec extends IntegrationSpec {
+class IrclogSearchServiceSpec extends Specification {
 
     def irclogSearchService
     def ch1, ch2, ch3

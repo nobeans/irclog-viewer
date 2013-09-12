@@ -1,13 +1,13 @@
 package irclog
 
-import grails.plugin.spock.IntegrationSpec
 import irclog.utils.DateUtils
 import irclog.utils.DomainUtils
 import spock.lang.Shared
 import spock.lang.Stepwise
+import spock.lang.Specification
 
 @Stepwise
-class SummaryUpdateServiceSpec extends IntegrationSpec {
+class SummaryUpdateServiceSpec extends Specification {
 
     private static final int DEFAULT_COUNT_FOR_TEST = -1
     private static final PAST_COUNT_COLUMNS = ['yesterday', 'twoDaysAgo', 'threeDaysAgo', 'fourDaysAgo', 'fiveDaysAgo', 'sixDaysAgo', 'totalBeforeYesterday']

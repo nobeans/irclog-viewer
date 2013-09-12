@@ -1,11 +1,11 @@
 package irclog
 
-import grails.plugin.spock.IntegrationSpec
 import irclog.utils.DateUtils
 import irclog.utils.DomainUtils
 import org.springframework.dao.DataIntegrityViolationException
+import spock.lang.Specification
 
-class Channel_CRUD_Spec extends IntegrationSpec {
+class Channel_CRUD_Spec extends Specification {
 
     Channel ch1
     Person user1, user2, user3

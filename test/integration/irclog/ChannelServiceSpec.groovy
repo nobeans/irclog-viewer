@@ -1,11 +1,11 @@
 package irclog
 
-import grails.plugin.spock.IntegrationSpec
 import irclog.utils.DateUtils
 import irclog.utils.DomainUtils
 import spock.lang.Unroll
+import spock.lang.Specification
 
-class ChannelServiceSpec extends IntegrationSpec {
+class ChannelServiceSpec extends Specification {
 
     ChannelService channelService
 
