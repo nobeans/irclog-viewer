@@ -71,10 +71,6 @@ grails.project.dependency.resolution = {
         compile ':cache:1.1.1'
         runtime ":database-migration:1.3.5"
 
-        test(":spock:0.7") {
-            exclude "spock-grails-support"
-        }
-
         runtime ":resources:1.2"
         if (Environment.current == Environment.PRODUCTION) {
             runtime ":zipped-resources:1.0.1"
