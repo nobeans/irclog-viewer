@@ -58,8 +58,6 @@ grails.project.dependency.resolution = {
         compile 'log4j:apache-log4j-extras:1.1', { // for logging
             excludes 'log4j'
         }
-
-        test "org.spockframework:spock-grails-support:0.7-groovy-2.0"
     }
 
     plugins {
