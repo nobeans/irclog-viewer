@@ -58,8 +58,6 @@ grails.project.dependency.resolution = {
             excludes 'log4j'
         }
 
-        test "org.spockframework:spock-grails-support:0.7-groovy-2.0"
-
         compile "io.vertx:vertx-core:2.0.2-final"
         compile 'io.vertx:lang-groovy:2.0.0-final'
     }
@@ -73,10 +71,6 @@ grails.project.dependency.resolution = {
         compile ":scaffolding:2.0.0"
         compile ':cache:1.1.1'
         runtime ":database-migration:1.3.5"
-
-        test(":spock:0.7") {
-            exclude "spock-grails-support"
-        }
 
         runtime ":resources:1.2"
         compile ":lesscss-resources:1.3.3"
