@@ -77,10 +77,11 @@ grails.project.dependency.resolution = {
 
         compile ':cache:1.0.1'
 
-        build ":improx:0.3"
-
-        build ":console-enhancements:1.0"
+        if (Environment.current == Environment.DEVELOPMENT) {
+            build ":console-enhancements:1.0"
+            build ":improx:0.3"
+            compile "org.jggug.kobo:request-tracelog:0.2"
+        }
     }
 }
-grails.plugin.location."request-tracelog" = "./plugins/request-tracelog"
 
