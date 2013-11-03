@@ -84,5 +84,16 @@ class BootStrap {
                 }
             }
         }
+        Irclog.withSession { it.flush() }
+
+        // http/https URL
+        def irclogs = Irclog.findAllByType('PRIVMSG', [sort: 'time', order: 'desc', max: 6])
+        irclogs[0].message = "http://yahoo.co.jp/"
+        irclogs[1].message = "http://yahoo.co.jp/ http://google.co.jp"
+        irclogs[2].message = "I sometimes use http://yahoo.co.jp/ and am always using http://google.co.jp/"
+        irclogs[3].message = "http://yahoo.co.jp/ https://google.co.jp"
+        irclogs[4].message = "https://www.google.co.jp/?q=%E3%81%82%E3%81%84%E3%81%86%E3%81%88%E3%81%8A"
+        irclogs[5].message = "<script>alert('XSS');</script>"
+        Irclog.withSession { it.flush() }
     }
 }

@@ -23,15 +23,18 @@
     </tr>
     </thead>
     <tbody data-bind="foreach: irclogList">
-    <tr data-bind="attr: { class: cssClassOfRow, id: permaId }, event: { click: toggleHighlight }">
+    <tr data-bind="attr: { class: cssClassOfRow, id: permaId }, event: { mouseover: showTools, mouseout: hideTools }">
       <td class="irclog-time" data-bind="text: time"></td>
-      <td class="" data-bind="text: nick, attr: { class: cssClassOfNick }"></td>
-      <td class="irclog-message wordBreak" data-bind="text: message"></td>
+      <td class="" data-bind="text: nick, attr: { class: cssClassOfNick }" datai-bind="event: { click: toggleHighlight }"></td>
+      <td class="irclog-message wordBreak">
+        <span class="text" data-bind="html: message"></span>
+        <img class="hidden permalink" src="${resource(dir: 'images', file: 'permalink.png')}" alt="permalink" data-bind="attr: { class: cssClassOfTools }, event: { click: toggleHighlight }"/>
+      </td>
     </tr>
     </tbody>
   </table>
 
   <div style="display:none">
-      <g:select name="essentialTypes" from="${essentialTypes}" disabled="true"></g:select>
+    <g:select name="essentialTypes" from="${essentialTypes}" disabled="true"/>
   </div>
 </div>

@@ -147,7 +147,7 @@ tr:nth-child(even) {
   background: #ffffff;
 }
 
-  /* Navigation Menu */
+/* Navigation Menu */
 
 .nav {
   position: relative;
@@ -243,7 +243,7 @@ tr:nth-child(even) {
   text-decoration: none;
 }
 
-  /* Messages and Errors */
+/* Messages and Errors */
 
 .message {
   background: #f3f8fc url(../images/skin/information.png) 8px 50% no-repeat;
@@ -285,7 +285,7 @@ td.errors input {
   border: 1px solid #f88;
 }
 
-  /* Tables */
+/* Tables */
 
 table {
   position: relative;
@@ -339,7 +339,7 @@ th.desc a {
   display: none;
 }
 
-  /* List */
+/* List */
 
 .list table {
   position: relative;
@@ -370,7 +370,7 @@ th.desc a {
   font-size: .9em;
 }
 
-  /* Pagination */
+/* Pagination */
 
 .paginateButtons {
   position: relative;
@@ -414,7 +414,7 @@ th.desc a {
   font-weight: bold;
 }
 
-  /* Dialog */
+/* Dialog */
 
 .dialog table {
   padding: 5px 0;
@@ -448,7 +448,7 @@ th.desc a {
   line-height: 1.3em;
 }
 
-  /* Action Buttons */
+/* Action Buttons */
 
 .buttons {
   background: #eee;
@@ -510,7 +510,7 @@ th.desc a {
   font-weight: bold;
 }
 
-  /* Header */
+/* Header */
 
 .header {
   position: relative;
@@ -524,7 +524,7 @@ th.desc a {
   padding: 0;
 }
 
-  /* Footer */
+/* Footer */
 
 .footer {
   position: relative;
@@ -623,7 +623,7 @@ th.desc a {
   right: 4px;
 }
 
-  /* Detail */
+/* Detail */
 
 .detail {
 
@@ -751,36 +751,43 @@ th.desc a {
       text-align: right;
     }
 
-    td.irclog-message {
+    .irclog-message {
       width: 90%;
-      white-space: pre-wrap;
+
+      .text {
+        white-space: pre-wrap;
+      }
+
+      .permalink {
+        float: right;
+      }
     }
 
-    tr.PRIVMSG td.irclog-message {
+    tr.PRIVMSG .irclog-message {
       font-style: normal;
       background-color: transparent;
     }
 
-    tr.NOTICE td.irclog-message {
+    tr.NOTICE .irclog-message {
       font-style: italic;
       background-color: #ffd;
       padding-left: 4em;
     }
 
-    tr.TOPIC td.irclog-message {
+    tr.TOPIC .irclog-message {
       color: #c33;
       font-weight: bold;
       background-color: #fdd;
     }
 
-    tr.optionType td.irclog-message {
+    tr.optionType .irclog-message {
       color: #888;
       font-style: italic;
       text-align: right;
       background-color: #efefef;
     }
 
-    tr.KICK td.irclog-message {
+    tr.KICK .irclog-message {
       color: red;
     }
 
@@ -788,51 +795,51 @@ th.desc a {
       background-color: #ff0;
     }
 
-    tr.PRIVMSG.highlight td.irclog-message {
+    tr.PRIVMSG.highlight .irclog-message {
       background-color: #ff0;
     }
 
-    tr.NOTICE.highlight td.irclog-message {
+    tr.NOTICE.highlight .irclog-message {
       background-color: #fe8;
     }
 
-    tr.TOPIC.highlight td.irclog-message {
+    tr.TOPIC.highlight .irclog-message {
       background-color: #fb7;
     }
 
-    tr.optionType.highlight td.irclog-message {
+    tr.optionType.highlight .irclog-message {
       background-color: #ee9;
     }
 
     tr:hover {
       background: #ddf;
     }
-    tr:hover.PRIVMSG td.irclog-message {
+    tr:hover.PRIVMSG .irclog-message {
       background: #ddf;
     }
-    tr:hover.NOTICE td.irclog-message {
+    tr:hover.NOTICE .irclog-message {
       background: #dcf;
     }
-    tr:hover.TOPIC td.irclog-message {
+    tr:hover.TOPIC .irclog-message {
       background: #baf;
     }
-    tr:hover.optionType td.irclog-message {
+    tr:hover.optionType .irclog-message {
       background: #dde;
     }
 
     tr:hover.highlight {
       background-color: #dbf;
     }
-    tr:hover.highlight.PRIVMSG td.irclog-message {
+    tr:hover.highlight.PRIVMSG .irclog-message {
       background-color: #dbf;
     }
-    tr:hover.highlight.NOTICE td.irclog-message {
+    tr:hover.highlight.NOTICE .irclog-message {
       background-color: #bad;
     }
-    tr:hover.highlight.TOPIC td.irclog-message {
+    tr:hover.highlight.TOPIC .irclog-message {
       background-color: #98d;
     }
-    tr:hover.highlight.optionType td.irclog-message {
+    tr:hover.highlight.optionType .irclog-message {
       background-color: #ccd;
     }
   }

@@ -36,6 +36,7 @@ jQuery ->
 
   class Irclog
     constructor: (@time, @nick, @message, @type, @permaId) ->
+      # do nothing
 
     @list: ko.observableArray()
     @selectedPermaId: ko.observable()
@@ -154,17 +155,23 @@ jQuery ->
     constructor: (@showingAllTypes, @irclog) ->
       @time = @irclog.time
       @nick = @irclog.nick
-      @message = @irclog.message
       @permaId = @irclog.permaId
-
+      @message = ko.computed =>
+        _.escape(@irclog.message).replace(/(https?:&#x2F;&#x2F;[-_.!~*'()a-zA-Z0-9;\/\?:@&=+$,%#]+)/g, '<a href="$1" onclick="$.openLink(this); return false">$1</a>')
       @highlighted = ko.computed =>
         Irclog.selectedPermaId() == @permaId
+      @hovering = ko.observable(false)
 
       @cssClassOfRow = ko.computed =>
         cssClass = ["irclog", @irclog.type]
         cssClass.push if @isEssentialType() then 'essentialType' else 'optionType'
         cssClass.push 'highlight' if @highlighted()
         cssClass.push 'hidden' if !@showingAllTypes() and !@isEssentialType()
+        cssClass.join ' '
+
+      @cssClassOfTools = ko.computed =>
+        cssClass = ['permalink']
+        cssClass.push ['hidden'] unless @hovering() or @highlighted()
         cssClass.join ' '
 
       @cssClassOfNick = ko.computed =>
@@ -175,6 +182,10 @@ jQuery ->
     toggleHighlight: ->
       Irclog.selectedPermaId if @highlighted() then null else @permaId
       Irclog.event "changed_highlight"
+    showTools: ->
+      @hovering(true)
+    hideTools: ->
+      @hovering(false)
 
   class IrclogListViewModel
     constructor: (permaId) ->
