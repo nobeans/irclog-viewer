@@ -11,7 +11,14 @@ jQuery ->
         $('td.irclog-' + type).highlight(this)
 
     highlightSearchedWord('nick')
-    highlightSearchedWord('message')
+    highlightSearchedWord('message'))()
+
+  # Made http/https URLs to anchor links
+  (->
+    $(".irclog-message").each ->
+      message = $(this).text()
+      console.log(message)
+      $(this).html($.escapeUrl(message))
   )()
 
   # Enter = submit
@@ -19,20 +26,19 @@ jQuery ->
     $("input,select").keydown (e) ->
       if e.keyCode == 13
         $("form[name=search]").submit()
-        false
-  )()
+        false)()
 
   # Calendar to select a day
   (->
     $.datepicker.setDefaults($.datepicker.regional["ja"])
     $("input.datepicker").datepicker({
-    dateFormat: 'yy-mm-dd',
-    showOn: "button",
-    buttonImage: "/irclog/images/calendar.png",
-    buttonImageOnly: true,
-    showButtonPanel: true,
-    showOtherMonths: true,
-    selectOtherMonths: true,
+      dateFormat: 'yy-mm-dd',
+      showOn: "button",
+      buttonImage: "/irclog/images/calendar.png",
+      buttonImageOnly: true,
+      showButtonPanel: true,
+      showOtherMonths: true,
+      selectOtherMonths: true,
     })
 
     updateDatepicker = ->
@@ -45,6 +51,5 @@ jQuery ->
 
     updateDatepicker()
     # just after loading
-    $("#search-period").change(updateDatepicker)
-  )()
+    $("#search-period").change(updateDatepicker))()
 

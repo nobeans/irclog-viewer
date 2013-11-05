@@ -27,7 +27,7 @@
         <td class="irclog-time"><irclog:timeLink time="${irclog.time}" params="${criteriaMap}"/></td>
         <td class="irclog-channel" title="${irclog.channel.description}"><irclog:channelLink channel="${irclog.channel}" params="${criteriaMap}"/></td>
         <td class="irclog-nick ${irclog.nick?.encodeAsHTML()}">${irclog.nick?.encodeAsHTML()}</td>
-        <td class="irclog-message wordBreak"><irclog:messageFormat value="${irclog.message}"/></td>
+        <td class="irclog-message wordBreak">${irclog.message?.encodeAsHTML()}</td>
       </tr>
     </g:each>
     </tbody>

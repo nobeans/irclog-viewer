@@ -46,11 +46,6 @@ class IrclogTagLib {
         out << g.link(controller: 'search', action: 'index', params: params) { "${attrs.channel.name}" }
     }
 
-    def messageFormat = { attrs ->
-        def value = attrs.value?.encodeAsHTML() ?: ''
-        out << value.replaceAll('(https?:\\/\\/[-_.!~*\'()a-zA-Z0-9;/?:@&=+$,%#]+)', '<a href="$1">$1</a>')
-    }
-
     def createNavLinkIfNotCurrent = { attrs ->
         def controlName = request['org.codehaus.groovy.grails.CONTROLLER_NAME_ATTRIBUTE']
         def actionName = request['org.codehaus.groovy.grails.ACTION_NAME_ATTRIBUTE']

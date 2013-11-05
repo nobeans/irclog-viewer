@@ -157,7 +157,7 @@ jQuery ->
       @nick = @irclog.nick
       @permaId = @irclog.permaId
       @message = ko.computed =>
-        _.escape(@irclog.message).replace(/(https?:\/\/[-_.!~*'()a-zA-Z0-9;\/\?:@&=+$,%#]+)/g, '<a href="$1" onclick="$.openLink(this); return false">$1</a>')
+        $.escapeUrl(@irclog.message)
       @highlighted = ko.computed =>
         Irclog.selectedPermaId() == @permaId
       @hovering = ko.observable(false)
