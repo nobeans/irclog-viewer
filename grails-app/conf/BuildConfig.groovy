@@ -61,17 +61,17 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        runtime ":hibernate:3.6.10.1" // or ":hibernate4:4.1.11.1"
+        runtime ":hibernate:3.6.10.2" // or ":hibernate4:4.1.11.1"
         runtime ":jquery:1.10.2"
         runtime ":jquery-ui:1.8.15"
 
         compile ":spring-security-core:1.2.7.3"
         compile ":quartz:1.0"
-        compile ":scaffolding:2.0.0"
+        compile ":scaffolding:2.0.1"
         compile ':cache:1.1.1'
         runtime ":database-migration:1.3.5"
 
-        runtime ":resources:1.2"
+        runtime ":resources:1.2.1"
         if (Environment.current == Environment.PRODUCTION) {
             runtime ":zipped-resources:1.0.1"
             runtime ":cached-resources:1.1"
