@@ -57,7 +57,7 @@ grails.project.dependency.resolution = {
         runtime ":resources:1.2"
         runtime ":jquery-ui:1.8.15"
         compile ":spring-security-core:1.2.7.3"
-        compile ":quartz:1.0-RC2"
+        compile ":quartz:1.0"
 
         test(":spock:0.7") {
             exclude "spock-grails-support"
