@@ -5,7 +5,6 @@ modules = {
         resource url: 'js/underscore.js'
         resource url: 'less/main.less'
         resource url: 'css/origin.css'
-        //resource url: 'css/mobile.css'
         resource url: 'less/print.less', attrs: [media: 'print']
     }
 
