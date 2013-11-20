@@ -1,21 +1,22 @@
-package irclog.ircbot
+package irclog.vertx
 
 import grails.plugin.spock.IntegrationSpec
 import irclog.Channel
 import irclog.Irclog
+import irclog.utils.DateUtils
 import irclog.utils.DomainUtils
 
-class IrclogLogAppenderSpec extends IntegrationSpec {
+class IrclogPersisterSpec extends IntegrationSpec {
 
-    // IrclogLogAppender works on a new transaction and it has been committed.
+    // VertxPublishLogAppender works on a new transaction and it has been committed.
     // So in this test, a transaction needs be committed to interact
-    // with a transaction on IrclogLogAppender.
+    // with a transaction on VertxPublishLogAppender.
 
-    IrclogLogAppender irclogLogAppender
+    IrclogPersister persister
     def existedChannel
 
     def setup() {
-        irclogLogAppender = new IrclogLogAppender("#default")
+        persister = new IrclogPersister(defaultChannelName: "#default")
         setupChannel()
         assert Irclog.count() == 0
     }
@@ -35,7 +36,7 @@ class IrclogLogAppenderSpec extends IntegrationSpec {
 
     def "append a irclog to unregistered channel"() {
         when:
-        irclogLogAppender.append("PRIVMSG", "#test", "user-nick", "Hello, world!")
+        persister.saveIrclog(type: "PRIVMSG", channelName: "#test", nick: "user-nick", message: "Hello, world!", time: DateUtils.today)
 
         then:
         Irclog.count() == 1
@@ -52,7 +53,7 @@ class IrclogLogAppenderSpec extends IntegrationSpec {
 
     def "append a irclog to registered channel"() {
         when:
-        irclogLogAppender.append("PRIVMSG", "#existed", "user-nick", "Hello, world!")
+        persister.saveIrclog(type: "PRIVMSG", channelName: "#existed", nick: "user-nick", message: "Hello, world!", time: DateUtils.today)
 
         then:
         Irclog.count() == 1
@@ -69,10 +70,10 @@ class IrclogLogAppenderSpec extends IntegrationSpec {
 
     def "append a irclog without channel name as global command with unregistered default channel"() {
         given:
-        irclogLogAppender.defaultChannelName = "#default"
+        persister.defaultChannelName = "#default"
 
         when:
-        irclogLogAppender.append("QUIT", null, "user-nick", "user-nick quited from server")
+        persister.saveIrclog(type: "QUIT", channelName: null, nick: "user-nick", message: "user-nick quited from server", time: DateUtils.today)
 
         then:
         Irclog.count() == 1
@@ -89,10 +90,10 @@ class IrclogLogAppenderSpec extends IntegrationSpec {
 
     def "append a irclog without channel name as global command with registered default channel"() {
         given:
-        irclogLogAppender.defaultChannelName = "#existed"
+        persister.defaultChannelName = "#existed"
 
         when:
-        irclogLogAppender.append("QUIT", null, "user-nick", "user-nick quited from server")
+        persister.saveIrclog(type: "QUIT", channelName: null, nick: "user-nick", message: "user-nick quited from server", time: DateUtils.today)
 
         then:
         Irclog.count() == 1
@@ -110,7 +111,7 @@ class IrclogLogAppenderSpec extends IntegrationSpec {
     def "append many irclog"() {
         when:
         100.times {
-            irclogLogAppender.append("PRIVMSG", "#test", "user-nick", "Hello, world! ${it}")
+            persister.saveIrclog(type: "PRIVMSG", channelName: "#test", nick: "user-nick", message: "Hello, world! ${it}", time: DateUtils.today)
         }
 
         then: "not to violate unique constraint of permaId"

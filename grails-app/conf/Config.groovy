@@ -74,7 +74,6 @@ grails.plugin.databasemigration.updateOnStart = true
 grails.plugin.databasemigration.updateOnStartFileNames = ["changelog.groovy"]
 
 // log4j configuration
-import grails.plugins.springsecurity.SecurityConfigType
 import org.apache.log4j.rolling.RollingFileAppender
 import org.apache.log4j.rolling.TimeBasedRollingPolicy
 
@@ -179,7 +178,7 @@ import org.jggug.kobo.gircbot.reactors.InviteAndByeResponder
 import org.jggug.kobo.gircbot.reactors.Logger
 import org.jggug.kobo.gircbot.reactors.OpDistributor
 import org.jggug.kobo.gircbot.jobs.Reminder
-import irclog.ircbot.IrclogLogAppender
+import irclog.vertx.VertxPublishLogAppender
 
 irclog {
     viewer {
@@ -198,12 +197,13 @@ irclog {
         nick = "ircbot"
         channel {
             autoJoinTo = ["LATEST_SAVED_CHANNELS", "#test1", "#test2"]
+            asDefault = "#lounge"
         }
         reactors = [
             new Dictionary(new File("${userHome}/.gircbot-dictionary")),
             new OpDistributor(),
             new InviteAndByeResponder(),
-            new Logger(new IrclogLogAppender("#lounge")),
+            new Logger(new VertxPublishLogAppender()),
         ]
         environments {
             development {
@@ -219,6 +219,8 @@ irclog {
 //------------------------------------------
 // SpringSecurity
 //------------------------------------------
+
+import grails.plugins.springsecurity.SecurityConfigType
 
 // user and role class properties
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'irclog.Person'

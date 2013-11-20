@@ -49,6 +49,9 @@ grails.project.dependency.resolution = {
         }
 
         test "org.spockframework:spock-grails-support:0.7-groovy-2.0"
+
+        compile "io.vertx:vertx-core:2.0.2-final"
+        compile 'io.vertx:lang-groovy:2.0.0-final'
     }
 
     plugins {

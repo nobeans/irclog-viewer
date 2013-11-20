@@ -1,6 +1,7 @@
 import irclog.Irclog
 import irclog.Person
 import irclog.Role
+import irclog.VertxService
 import irclog.ircbot.Ircbot
 import irclog.utils.DateUtils
 
@@ -9,6 +10,7 @@ import static irclog.utils.DomainUtils.*
 class BootStrap {
 
     Ircbot ircbot
+    VertxService vertxService
 
     def init = { servletContext ->
         setupRolesIfNotExists()
@@ -22,10 +24,12 @@ class BootStrap {
                 ircbot.start()
             }
         }
+        vertxService.start()
     }
 
     def destroy = {
         ircbot.stop()
+        vertxService.stop()
     }
 
     private static void setupRolesIfNotExists() {
