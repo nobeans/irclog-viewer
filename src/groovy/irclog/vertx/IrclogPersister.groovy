@@ -11,6 +11,7 @@ class IrclogPersister {
     String defaultChannelName
 
     private handler = { message ->
+        log.debug "A handler ${inspect()} works on ${Thread.currentThread().name}"
         def body = message.body()
         if (!(body instanceof Map)) {
             log.warn "Just ignored unexpected message body: ${body}"
@@ -21,10 +22,12 @@ class IrclogPersister {
 
     def start() {
         vertx.eventBus.registerHandler(EVENTBUS_KEY, handler)
+        log.debug "EventBus handler registered."
     }
 
     def stop() {
         vertx.eventBus.unregisterHandler(EVENTBUS_KEY, handler)
+        log.debug "EventBus handler unregistered."
     }
 
     private void saveIrclog(Map params) {
