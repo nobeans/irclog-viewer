@@ -39,6 +39,9 @@ class IrclogPersister {
             return
         }
 
+        // Date is converted to Long by serializing, so it should be restored.
+        if (params.time instanceof Long) params.time = new Date(params.time)
+
         params.channelName = params.channelName ?: defaultChannelName
         params.channel = Channel.findByName(params.channelName) // nullable
         try {
