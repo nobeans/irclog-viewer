@@ -63,7 +63,7 @@
   <sec:ifLoggedIn>
     <div class="buttons">
       <span class="menuButton"><g:link class="create" action="create"><g:message code="create"/></g:link></span>
-      <span class="menuButton" id="join"><a id="toggleJoinToSecretChannel" href="javascript:void(0);"><g:message code="channel.join"/>...</a></span>
+      <span class="menuButton" id="join"><a id="toggleJoinToSecretChannel" class="hidden" href="javascript:void(0);"><g:message code="channel.join"/>...</a></span>
     </div>
 
     <div id="joinToSecretChannel" style="display:none">
