@@ -13,6 +13,7 @@ modules = {
         resource url: 'js/knockout-2.2.1.js'
         resource url: 'js/jquery.history.js'
         resource url: 'coffee/detail.coffee'
+        resource url: 'js/jquery.dateFormat-1.0.js'
     }
 
     search {

@@ -33,8 +33,11 @@
     </tr>
     </tbody>
   </table>
-
   <div style="display:none">
     <g:select name="essentialTypes" from="${essentialTypes}" disabled="true"/>
+  </div>
+  <input type="hidden" id="token" value="${token}"/>
+  <div id="scrollToBottom" style="display:none">
+    <g:message code="detail.scrollToBottom"/>
   </div>
 </div>

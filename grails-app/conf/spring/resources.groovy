@@ -2,8 +2,7 @@ import grails.util.Holders
 import irclog.helper.SqlHelper
 import irclog.ircbot.Ircbot
 import irclog.search.SearchCriteriaStore
-import irclog.vertx.IrclogPersister
-
+import irclog.vertx.IrclogPushServer
 import org.jggug.kobo.gircbot.builder.GircBotBuilder
 import org.vertx.groovy.core.Vertx
 
@@ -34,8 +33,8 @@ beans = {
         bean.factoryMethod = "newVertx"
     }
 
-    irclogPersister(IrclogPersister) {
+    irclogPushServer(IrclogPushServer) {
         vertx = ref('vertx')
-        defaultChannelName = Holders.config.irclog.ircbot.channel.asDefault
+        channelService = ref('channelService')
     }
 }

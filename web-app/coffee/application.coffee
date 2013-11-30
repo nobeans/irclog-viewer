@@ -30,3 +30,11 @@ jQuery ->
       escapeUrl: (url) ->
         return _.escape(url).replace(/(https?:\/\/[-_.!~*'()a-zA-Z0-9;\/\?:@&=+$,%#]+)/g, '<a href="$1" onclick="$.openLink(this); return false">$1</a>')
   )()
+
+  # Check whether it's visible in screen
+  (
+    $.extend
+      isVisibleInScreen: ($element) ->
+        distanceFromTop = $element.offset().top - $(window).height()
+        return $(window).scrollTop() > distanceFromTop
+  )()

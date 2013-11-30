@@ -29,7 +29,7 @@ jQuery ->
         @after data.after
         @latest data.latest
       @event "updated"
-    @event: ko.observable "not_initialized"
+    @event: ko.observable "not_initialized" #=> "need_update", "updated"
     @debugMode: ->
       @event.subscribe (event) =>
         console.log "DateHolder:#{event}"
@@ -47,10 +47,13 @@ jQuery ->
         $.each data, (i, irclog) =>
           @list.push new Irclog(irclog.time, irclog.nick, irclog.message, irclog.type, irclog.permaId)
         @event("updated")
-    @event: ko.observable("not_initialized")
+    @event: ko.observable("not_initialized") #=> "initialized", "need_update", "updated", "pushed_state", "changed_highlight"
     @debugMode: ->
       @event.subscribe (event) =>
         console.log "Irclog:#{event}"
+    @addToList: (irclog) ->
+      @list.push irclog
+      @event("updated_one")
 
   #--------------------------------------------------
   # View Model
@@ -210,22 +213,93 @@ jQuery ->
         else if event == "updated"
           @irclogList.removeAll()
           @irclogList.push new IrclogViewModel(@showingAllTypes, irclog) for irclog in Irclog.list()
+          @connectWebsocketIfNeeds()
           Irclog.event "displayed"
+        else if event == "updated_one"
+          @irclogList.push new IrclogViewModel(@showingAllTypes, _.last(Irclog.list()))
+          $newTr = $("tr.irclog:last-child")
+          if $.isVisibleInScreen $newTr
+            $newTr.effect "highlight", 1500
+          else
+            if $("#scrollToBottom:visible").size() == 0 # not to duplicate
+              console.log "Not displayed #scrollToBottom yet"
+              $("#scrollToBottom").fadeIn().click ->
+                $('html,body').animate {scrollTop: $newTr.offset().top}
+              $(window).scroll ->
+                if $.isVisibleInScreen($newTr)
+                  $(window).unbind "scroll"
+                  $("#scrollToBottom").fadeOut()
+                  # should highlight the target and all brother after it
+                  $newTr.find("~").addBack().effect "highlight", 1500
+
+          Irclog.event "displayed"
+
+      DateHolder.event.subscribe (event) =>
+        if event == "need_udpate"
+          @closeWebsocket()
 
       # only at intialization phase
       initHook = Irclog.event.subscribe (event) =>
         if event == "displayed"
           initHook.dispose()
+
           # show all option irclog and scroll to highlighted one.
           for irclog in @irclogList() when irclog.highlighted()
             @showingAllTypes(true) unless irclog.isEssentialType()
             $("body").animate { scrollTop: $('.irclog.highlight').offset()?.top }
+
           Irclog.event "initialized"
 
       Irclog.event "need_update"
 
     focusPermaLink: ->
       $(".permaLink input").select()
+
+    closeWebsocket: ->
+      @socket.close() if @socket and !@socket.closed
+
+    connectWebsocketIfNeeds: ->
+      # unsupported browser
+      return unless window.WebSocket
+
+      # can connect only for today
+      return unless @isToday()
+
+      # do nothing if already opened
+      return if @socket and !@socket.closed
+
+      # connecting
+      @socket = new WebSocket("ws://localhost:8899/irclog/detail/#{Channel.current()}/#{$('#token').val()}")
+
+      # setup handlers
+      @socket.onmessage = (event) =>
+        console.log "WebSocket received data", event.data
+        json = $.parseJSON(event.data)
+        unless @isToday()
+          console.log "It's not for today, so ignored.", json
+          return
+        unless json.channelName == "##{Channel.current()}"
+          console.log "It's not for this channel ##{Channel.current()}, so ignored.", json
+          return
+        irclog = new Irclog(@formatTime(new Date(json.time)), json.nick, json.message, json.type, json.permaId)
+        Irclog.addToList(irclog)
+
+      @socket.onopen = (event) =>
+        console.log "WebSocket opened", event.data
+
+      @socket.onclose = (event) =>
+        console.log "WebSocket closed", event.data
+
+      console.log "WebSocket connected", @socket
+
+    isToday: ->
+      return DateHolder.current() == @formatDate(new Date())
+
+    formatDate: (date) ->
+      return $.format.date(date, 'yyyy-MM-dd')
+
+    formatTime: (date) ->
+      return $.format.date(date, 'HH:mm:ss')
 
   #--------------------------------------------------
   # Setup

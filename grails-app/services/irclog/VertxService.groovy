@@ -1,18 +1,16 @@
 package irclog
 
-import irclog.vertx.IrclogPersister
-import org.vertx.groovy.core.Vertx
+import irclog.vertx.IrclogPushServer
 
 class VertxService {
 
-    Vertx vertx
-    IrclogPersister irclogPersister
+    IrclogPushServer irclogPushServer
 
     def start() {
-        irclogPersister.start()
+        irclogPushServer.start()
     }
 
     def stop() {
-        irclogPersister.stop()
+        irclogPushServer.stop()
     }
 }
