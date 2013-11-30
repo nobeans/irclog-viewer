@@ -13,49 +13,42 @@
           <img src="${resource(dir: 'images', file: 'detailTitle.png')}" alt="Search all logs"/>
         </th>
         <th class="count">${message(code: 'summary.channel')}</th>
-        <% def today = new Date() %>
-        <% def dateBefore = { delta -> (today - delta).format('M/d(E)') } %>
-        <th class="count">${message(code: 'summary.today')}</th>
-        <th class="count">${dateBefore(1)}</th>
-        <th class="count">${dateBefore(2)}</th>
-        <th class="count">${dateBefore(3)}</th>
-        <th class="count">${dateBefore(4)}</th>
-        <th class="count">${dateBefore(5)}</th>
-        <th class="count">${dateBefore(6)}</th>
+        <th class="count" data-bind="attr: { title: todayLabel }">${message(code: 'summary.today')}</th>
+        <th class="count" data-bind="text: yesterdayLabel"></th>
+        <th class="count" data-bind="text: twoDaysAgoLabel"></th>
+        <th class="count" data-bind="text: threeDaysAgoLabel"></th>
+        <th class="count" data-bind="text: fourDaysAgoLabel"></th>
+        <th class="count" data-bind="text: fiveDaysAgoLabel"></th>
+        <th class="count" data-bind="text: sixDaysAgoLabel"></th>
         <th class="count">${message(code: 'summary.total')}</th>
         <th class="count">${message(code: 'summary.latestIrclog')}</th>
       </tr>
       </thead>
-      <tbody>
-      <g:each in="${channelList.sort { it.name }}" status="i" var="channel">
-        <% def summary = channel.summary %>
-        <tr class="${(i % 2) == 0 ? 'odd' : 'even'} ${(summary) ? '' : 'summaryNotFound'}">
-          <td class="searchAllLogs">
-            <a href="${irclog.searchAllLogsLink(channel: channel)}" title="${message(code: 'summary.searchAllLogs')}">
-              <img src="${resource(dir: 'images', file: 'search.png')}" alt="Search all logs"/>
-            </a>
-          </td>
-          <td class="channel">
-            <g:link controller="channel" action="show" id="${channel.id}" title="${channel.description}">${fieldValue(bean: channel, field: 'name')}</g:link>
-          </td>
-          <td class="count"><irclog:summaryLink count="${summary.today}" channelName="${channel.name}" time="${summary.lastUpdated}"/></td>
-          <td class="count"><irclog:summaryLink count="${summary.yesterday}" channelName="${channel.name}" time="${summary.lastUpdated - 1}"/></td>
-          <td class="count"><irclog:summaryLink count="${summary.twoDaysAgo}" channelName="${channel.name}" time="${summary.lastUpdated - 2}"/></td>
-          <td class="count"><irclog:summaryLink count="${summary.threeDaysAgo}" channelName="${channel.name}" time="${summary.lastUpdated - 3}"/></td>
-          <td class="count"><irclog:summaryLink count="${summary.fourDaysAgo}" channelName="${channel.name}" time="${summary.lastUpdated - 4}"/></td>
-          <td class="count"><irclog:summaryLink count="${summary.fiveDaysAgo}" channelName="${channel.name}" time="${summary.lastUpdated - 5}"/></td>
-          <td class="count"><irclog:summaryLink count="${summary.sixDaysAgo}" channelName="${channel.name}" time="${summary.lastUpdated - 6}"/></td>
-          <td class="totalCount">${summary.total}</td>
-          <td class="latestIrclog" title="${summary?.latestIrclog?.message?.encodeAsHTML() ?: ''}">
-            <g:if test="${summary?.latestIrclog}">
-              <span class="time">${summary?.latestIrclog?.time?.format('yyyy-MM-dd HH:mm:ss')}</span>
-              (by <span class="${summary.latestIrclog?.nick?.encodeAsHTML() ?: ''}">${summary?.latestIrclog?.nick?.encodeAsHTML() ?: ''}</span>)
-            </g:if>
-          </td>
-        </tr>
-      </g:each>
+      <tbody data-bind="foreach: summaryList">
+      <tr class="summary" data-bind="attr: { id: rowId }">
+        <td class="searchAllLogs">
+          <a href="#" data-bind="attr: { href: searchAllLogsLink }">
+            <img src="${resource(dir: 'images', file: 'search.png')}" alt="Search all logs"/>
+          </a>
+        </td>
+        <td class="channel">
+          <a href="#" data-bind="attr: { href: channelLink }, text: channelName"></a>
+        </td>
+        <td class="count" data-bind="html: todayCount"></td>
+        <td class="count" data-bind="html: yesterdayCount"></td>
+        <td class="count" data-bind="html: twoDaysAgoCount"></td>
+        <td class="count" data-bind="html: threeDaysAgoCount"></td>
+        <td class="count" data-bind="html: fourDaysAgoCount"></td>
+        <td class="count" data-bind="html: fiveDaysAgoCount"></td>
+        <td class="count" data-bind="html: sixDaysAgoCount"></td>
+        <td class="totalCount" data-bind="text: totalCount"></td>
+        <td class="latestIrclog" data-bind="if: latestMessage, attr: { title: latestMessage }">
+          <span class="time" data-bind="text: latestTime"></span>
+          (by <span data-bind="text: latestNick, attr: { class: latestNick }"></span>)
+        </td>
+      </tr>
       </tbody>
     </table>
   </div>
+  <input type="hidden" id="token" value="${token}"/>
 </div>
-

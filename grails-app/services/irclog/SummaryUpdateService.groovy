@@ -1,10 +1,13 @@
 package irclog
 
 import irclog.utils.DateUtils
+import org.vertx.groovy.core.Vertx
 
 class SummaryUpdateService {
 
     static transactional = true
+
+    Vertx vertx
 
     void updateTodaySummary() {
         def yesterdayMidnight = DateUtils.today.clearTime()
@@ -12,6 +15,9 @@ class SummaryUpdateService {
 
         updateSpecifiedSummary(column: 'today', from: yesterdayMidnight, to: todayMidnight)
         updateLatestIrclog()
+
+        vertx.eventBus.publish("irclog/summary", "updated/today")
+        log.debug "Updated today's summary"
     }
 
     void updateAllSummary() {
@@ -28,6 +34,8 @@ class SummaryUpdateService {
             updateSpecifiedSummary(it)
         }
         updateTodaySummary()
+
+        vertx.eventBus.publish("irclog/summary", "updated/all")
         log.debug "Updated all summary"
     }
 

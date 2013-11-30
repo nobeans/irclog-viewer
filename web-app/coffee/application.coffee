@@ -1,4 +1,7 @@
 jQuery ->
+  #console.log = ->
+  #  null
+
   (->
     $('#spinner')
       .ajaxStart -> $(@).fadeIn()
@@ -37,4 +40,13 @@ jQuery ->
       isVisibleInScreen: ($element) ->
         distanceFromTop = $element.offset().top - $(window).height()
         return $(window).scrollTop() > distanceFromTop
+  )()
+
+  # Date utils
+  (
+    $.extend
+      dateOfBefore: (nDaysAgo) ->
+        date = new Date()
+        date.setDate(date.getDate() - nDaysAgo)
+        return date
   )()

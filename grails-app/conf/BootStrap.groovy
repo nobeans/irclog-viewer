@@ -56,6 +56,7 @@ class BootStrap {
             createChannel(name: "#test1", isPrivate: true),
             createChannel(name: "#test2", isPrivate: false, secretKey: ""),
             createChannel(name: "#test3", isPrivate: true),
+            createChannel(name: "#test4", isPrivate: false, secretKey: ""),
         ].collect { it.save(failOnError: true, flush: false) }
 
         3.times { id ->
@@ -75,6 +76,9 @@ class BootStrap {
 
         (0..7).each { dateDelta ->
             channels.eachWithIndex { channel, index ->
+                // #test4 has no logs
+                if (channel.name == "#test4") return
+
                 Irclog.ALL_TYPES.each { type ->
                     (index + dateDelta + 1).times {
                         def time = DateUtils.today - dateDelta

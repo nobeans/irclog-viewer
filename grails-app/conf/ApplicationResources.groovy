@@ -8,6 +8,13 @@ modules = {
         resource url: 'less/print.less', attrs: [media: 'print']
     }
 
+    summary {
+        dependsOn 'jquery-ui'
+        resource url: 'js/knockout-2.2.1.js'
+        resource url: 'coffee/summary.coffee'
+        resource url: 'js/jquery.dateFormat-1.0.js'
+    }
+
     detail {
         dependsOn 'jquery-ui'
         resource url: 'js/knockout-2.2.1.js'

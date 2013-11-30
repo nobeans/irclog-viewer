@@ -196,7 +196,7 @@ irclog {
         }
         nick = "ircbot"
         channel {
-            autoJoinTo = ["LATEST_SAVED_CHANNELS", "#test1", "#test2"]
+            autoJoinTo = ["LATEST_SAVED_CHANNELS", "#test1", "#test2", "#test4"]
             asDefault = "#lounge"
         }
         reactors = [
