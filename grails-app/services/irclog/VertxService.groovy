@@ -1,16 +1,16 @@
 package irclog
 
-import irclog.vertx.IrclogPushServer
+import irclog.vertx.DetailPushServer
 
 class VertxService {
 
-    IrclogPushServer irclogPushServer
+    DetailPushServer detailPushServer
 
     def start() {
-        irclogPushServer.start()
+        detailPushServer.start()
     }
 
     def stop() {
-        irclogPushServer.stop()
+        detailPushServer.stop()
     }
 }

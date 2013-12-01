@@ -32,7 +32,7 @@ class DetailController {
     private String saveTokenToVertx(token) {
         def person = springSecurityService.currentUser
         def channelNames = channelService.getAccessibleChannelList(person, [:])*.name
-        vertx.sharedData.getMap("irclog.push.tokens").put(token, channelNames.join(":"))
+        vertx.sharedData.getMap("irclog.detail.push.tokens").put(token, channelNames.join(":"))
     }
 
     private String generateOneTimeToken() {

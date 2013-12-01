@@ -2,7 +2,7 @@ import grails.util.Holders
 import irclog.helper.SqlHelper
 import irclog.ircbot.Ircbot
 import irclog.search.SearchCriteriaStore
-import irclog.vertx.IrclogPushServer
+import irclog.vertx.DetailPushServer
 import org.jggug.kobo.gircbot.builder.GircBotBuilder
 import org.vertx.groovy.core.Vertx
 
@@ -33,7 +33,7 @@ beans = {
         bean.factoryMethod = "newVertx"
     }
 
-    irclogPushServer(IrclogPushServer) {
+    detailPushServer(DetailPushServer) {
         vertx = ref('vertx')
         channelService = ref('channelService')
     }

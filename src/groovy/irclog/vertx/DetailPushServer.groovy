@@ -6,9 +6,9 @@ import org.vertx.groovy.core.Vertx
 import org.vertx.groovy.core.http.HttpServer
 import org.vertx.groovy.core.http.WebSocket
 
-class IrclogPushServer {
+class DetailPushServer {
 
-    private static final int webSocketPort = 8899
+    private static final int SERVER_PORT = 8899
 
     Vertx vertx
     ChannelService channelService
@@ -17,8 +17,8 @@ class IrclogPushServer {
     def start() {
         httpServer = vertx.createHttpServer()
         setupPushIrclog()
-        httpServer.listen(webSocketPort)
-        log.debug "Start listening ${webSocketPort}."
+        httpServer.listen(SERVER_PORT)
+        log.debug "Start listening ${SERVER_PORT}."
     }
 
     private void setupPushIrclog() {
@@ -88,13 +88,13 @@ class IrclogPushServer {
     }
 
     private Collection<String> getAllowedChannels(token) {
-        def tokens = vertx.sharedData.getMap("irclog.push.tokens")
+        def tokens = vertx.sharedData.getMap("irclog.detail.push.tokens")
         log.debug "Registering tokens: ${tokens}"
         tokens.remove(token)?.split(":") ?: []
     }
 
     def stop() {
         httpServer.close()
-        log.debug "Closed port ${webSocketPort}."
+        log.debug "Closed port ${SERVER_PORT}."
     }
 }
