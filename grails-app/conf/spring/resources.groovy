@@ -4,6 +4,7 @@ import irclog.ircbot.Ircbot
 import irclog.search.SearchCriteriaStore
 import irclog.vertx.DetailPushServer
 import irclog.vertx.SummaryPushServer
+import irclog.vertx.TopicPushServer
 import org.jggug.kobo.gircbot.builder.GircBotBuilder
 import org.vertx.groovy.core.Vertx
 
@@ -34,12 +35,17 @@ beans = {
         bean.factoryMethod = "newVertx"
     }
 
-    detailPushServer(DetailPushServer) {
+    topicPushServer(TopicPushServer) {
         vertx = ref('vertx')
         channelService = ref('channelService')
     }
 
     summaryPushServer(SummaryPushServer) {
+        vertx = ref('vertx')
+        channelService = ref('channelService')
+    }
+
+    detailPushServer(DetailPushServer) {
         vertx = ref('vertx')
         channelService = ref('channelService')
     }

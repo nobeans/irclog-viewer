@@ -15,4 +15,5 @@
       </g:link>
     </li>
   </ul>
+  <input type="hidden" id="topic-token" value="${topicToken}"/>
 </div>

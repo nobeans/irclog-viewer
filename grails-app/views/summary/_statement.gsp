@@ -50,5 +50,5 @@
       </tbody>
     </table>
   </div>
-  <input type="hidden" id="token" value="${token}"/>
+  <input type="hidden" id="summary-token" value="${summaryToken}"/>
 </div>

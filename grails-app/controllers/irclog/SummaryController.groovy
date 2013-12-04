@@ -16,10 +16,13 @@ class SummaryController {
     TopicService topicService
 
     def index() {
-        String token = generateOneTimeToken()
-        saveTokenToVertx(token)
+        String topicToken = generateOneTimeToken()
+        String summaryToken = generateOneTimeToken()
+        saveTokenToVertx("irclog.topic.push.tokens", topicToken)
+        saveTokenToVertx("irclog.summary.push.tokens", summaryToken)
         [
-            token: token,
+            topicToken: topicToken,
+            summaryToken: summaryToken,
             nickPersonList: Person.list(),
         ]
     }
@@ -55,10 +58,10 @@ class SummaryController {
     }
 
     // TODO 共通化してVertxServiceへ
-    private String saveTokenToVertx(token) {
+    private String saveTokenToVertx(key, token) {
         def person = springSecurityService.currentUser
         def channelNames = channelService.getAccessibleChannelList(person, [:])*.name
-        vertx.sharedData.getMap("irclog.summary.push.tokens").put(token, channelNames.join(":"))
+        vertx.sharedData.getMap(key).put(token, channelNames.join(":"))
     }
 
     private String generateOneTimeToken() {

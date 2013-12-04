@@ -13,9 +13,11 @@ jQuery ->
       @event = ko.observable("initialized") #=> "updated"
 
   class TopicList
+    @maxSize: 5
+
     @list: ko.observableArray()
 
-    @event: ko.observable("not_initialized") #=> "initialized", "loaded"
+    @event: ko.observable("not_initialized") #=> "initialized", "loaded", "added"
 
     @load: ->
       $.getJSON '/irclog/summary/topicList', (data) =>
@@ -24,6 +26,15 @@ jQuery ->
         ko.utils.arrayForEach data, (topic) =>
           @list.push new Topic(topic)
         @event "loaded"
+
+    @add: (topic) ->
+      # keep length under maxSize
+      @list.pop() if @list().length >= @maxSize
+      @list.unshift topic
+
+      # notify to subscriber
+      @event "none" # it's required because changing to same status cannot be passed to subscriber
+      @event "added"
 
   class Summary
     constructor: (summary) ->
@@ -77,7 +88,7 @@ jQuery ->
   class SummaryList
     @list: ko.observableArray()
 
-    @event: ko.observable("not_initialized") #=> "initialized", "loaded"
+    @event: ko.observable("not_initialized") #=> "initialized", "updated"
 
     @lastUpdatedDate: ko.observable()
 
@@ -109,7 +120,38 @@ jQuery ->
         if event == "loaded"
           @topicList.removeAll()
           @topicList.push new TopicViewModel(topic) for topic in TopicList.list()
-          console.log "Reloaded topicList"
+          console.log "Loaded topicList"
+        if event == "added"
+          @topicList.removeAll()
+          @topicList.push new TopicViewModel(topic) for topic in TopicList.list()
+          $(".summary-topic .list li:first").effect "highlight", 1500
+          console.log "Added topicList"
+
+      @connectWebsocket()
+
+    connectWebsocket: ->
+      # unsupported browser
+      return unless window.WebSocket
+
+      # do nothing if already opened
+      return if @socket and !@socket.closed
+
+      # connecting
+      @socket = new WebSocket("ws://localhost:8897/irclog/topic/#{$('#topic-token').val()}")
+
+      # setup handlers
+      @socket.onmessage = (event) =>
+        console.log "WebSocket for topic received data", event.data
+        json = $.parseJSON(event.data)
+        TopicList.add new Topic(json)
+
+      @socket.onopen = (event) =>
+        console.log "WebSocket for topic opened", event.data
+
+      @socket.onclose = (event) =>
+        console.log "WebSocket for topic closed", event.data
+
+      console.log "WebSocket for topic connected", @socket
 
   class SummaryViewModel
     constructor: (@summary) ->
@@ -168,7 +210,7 @@ jQuery ->
         if event == "loaded"
           @summaryList.removeAll()
           @summaryList.push new SummaryViewModel(summary) for summary in SummaryList.list()
-          console.log "Reloaded summaryList", event
+          console.log "Loaded summaryList", event
 
       @connectWebsocket()
 
@@ -183,11 +225,11 @@ jQuery ->
       return if @socket and !@socket.closed
 
       # connecting
-      @socket = new WebSocket("ws://localhost:8898/irclog/summary/#{$('#token').val()}")
+      @socket = new WebSocket("ws://localhost:8898/irclog/summary/#{$('#summary-token').val()}")
 
       # setup handlers
       @socket.onmessage = (event) =>
-        console.log "WebSocket received data", event.data
+        console.log "WebSocket for summary received data", event.data
         json = $.parseJSON(event.data)
         ko.utils.arrayForEach json, (newSummary) ->
           console.log "newSummary: ", newSummary
@@ -197,12 +239,12 @@ jQuery ->
               targetSummary.update newSummary
 
       @socket.onopen = (event) =>
-        console.log "WebSocket opened", event.data
+        console.log "WebSocket for summary opened", event.data
 
       @socket.onclose = (event) =>
-        console.log "WebSocket closed", event.data
+        console.log "WebSocket for summary closed", event.data
 
-      console.log "WebSocket connected", @socket
+      console.log "WebSocket for summary connected", @socket
 
   #--------------------------------------------------
   # Setup
