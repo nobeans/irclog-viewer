@@ -2,6 +2,29 @@ jQuery ->
   #--------------------------------------------------
   # Model
   #--------------------------------------------------
+  class Topic
+    constructor: (topic) ->
+      @permaId = ko.observable topic.permaId
+      @time = ko.observable new Date(topic.time)
+      @channelName = ko.observable topic.channelName
+      @nick = ko.observable topic.nick
+      @message = ko.observable topic.message
+
+      @event = ko.observable("initialized") #=> "updated"
+
+  class TopicList
+    @list: ko.observableArray()
+
+    @event: ko.observable("not_initialized") #=> "initialized", "loaded"
+
+    @load: ->
+      $.getJSON '/irclog/summary/topicList', (data) =>
+        console.log "Received topicList", data
+        @list.removeAll()
+        ko.utils.arrayForEach data, (topic) =>
+          @list.push new Topic(topic)
+        @event "loaded"
+
   class Summary
     constructor: (summary) ->
       @channelId = ko.observable summary.channelId
@@ -54,18 +77,18 @@ jQuery ->
   class SummaryList
     @list: ko.observableArray()
 
-    @event: ko.observable("not_initialized") #=> "initialized", "updated"
+    @event: ko.observable("not_initialized") #=> "initialized", "loaded"
 
     @lastUpdatedDate: ko.observable()
 
     @load: ->
       $.getJSON '/irclog/summary/summaryList', (data) =>
-        console.log "Received data", data
+        console.log "Received summaryList", data
         @list.removeAll()
         ko.utils.arrayForEach data, (summary) =>
           @list.push new Summary(summary)
         @updateLastUpdatedDate()
-        @event("loaded")
+        @event "loaded"
 
     @updateLastUpdatedDate: ->
       @lastUpdatedDate($.format.date(new Date(), 'yyyy-MM-dd'))
@@ -73,6 +96,21 @@ jQuery ->
   #--------------------------------------------------
   # View Model
   #--------------------------------------------------
+  class TopicViewModel
+    constructor: (@topic) ->
+      @formattedTime = ko.computed => $.format.date(@topic.time(), 'yyyy-MM-dd HH:mm:ss')
+      @topicLink = ko.computed => "/irclog/#{$.format.date(@topic.time(), 'yyyy-MM-dd')}/#{@topic.channelName().replace(/#/, '')}/#{@topic.permaId()}"
+
+  class TopicListViewModel
+    constructor: () ->
+      @topicList = ko.observableArray()
+
+      TopicList.event.subscribe (event) =>
+        if event == "loaded"
+          @topicList.removeAll()
+          @topicList.push new TopicViewModel(topic) for topic in TopicList.list()
+          console.log "Reloaded topicList"
+
   class SummaryViewModel
     constructor: (@summary) ->
       @channelName       = ko.computed => @summary.channelName()
@@ -130,7 +168,7 @@ jQuery ->
         if event == "loaded"
           @summaryList.removeAll()
           @summaryList.push new SummaryViewModel(summary) for summary in SummaryList.list()
-          console.log "Reloaded summary list", event
+          console.log "Reloaded summaryList", event
 
       @connectWebsocket()
 
@@ -169,5 +207,7 @@ jQuery ->
   #--------------------------------------------------
   # Setup
   #--------------------------------------------------
+  ko.applyBindings new TopicListViewModel(), $(".summary-topic .list")[0]
   ko.applyBindings new SummaryListViewModel(), $(".summary-statement .list")[0]
+  TopicList.load()
   SummaryList.load()

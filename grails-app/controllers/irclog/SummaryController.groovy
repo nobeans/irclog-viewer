@@ -21,8 +21,11 @@ class SummaryController {
         [
             token: token,
             nickPersonList: Person.list(),
-            topicList: topicService.getHotTopicList(allowedChannels),
         ]
+    }
+
+    def topicList() {
+        render topicService.getHotTopicList(allowedChannels) as JSON
     }
 
     def summaryList() {
