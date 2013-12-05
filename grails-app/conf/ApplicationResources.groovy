@@ -6,13 +6,13 @@ modules = {
         resource url: 'less/main.less'
         resource url: 'css/origin.css'
         resource url: 'less/print.less', attrs: [media: 'print']
+        resource url: 'js/jquery.dateFormat-1.0.js'
     }
 
     summary {
         dependsOn 'jquery-ui'
         resource url: 'js/knockout-2.2.1.js'
         resource url: 'coffee/summary.coffee'
-        resource url: 'js/jquery.dateFormat-1.0.js'
     }
 
     detail {
@@ -20,13 +20,12 @@ modules = {
         resource url: 'js/knockout-2.2.1.js'
         resource url: 'js/jquery.history.js'
         resource url: 'coffee/detail.coffee'
-        resource url: 'js/jquery.dateFormat-1.0.js'
     }
 
     search {
         dependsOn 'jquery-ui'
-        resource url: 'coffee/search.coffee'
         resource url: 'js/jquery.highlight-3.js'
+        resource url: 'coffee/search.coffee'
     }
 
     channel {
