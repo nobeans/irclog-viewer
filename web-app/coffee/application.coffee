@@ -1,7 +1,9 @@
-jQuery ->
-  #console.log = ->
-  #  null
+# this should be fastter than all
+console.log_ = console.log
+console.log = ->
+  null
 
+jQuery ->
   (->
     $('#spinner')
       .ajaxStart -> $(@).fadeIn()

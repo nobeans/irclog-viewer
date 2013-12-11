@@ -1,7 +1,7 @@
 modules = {
     application {
         dependsOn 'jquery'
-        resource url: 'coffee/application.coffee'
+        resource url: 'coffee/application.coffee', disposition: "head"
         resource url: 'js/underscore.js'
         resource url: 'less/main.less'
         resource url: 'css/origin.css'

@@ -1,5 +1,4 @@
 (function (jQuery) {
-
     i18n = {
         default: {
             ddd: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
