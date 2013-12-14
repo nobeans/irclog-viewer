@@ -42,7 +42,7 @@ class Irclog {
     }
 
     private updatePermaId() {
-        def base = "${time},${channelName},${nick},${type},${message}"
+        def base = "${time?.time},${channelName},${nick},${type},${message}"
         this.permaId = MessageDigest.getInstance("MD5").digest(base.getBytes("UTF-8")).collect { String.format("%02x", it & 0xff) }.join()
         assert permaId.size() == 32
     }

@@ -83,12 +83,12 @@ class IrclogSpec extends ConstraintUnitSpec {
 
         where:
         time           | channelName | nick           | type      | message      | permaId
-        new Date(0)    | "#test"     | "IrclogSpec"   | "PRIVMSG" | "PERMA-ID"   | "26707f7a9f3c0989fd0716ec447049dc"
-        new Date(0)    | "#test"     | "IrclogSpec"   | "PRIVMSG" | "PERMA-ID-2" | "a379e161378ffd9336620e48d0a31c9e"
-        new Date(0)    | "#test"     | "IrclogSpec"   | "NOTICE"  | "PERMA-ID"   | "7baebe2e58a0b1e9c3fc236c501c8def"
-        new Date(0)    | "#test"     | "IrclogSpec-2" | "PRIVMSG" | "PERMA-ID"   | "6b0554df45fa58ea2f53861c0ca6f112"
-        new Date(0)    | "#test-2"   | "IrclogSpec"   | "PRIVMSG" | "PERMA-ID"   | "739afd5c3bd174873c1d41275a79417b"
-        new Date(1000) | "#test"     | "IrclogSpec"   | "PRIVMSG" | "PERMA-ID"   | "6ae2f62f2ebd281d912b401b3c40ad60"
+        new Date(0)    | "#test"     | "IrclogSpec"   | "PRIVMSG" | "PERMA-ID"   | "dc44bfbdaf74caf1a2648bd56a74c930"
+        new Date(0)    | "#test"     | "IrclogSpec"   | "PRIVMSG" | "PERMA-ID-2" | "0c9c3c9b3d5c293c9e5156487c1a94cd"
+        new Date(0)    | "#test"     | "IrclogSpec"   | "NOTICE"  | "PERMA-ID"   | "85a7062ff2f7ae1afbe5e73034780b66"
+        new Date(0)    | "#test"     | "IrclogSpec-2" | "PRIVMSG" | "PERMA-ID"   | "bc317db0f73fdb0d8e17e83450effbb8"
+        new Date(0)    | "#test-2"   | "IrclogSpec"   | "PRIVMSG" | "PERMA-ID"   | "9afb26f71357e8ac26c08fd198c58af0"
+        new Date(1000) | "#test"     | "IrclogSpec"   | "PRIVMSG" | "PERMA-ID"   | "077b6ed5bd67822b621bfdaf5df2a346"
     }
 
     def "validate: permaId is unique"() {
