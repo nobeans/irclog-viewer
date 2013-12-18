@@ -18,7 +18,8 @@
 </head>
 
 <g:set var="locale" value="${org.springframework.web.servlet.support.RequestContextUtils.getLocale(request)}"/>
-<body data-locale="${locale}" data-lang="${locale.language}" data-country="${locale.country}">
+<g:set var="serverName" value="${request.serverName}"/>
+<body data-locale="${locale}" data-lang="${locale.language}" data-country="${locale.country}" data-server-name="${serverName}">
 <div class="header">
   <h1><img class="title" src="${resource(dir: 'images', file: 'headerTitle.png')}" alt="${message(code: "application.name")}"/></h1>
 </div>

@@ -266,7 +266,7 @@ jQuery ->
       return if @socket and !@socket.closed
 
       # connecting
-      @socket = new WebSocket("ws://localhost:8899/irclog/detail/#{Channel.current()}/#{$('#token').val()}")
+      @socket = new WebSocket("ws://#{$("body").data("server-name")}:8899/irclog/detail/#{Channel.current()}/#{$('#token').val()}")
 
       # setup handlers
       @socket.onmessage = (event) =>

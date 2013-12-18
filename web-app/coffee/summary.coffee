@@ -137,7 +137,7 @@ jQuery ->
       return if @socket and !@socket.closed
 
       # connecting
-      @socket = new WebSocket("ws://localhost:8897/irclog/topic/#{$('#topic-token').val()}")
+      @socket = new WebSocket("ws://#{$("body").data("server-name")}:8897/irclog/topic/#{$('#topic-token').val()}")
 
       # setup handlers
       @socket.onmessage = (event) =>
@@ -225,7 +225,7 @@ jQuery ->
       return if @socket and !@socket.closed
 
       # connecting
-      @socket = new WebSocket("ws://localhost:8898/irclog/summary/#{$('#summary-token').val()}")
+      @socket = new WebSocket("ws://#{$("body").data("server-name")}:8898/irclog/summary/#{$('#summary-token').val()}")
 
       # setup handlers
       @socket.onmessage = (event) =>
