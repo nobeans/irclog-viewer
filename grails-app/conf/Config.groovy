@@ -132,13 +132,13 @@ log4j = {
     // for quartz plugin
     debug 'grails.app.jobs'
 
+    root {
+        info 'application', 'stdout'
+    }
+
     environments {
         ['development', 'test'].each { env ->
             "$env" {
-                root {
-                    info 'application', 'stdout'
-                }
-
                 debug 'grails.app',
                     'irclog',
                     'grails.app.filters.RequestTracelogFilters',
@@ -146,10 +146,6 @@ log4j = {
             }
         }
         production {
-            root {
-                info 'application'
-            }
-
             info 'grails.app',
                 'irclog',
                 'grails.app.filters.RequestTracelogFilters',
