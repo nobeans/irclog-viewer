@@ -33,8 +33,7 @@ grails.project.dependency.resolution = {
         mavenLocal()
         mavenCentral()
 
-        mavenRepo "http://repository-kobo.forge.cloudbees.com/snapshot/"
-        mavenRepo "http://repository-kobo.forge.cloudbees.com/release/"
+        mavenRepo "http://dl.bintray.com/nobeans/maven"
     }
 
     dependencies {
@@ -42,7 +41,7 @@ grails.project.dependency.resolution = {
 
         runtime "postgresql:postgresql:9.0-801.jdbc4"
 
-        compile "org.jggug.kobo:gircbot:0.1"
+        compile "org.jggug.kobo:gircbot:0.2"
 
         compile 'log4j:apache-log4j-extras:1.1', { // for logging
             excludes 'log4j'
