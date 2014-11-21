@@ -82,7 +82,7 @@ grails.project.dependency.resolution = {
         if (Environment.current == Environment.DEVELOPMENT) {
             build ":console-enhancements:1.0"
             build ":improx:0.3"
-            compile "org.jggug.kobo:request-tracelog:0.2"
+            compile "org.jggug.kobo:request-tracelog:0.3"
         }
     }
 }
