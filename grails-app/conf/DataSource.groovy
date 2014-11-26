@@ -32,6 +32,7 @@ switch (System.getProperty("db")) {
 
     default:
         println "Configuring for PostgreSQL..."
+        def dbHost = System.getProperty("dbHost") ?: "localhost"
         dataSource {
             driverClassName = "org.postgresql.Driver"
             username = "postgres"
@@ -53,7 +54,7 @@ switch (System.getProperty("db")) {
             development {
                 dataSource {
                     dbCreate = "create"
-                    url = "jdbc:postgresql://localhost:5432/irclog_dev"
+                    url = "jdbc:postgresql://$dbHost:5432/irclog_dev"
                 }
             }
             test {
@@ -65,7 +66,7 @@ switch (System.getProperty("db")) {
             production {
                 dataSource {
                     dbCreate = "validate"
-                    url = "jdbc:postgresql://localhost:5432/irclog"
+                    url = "jdbc:postgresql://$dbHost:5432/irclog"
                 }
             }
         }
