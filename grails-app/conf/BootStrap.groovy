@@ -17,7 +17,7 @@ class BootStrap {
         setupDefaultAdminUserIfNotExists()
         environments {
             development {
-                setupForDevelopmentEnv()
+                setupDemoData()
                 ircbot.start()
             }
             production {
@@ -51,7 +51,7 @@ class BootStrap {
         }
     }
 
-    private static setupForDevelopmentEnv() {
+    private static setupDemoData() {
         def channels = [
             createChannel(name: "#test1", isPrivate: true),
             createChannel(name: "#test2", isPrivate: false, secretKey: ""),
