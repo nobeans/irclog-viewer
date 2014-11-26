@@ -16,6 +16,11 @@ class Ircbot {
     Ircbot(boolean enabled = false) {
         // enabled flag can be specified only when constructor at once.
         this.enabled = enabled
+
+        // support to specify whether ircbot run or not via system property.
+        if (System.getProperty('ircbot.enable') != null) {
+            this.enabled = Boolean.valueOf(System.getProperty('ircbot.enable'))
+        }
     }
 
     synchronized void start() {
