@@ -102,8 +102,10 @@ grails.databinding.trimStrings = false
 grails.databinding.convertEmptyStringsToNull = false
 
 // database migration
-grails.plugin.databasemigration.updateOnStart = true
-grails.plugin.databasemigration.updateOnStartFileNames = ["changelog.groovy"]
+if (System.getProperty("db") != "h2") {
+    grails.plugin.databasemigration.updateOnStart = true
+    grails.plugin.databasemigration.updateOnStartFileNames = ["changelog.groovy"]
+}
 
 // log4j configuration
 import org.apache.log4j.rolling.RollingFileAppender

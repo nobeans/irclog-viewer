@@ -23,8 +23,8 @@ switch (System.getProperty("db")) {
             }
             production {
                 dataSource {
-                    dbCreate = "validate"
-                    url = "jdbc:h2:file:db/irclog;MVCC=TRUE;LOCK_TIMEOUT=10000;MODE=PostgreSQL"
+                    dbCreate = "create"
+                    url = "jdbc:h2:mem:irclog;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL"
                 }
             }
         }
