@@ -18,17 +18,6 @@ class DetailQuery {
     transient ChannelService channelService
     transient SpringSecurityService springSecurityService
 
-    static constraints = {
-        // beforeValidate doesn't executed for CommandObject: http://jira.grails.org/browse/GRAILS-8063
-        // This is a hack to execute beforeValidate method forcely.
-        // The property needs to be nullable:true to use for this purpose,
-        // because validator won't be executed if it's null.
-        date nullable: true, validator: { value, object ->
-            object.beforeValidate()
-            return true
-        }
-    }
-
     def beforeValidate() {
         // Resolving default values
         channel = normalizeChannelName(channel)
