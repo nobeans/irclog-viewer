@@ -1,10 +1,9 @@
 package irclog
 
 import grails.converters.JSON
-import grails.plugins.springsecurity.SpringSecurityService
+import grails.plugin.springsecurity.SpringSecurityService
 import irclog.search.DetailQuery
 import org.vertx.groovy.core.Vertx
-
 import java.security.MessageDigest
 
 class DetailController {
