@@ -1,4 +1,13 @@
+#= encoding UTF-8
+#= require jquery.js
+#= require jquery.dateFormat-1.0.js
+#= require knockout-2.2.1.js
+#= require jquery.history.js
+
 jQuery ->
+  # Trigger only for the target page
+  return if $(document.body).data('controller') != 'detail'
+
   #--------------------------------------------------
   # Model
   #--------------------------------------------------
@@ -129,7 +138,7 @@ jQuery ->
       $(".datepicker").datepicker(
         dateFormat: 'yy-mm-dd'
         showOn: "button"
-        buttonImage: "/irclog/images/calendar.png"
+        buttonImage: "/irclog/assets/calendar.png"
         buttonImageOnly: true
         showButtonPanel: true
         showOtherMonths: true

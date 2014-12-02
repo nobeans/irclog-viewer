@@ -1,3 +1,9 @@
+#= encoding UTF-8
+#= require jquery.js
+#= require underscore.js
+#= require_self
+#= require_tree views
+
 # this should be fastter than all
 console.log_ = console.log
 console.log = ->

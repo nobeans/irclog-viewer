@@ -1,4 +1,12 @@
+#= encoding UTF-8
+#= require jquery.js
+#= require js/jquery-ui-1.10.4.custom.min.js
+#= require jquery.highlight-3.js
+#= require application
+
 jQuery ->
+  # Trigger only for the target page
+  return if $(document.body).data('controller') != 'search'
 
   # Highlight of search key
   (->
@@ -34,7 +42,7 @@ jQuery ->
     $("input.datepicker").datepicker({
       dateFormat: 'yy-mm-dd',
       showOn: "button",
-      buttonImage: "/irclog/images/calendar.png",
+      buttonImage: "/irclog/assets/calendar.png",
       buttonImageOnly: true,
       showButtonPanel: true,
       showOtherMonths: true,

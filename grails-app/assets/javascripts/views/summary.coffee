@@ -1,4 +1,12 @@
+#= encoding UTF-8
+#= require jquery.js
+#= require jquery.dateFormat-1.0.js
+#= require knockout-2.2.1.js
+
 jQuery ->
+  # Trigger only for the target page
+  return if $(document.body).data('controller') != 'summary'
+
   #--------------------------------------------------
   # Model
   #--------------------------------------------------

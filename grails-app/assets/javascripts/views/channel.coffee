@@ -1,4 +1,9 @@
+#= encoding UTF-8
+#= require jquery.js
+
 jQuery ->
+  # Trigger only for the target page
+  return if $(document.body).data('controller') != 'channel'
 
   # Button to join a channel
   (->
