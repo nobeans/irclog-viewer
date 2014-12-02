@@ -39,9 +39,8 @@ grails.project.dependency.resolution = {
 
         grailsPlugins()
         grailsHome()
-        grailsCentral()
-
         mavenLocal()
+        grailsCentral()
         mavenCentral()
 
         mavenRepo "http://dl.bintray.com/nobeans/maven"
@@ -63,23 +62,25 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        runtime ":hibernate:3.6.10.1" // or ":hibernate4:4.1.11.1"
-        runtime ":jquery:1.10.2.2"
-        runtime ":jquery-ui:1.10.3"
+        // plugins for the build system only
+        build ":tomcat:7.0.55"
+
+        // plugins for the compile step
+        compile ":scaffolding:2.1.2"
+        compile ':cache:1.1.8'
+        compile ":asset-pipeline:1.9.9"
+        compile ":less-asset-pipeline:1.10.0"
+        compile ":coffee-asset-pipeline:1.8.0"
         compile ":quartz:1.0"
-        compile ":spring-security-core:1.2.7.3"
-        compile ":scaffolding:2.0.0"
-        compile ':cache:1.1.1'
-        runtime ":database-migration:1.3.5"
+        compile ":spring-security-core:2.0-RC4"
 
-        runtime ":resources:1.2"
-        compile ":lesscss-resources:1.3.3"
-        compile ":coffeescript-resources:0.3.8"
+        // plugins needed at runtime but not for compilation
+        runtime ":hibernate4:4.3.6.1" // or ":hibernate:3.6.10.18"
+        runtime ":database-migration:1.4.0"
+        runtime ":jquery:1.11.1"
+        runtime ":jquery-ui:1.10.4"
 
-        build ":tomcat:7.0.42"
-
-        if (Environment.current == Environment.DEVELOPMENT) {
-            build ":console-enhancements:1.0"
+        if (Environment.developmentMode) {
             build ":improx:0.3"
             compile "org.jggug.kobo:request-tracelog:0.4"
         }

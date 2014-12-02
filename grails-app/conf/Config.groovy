@@ -12,10 +12,11 @@ if (additionalConfUri) {
 }
 
 grails.project.groupId = 'irclog' // change this to alter the default package name and Maven publishing destination
+
 // The ACCEPT header will not be used for content negotiation for user agents containing the following strings (defaults to the 4 major rendering engines)
 grails.mime.disable.accept.header.userAgents = ['Gecko', 'WebKit', 'Presto', 'Trident']
-grails.mime.types = [
-    all:           '*/*',
+grails.mime.types = [ // the first one is the default format
+    all:           '*/*', // 'all' maps to '*' or the first available format in withFormat
     atom:          'application/atom+xml',
     css:           'text/css',
     csv:           'text/csv',
@@ -32,9 +33,6 @@ grails.mime.types = [
 
 // URL Mapping Cache Max Size, defaults to 5000
 //grails.urlmapping.cache.maxsize = 1000
-
-// What URL patterns should be processed by the resources plugin
-grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*']
 
 // Legacy setting for codec used to encode data with ${}
 grails.views.default.codec = "html"
@@ -57,11 +55,10 @@ grails {
             }
         }
         // escapes all not-encoded output at final stage of outputting
-        filteringCodecForContentType {
-            //'text/html' = 'html'
-        }
+        // filteringCodecForContentType.'text/html' = 'html'
     }
 }
+
 
 grails.converters.encoding = "UTF-8"
 // scaffolding templates configuration
@@ -82,10 +79,12 @@ grails.exceptionresolver.params.exclude = ['password']
 // configure auto-caching of queries by default (if false you can cache individual queries with 'cache: true')
 grails.hibernate.cache.queries = false
 
-// auto flush
-//grails.gorm.autoFlush = true
+// configure passing transaction's read-only attribute to Hibernate session, queries and criterias
+// set "singleSession = false" OSIV mode in hibernate configuration after enabling
+grails.hibernate.pass.readonly = false
+// configure passing read-only to OSIV session by default, requires "singleSession = false" OSIV mode
+grails.hibernate.osiv.readonly = false
 
-// set per-environment serverURL stem for creating absolute links
 environments {
     development {
         grails.logging.jul.usebridge = true
@@ -111,7 +110,7 @@ if (System.getProperty("db") != "h2") {
 import org.apache.log4j.rolling.RollingFileAppender
 import org.apache.log4j.rolling.TimeBasedRollingPolicy
 
-log4j = {
+log4j.main = {
     def createRollingFile = { name, dir, fileName, conversionPattern = '%d{yyyy-MM-dd HH:mm:ss,SSS} [%p] (%c) %m%n' ->
         def rollingPolicy = new TimeBasedRollingPolicy(fileNamePattern: "${dir}/${fileName}.%d{yyyy-MM-dd}.log")
         rollingPolicy.activateOptions()
@@ -129,28 +128,23 @@ log4j = {
                 logDir = "/var/log/${appName}"
             }
         }
-        appender createRollingFile('operation', logDir, 'operation', '%d{yyyy-MM-dd HH:mm:ss,SSS} %m%n')
         appender createRollingFile('application', logDir, 'application')
         appender createRollingFile('stacktrace', logDir, 'stacktrace')
-        console name: 'stdout', layout: pattern(conversionPattern: '%d{yyyy-MM-dd HH:mm:ss,SSS} [%p] (%c{1}) %m%n')
+        console name: 'stdout', layout: pattern(conversionPattern: '%d{yyyy-MM-dd HH:mm:ss,SSS} [%p] (%c) %m%n')
     }
 
     // default
-    error 'org.codehaus.groovy.grails.web.servlet',  //  controllers
-        'org.codehaus.groovy.grails.web.pages', //  GSP
-        'org.codehaus.groovy.grails.web.sitemesh', //  layouts
+    error  'org.codehaus.groovy.grails.web.servlet',     // controllers
+        'org.codehaus.groovy.grails.web.pages',          // GSP
+        'org.codehaus.groovy.grails.web.sitemesh',       // layouts
         'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-        'org.codehaus.groovy.grails.web.mapping', // URL mapping
-        'org.codehaus.groovy.grails.commons', // core / classloading
-        'org.codehaus.groovy.grails.plugins', // plugins
-        'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
+        'org.codehaus.groovy.grails.web.mapping',        // URL mapping
+        'org.codehaus.groovy.grails.commons',            // core / classloading
+        'org.codehaus.groovy.grails.plugins',            // plugins
+        'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
         'org.springframework',
         'org.hibernate',
-        'net.sf.ehcache.hibernate',
-        'grails.app.services.org.grails.plugin.resource',
-        'grails.app.taglib.org.grails.plugin.resource',
-        'grails.app.resourceMappers.org.grails.plugin.resource',
-        'grails.app.services.NavigationService'
+        'net.sf.ehcache.hibernate'
 
     // for SQL
     // http://yamkazu.hatenablog.com/entry/2012/10/20/133945
@@ -159,9 +153,6 @@ log4j = {
         debug 'org.hibernate.SQL'
         debug 'groovy.sql.Sql'
     }
-
-    // for resources plugin
-    //debug 'org.grails.plugin.resource'
 
     // for quartz plugin
     debug 'grails.app.jobs'
@@ -250,23 +241,23 @@ irclog {
 // SpringSecurity
 //------------------------------------------
 
-import grails.plugins.springsecurity.SecurityConfigType
+import grails.plugin.springsecurity.SecurityConfigType
 
 // user and role class properties
-grails.plugins.springsecurity.userLookup.userDomainClassName = 'irclog.Person'
-grails.plugins.springsecurity.userLookup.usernamePropertyName = 'loginName'
-grails.plugins.springsecurity.userLookup.passwordPropertyName = 'password'
-grails.plugins.springsecurity.userLookup.authoritiesPropertyName = 'roles'
-grails.plugins.springsecurity.authority.className = 'irclog.Role'
-grails.plugins.springsecurity.authority.nameField = 'name'
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'irclog.Person'
+grails.plugin.springsecurity.userLookup.usernamePropertyName = 'loginName'
+grails.plugin.springsecurity.userLookup.passwordPropertyName = 'password'
+grails.plugin.springsecurity.userLookup.authoritiesPropertyName = 'roles'
+grails.plugin.springsecurity.authority.className = 'irclog.Role'
+grails.plugin.springsecurity.authority.nameField = 'name'
 
 // passwordEncoder
-grails.plugins.springsecurity.password.algorithm = 'MD5' // FIXME deprecated...
-grails.plugins.springsecurity.password.encodeHashAsBase64 = false
+grails.plugin.springsecurity.password.algorithm = 'MD5' // FIXME deprecated...
+grails.plugin.springsecurity.password.encodeHashAsBase64 = false
 
 // use RequestMap from DomainClass
-grails.plugins.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
-grails.plugins.springsecurity.interceptUrlMap = [
+grails.plugin.springsecurity.securityConfigType = SecurityConfigType.InterceptUrlMap
+grails.plugin.springsecurity.interceptUrlMap = [
     '/channel/index/**': ['permitAll'],
     '/channel/list/**': ['permitAll'],
     '/channel/show/**': ['permitAll'],
@@ -278,6 +269,7 @@ grails.plugins.springsecurity.interceptUrlMap = [
     '/person/**': ['hasRole("ROLE_ADMIN")'],
     '/**': ['permitAll']
 ]
-grails.plugins.springsecurity.roleHierarchy = '''
+grails.plugin.springsecurity.roleHierarchy = '''
    ROLE_ADMIN > ROLE_USER
 '''
+

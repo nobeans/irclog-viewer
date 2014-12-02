@@ -34,6 +34,8 @@ class ${className}ControllerSpec extends Specification {
     void "Test the save action correctly persists an instance"() {
 
         when:"The save action is executed with an invalid instance"
+            request.contentType = FORM_CONTENT_TYPE
+            request.method = 'POST'
             def ${propertyName} = new ${className}()
             ${propertyName}.validate()
             controller.save(${propertyName})
@@ -89,10 +91,14 @@ class ${className}ControllerSpec extends Specification {
 
     void "Test the update action performs an update on a valid domain instance"() {
         when:"Update is called for a domain instance that doesn't exist"
+            request.contentType = FORM_CONTENT_TYPE
+            request.method = 'PUT'
             controller.update(null)
 
         then:"A 404 error is returned"
-            status == 404
+            response.redirectedUrl == '/${propertyName}/index'
+            flash.message != null
+
 
         when:"An invalid domain instance is passed to the update action"
             response.reset()
@@ -117,10 +123,13 @@ class ${className}ControllerSpec extends Specification {
 
     void "Test that the delete action deletes an instance if it exists"() {
         when:"The delete action is called for a null instance"
+            request.contentType = FORM_CONTENT_TYPE
+            request.method = 'DELETE'
             controller.delete(null)
 
         then:"A 404 is returned"
-            status == 404
+            response.redirectedUrl == '/${propertyName}/index'
+            flash.message != null
 
         when:"A domain instance is created"
             response.reset()
