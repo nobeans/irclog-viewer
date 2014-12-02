@@ -4,7 +4,6 @@
   <meta name="layout" content="main"/>
   <title><g:message code="channel.list" default="Channel List"/></title>
   <g:external type="css" uri="${createLink(controller: "dynamicCss", action: "nickColors")}"/>
-  <r:require module="channel"/>
 </head>
 
 <body>

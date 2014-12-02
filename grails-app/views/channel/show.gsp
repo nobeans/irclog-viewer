@@ -3,7 +3,6 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="layout" content="main"/>
   <title><g:message code="channel.show" default="Show Channel"/></title>
-  <r:require module="channel"/>
 </head>
 
 <body>

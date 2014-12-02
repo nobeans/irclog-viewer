@@ -2,7 +2,6 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="layout" content="main"/>
-  <r:require module="summary"/>
   <g:external type="css" uri="${createLink(controller: "dynamicCss", action: "nickColors")}"/>
   <title><g:message code="summary" default="Summary"/></title>
 </head>

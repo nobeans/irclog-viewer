@@ -12,14 +12,13 @@
   <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.png')}" type="image/x-icon"/>
   <link rel="apple-touch-icon" href="${resource(dir: 'images', file: 'apple-touch-icon.png')}">
   <link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
-  <r:require module="application"/>
+  <asset:stylesheet src="application.css"/>
   <g:layoutHead/>
-  <r:layoutResources/>
 </head>
 
 <g:set var="locale" value="${org.springframework.web.servlet.support.RequestContextUtils.getLocale(request)}"/>
 <g:set var="serverName" value="${request.serverName}"/>
-<body data-locale="${locale}" data-lang="${locale.language}" data-country="${locale.country}" data-server-name="${serverName}">
+<body data-locale="${locale}" data-lang="${locale.language}" data-country="${locale.country}" data-server-name="${serverName}" data-controller="${controllerName}" data-action="${actionName}">
 <div class="header">
   <h1><img class="title" src="${resource(dir: 'images', file: 'headerTitle.png')}" alt="${message(code: "application.name")}"/></h1>
 </div>
@@ -35,6 +34,7 @@
 <!--[if (gt IE 9)|!(IE)]><!-->
 
 <g:layoutBody/>
+
 <div class="footer" role="contentinfo">
   <div class="right">
     <div id="poweredBy"><g:message code="footer.poweredBy"/></div>
@@ -49,7 +49,8 @@
 </div>
 
 <div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
-<r:layoutResources/>
+
+<asset:javascript src="application.js"/>
 
 <!--<![endif]-->
 </body>
