@@ -9,7 +9,7 @@ class DateUtils {
             case ~"[0-9]{4}-[0-9]{2}-[0-9]{2}": // not strict
                 return Date.parse("yyyy-MM-dd", date)
             default:
-                throw new IllegalArgumentException("Cannot parse as 'yyyy-MM-dd HH:mm:ss' or 'yyyy-MM-dd'")
+                throw new IllegalArgumentException("Cannot parse as 'yyyy-MM-dd HH:mm:ss' or 'yyyy-MM-dd': $date")
         }
     }
 
