@@ -83,6 +83,9 @@ switch (System.getProperty("db")) {
             }
             test {
                 dataSource {
+                    driverClassName = "org.h2.Driver"
+                    username = "sa"
+                    password = ""
                     dbCreate = "create"
                     url = "jdbc:h2:mem:irclog_test;MVCC=TRUE;LOCK_TIMEOUT=10000;MODE=PostgreSQL"
                 }
