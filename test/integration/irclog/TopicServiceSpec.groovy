@@ -39,10 +39,10 @@ class TopicServiceSpec extends Specification {
         given:
         def expected = []
         expected << saveIrclog(time: "2011-01-01 12:34:56", type: "TOPIC")
-        saveIrclog(time: "2011-01-01 12:34:56", type: "PRIVMSG")
-        saveIrclog(time: "2011-01-01 12:34:56", type: "NOTICE")
+        saveIrclog(time: "2011-01-01 12:34:55", type: "PRIVMSG")
+        saveIrclog(time: "2011-01-01 12:34:54", type: "NOTICE")
         Irclog.OPTION_TYPES.each { type ->
-            saveIrclog(time: "2011-01-01 12:34:56", type: type)
+            saveIrclog(time: "2011-01-01 12:34:53", type: type)
         }
 
         when:
@@ -56,10 +56,10 @@ class TopicServiceSpec extends Specification {
         given:
         def expected = []
         saveIrclog(time: "2011-01-01 12:34:56", type: "TOPIC", channel: ch1)
-        expected << saveIrclog(time: "2011-01-01 12:34:56", type: "TOPIC", channel: ch2)
-        expected << saveIrclog(time: "2011-01-01 12:34:56", type: "TOPIC", channel: ch3)
+        expected << saveIrclog(time: "2011-01-01 12:34:55", type: "TOPIC", channel: ch2)
+        expected << saveIrclog(time: "2011-01-01 12:34:54", type: "TOPIC", channel: ch3)
         Irclog.OPTION_TYPES.each { type ->
-            saveIrclog(time: "2011-01-01 12:34:56", type: type)
+            saveIrclog(time: "2011-01-01 12:34:53", type: type)
         }
 
         when:
@@ -72,8 +72,8 @@ class TopicServiceSpec extends Specification {
     def "getHotTopicList() should return empty list when there no topic in accessible channels"() {
         given:
         saveIrclog(time: "2011-01-01 12:34:56", type: "TOPIC", channel: ch1)
-        saveIrclog(time: "2011-01-01 12:34:56", type: "TOPIC", channel: ch2)
-        saveIrclog(time: "2011-01-01 12:34:56", type: "TOPIC", channel: ch3)
+        saveIrclog(time: "2011-01-01 12:34:55", type: "TOPIC", channel: ch2)
+        saveIrclog(time: "2011-01-01 12:34:54", type: "TOPIC", channel: ch3)
 
         when:
         def topics = topicService.getHotTopicList([])

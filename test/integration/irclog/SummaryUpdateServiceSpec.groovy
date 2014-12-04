@@ -15,9 +15,6 @@ class SummaryUpdateServiceSpec extends Specification {
 
     SummaryUpdateService summaryUpdateService
 
-    @Shared
-    Channel ch1, ch2, ch3
-
     def setupSpec() {
         // To insert many Irclogs is very slow and these test cases access
         // to Channel and Irclog as read-only. So the fixture is setup at setupSpec.
@@ -40,6 +37,7 @@ class SummaryUpdateServiceSpec extends Specification {
         summaryUpdateService.updateTodaySummary()
 
         then: "ch1's today and total are updated"
+        def ch1 = Channel.findByName("#ch1")
         assertSummary(ch1.summary, createExpectedSummary(
             today: 3,
             total: ch1.summary.totalBeforeYesterday + 3,
@@ -47,16 +45,18 @@ class SummaryUpdateServiceSpec extends Specification {
         ))
 
         and: "ch2's today's summary is empty because there is no irclog of today"
+        def ch2 = Channel.findByName("#ch2")
         assertSummary(ch2.summary, createExpectedSummary(
             today: 0,
-            total: ch1.summary.totalBeforeYesterday,
+            total: ch2.summary.totalBeforeYesterday,
             latestIrclog: latestIrclogOf(ch2)
         ))
 
         and: "ch3's summary is all empty because there is no irclog"
+        def ch3 = Channel.findByName("#ch3")
         assertSummary(ch3.summary, createExpectedSummary(
             today: 0,
-            total: ch1.summary.totalBeforeYesterday,
+            total: ch3.summary.totalBeforeYesterday,
             latestIrclog: latestIrclogOf(ch3)
         ))
 
@@ -71,6 +71,7 @@ class SummaryUpdateServiceSpec extends Specification {
         summaryUpdateService.updateAllSummary()
 
         then: "ch1's summary is updated"
+        def ch1 = Channel.findByName("#ch1")
         assertSummary(ch1.summary, createExpectedSummary(
             today: 3,
             yesterday: 6,
@@ -85,6 +86,7 @@ class SummaryUpdateServiceSpec extends Specification {
         ))
 
         and: "ch2's summary is updated"
+        def ch2 = Channel.findByName("#ch2")
         assertSummary(ch2.summary, createExpectedSummary(
             today: 0,
             yesterday: 9,
@@ -99,6 +101,7 @@ class SummaryUpdateServiceSpec extends Specification {
         ))
 
         and: "ch3's summary is all empty because there is no irclog"
+        def ch3 = Channel.findByName("#ch3")
         assertSummary(ch3.summary, createExpectedSummary(
             today: 0,
             yesterday: 0,
@@ -121,7 +124,7 @@ class SummaryUpdateServiceSpec extends Specification {
     // -------------------------------------
     // Test helpers
 
-    private void assertSummary(summary, expected) { // except latestIrclog
+    private void assertSummary(summary, expected) {
         def toMap = { target -> ALL_COUNT_COLUMNS.collectEntries { key -> [key, target[key]] } }
         assert toMap(summary) == toMap(expected)
         assert summary.latestIrclog == expected.latestIrclog
@@ -129,12 +132,12 @@ class SummaryUpdateServiceSpec extends Specification {
 
     private setupChannel() {
         // summary records corresponding each channel are also created.
-        ch1 = DomainUtils.createChannel(name: "#ch1").save(failOnError: true, flush: false) // flush:false is for performance.
-        ch2 = DomainUtils.createChannel(name: "#ch2").save(failOnError: true, flush: false)
-        ch3 = DomainUtils.createChannel(name: "#ch3").save(failOnError: true, flush: false)
+        DomainUtils.createChannel(name: "#ch1").save(failOnError: true, flush: true)
+        DomainUtils.createChannel(name: "#ch2").save(failOnError: true, flush: true)
+        DomainUtils.createChannel(name: "#ch3").save(failOnError: true, flush: true)
     }
 
-    private setupIrclog() {
+    private setupIrclog(channels) {
         def saveIrclog = { ordinal, channel, dateDeltaList ->
             dateDeltaList.each { dateDelta ->
                 Irclog.ALL_TYPES.each { type ->
@@ -150,8 +153,8 @@ class SummaryUpdateServiceSpec extends Specification {
                 }
             }
         }
-        saveIrclog(1, ch1, (0..7))
-        saveIrclog(2, ch2, (1..7)) // ch2 hasn't TODAY's irclog
+        saveIrclog(1, Channel.findByName("#ch1"), (0..7))
+        saveIrclog(2, Channel.findByName("#ch2"), (1..7)) // ch2 hasn't TODAY's irclog
 
         Irclog.withSession { it.flush() }
     }
@@ -159,7 +162,7 @@ class SummaryUpdateServiceSpec extends Specification {
     private resetAllSummary() {
         // Summary was already created when Channel was created.
         // this method resets all counts to zero and latestIrclog to null.
-        [ch1, ch2, ch3].each { channel ->
+        Channel.list().each { channel ->
             def summary = channel.summary
             summary.today = DEFAULT_COUNT_FOR_TEST
             PAST_COUNT_COLUMNS.each { prop -> summary[prop] = DEFAULT_COUNT_FOR_TEST }

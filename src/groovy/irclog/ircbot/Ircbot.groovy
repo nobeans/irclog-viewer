@@ -37,7 +37,7 @@ class Ircbot {
 
         gircBotBuilder.config["channel.autoJoinTo"] = channels.collect { channel ->
             if (channel == LATEST_SAVED_CHANNELS) {
-                def latestState = IrcbotState.list(sort: 'dateCreated', order: 'desc')[0]
+                def latestState = IrcbotState.list(sort: 'dateCreated', order: 'desc', max: 1)[0]
                 return latestState?.channels
             }
             return channel

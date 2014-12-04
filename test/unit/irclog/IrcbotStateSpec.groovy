@@ -14,7 +14,8 @@ class IrcbotStateSpec extends ConstraintUnitSpec {
     @Unroll
     def "validate: #field is #error when value is '#value'"() {
         given:
-        IrcbotState ircbotState = new IrcbotState(("$field" as String): value)
+        IrcbotState ircbotState = new IrcbotState()
+        ircbotState[field] = value
 
         expect:
         validateConstraints(ircbotState, field, error)

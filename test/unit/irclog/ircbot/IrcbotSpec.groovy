@@ -8,6 +8,7 @@ import org.jggug.kobo.gircbot.builder.GircBotBuilder
 import org.jggug.kobo.gircbot.core.GircBot
 import spock.lang.Specification
 import spock.lang.Unroll
+import spock.lang.Ignore
 
 @TestMixin(GrailsUnitTestMixin)
 @Mock(IrcbotState)
@@ -192,6 +193,7 @@ class IrcbotSpec extends Specification {
         configMap['channel.autoJoinTo'] == []
     }
 
+    @Ignore("Waiting for fixing https://jira.grails.org/browse/GRAILS-11855")
     def "'channel.autoJoinTo' is resolved to latest saved channels"() {
         given:
         configMap['channel.autoJoinTo'] = [Ircbot.LATEST_SAVED_CHANNELS]

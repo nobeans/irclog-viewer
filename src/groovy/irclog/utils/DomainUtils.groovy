@@ -21,7 +21,7 @@ class DomainUtils {
             isArchived: false,
             secretKey: "1234",
         ]
-        new Channel(defaultProps + propertyMap)
+        return populateDirectly(new Channel(), defaultProps + propertyMap)
     }
 
     static Person createPerson(propertyMap = [:]) {
@@ -31,18 +31,14 @@ class DomainUtils {
             loginName: loginName,
             realName: "Mr. <${loginName}>",
             password: "123456",
-            //repassword: "123456",
+            repassword: "123456",
             enabled: true,
             nicks: "${loginName}_",
             color: "#fff",
-            //role: propertyMap.role ?: createRole(),
+            role: propertyMap.containsKey("role") ? null : createRole(),
             channels: [],
         ]
-        def person = new Person(defaultProps + propertyMap)
-        // explicitly assign to property for a curious behavior of 'bindable'
-        person.repassword = propertyMap.repassword ?: propertyMap.password ?: "123456"
-        person.role = propertyMap.role ?: createRole()
-        person
+        return populateDirectly(new Person(), defaultProps + propertyMap)
     }
 
     static Role createRole(propertyMap = [:]) {
@@ -51,7 +47,7 @@ class DomainUtils {
         def defaultProps = [
             name: name,
         ]
-        new Role(defaultProps + propertyMap)
+        return populateDirectly(new Role(), defaultProps + propertyMap)
     }
 
     static Irclog createIrclog(propertyMap = [:]) {
@@ -65,6 +61,14 @@ class DomainUtils {
             channelName: "#channel",
             channel: null,
         ]
-        new Irclog(defaultProps + propertyMap)
+        return populateDirectly(new Irclog(), defaultProps + propertyMap)
+    }
+
+    // MEMO: It's important to avoid a data-binding mechanism because there are some dedicated rules only for data-binding, e.g. bindable, trimStrings, convertEmptyStringsToNull.
+    static populateDirectly(domain, propertyMap) {
+        propertyMap.each { name, value ->
+            domain[name] = value
+        }
+        return domain
     }
 }

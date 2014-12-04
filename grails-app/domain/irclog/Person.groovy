@@ -52,7 +52,7 @@ class Person {
     }
 
     boolean isAdmin() {
-        return role.name == Role.ADMIN
+        return role?.name == Role.ADMIN
     }
 
     def beforeInsert() {

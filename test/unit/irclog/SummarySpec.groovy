@@ -31,7 +31,8 @@ class SummarySpec extends ConstraintUnitSpec {
     @Unroll
     def "validate: #field is #error when value is '#value'"() {
         given:
-        Summary summary = new Summary(("$field" as String): value)
+        Summary summary = new Summary()
+        summary[field] = value
 
         expect:
         validateConstraints(summary, field, error)
@@ -53,7 +54,8 @@ class SummarySpec extends ConstraintUnitSpec {
 
     def "validate: channel is unique in case of summary for existed channel"() {
         given:
-        Summary summary = new Summary(channel: channel)
+        Summary summary = new Summary()
+        summary.channel = channel
 
         expect:
         validateConstraints(summary, 'channel', 'unique')
