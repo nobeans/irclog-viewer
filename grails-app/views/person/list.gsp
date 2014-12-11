@@ -1,26 +1,27 @@
+<!doctype html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="layout" content="main"/>
-  <title><g:message code="person.list" default="Person List"/></title>
+  <g:set var="entityName" value="${message(code: 'person.label')}"/>
+  <title><g:message code="default.list.label" args="[entityName]"/></title>
 </head>
 
 <body>
 <div class="body">
   <irclog:flashMessage/>
-  <h1><g:message code="person.list" default="Person List"/></h1>
+  <h1><g:message code="default.list.label" args="[entityName]"/></h1>
 
   <div class="list">
     <table>
       <thead>
       <tr>
-        <g:sortableColumn property="loginName" title="Login Name" titleKey="person.loginName"/>
-        <g:sortableColumn property="realName" title="Real Name" titleKey="person.realName"/>
-        <g:sortableColumn property="nicks" title="Nicks" titleKey="person.nicks"/>
-        <g:sortableColumn property="color" title="Color" titleKey="person.color"/>
-        <g:sortableColumn property="enabled" title="Enabled" titleKey="person.enabled"/>
-        <th><g:message code="person.roles"/></th>
-        <th><g:message code="person.channels"/></th>
+        <g:sortableColumn property="loginName" title="Login Name" titleKey="person.loginName.label"/>
+        <g:sortableColumn property="realName" title="Real Name" titleKey="person.realName.label"/>
+        <g:sortableColumn property="nicks" title="Nicks" titleKey="person.nicks.label"/>
+        <g:sortableColumn property="color" title="Color" titleKey="person.color.label"/>
+        <g:sortableColumn property="enabled" title="Enabled" titleKey="person.enabled.label"/>
+        <th><g:message code="person.roles.label"/></th>
+        <th><g:message code="person.channels.label"/></th>
       </tr>
       </thead>
       <tbody>
@@ -30,10 +31,10 @@
           <td>${fieldValue(bean: person, field: 'realName')}</td>
           <td>${fieldValue(bean: person, field: 'nicks')}</td>
           <td style="color:${fieldValue(bean: person, field: 'color')}">${fieldValue(bean: person, field: 'color')}</td>
-          <td><g:message code="person.enabled.${fieldValue(bean: person, field: 'enabled')}"/></td>
+          <td><g:message code="person.enabled.label_of.${fieldValue(bean: person, field: 'enabled')}"/></td>
           <td>
             <g:each var="r" in="${person.roles}">
-              <nobr><g:message code="person.roles.${r}"/></nobr>
+              <nobr><g:message code="person.roles.label_of.${r}"/></nobr>
             </g:each>
           </td>
           <td>
@@ -56,7 +57,7 @@
   </div>
 
   <div class="buttons">
-    <span class="menuButton"><g:link class="create" action="create"><g:message code="create" default="New Person"/></g:link></span>
+    <span class="menuButton"><g:link class="create" action="create"><g:message code="default.button.create.label" default="New Person"/></g:link></span>
     <span class="menuButton"><irclog:createNavLinkIfNotCurrent controller="register" action="show"/></span>
   </div>
 </div>

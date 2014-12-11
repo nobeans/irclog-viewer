@@ -3,11 +3,11 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="layout" content="main"/>
   <g:external type="css" uri="${createLink(controller: "dynamicCss", action: "nickColors")}"/>
-  <title><g:message code="search"/></title>
+  <title><g:message code="search.label"/></title>
 </head>
 
 <body>
-<h2 class="print"><g:message code="search"/></h2>
+<h2 class="print"><g:message code="search.label"/></h2>
 
 <div class="body viewer search">
   <irclog:flashMessage/>

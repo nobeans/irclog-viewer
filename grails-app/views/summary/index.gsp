@@ -3,7 +3,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="layout" content="main"/>
   <g:external type="css" uri="${createLink(controller: "dynamicCss", action: "nickColors")}"/>
-  <title><g:message code="summary" default="Summary"/></title>
+  <title><g:message code="summary.label" default="Summary"/></title>
 </head>
 
 <body>

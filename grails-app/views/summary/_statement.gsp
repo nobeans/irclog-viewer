@@ -1,6 +1,6 @@
 <div class="summary-statement">
   <irclog:withHelp id="summary-statement-help">
-    <h1><g:message code="summary.statement"/></h1>
+    <h1><g:message code="summary.statement.label"/></h1>
   </irclog:withHelp>
   <irclog:help for="summary-statement-help">
     <g:message code="summary.statement.caption"/>
@@ -9,25 +9,25 @@
     <table>
       <thead>
       <tr>
-        <th class="searchAllLogs" title="${message(code: 'summary.searchAllLogs')}">
+        <th class="searchAllLogs" title="${message(code: 'channel.searchAllLogs.button.label')}">
           <img src="${asset.assetPath(src: 'detailTitle.png')}" alt="Search all logs"/>
         </th>
-        <th class="count">${message(code: 'summary.channel')}</th>
-        <th class="count" data-bind="attr: { title: todayLabel }">${message(code: 'summary.today')}</th>
+        <th class="count"><g:message code='summary.channel.label'/></th>
+        <th class="count" data-bind="attr: { title: todayLabel }"><g:message code='summary.today.label'/></th>
         <th class="count" data-bind="text: yesterdayLabel"></th>
         <th class="count" data-bind="text: twoDaysAgoLabel"></th>
         <th class="count" data-bind="text: threeDaysAgoLabel"></th>
         <th class="count" data-bind="text: fourDaysAgoLabel"></th>
         <th class="count" data-bind="text: fiveDaysAgoLabel"></th>
         <th class="count" data-bind="text: sixDaysAgoLabel"></th>
-        <th class="count">${message(code: 'summary.total')}</th>
-        <th class="count">${message(code: 'summary.latestIrclog')}</th>
+        <th class="count"><g:message code='summary.total.label'/></th>
+        <th class="count"><g:message code='summary.latestIrclog.label'/></th>
       </tr>
       </thead>
       <tbody data-bind="foreach: summaryList">
       <tr class="summary" data-bind="attr: { id: rowId }">
         <td class="searchAllLogs">
-          <a href="#" data-bind="attr: { href: searchAllLogsLink }">
+          <a href="#" data-bind="attr: { href: searchAllLogsLink }" title="${message(code: 'channel.searchAllLogs.button.label')}">
             <img src="${asset.assetPath(src: 'search.png')}" alt="Search all logs"/>
           </a>
         </td>

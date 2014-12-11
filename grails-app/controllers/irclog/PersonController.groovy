@@ -33,14 +33,12 @@ class PersonController {
     def delete() {
         withPerson(params.id) { person ->
             if (person == authenticatedUser) {
-                flash.message = "person.deleted.loggedInUser.error"
-                flash.args = [params.id]
+                flash.message = message(code: "person.deleted.loggedInUser.error", args: [params.id])
                 redirect(action: 'list')
                 return
             }
             person.delete()
-            flash.message = "person.deleted"
-            flash.args = [params.id]
+            flash.message = message(code: "default.deleted.message", args: [message(code: "person.label"), params.id])
             redirect(action: 'list')
         }
     }
@@ -64,7 +62,7 @@ class PersonController {
                 return
             }
 
-            flash.message = "person.updated"
+            flash.message = message(code: "default.updated.message", args: [message(code: "person.label"), person.id])
             redirect(action: 'show', id: person.id)
         }
     }
@@ -82,14 +80,14 @@ class PersonController {
             return
         }
 
-        flash.message = "person.created"
+        flash.message = message(code: "default.created.message", args: [message(code: "person.label"), person.id])
         redirect(action: 'show', id: person.id)
     }
 
     def toAdmin() {
         withPerson(params.id) { person ->
             person.toAdmin().save()
-            flash.message = "person.toAdmin.roleChanged"
+            flash.message = message(code: "person.toAdmin.roleChanged.message")
             redirect(action: 'show', id: person.id)
         }
     }
@@ -97,13 +95,12 @@ class PersonController {
     def toUser() {
         withPerson(params.id) { person ->
             if (person == authenticatedUser) {
-                flash.message = "person.toUser.loggedInUser.error"
-                flash.args = [params.id]
+                flash.message = message(code: "person.toUser.loggedInUser.error", args: [params.id])
                 redirect(action: 'show', id: person.id)
                 return
             }
             person.toUser().save()
-            flash.message = "person.toUser.roleChanged"
+            flash.message = message(code: "person.toUser.roleChanged.message")
             redirect(action: 'show', id: person.id)
         }
     }
@@ -111,8 +108,7 @@ class PersonController {
     private withPerson(personId, closure) {
         def person = Person.get(personId)
         if (!person) {
-            flash.errors = ["person.not.found"]
-            flash.args = [personId]
+            flash.errors = [message(code: "default.not.found.message", args: [message(code: "person.label"), personId])]
             redirect(action: 'list')
             return
         }

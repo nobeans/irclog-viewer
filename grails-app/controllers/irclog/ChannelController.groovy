@@ -28,8 +28,7 @@ class ChannelController {
     def delete() {
         withChannel(params.id) { channel ->
             channel.delete(flush: true)
-            flash.message = "channel.deleted"
-            flash.args = [params.id]
+            flash.message = message(code: "channel.deleted.message")
             redirect(action: 'list')
         }
     }
@@ -49,8 +48,7 @@ class ChannelController {
                     int relatedCount = channelService.relateToIrclog(channel)
                     log.info("Count of irclog records related to the updated channel: channel=${channel.name}, count=${relatedCount}")
 
-                    flash.message = "channel.updated"
-                    flash.args = [channel.id]
+                    flash.message = message(code: "default.updated.message", args: [message(code: "channel.label"), params.id])
                     redirect(action: 'show', id: channel.id)
                 } else {
                     render(view: 'edit', model: [channel: channel])
@@ -83,8 +81,7 @@ class ChannelController {
 
                 // TODO 全サマリが更新されるのは深夜のバッチの後だ、というメッセージを表示する
 
-                flash.message = "channel.created"
-                flash.args = [channel.id]
+                flash.message = message(code: "default.created.message", args: [message(code: "channel.label"), params.id])
                 redirect(action: 'show', id: channel.id)
             } else {
                 render(view: 'create', model: [channel: channel])
@@ -95,12 +92,10 @@ class ChannelController {
     def join() {
         def channel = Channel.findByNameAndSecretKey(params.channelName, params.secretKey)
         if (!channel) {
-            flash.errors = ["channel.join.error"]
-            flash.args = [params.channelName]
+            flash.errors = [message(code: "channel.join.error", args: [params.channelName])]
         } else {
             channel.addToPersons(currentUser)
-            flash.message = "channel.joined"
-            flash.args = [params.channelName]
+            flash.message = message(code: "channel.joined.message", args: [params.channelName])
         }
         redirect(action: 'list')
     }
@@ -108,7 +103,7 @@ class ChannelController {
     def part() {
         withChannel(params.id) { channel ->
             currentUser.removeFromChannels(channel)
-            flash.message = "channel.parted"
+            flash.message = message(code: "channel.parted.message")
             redirect(action: 'show', id: channel.id)
         }
     }
@@ -117,14 +112,12 @@ class ChannelController {
         withChannel(params.id) { channel ->
             def person = Person.get(params.personId)
             if (!person) {
-                flash.errors = ["person.not.found"]
-                flash.args = [personId]
+                flash.errors = [message(code: "default.not.found.message", args: [message(code: "person.label"), personId])]
                 redirect(action: 'list')
                 return
             }
             person.removeFromChannels(channel)
-            flash.message = "channel.kicked"
-            flash.args = [person.loginName]
+            flash.message = message(code: "channel.kicked.message", args: [person.loginName])
             redirect(action: 'show', id: channel.id)
         }
     }
@@ -132,8 +125,7 @@ class ChannelController {
     private withChannel(channelId, closure) {
         def channel = Channel.get(channelId)
         if (!channel || !channelService.getAccessibleChannelList(currentUser, [:]).contains(channel)) {
-            flash.errors = ["channel.not.found"]
-            flash.args = [channelId]
+            flash.errors = [message(code: "default.not.found.message", args: [message(code: "channel.label"), channelId])]
             redirect(action: 'list')
             return
         }

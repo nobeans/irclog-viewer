@@ -47,25 +47,28 @@ class IrclogTagLib {
     }
 
     def createNavLinkIfNotCurrent = { attrs ->
-        def controlName = request['org.codehaus.groovy.grails.CONTROLLER_NAME_ATTRIBUTE']
-        def actionName = request['org.codehaus.groovy.grails.ACTION_NAME_ATTRIBUTE']
-        def actualKey = controlName + (attrs.action ? '.' + actionName : '')
+        def isActive = { key ->
+            def controlName = request['org.codehaus.groovy.grails.CONTROLLER_NAME_ATTRIBUTE']
+            def actionName = request['org.codehaus.groovy.grails.ACTION_NAME_ATTRIBUTE']
+            def actualKey = controlName + (attrs.action ? '.' + actionName : '')
+            return key == actualKey
+        }
         def key = attrs.controller + (attrs.action ? '.' + attrs.action : '')
-        if (actualKey == key) {
-            out << """ <li class="menuButton active">${g.message(code: key)}</li> """
+        if (isActive(key)) {
+            out << """ <li class="menuButton active">${g.message(code: "nav.${key}.label")}</li> """
         } else {
-            out << """ <li class="menuButton">${g.link(class: key, controller: attrs.controller, action: attrs.action) { g.message(code: key) }}</li> """
+            out << """ <li class="menuButton">${g.link(class: key, controller: attrs.controller, action: attrs.action) { g.message(code: "nav.${key}.label") }}</li> """
         }
     }
 
     def flashMessage = { attrs ->
         if (flash.message) {
-            out << """<div class="message">${g.message(code: flash.message, args: flash.args, default: flash.defaultMessage)}</div>"""
+            out << """<div class="message">${flash.message}</div>"""
         }
         if (flash.errors) {
             out << """<div class="errors"><ul>"""
             out << flash.errors.collect {
-                """<li>${g.message(code: it, args: flash.args)}</li>"""
+                """<li>${it}</li>"""
             }.join("")
             out << """</ul></div>"""
         }

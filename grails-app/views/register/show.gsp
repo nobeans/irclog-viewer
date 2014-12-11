@@ -1,21 +1,22 @@
+<!doctype html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="layout" content="main"/>
-  <title>${message(code: 'register.show')}</title>
+  <g:set var="entityName" value="${message(code: 'register.label')}"/>
+  <title><g:message code="default.show.label" args="[entityName]"/></title>
 </head>
 
 <body>
 <div class="body">
   <irclog:flashMessage bean="${person}"/>
-  <h1><g:message code="register.show"/></h1>
+  <h1><g:message code="default.show.label" args="[entityName]"/></h1>
 
   <div class="dialog">
     <table>
       <tbody>
       <tr class="prop">
         <td valign='top' class='name'>
-          <g:message code="person.loginName"/>:
+          <g:message code="person.loginName.label"/>:
         </td>
         <td valign="top" class="value">
           ${person.loginName?.encodeAsHTML()}
@@ -23,7 +24,7 @@
       </tr>
       <tr class="prop">
         <td valign='top' class='name'>
-          <g:message code="person.realName"/>:
+          <g:message code="person.realName.label"/>:
         </td>
         <td valign="top" class="value">
           ${person.realName?.encodeAsHTML()}
@@ -31,7 +32,7 @@
       </tr>
       <tr class="prop">
         <td valign="top" class="name">
-          <g:message code="person.nicks"/>:
+          <g:message code="person.nicks.label"/>:
         </td>
         <td valign="top" class="value">
           ${person.nicks?.encodeAsHTML()}
@@ -39,7 +40,7 @@
       </tr>
       <tr class="prop">
         <td valign="top" class="name">
-          <g:message code="person.color"/>:
+          <g:message code="person.color.label"/>:
         </td>
         <td valign="top" class="value" style="color:${person.color?.encodeAsHTML()}">
           ${person.color?.encodeAsHTML()}
@@ -52,7 +53,7 @@
   <div class="buttons">
     <g:form action="edit">
       <input type="hidden" name="id" value="${person?.id}"/>
-      <span class="button"><input type="submit" class="edit" value="${message(code: 'edit')}"/></span>
+      <span class="button"><input type="submit" class="edit" value="${message(code: 'default.button.edit.label')}"/></span>
     </g:form>
   </div>
 </div>

@@ -10,13 +10,13 @@
   <table>
     <thead>
     <tr>
-      <th class="irclog-detail" title="${message(code: 'search.list.detail.tooltips')}">
+      <th class="irclog-detail" title="${message(code: 'search.list.detail.caption')}">
         <img src="${asset.assetPath(src: 'detailTitle.png')}" alt="Link to detail viewer"/>
       </th>
-      <th class="irclog-time" title="${message(code: 'search.list.time.tooltips')}"><g:message code="irclog.time"/></th>
-      <th class="irclog-channel" title="${message(code: 'search.list.channel.tooltips')}"><g:message code="irclog.channel"/></th>
-      <th class="irclog-nick"><g:message code="irclog.nick"/></th>
-      <th class="irclog-message"><g:message code="irclog.message"/></th>
+      <th class="irclog-time" title="${message(code: 'search.list.time.caption')}"><g:message code="irclog.time.label"/></th>
+      <th class="irclog-channel" title="${message(code: 'search.list.channel.caption')}"><g:message code="irclog.channel.label"/></th>
+      <th class="irclog-nick"><g:message code="irclog.nick.label"/></th>
+      <th class="irclog-message"><g:message code="irclog.message.label"/></th>
     </tr>
     </thead>
     <tbody>

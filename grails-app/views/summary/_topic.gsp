@@ -1,6 +1,6 @@
 <div class="summary-topic">
   <irclog:withHelp id="summary-topic-help">
-    <h1><g:message code="summary.topic"/></h1>
+    <h1><g:message code="summary.topic.label"/></h1>
   </irclog:withHelp>
   <irclog:help for="summary-topic-help">
     <g:message code="summary.topic.caption"/>
@@ -11,7 +11,7 @@
   <ul>
     <li class="summary-topic-search">
       <g:link controller="search" action="index" params="[type: 'TOPIC', period: 'all']">
-        <g:message code="summary.topic.search"/>
+        <g:message code="summary.topic.search.button.label"/>
       </g:link>
     </li>
   </ul>

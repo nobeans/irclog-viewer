@@ -40,7 +40,7 @@ class RegisterController {
             // 更新に成功した場合は、セッション上のユーザ情報を更新する。
             springSecurityService.reauthenticate(person.loginName)
 
-            flash.message = 'register.updated'
+            flash.message = message(code: "default.updated.message", args: [message(code: "register.label"), person.id])
             redirect(action: 'show', id: person.id)
         }
     }
@@ -72,15 +72,14 @@ class RegisterController {
         // 新規登録に成功した場合は、そのままログインする。
         springSecurityService.reauthenticate(person.loginName)
 
-        flash.message = "register.created"
+        flash.message = message(code: "default.created.message", args: [message(code: "register.label"), person.id])
         redirect(action: 'show')
     }
 
     private withLoginPerson(closure) {
         def person = authenticatedUser
         if (!person) {
-            flash.errors = ["register.not.found"]
-            flash.args = [personId]
+            flash.errors = [message(code: "default.not.found.message", args: [message(code: "register.label"), personId])]
             redirect(controller: 'top')
             return
         }
