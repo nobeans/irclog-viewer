@@ -10,7 +10,7 @@
       <thead>
       <tr>
         <th class="searchAllLogs" title="${message(code: 'summary.searchAllLogs')}">
-          <img src="${resource(dir: 'images', file: 'detailTitle.png')}" alt="Search all logs"/>
+          <img src="${asset.assetPath(src: 'detailTitle.png')}" alt="Search all logs"/>
         </th>
         <th class="count">${message(code: 'summary.channel')}</th>
         <th class="count" data-bind="attr: { title: todayLabel }">${message(code: 'summary.today')}</th>
@@ -28,7 +28,7 @@
       <tr class="summary" data-bind="attr: { id: rowId }">
         <td class="searchAllLogs">
           <a href="#" data-bind="attr: { href: searchAllLogsLink }">
-            <img src="${resource(dir: 'images', file: 'search.png')}" alt="Search all logs"/>
+            <img src="${asset.assetPath(src: 'search.png')}" alt="Search all logs"/>
           </a>
         </td>
         <td class="channel">

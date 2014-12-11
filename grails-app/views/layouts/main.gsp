@@ -9,9 +9,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title><g:layoutTitle default="${message(code: 'application.name')}"/></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.png')}" type="image/x-icon"/>
-  <link rel="apple-touch-icon" href="${resource(dir: 'images', file: 'apple-touch-icon.png')}">
-  <link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
+  <link rel="shortcut icon" href="${asset.assetPath(src: 'favicon.png')}" type="image/x-icon"/>
+  <link rel="apple-touch-icon" href="${asset.assetPath(src: 'apple-touch-icon.png')}">
+  <link rel="apple-touch-icon" sizes="114x114" href="${asset.assetPath(src: 'apple-touch-icon-retina.png')}">
   <asset:stylesheet src="application.css"/>
   <g:layoutHead/>
 </head>
@@ -20,7 +20,7 @@
 <g:set var="serverName" value="${request.serverName}"/>
 <body data-locale="${locale}" data-lang="${locale.language}" data-country="${locale.country}" data-server-name="${serverName}" data-controller="${controllerName}" data-action="${actionName}">
 <div class="header">
-  <h1><img class="title" src="${resource(dir: 'images', file: 'headerTitle.png')}" alt="${message(code: "application.name")}"/></h1>
+  <h1><img class="title" src="${asset.assetPath(src: 'headerTitle.png')}" alt="${message(code: "application.name")}"/></h1>
 </div>
 
 <div class="nav">

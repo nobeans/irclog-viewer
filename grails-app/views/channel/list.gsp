@@ -21,7 +21,7 @@
       <thead>
       <tr>
         <th class="searchAllLogs" title="${message(code: 'channel.searchAllLogs')}">
-          <img src="${resource(dir: 'images', file: 'detailTitle.png')}" alt="Search all logs"/>
+          <img src="${asset.assetPath(src: 'detailTitle.png')}" alt="Search all logs"/>
         </th>
         <g:sortableColumn property="name" title="Name" titleKey="channel.name"/>
         <g:sortableColumn property="description" title="Description" titleKey="channel.description"/>
@@ -35,7 +35,7 @@
         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
           <td>
             <a href="${irclog.searchAllLogsLink(channel: channel)}" title="${message(code: 'channel.searchAllLogs')}">
-              <img src="${resource(dir: 'images', file: 'search.png')}" alt="Search all logs"/>
+              <img src="${asset.assetPath(src: 'search.png')}" alt="Search all logs"/>
             </a>
           </td>
           <td><g:link action="show" id="${channel.id}">${fieldValue(bean: channel, field: 'name')}</g:link></td>

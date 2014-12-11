@@ -28,7 +28,7 @@
       <td class="" data-bind="text: nick, attr: { class: cssClassOfNick }" datai-bind="event: { click: toggleHighlight }"></td>
       <td class="irclog-message wordBreak">
         <span class="text" data-bind="html: message"></span>
-        <img class="hidden permalink" src="${resource(dir: 'images', file: 'permalink.png')}" alt="" data-bind="attr: { class: cssClassOfTools }, event: { click: toggleHighlight }"/>
+        <img class="hidden permalink" src="${asset.assetPath(src: 'permalink.png')}" alt="" data-bind="attr: { class: cssClassOfTools }, event: { click: toggleHighlight }"/>
       </td>
     </tr>
     </tbody>

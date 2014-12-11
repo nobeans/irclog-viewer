@@ -11,7 +11,7 @@
     <thead>
     <tr>
       <th class="irclog-detail" title="${message(code: 'search.list.detail.tooltips')}">
-        <img src="${resource(dir: 'images', file: 'detailTitle.png')}" alt="Link to detail viewer"/>
+        <img src="${asset.assetPath(src: 'detailTitle.png')}" alt="Link to detail viewer"/>
       </th>
       <th class="irclog-time" title="${message(code: 'search.list.time.tooltips')}"><g:message code="irclog.time"/></th>
       <th class="irclog-channel" title="${message(code: 'search.list.channel.tooltips')}"><g:message code="irclog.channel"/></th>

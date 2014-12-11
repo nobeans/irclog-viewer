@@ -16,7 +16,7 @@
     <input id="search-message" type="text" name="message" value="${command.message?.encodeAsHTML()}"/>
 
     <span class="searchItem" title="${message(code: 'search.criteria.type.tooltips')}"><g:checkBox id="search-type" name="type" value="all" checked="${command.type == 'all'}"/><label for="search-type" id="search-type-label"><g:message code="search.criteria.type.all"/></label></span>
-    <span class="searchItem" title="${message(code: 'search.criteria.clear.button.tooltips')}"><input id="search-clear" class="image" type="image" src="${resource(dir: 'images', file: 'searchClear.png')}" name="_action_clearCriteria" alt="Clear"/><label for="search-clear" id="search-clear-label"><g:message code="${message(code: 'search.criteria.clear.button')}"/></label></span>
-    <span class="searchItem" title="${message(code: 'search.criteria.button.tooltips')}"><input id="search-submit" class="image" type="image" src="${resource(dir: 'images', file: 'search.png')}" alt="Search"/><label for="search-submit" id="search-submit-label"><g:message code="search.criteria.button"/></label></span>
+    <span class="searchItem" title="${message(code: 'search.criteria.clear.button.tooltips')}"><input id="search-clear" class="image" type="image" src="${asset.assetPath(src: 'searchClear.png')}" name="_action_clearCriteria" alt="Clear"/><label for="search-clear" id="search-clear-label"><g:message code="${message(code: 'search.criteria.clear.button')}"/></label></span>
+    <span class="searchItem" title="${message(code: 'search.criteria.button.tooltips')}"><input id="search-submit" class="image" type="image" src="${asset.assetPath(src: 'search.png')}" alt="Search"/><label for="search-submit" id="search-submit-label"><g:message code="search.criteria.button"/></label></span>
   </g:form>
 </div>

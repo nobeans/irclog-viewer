@@ -7,7 +7,7 @@
     <irclog:createNavLinkIfNotCurrent controller="login"/>
   </ul>
   <ul id="login-info">
-    <li><img src="${resource(dir: 'images', file: 'guest.png')}" alt="Guest user"/><g:message code="login.info.guest"/></li>
+    <li><img src="${asset.assetPath(src: 'guest.png')}" alt="Guest user"/><g:message code="login.info.guest"/></li>
   </ul>
 </sec:ifNotLoggedIn>
 
@@ -25,6 +25,6 @@
     <irclog:createNavLinkIfNotCurrent controller="logout"/>
   </ul>
   <ul id="login-info">
-    <li><img src="${resource(dir: 'images', file: 'person.png')}" alt="Logged-in user"/><g:message code="login.info" args="${[irclog.loggedInPersonInfo(field: 'realName'), irclog.loggedInPersonInfo(field: 'loginName')]}"/></li>
+    <li><img src="${asset.assetPath(src: 'person.png')}" alt="Logged-in user"/><g:message code="login.info" args="${[irclog.loggedInPersonInfo(field: 'realName'), irclog.loggedInPersonInfo(field: 'loginName')]}"/></li>
   </ul>
 </sec:ifLoggedIn>
