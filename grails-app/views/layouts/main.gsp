@@ -37,7 +37,7 @@
 
 <div class="footer" role="contentinfo">
   <div class="right">
-    <div id="poweredBy"><g:message code="footer.poweredBy"/></div>
+    <div id="poweredBy"><g:message code="footer.poweredBy" args="${[grails.util.Holders.grailsApplication.metadata.getGrailsVersion()]}"/></div>
 
     <div id="responseTime">
       <g:if test="${request.startTime}">
