@@ -20,8 +20,6 @@ jQuery ->
   (->
     $(".help-button").click ->
       $("#" + this.id + "-caption").slideToggle(100)
-
-    $(".defaultFocus").focus()
   )()
 
   # Link with empty referer header (dereferrer)
