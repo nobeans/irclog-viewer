@@ -15,10 +15,6 @@ class DetailController {
     SpringSecurityService springSecurityService
     IrclogSearchService irclogSearchService
 
-    def redirectToLatestUrl() {
-        render view: "redirectV02"
-    }
-
     def index(DetailCommand command) {
         String token = generateOneTimeToken()
         saveTokenToVertx(token)

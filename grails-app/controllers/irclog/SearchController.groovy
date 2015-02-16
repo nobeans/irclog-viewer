@@ -13,10 +13,6 @@ class SearchController {
     SpringSecurityService springSecurityService
     SearchCriteriaStore searchCriteriaStore
 
-    def redirectToLatestUrl() {
-        redirect action: "index", params: params
-    }
-
     def index(SearchCommand command) {
         def searchResult = search(command)
         return [

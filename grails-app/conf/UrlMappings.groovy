@@ -4,16 +4,9 @@ class UrlMappings {
         "/"(controller: "top")
 
         // Mixed viewer
-        "/viewer/index?"(controller: "search", action: "redirectToLatestUrl")
         "/search"(controller: "search", action: "index")
 
         // Detail viewer
-        "/the/$channel/$date"(controller: "detail", action: "redirectToLatestUrl") {
-            constraints {
-                date(matches: /\d{8}/)
-                channel(matches: /[\w()-]+/)
-            }
-        }
         "/$date/$channel/$permaId?"(controller: "detail", action: "index") {
             constraints {
                 date(matches: /\d{8}|\d{4}-\d{2}-\d{2}/)
