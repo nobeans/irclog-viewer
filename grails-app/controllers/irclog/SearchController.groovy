@@ -4,7 +4,7 @@ import grails.plugin.springsecurity.SpringSecurityService
 import grails.util.Holders
 import grails.validation.Validateable
 import irclog.search.SearchCriteriaStore
-import org.codehaus.groovy.grails.web.binding.DataBindingUtils
+import grails.web.databinding.DataBindingUtils
 
 class SearchController {
 
