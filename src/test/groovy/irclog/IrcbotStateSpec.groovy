@@ -7,10 +7,6 @@ import spock.lang.Unroll
 @TestFor(IrcbotState)
 class IrcbotStateSpec extends ConstraintUnitSpec {
 
-    def setup() {
-        mockForConstraintsTests(IrcbotState)
-    }
-
     @Unroll
     def "validate: #field is #error when value is '#value'"() {
         given:

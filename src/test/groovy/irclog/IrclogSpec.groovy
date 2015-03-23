@@ -22,9 +22,7 @@ class IrclogSpec extends ConstraintUnitSpec {
             message: "BASE"
         ]
 
-        existedIrclog = DomainUtils.createIrclog(baseIrclogParams + [message: "EXISTED"])
-        existedIrclog.validate() // set up permaId
-        mockForConstraintsTests(Irclog, [existedIrclog])
+        DomainUtils.createIrclog(baseIrclogParams + [message: "EXISTED"]).save(failOnError: true)
 
         irclog = DomainUtils.createIrclog()
     }

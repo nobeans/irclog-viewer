@@ -9,9 +9,7 @@ import spock.lang.Unroll
 class ChannelSpec extends ConstraintUnitSpec {
 
     def setup() {
-        mockForConstraintsTests(Channel, [
-            DomainUtils.createChannel(name: "#EXISTED_CHANNEL")
-        ])
+        DomainUtils.createChannel(name: "#EXISTED_CHANNEL").save(failOnError: true)
     }
 
     def "validate: DomainUtils' default values are all valid"() {

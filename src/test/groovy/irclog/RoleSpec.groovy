@@ -9,9 +9,7 @@ import spock.lang.Unroll
 class RoleSpec extends ConstraintUnitSpec {
 
     def setup() {
-        mockForConstraintsTests(Role, [
-            DomainUtils.createRole(name: 'ROLE_EXISTED')
-        ])
+        DomainUtils.createRole(name: 'ROLE_EXISTED').save(failOnError: true)
     }
 
     def "validate: DomainUtils' default values are all valid"() {

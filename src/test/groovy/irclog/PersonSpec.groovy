@@ -9,12 +9,10 @@ import spock.lang.Unroll
 class PersonSpec extends ConstraintUnitSpec {
 
     def setup() {
-        mockForConstraintsTests(Person, [
-            DomainUtils.createPerson(
-                loginName: 'EXISTED_loginName',
-                realName: 'EXISTED_realName',
-            )
-        ])
+        DomainUtils.createPerson(
+            loginName: 'EXISTED_loginName',
+            realName: 'EXISTED_realName',
+        ).save(failOnError: true)
     }
 
     def "validate: DomainUtils' default values are all valid"() {
