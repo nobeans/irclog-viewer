@@ -22,7 +22,7 @@ class IrclogSpec extends ConstraintUnitSpec {
             message: "BASE"
         ]
 
-        DomainUtils.createIrclog(baseIrclogParams + [message: "EXISTED"]).save(failOnError: true)
+        DomainUtils.createIrclog(baseIrclogParams + [message: "EXISTED"]).save(failOnError: true, flush: true)
 
         irclog = DomainUtils.createIrclog()
     }
@@ -41,23 +41,23 @@ class IrclogSpec extends ConstraintUnitSpec {
         validateConstraints(irclog, field, error)
 
         where:
-        field         | error      | value
-        'time'        | 'nullable' | null
-        'time'        | 'valid'    | new Date()
-        'type'        | 'nullable' | null
-        'type'        | 'valid'    | 'JOIN'
-        'type'        | 'inList'   | 'UNDEFINED_TYPE'
-        'message'     | 'nullable' | null
-        'message'     | 'valid'    | ''
-        'message'     | 'valid'    | 'Hello'
-        'nick'        | 'nullable' | null
-        'nick'        | 'blank'    | ''
-        'nick'        | 'valid'    | 'MY_NICK'
-        'channelName' | 'nullable' | null
-        'channelName' | 'blank'    | ''
-        'channelName' | 'valid'    | '#CHANNEL'
-        'channel'     | 'valid'    | null
-        'channel'     | 'valid'    | DomainUtils.createChannel()
+        field         | error        | value
+        'time'        | 'nullable'   | null
+        'time'        | 'valid'      | new Date()
+        'type'        | 'nullable'   | null
+        'type'        | 'valid'      | 'JOIN'
+        'type'        | 'not.inList' | 'UNDEFINED_TYPE'
+        'message'     | 'nullable'   | null
+        'message'     | 'valid'      | ''
+        'message'     | 'valid'      | 'Hello'
+        'nick'        | 'nullable'   | null
+        'nick'        | 'blank'      | ''
+        'nick'        | 'valid'      | 'MY_NICK'
+        'channelName' | 'nullable'   | null
+        'channelName' | 'blank'      | ''
+        'channelName' | 'valid'      | '#CHANNEL'
+        'channel'     | 'valid'      | null
+        'channel'     | 'valid'      | DomainUtils.createChannel()
     }
 
     def "validate: permaId is automatically updated"() {

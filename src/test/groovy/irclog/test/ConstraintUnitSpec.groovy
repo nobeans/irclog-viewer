@@ -29,7 +29,7 @@ abstract class ConstraintUnitSpec extends Specification {
         if (error && error != 'valid') {
             assert !validated
             assert obj.errors[field]
-            assert error == obj.errors[field]
+            assert error == obj.errors[field].code
         } else {
             assert !obj.errors[field]
         }

@@ -9,7 +9,7 @@ import spock.lang.Unroll
 class RoleSpec extends ConstraintUnitSpec {
 
     def setup() {
-        DomainUtils.createRole(name: 'ROLE_EXISTED').save(failOnError: true)
+        DomainUtils.createRole(name: 'ROLE_EXISTED').save(failOnError: true, flush: true)
     }
 
     def "validate: DomainUtils' default values are all valid"() {
@@ -29,15 +29,15 @@ class RoleSpec extends ConstraintUnitSpec {
         validateConstraints(role, field, error)
 
         where:
-        field  | error      | value
-        'name' | 'valid'    | 'ROLE_USER'
-        'name' | 'valid'    | 'ROLE_ADMIN'
-        'name' | 'nullable' | null
-        'name' | 'blank'    | ''
-        'name' | 'matches'  | 'NOT_STARTING_WITH_ROLE_PREFIX'
-        'name' | 'matches'  | 'ROLE_ HAS SPACE'
-        'name' | 'unique'   | 'ROLE_EXISTED'
-        'name' | 'valid'    | 'ROLE_'.padRight(100, 'x')
-        'name' | 'maxSize'  | 'ROLE_'.padRight(101, 'x')
+        field  | error              | value
+        'name' | 'valid'            | 'ROLE_USER'
+        'name' | 'valid'            | 'ROLE_ADMIN'
+        'name' | 'nullable'         | null
+        'name' | 'blank'            | ''
+        'name' | 'matches.invalid'  | 'NOT_STARTING_WITH_ROLE_PREFIX'
+        'name' | 'matches.invalid'  | 'ROLE_ HAS SPACE'
+        'name' | 'unique'           | 'ROLE_EXISTED'
+        'name' | 'valid'            | 'ROLE_'.padRight(100, 'x')
+        'name' | 'maxSize.exceeded' | 'ROLE_'.padRight(101, 'x')
     }
 }

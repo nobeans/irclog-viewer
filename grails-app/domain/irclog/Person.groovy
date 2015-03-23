@@ -56,7 +56,9 @@ class Person {
     }
 
     def beforeInsert() {
-        encodePassword()
+        if (!password) {
+            encodePassword()
+        }
     }
 
     def beforeUpdate() {
