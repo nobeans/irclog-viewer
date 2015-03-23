@@ -56,9 +56,7 @@ class DetailController {
     }
 }
 
-
-@Validateable
-class DetailCommand {
+class DetailCommand implements Validateable {
 
     String channel
     String date

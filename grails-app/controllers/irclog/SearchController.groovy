@@ -53,8 +53,7 @@ class SearchController {
     }
 }
 
-@Validateable
-class SearchCommand {
+class SearchCommand implements Validateable {
 
     static final SELECTABLE_PERIODS = ['all', 'year', 'halfyear', 'month', 'week', 'today', 'oneday']
     private static final String DEFAULT_PERIOD = 'today'
