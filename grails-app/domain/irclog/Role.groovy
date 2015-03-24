@@ -11,10 +11,6 @@ class Role {
         name blank: false, unique: true, maxSize: 100, matches: /^ROLE_[^\s]*$/
     }
 
-    static mapping = {
-        cache true
-    }
-
     String toString() {
         name
     }

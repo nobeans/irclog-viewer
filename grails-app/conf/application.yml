@@ -69,6 +69,17 @@ grails:
                 staticparts: none
 
 ---
+
+# Disable second level cache
+#
+# > Caused by: org.hibernate.cache.NoCacheRegionFactoryAvailableException: Second-level cache is used in the application,
+# > but property hibernate.cache.region.factory_class is not given; please either disable second level cache or set correct
+# > region factory using the hibernate.cache.region.factory_class setting and make sure the second level cache provider
+# > (hibernate-infinispan, e.g.) is available on the classpath.
+#
+# http://stackoverflow.com/questions/28805261/grails-3-spring-boot-how-to-configure-hibernate-second-level-cache
+hibernate.cache.use_second_level_cache: false
+
 dataSource:
     pooled: true
     jmxExport: true
