@@ -3,6 +3,7 @@ package irclog
 import grails.test.mixin.integration.Integration
 import irclog.utils.DateUtils
 import irclog.utils.DomainUtils
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
@@ -10,7 +11,9 @@ import spock.lang.Specification
 @Transactional
 class TopicServiceSpec extends Specification {
 
-    def topicService
+    @Autowired
+    TopicService topicService
+
     def ch1, ch2, ch3
     def user1, user2, user3, userX, admin
 

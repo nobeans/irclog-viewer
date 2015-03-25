@@ -17,6 +17,7 @@ class VertxPublishLogAppenderSpec extends Specification {
     // with a transaction on VertxPublishLogAppender.
 
     VertxPublishLogAppender appender
+
     def existedChannel
 
     def setup() {
