@@ -1,8 +1,12 @@
 package irclog.helper
 
+import grails.test.mixin.integration.Integration
 import groovy.sql.Sql
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
+@Integration
+@Transactional
 class SqlHelperSpec extends Specification {
 
     def dataSource

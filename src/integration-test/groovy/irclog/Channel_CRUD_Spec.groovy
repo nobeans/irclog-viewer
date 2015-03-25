@@ -1,10 +1,14 @@
 package irclog
 
+import grails.test.mixin.integration.Integration
 import irclog.utils.DateUtils
 import irclog.utils.DomainUtils
 import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
+@Integration
+@Transactional
 class Channel_CRUD_Spec extends Specification {
 
     Channel ch1

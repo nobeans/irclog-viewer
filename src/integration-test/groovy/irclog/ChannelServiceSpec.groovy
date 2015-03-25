@@ -1,12 +1,18 @@
 package irclog
 
+import grails.test.mixin.integration.Integration
 import irclog.utils.DateUtils
 import irclog.utils.DomainUtils
-import spock.lang.Unroll
 import spock.lang.Specification
+import spock.lang.Unroll
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.transaction.annotation.Transactional
 
+@Integration
+@Transactional
 class ChannelServiceSpec extends Specification {
 
+    @Autowired
     ChannelService channelService
 
     Channel ch1, ch2, ch3

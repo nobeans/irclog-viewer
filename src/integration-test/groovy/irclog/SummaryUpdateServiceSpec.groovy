@@ -1,11 +1,18 @@
 package irclog
 
+import grails.test.mixin.integration.Integration
+import grails.test.runtime.DirtiesRuntime
+import grails.transaction.Rollback
 import irclog.utils.DateUtils
 import irclog.utils.DomainUtils
 import spock.lang.Shared
 import spock.lang.Stepwise
 import spock.lang.Specification
+import spock.lang.Shared
+import org.springframework.test.annotation.*
 
+
+@Integration
 @Stepwise
 class SummaryUpdateServiceSpec extends Specification {
 
@@ -15,22 +22,27 @@ class SummaryUpdateServiceSpec extends Specification {
 
     SummaryUpdateService summaryUpdateService
 
-    def setupSpec() {
-        // To insert many Irclogs is very slow and these test cases access
-        // to Channel and Irclog as read-only. So the fixture is setup at setupSpec.
-        setupChannel()
-        setupIrclog()
-    }
+    @Shared
+    boolean initialized = false
 
     def setup() {
+        // To insert many Irclogs is very slow and these test cases access
+        // to Channel and Irclog as read-only. So the fixture is setup at setupSpec.
+        if (!initialized) {
+            setupChannel()
+            setupIrclog()
+            initialized = true
+        }
         resetAllSummary()
     }
 
-    def cleanupSpec() {
-        // HQL cannot be used to cascade correctly.
-        Channel.list()*.delete(flush: true)
-        Irclog.executeUpdate("delete from Irclog")
-    }
+//    def cleanupSpec() {
+//        // HQL cannot be used to cascade correctly.
+//        Channel.withNewSession {
+//            Channel.list()*.delete(flush: true)
+//            Irclog.executeUpdate("delete from Irclog")
+//        }
+//    }
 
     def "updateTodaySummary() updates only today's count"() {
         when:
@@ -66,6 +78,8 @@ class SummaryUpdateServiceSpec extends Specification {
         ch3.summary.latestIrclog == null
     }
 
+    @DirtiesContext
+    @DirtiesRuntime
     def "updateAllSummary() updates all count"() {
         when:
         summaryUpdateService.updateAllSummary()

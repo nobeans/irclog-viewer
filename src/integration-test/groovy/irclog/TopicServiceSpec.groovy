@@ -1,9 +1,13 @@
 package irclog
 
+import grails.test.mixin.integration.Integration
 import irclog.utils.DateUtils
 import irclog.utils.DomainUtils
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
+@Integration
+@Transactional
 class TopicServiceSpec extends Specification {
 
     def topicService

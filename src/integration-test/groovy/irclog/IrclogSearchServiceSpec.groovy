@@ -1,10 +1,14 @@
 package irclog
 
+import grails.test.mixin.integration.Integration
 import irclog.utils.DateUtils
 import irclog.utils.DomainUtils
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Unroll
 import spock.lang.Specification
 
+@Integration
+@Transactional
 class IrclogSearchServiceSpec extends Specification {
 
     def irclogSearchService
@@ -133,9 +137,7 @@ class IrclogSearchServiceSpec extends Specification {
     @Unroll
     def "search(nick:'#nick') should return #expectedLabel"() {
         given:
-        def logs = ["john", "jojo", "mike"].collectEntries { nick ->
-            [nick, saveIrclog(nick: nick)]
-        }
+        def logs = ["john", "jojo", "mike"].collectEntries { [it, saveIrclog(nick: it)] }
 
         when:
         def actual = irclogSearchService.search(admin, createCriterion(nick: nick), [:], 'asc')
@@ -155,9 +157,7 @@ class IrclogSearchServiceSpec extends Specification {
     @Unroll
     def "search(message:'#message') should return #expectedLabel"() {
         given:
-        def logs = ["john", "jojo", "mike"].collectEntries { nick ->
-            [nick, saveIrclog(message: "Hello, ${nick}")]
-        }
+        def logs = ["john", "jojo", "mike"].collectEntries { [it, saveIrclog(message: "Hello, ${it}")] }
 
         when:
         def actual = irclogSearchService.search(admin, createCriterion(message: message), [:], 'asc')

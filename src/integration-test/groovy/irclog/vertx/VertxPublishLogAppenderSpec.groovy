@@ -1,11 +1,15 @@
 package irclog.vertx
 
+import grails.test.mixin.integration.Integration
 import irclog.Channel
 import irclog.Irclog
 import irclog.utils.DateUtils
 import irclog.utils.DomainUtils
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
+@Integration
+@Transactional
 class VertxPublishLogAppenderSpec extends Specification {
 
     // VertxPublishLogAppender works on a new transaction and it has been committed.
