@@ -1,5 +1,6 @@
 package irclog
 
+import grails.util.Holders
 import static irclog.utils.DateUtils.*
 
 class ChannelService {
@@ -10,7 +11,7 @@ class ChannelService {
 
     /** アクセス可能な全チャンネルを取得する。 */
     List<Channel> getAccessibleChannelList(Person person, Map params) {
-        if (!params.sort || !Channel.constraints.keySet().contains(params.sort)) params.sort = 'name'
+        if (!params.sort || !Holders.grailsApplication.getDomainClass(Channel.name).constrainedProperties.keySet().contains(params.sort)) params.sort = 'name'
         if (!params.order || !['asc', 'desc'].contains(params.order)) params.order = 'asc'
         if (person) {
             // 管理者ロールの場合は、全チャンネルにアクセス可能
