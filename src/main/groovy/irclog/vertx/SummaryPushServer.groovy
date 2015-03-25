@@ -6,7 +6,9 @@ import irclog.ChannelService
 import org.vertx.groovy.core.Vertx
 import org.vertx.groovy.core.http.HttpServer
 import org.vertx.groovy.core.http.WebSocket
+import groovy.util.logging.Slf4j
 
+@Slf4j
 class SummaryPushServer {
 
     private static final int SERVER_PORT = 8898

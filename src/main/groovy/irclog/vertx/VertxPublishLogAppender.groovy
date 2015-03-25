@@ -1,12 +1,14 @@
 package irclog.vertx
 
 import grails.util.Holders
+import groovy.util.logging.Slf4j
 import irclog.Channel
 import irclog.Irclog
 import irclog.utils.DateUtils
 import org.jggug.kobo.gircbot.reactors.LogAppender
 import org.vertx.groovy.core.Vertx
 
+@Slf4j
 class VertxPublishLogAppender implements LogAppender {
 
     Vertx vertx
@@ -65,7 +67,7 @@ class VertxPublishLogAppender implements LogAppender {
             log.error("Failed to insert into database", e)
 
             // For manually recovering.
-            log.error(params)
+            log.error(params.toString())
         }
     }
 
