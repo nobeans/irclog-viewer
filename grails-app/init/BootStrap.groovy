@@ -15,21 +15,21 @@ class BootStrap {
     def init = { servletContext ->
         setupRolesIfNotExists()
         setupDefaultAdminUserIfNotExists()
-        environments {
-            development {
-                setupDemoData()
-                ircbot.start()
-            }
-            production {
-                ircbot.start()
-            }
-        }
-        vertxService.start()
+//        environments {
+//            development {
+//                setupDemoData()
+//                ircbot.start()
+//            }
+//            production {
+//                ircbot.start()
+//            }
+//        }
+//        vertxService.start()
     }
 
     def destroy = {
-        ircbot.stop()
-        vertxService.stop()
+//        ircbot.stop()
+//        vertxService.stop()
     }
 
     private static void setupRolesIfNotExists() {

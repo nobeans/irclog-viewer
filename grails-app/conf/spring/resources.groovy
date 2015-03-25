@@ -10,7 +10,7 @@ import org.vertx.groovy.core.Vertx
 
 beans = {
     searchCriteriaStore(SearchCriteriaStore) { bean ->
-        bean.scope = 'session'
+//        bean.scope = 'session'
     }
 
     sqlHelper(SqlHelper) { bean ->
@@ -19,15 +19,13 @@ beans = {
     }
 
     ircbot(Ircbot) { bean ->
-        gircBotBuilder = new GircBotBuilder(config: Holders.config.irclog.ircbot.flatten())
-
-        if (Holders.config.irclog.ircbot.enable) {
-            bean.constructorArgs = [
-                Holders.config.irclog.ircbot.enable
-            ]
-        }
-
-        limitOfSavedStates = Holders.config.irclog.ircbot.limitOfSavedStates
+    //    gircBotBuilder = new GircBotBuilder(config: Holders.config.irclog.ircbot.flatten())
+    //    if (Holders.config.irclog.ircbot.enable) {
+    //        bean.constructorArgs = [
+    //            Holders.config.irclog.ircbot.enable
+    //        ]
+    //    }
+    //    limitOfSavedStates = Holders.config.irclog.ircbot.limitOfSavedStates
     }
 
     // cluster available
