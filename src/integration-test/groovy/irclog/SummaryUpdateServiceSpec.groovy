@@ -1,48 +1,30 @@
 package irclog
 
 import grails.test.mixin.integration.Integration
-import grails.test.runtime.DirtiesRuntime
 import grails.transaction.Rollback
 import irclog.utils.DateUtils
 import irclog.utils.DomainUtils
-import spock.lang.Shared
-import spock.lang.Stepwise
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
-import spock.lang.Shared
-import org.springframework.test.annotation.*
-
+import spock.lang.Stepwise
 
 @Integration
-@Stepwise
+@Transactional
 class SummaryUpdateServiceSpec extends Specification {
 
     private static final int DEFAULT_COUNT_FOR_TEST = -1
     private static final PAST_COUNT_COLUMNS = ['yesterday', 'twoDaysAgo', 'threeDaysAgo', 'fourDaysAgo', 'fiveDaysAgo', 'sixDaysAgo', 'totalBeforeYesterday']
     private static final ALL_COUNT_COLUMNS = ['today', * PAST_COUNT_COLUMNS, 'total']
 
+    @Autowired
     SummaryUpdateService summaryUpdateService
 
-    @Shared
-    boolean initialized = false
-
     def setup() {
-        // To insert many Irclogs is very slow and these test cases access
-        // to Channel and Irclog as read-only. So the fixture is setup at setupSpec.
-        if (!initialized) {
-            setupChannel()
-            setupIrclog()
-            initialized = true
-        }
+        setupChannel()
+        setupIrclog()
         resetAllSummary()
     }
-
-//    def cleanupSpec() {
-//        // HQL cannot be used to cascade correctly.
-//        Channel.withNewSession {
-//            Channel.list()*.delete(flush: true)
-//            Irclog.executeUpdate("delete from Irclog")
-//        }
-//    }
 
     def "updateTodaySummary() updates only today's count"() {
         when:
@@ -78,8 +60,6 @@ class SummaryUpdateServiceSpec extends Specification {
         ch3.summary.latestIrclog == null
     }
 
-    @DirtiesContext
-    @DirtiesRuntime
     def "updateAllSummary() updates all count"() {
         when:
         summaryUpdateService.updateAllSummary()
