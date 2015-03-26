@@ -8,6 +8,8 @@ import grails.web.databinding.DataBindingUtils
 
 class SearchController {
 
+    static scope = 'prototype'
+
     IrclogSearchService irclogSearchService
     ChannelService channelService
     SpringSecurityService springSecurityService

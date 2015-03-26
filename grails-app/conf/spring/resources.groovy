@@ -10,7 +10,7 @@ import org.vertx.groovy.core.Vertx
 
 beans = {
     searchCriteriaStore(SearchCriteriaStore) { bean ->
-//        bean.scope = 'session'
+        bean.scope = 'session'
     }
 
     sqlHelper(SqlHelper) { bean ->
