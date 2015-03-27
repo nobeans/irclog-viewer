@@ -55,6 +55,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-actuator"
     compile "org.springframework.boot:spring-boot-autoconfigure"
     compile "org.springframework.boot:spring-boot-starter-tomcat"
+    compile "org.springframework.boot:spring-boot-starter-security"
     compile "org.grails:grails-dependencies"
     compile "org.grails:grails-web-boot"
 
@@ -83,7 +84,6 @@ dependencies {
     compile 'io.vertx:lang-groovy:2.0.0-final'
 
     // Plugins
-//    compile "org.grails.plugins:spring-security-core:2.0-RC4"
 //    compile "org.grails.plugins:quartz:1.0"
 //    compile "org.grails.plugins:less-asset-pipeline:2.0.8"
 //    compile "org.grails.plugins:coffee-asset-pipeline:2.0.6"
