@@ -16,7 +16,6 @@ class Channel {
     Channel() {
         // In case of assigning in beforeInsert, summary.channel will be null somehow.
         summary = new Summary()
-        summary.channel = this
     }
 
     static hasOne = [summary: Summary]

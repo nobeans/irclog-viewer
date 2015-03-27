@@ -93,9 +93,9 @@ class TopicServiceSpec extends Specification {
     // Helper methods
 
     private setupChannel() {
-        ch1 = DomainUtils.createChannel(name: "#ch1", description: "ch1 is nice!").save(failOnError: true)
-        ch2 = DomainUtils.createChannel(name: "#ch2", description: "ch2 is nice!").save(failOnError: true)
-        ch3 = DomainUtils.createChannel(name: "#ch3", description: "ch3 is nice!").save(failOnError: true)
+        ch1 = DomainUtils.createChannel(name: "#ch1", description: "ch1 is nice!").save(failOnError: true, validate: false)
+        ch2 = DomainUtils.createChannel(name: "#ch2", description: "ch2 is nice!").save(failOnError: true, validate: false)
+        ch3 = DomainUtils.createChannel(name: "#ch3", description: "ch3 is nice!").save(failOnError: true, validate: false)
     }
 
     private setupPerson() {
@@ -105,7 +105,7 @@ class TopicServiceSpec extends Specification {
             def user = DomainUtils.createPerson(
                 loginName: "user${id}",
                 role: roleUser,
-            ).save(failOnError: true)
+            ).save(failOnError: true, validate: false)
             this."user${id}" = user
         }
     }
@@ -132,6 +132,6 @@ class TopicServiceSpec extends Specification {
             type: "PRIVMSG",
         ]
         def mergedMap = defaultMap + propMap
-        return DomainUtils.createIrclog(mergedMap).save(failOnError: true)
+        return DomainUtils.createIrclog(mergedMap).save(failOnError: true, validate: false)
     }
 }

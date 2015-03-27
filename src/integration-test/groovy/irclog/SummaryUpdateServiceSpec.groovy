@@ -124,9 +124,9 @@ class SummaryUpdateServiceSpec extends Specification {
 
     private setupChannel() {
         // summary records corresponding each channel are also created.
-        DomainUtils.createChannel(name: "#ch1").save(failOnError: true, flush: true)
-        DomainUtils.createChannel(name: "#ch2").save(failOnError: true, flush: true)
-        DomainUtils.createChannel(name: "#ch3").save(failOnError: true, flush: true)
+        DomainUtils.createChannel(name: "#ch1").save(failOnError: true, flush: true, validate: false)
+        DomainUtils.createChannel(name: "#ch2").save(failOnError: true, flush: true, validate: false)
+        DomainUtils.createChannel(name: "#ch3").save(failOnError: true, flush: true, validate: false)
     }
 
     private setupIrclog(channels) {
@@ -140,7 +140,7 @@ class SummaryUpdateServiceSpec extends Specification {
                             channel: channel,
                             type: type,
                             time: time
-                        ).save(failOnError: true, flush: false)
+                        ).save(failOnError: true, flush: false, validate: false)
                     }
                 }
             }

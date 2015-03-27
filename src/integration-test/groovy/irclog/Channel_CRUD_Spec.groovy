@@ -13,10 +13,12 @@ class Channel_CRUD_Spec extends Specification {
 
     Channel ch1
     Person user1, user2, user3
+    Irclog irclog1, irclog2, irclog3
 
     def setup() {
         ch1 = new Channel(name: "#ch1")
         setupPerson()
+        setupIrclog()
     }
 
     def "When channel is created, Summary is created and saved automatically."() {
@@ -58,7 +60,7 @@ class Channel_CRUD_Spec extends Specification {
     def "When channel is deleted, all associations are also deleted automatically."() {
         given:
         ch1.addToPersons(user1).addToPersons(user2)
-        3.times { ch1.addToIrclogs(createIrclog(ch1, "2010-01-01 00:00:0${it}", "PRIVMSG")) }
+        Irclog.list().each { ch1.addToIrclogs(it) }
         ch1.summary.latestIrclog = ch1.irclogs.find()
         ch1.save(flush: true)
 
@@ -83,7 +85,7 @@ class Channel_CRUD_Spec extends Specification {
     def "When channel is deleted by HQL, cascading doesn't work well."() {
         given:
         ch1.addToPersons(user1).addToPersons(user2)
-        3.times { ch1.addToIrclogs(createIrclog(ch1, "2010-01-01 00:00:0${it}", "PRIVMSG")) }
+        Irclog.list().each { ch1.addToIrclogs(it) }
         ch1.summary.latestIrclog = ch1.irclogs.find()
         ch1.save(flush: true)
 
@@ -103,26 +105,24 @@ class Channel_CRUD_Spec extends Specification {
     //----------------------------------------------------
     // Helper methods
 
-    private createIrclog(ch, dateTime, type, chName = "DEFAULT") {
-        Date time = DateUtils.toDate(dateTime)
-        def channelName = (chName == "DEFAULT") ? ch.name : chName
-        DomainUtils.createIrclog(
-            permaId: "log:${ch?.name}:${channelName}:${time.format("yyyy-MM-dd_HH:mm:ss")}",
-            channelName: channelName,
-            time: time,
-            channel: ch,
-            type: type,
-        ).save(failOnError: true)
+    private setupIrclog() {
+        [1, 2, 3].each { id ->
+            this."irclog${id}" = DomainUtils.createIrclog(
+                permaId: "permaId:${id}",
+                channelName: "DEFAULT",
+                time: DateUtils.toDate("2010-01-01 00:00:0${id}"),
+                type: "PRIVMSG",
+            ).save(failOnError: true, validate: false)
+        }
     }
 
     private setupPerson() {
         def roleUser = Role.findByName("ROLE_USER")
-        ["1", "2", "3"].each { id ->
-            def user = DomainUtils.createPerson(
+        [1, 2, 3].each { id ->
+            this."user${id}" = DomainUtils.createPerson(
                 loginName: "user${id}",
                 role: roleUser,
-            ).save(failOnError: true)
-            this."user${id}" = user
+            ).save(failOnError: true, validate: false)
         }
     }
 }

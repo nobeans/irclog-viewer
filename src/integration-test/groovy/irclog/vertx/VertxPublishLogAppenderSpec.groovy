@@ -28,7 +28,7 @@ class VertxPublishLogAppenderSpec extends Specification {
 
     private void setupChannel() {
         Channel.withNewTransaction {
-            existedChannel = DomainUtils.createChannel(name: "#existed").save(failOnError: true)
+            existedChannel = DomainUtils.createChannel(name: "#existed").save(failOnError: true, validate: false)
         }
     }
 

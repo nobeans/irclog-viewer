@@ -233,7 +233,7 @@ class IrclogSearchServiceSpec extends Specification {
 
     private setupChannel() {
         (1..3).each { num ->
-            this."ch${num}" = DomainUtils.createChannel(name: "#ch${num}", description: "${10 - num}").save(failOnError: true)
+            this."ch${num}" = DomainUtils.createChannel(name: "#ch${num}", description: "${10 - num}").save(failOnError: true, validate: false)
         }
     }
 
@@ -244,7 +244,7 @@ class IrclogSearchServiceSpec extends Specification {
             def user = DomainUtils.createPerson(
                 loginName: "user${id}",
                 role: roleUser,
-            ).save(failOnError: true)
+            ).save(failOnError: true, validate: false)
             this."user${id}" = user
         }
     }
@@ -280,7 +280,7 @@ class IrclogSearchServiceSpec extends Specification {
         def mergedMap = defaultMap + propMap
         def permaId = mergedMap.toString() // to avoid stack overflow
         mergedMap.permaId = permaId
-        return DomainUtils.createIrclog(mergedMap).save(failOnError: true)
+        return DomainUtils.createIrclog(mergedMap).save(failOnError: true, validate: false)
     }
 
     private createCriterion(map = [:]) {

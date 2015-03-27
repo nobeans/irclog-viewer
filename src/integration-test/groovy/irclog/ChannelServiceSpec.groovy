@@ -65,10 +65,10 @@ class ChannelServiceSpec extends Specification {
 
     def "getBeforeDate() should return a previous date of the specified one"() {
         given:
-        createIrclog(ch2, "2010-10-01 12:34:56", "PRIVMSG")
-        createIrclog(ch2, "2010-10-03 23:59:59", "NOTICE")
-        createIrclog(ch2, "2010-10-05 12:34:56", "OTHER")
-        createIrclog(ch2, "2010-10-07 01:23:45", "PRIVMSG")
+        saveIrclog(ch2, "2010-10-01 12:34:56", "PRIVMSG")
+        saveIrclog(ch2, "2010-10-03 23:59:59", "NOTICE")
+        saveIrclog(ch2, "2010-10-05 12:34:56", "OTHER")
+        saveIrclog(ch2, "2010-10-07 01:23:45", "PRIVMSG")
 
         expect:
         channelService.getBeforeDate("2010-10-06", ch2) == DateUtils.toDate("2010-10-03 00:00:00")
@@ -81,10 +81,10 @@ class ChannelServiceSpec extends Specification {
 
     def "getAfterDate() should return a previous date of the specified one"() {
         given:
-        createIrclog(ch2, "2010-10-01 12:34:56", "PRIVMSG")
-        createIrclog(ch2, "2010-10-03 23:59:59", "OTHER")
-        createIrclog(ch2, "2010-10-05 12:34:56", "NOTICE")
-        createIrclog(ch2, "2010-10-07 01:23:45", "PRIVMSG")
+        saveIrclog(ch2, "2010-10-01 12:34:56", "PRIVMSG")
+        saveIrclog(ch2, "2010-10-03 23:59:59", "OTHER")
+        saveIrclog(ch2, "2010-10-05 12:34:56", "NOTICE")
+        saveIrclog(ch2, "2010-10-07 01:23:45", "PRIVMSG")
 
         expect:
         channelService.getAfterDate("2010-10-02", ch2) == DateUtils.toDate("2010-10-05 00:00:00")
@@ -97,10 +97,10 @@ class ChannelServiceSpec extends Specification {
 
     def "getLatestDate() should return a previous date of the specified one"() {
         given:
-        createIrclog(ch2, "2010-10-01 12:34:56", "PRIVMSG")
-        createIrclog(ch2, "2010-10-03 23:59:59", "OTHER")
-        createIrclog(ch2, "2010-10-05 12:34:56", "NOTICE")
-        createIrclog(ch2, "2010-10-07 01:23:45", "OTHER")
+        saveIrclog(ch2, "2010-10-01 12:34:56", "PRIVMSG")
+        saveIrclog(ch2, "2010-10-03 23:59:59", "OTHER")
+        saveIrclog(ch2, "2010-10-05 12:34:56", "NOTICE")
+        saveIrclog(ch2, "2010-10-07 01:23:45", "OTHER")
 
         expect:
         channelService.getLatestDate("2010-10-02", ch2) == DateUtils.toDate("2010-10-05 00:00:00")
@@ -113,10 +113,10 @@ class ChannelServiceSpec extends Specification {
 
     def "getRelatedDates() should return all results of before, after and latest"() {
         given:
-        createIrclog(ch2, "2010-10-01 12:34:56", "PRIVMSG")
-        createIrclog(ch2, "2010-10-03 23:59:59", "OTHER")
-        createIrclog(ch2, "2010-10-05 12:34:56", "NOTICE")
-        createIrclog(ch2, "2010-10-07 01:23:45", "TOPIC")
+        saveIrclog(ch2, "2010-10-01 12:34:56", "PRIVMSG")
+        saveIrclog(ch2, "2010-10-03 23:59:59", "OTHER")
+        saveIrclog(ch2, "2010-10-05 12:34:56", "NOTICE")
+        saveIrclog(ch2, "2010-10-07 01:23:45", "TOPIC")
 
         when:
         def result = channelService.getRelatedDates("2010-10-04", ch2)
@@ -132,7 +132,7 @@ class ChannelServiceSpec extends Specification {
     //----------------------------------------------------
     // Helper methods
 
-    private createIrclog(ch, dateTime, type, chName = "DEFAULT") {
+    private saveIrclog(ch, dateTime, type, chName = "DEFAULT") {
         Date time = DateUtils.toDate(dateTime)
         def channelName = (chName == "DEFAULT") ? ch.name : chName
         DomainUtils.createIrclog(
@@ -141,12 +141,12 @@ class ChannelServiceSpec extends Specification {
             time: time,
             channel: ch,
             type: type,
-        ).save(failOnError: true)
+        ).save(failOnError: true, validate: false)
     }
 
     private setupChannel() {
         (1..3).each { num ->
-            this."ch${num}" = DomainUtils.createChannel(name: "#ch${num}", description: "${10 - num}").save(failOnError: true)
+            this."ch${num}" = DomainUtils.createChannel(name: "#ch${num}", description: "${10 - num}").save(failOnError: true, validate: false)
         }
     }
 
@@ -157,7 +157,7 @@ class ChannelServiceSpec extends Specification {
             def user = DomainUtils.createPerson(
                 loginName: "user${id}",
                 role: roleUser,
-            ).save(failOnError: true)
+            ).save(failOnError: true, validate: false)
             this."user${id}" = user
         }
     }
@@ -172,8 +172,8 @@ class ChannelServiceSpec extends Specification {
     private setupIrclog() {
         [ch1, ch2, ch3].each { ch ->
             2.times { id ->
-                createIrclog(null, "2010-01-01 00:00:0${id}", "PRIVMSG", ch.name)
-                createIrclog(ch, "2010-01-01 00:00:0${id}", "PRIVMSG", ch.name)
+                saveIrclog(null, "2010-01-01 00:00:0${id}", "PRIVMSG", ch.name)
+                saveIrclog(ch, "2010-01-01 00:00:0${id}", "PRIVMSG", ch.name)
             }
         }
     }
@@ -181,7 +181,7 @@ class ChannelServiceSpec extends Specification {
     private setupSummary() {
         [ch1, ch2, ch3].each { ch ->
             ch.summary.latestIrclog = Irclog.findByChannel(ch)
-            ch.summary.save(failOnError: true)
+            ch.summary.save(failOnError: true, validate: false)
         }
     }
 }

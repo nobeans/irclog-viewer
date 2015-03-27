@@ -12,7 +12,7 @@ class Irclog {
     String type
     String message
     String nick
-    String permaId // permanent ID for perma-link
+    String permaId = "initial-dummy-value" // permanent ID for perma-link (must be set by derivered value before saving to DB)
     String channelName // just store channel name imported from log
 
     Channel channel // no cascading to channel
@@ -37,7 +37,11 @@ class Irclog {
         "[${time.format('yyyy-MM-dd HH:mm:ss:SSS')}] ${type} #${permaId} ${channelName}(${channel?.id}) <${nick}> ${message}"
     }
 
-    def beforeValidate() {
+    def beforeInsert() {
+        updatePermaId()
+    }
+
+    def beforeUpdate() {
         updatePermaId()
     }
 
