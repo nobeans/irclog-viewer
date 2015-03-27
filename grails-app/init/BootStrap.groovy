@@ -15,16 +15,16 @@ class BootStrap {
     def init = { servletContext ->
         setupRolesIfNotExists()
         setupDefaultAdminUserIfNotExists()
-//        environments {
-//            development {
-//                setupDemoData()
+        environments {
+            development {
+                setupDemoData()
 //                ircbot.start()
-//            }
-//            production {
+            }
+            production {
 //                ircbot.start()
-//            }
-//        }
-//        vertxService.start()
+            }
+        }
+        vertxService.start()
     }
 
     def destroy = {
@@ -58,7 +58,7 @@ class BootStrap {
             createChannel(name: "#test2", isPrivate: false, secretKey: ""),
             createChannel(name: "#test3", isPrivate: true),
             createChannel(name: "#test4", isPrivate: false, secretKey: ""),
-        ].collect { it.save(failOnError: true, flush: false) }
+        ].collect { it.save(failOnError: true, flush: false, validate: false) }
 
         3.times { id ->
             def user = createPerson(
@@ -70,7 +70,7 @@ class BootStrap {
                 nicks: "user0${id}_test",
                 color: "#0f${id * 3}",
                 role: Role.findByName(Role.USER)
-            ).save(failOnError: true, flush: true)
+            ).save(failOnError: true, flush: true, validate: false)
             channels.each { channel ->
                 channel.addToPersons(user)
             }
@@ -89,7 +89,7 @@ class BootStrap {
                             channel: channel,
                             type: type,
                             time: time
-                        ).save(failOnError: true, flush: false)
+                        ).save(failOnError: true, flush: false, validate: false)
                     }
                 }
             }

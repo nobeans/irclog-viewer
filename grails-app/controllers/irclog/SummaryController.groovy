@@ -1,7 +1,6 @@
 package irclog
 
 import grails.converters.JSON
-import grails.plugin.springsecurity.SpringSecurityService
 import org.vertx.groovy.core.Vertx
 
 import java.security.MessageDigest

@@ -7,8 +7,8 @@ class ChannelController {
 
     static allowedMethods = [delete: 'POST', save: 'POST', update: 'POST', join: 'POST']
 
-    def channelService
-    def springSecurityService
+    ChannelService channelService
+    SpringSecurityService springSecurityService
 
     def index() { redirect(action: 'list', params: params) }
 

@@ -40,15 +40,15 @@
           <ul>
             <g:each var="p" in="${channel.persons.sort { it.loginName }}">
               <li title="${p.realName.encodeAsHTML()}">
-                <sec:ifAnyGranted roles="ROLE_ADMIN">
+                <sec:authorize access="hasRole('ADMIN')">
                   <g:link controller="person" action="show" id="${p.id}">${p.loginName.encodeAsHTML()}</g:link>
                   &gt;&gt; <g:link controller="channel" action="kick" id="${channel.id}" params="[personId: p.id]" onclick="return confirm('${message(code: 'channel.kick.confirm.message')}');">
                   <g:message code="channel.kick.label"/>
                 </g:link>
-                </sec:ifAnyGranted>
-                <sec:ifNotGranted roles="ROLE_ADMIN">
+                </sec:authorize>
+                <sec:authorize access="!hasRole('ADMIN')">
                   ${p.loginName.encodeAsHTML()}
-                </sec:ifNotGranted>
+                </sec:authorize>
               </li>
             </g:each>
           </ul>
@@ -65,13 +65,13 @@
     <g:form>
       <input type="hidden" name="id" value="${channel?.id}"/>
       <span class="button"><input type="button" class="search" onclick="document.location = '${irclog.searchAllLogsLink(channel:channel)}'" value="${message(code: 'channel.searchAllLogs.button.label')}"/></span>
-      <sec:ifLoggedIn>
+      <sec:authorize access="isAuthenticated()">
         <span class="button"><g:actionSubmit class="edit" action="edit" value="${message(code: 'default.button.edit.label')}"/></span>
         <span class="button"><g:actionSubmit class="delete" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', 'default': 'Are you sure?')}');" action="Delete" value="${message(code: 'default.button.delete.label', 'default': 'Delete')}"/></span>
         <% if (channel.persons.find { it.loginName == loginUserName } != null) { %>
         <span class="button"><g:actionSubmit class="part" action="part" value="${message(code: 'channel.part.label')}" onclick="return confirm('${message(code: 'channel.part.confirm.message')}');"/></span>
         <% } %>
-      </sec:ifLoggedIn>
+      </sec:authorize>
     </g:form>
   </div>
 </div>

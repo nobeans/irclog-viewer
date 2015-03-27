@@ -5,7 +5,7 @@ package irclog
  */
 class RegisterController {
 
-    def springSecurityService
+    SpringSecurityService springSecurityService
 
     static allowedMethods = [save: 'POST', update: 'POST']
 

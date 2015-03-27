@@ -14,8 +14,8 @@
     <h1><g:message code="default.list.label" args="[entityName]"/></h1>
   </irclog:withHelp>
   <irclog:help for="channel-list-help">
-    <sec:ifLoggedIn><g:message code="channel.list.caption.isLoggedIn"/></sec:ifLoggedIn>
-    <sec:ifNotLoggedIn><g:message code="channel.list.caption.isNotLoggedIn"/></sec:ifNotLoggedIn>
+    <sec:authorize access="isAuthenticated()"><g:message code="channel.list.caption.isLoggedIn"/></sec:authorize>
+    <sec:authorize access="isAnonymous()"><g:message code="channel.list.caption.isNotLoggedIn"/></sec:authorize>
   </irclog:help>
   <div class="list">
     <table>
@@ -46,12 +46,12 @@
           <td>
             <% channel.persons.sort { it.loginName }.each { person -> %>
             <span class="${person.loginName}" title="${person.realName.encodeAsHTML()}">
-              <sec:ifAnyGranted roles="ROLE_ADMIN">
+              <sec:authorize access="hasRole('ADMIN')">
                 <g:link controller="person" action="show" id="${person.id}">${person.loginName.encodeAsHTML()}</g:link>
-              </sec:ifAnyGranted>
-              <sec:ifNotGranted roles="ROLE_ADMIN">
+              </sec:authorize>
+              <sec:authorize access="!hasRole('ADMIN')">
                 ${person.loginName.encodeAsHTML()}
-              </sec:ifNotGranted>
+              </sec:authorize>
             </span>
             <% } %>
           </td>
@@ -60,7 +60,7 @@
       </tbody>
     </table>
   </div>
-  <sec:ifLoggedIn>
+  <sec:authorize access="isAuthenticated()">
     <div class="buttons">
       <span class="menuButton"><g:link class="create" action="create"><g:message code="default.button.create.label"/></g:link></span>
       <span class="menuButton" id="join"><a id="toggleJoinToSecretChannel" class="hidden" href="javascript:void(0);"><g:message code="channel.join.button.label"/></a></span>
@@ -75,7 +75,7 @@
         <span class="button"><input type="submit" value="${message(code: "channel.join.submit.button.label")}"/></span>
       </g:form>
     </div>
-  </sec:ifLoggedIn>
+  </sec:authorize>
 </div>
 </body>
 </html>

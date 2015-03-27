@@ -1,6 +1,5 @@
 package irclog
 
-import grails.plugin.springsecurity.SpringSecurityService
 import grails.util.Holders
 import grails.validation.Validateable
 import irclog.search.SearchCriteriaStore

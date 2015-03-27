@@ -1,13 +1,13 @@
 package irclog
 
+import grails.util.Holders
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import org.springframework.security.crypto.password.PasswordEncoder
 
 @ToString
 @EqualsAndHashCode(includes = "id")
 class Person {
-
-    def springSecurityService
 
     Long id // defined explicitly for EqualsAndHashCode
     String loginName
@@ -56,9 +56,7 @@ class Person {
     }
 
     def beforeInsert() {
-        if (!password) {
-            encodePassword()
-        }
+        encodePassword()
     }
 
     def beforeUpdate() {
@@ -72,7 +70,7 @@ class Person {
     }
 
     private void encodePassword() {
-        password = springSecurityService.encodePassword(password)
+        password = Holders.applicationContext.getBean(PasswordEncoder).encode(password)
         repassword = password
     }
 

@@ -4,7 +4,7 @@ class IrclogTagLib {
 
     static namespace = 'irclog'
 
-    def springSecurityService
+    SpringSecurityService springSecurityService
 
     def detailLink = { attrs, body ->
         if (!attrs.channelName || !attrs.time) return
@@ -97,7 +97,12 @@ class IrclogTagLib {
         out << """<div class="help-caption" id="${attrs.for}-caption" ${(attrs.visible == 'true') ? '' : 'style="display:none"'}>${body()}</div>"""
     }
 
-    def loggedInPersonInfo = { attrs ->
-        out << springSecurityService.currentUser[attrs.field]
+    def loginUserInfo = { attrs ->
+        def user = springSecurityService.currentUser
+        if (user instanceof Person) {
+            out << g.message(code: "nav.login.info", args: [user.realName, user.loginName])
+        } else {
+            out << g.message(code: 'nav.login.info.guest')
+        }
     }
 }

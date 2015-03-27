@@ -67,6 +67,8 @@ grails:
                 scriptlets: html
                 taglib: none
                 staticparts: none
+    gsp:
+        tldScanPattern: classpath*:/META-INF/*.tld,/WEB-INF/tld/*.tld
 
 ---
 # Disable second level cache

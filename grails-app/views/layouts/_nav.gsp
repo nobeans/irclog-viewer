@@ -1,4 +1,4 @@
-<sec:ifNotLoggedIn>
+<sec:authorize access="isAnonymous()">
   <ul>
     <irclog:createNavLinkIfNotCurrent controller="summary"/>
     <irclog:createNavLinkIfNotCurrent controller="search"/>
@@ -7,24 +7,24 @@
     <irclog:createNavLinkIfNotCurrent controller="login"/>
   </ul>
   <ul id="login-info">
-    <li><img src="${asset.assetPath(src: 'guest.png')}" alt="Guest user"/><g:message code="nav.login.info.guest"/></li>
+    <li><img src="${asset.assetPath(src: 'guest.png')}" alt="user-icon"/><irclog:loginUserInfo/></li>
   </ul>
-</sec:ifNotLoggedIn>
+</sec:authorize>
 
-<sec:ifLoggedIn>
+<sec:authorize access="!isAnonymous()">
   <ul>
     <irclog:createNavLinkIfNotCurrent controller="summary"/>
     <irclog:createNavLinkIfNotCurrent controller="search"/>
     <irclog:createNavLinkIfNotCurrent controller="channel" action="list"/>
-    <sec:ifAnyGranted roles="ROLE_ADMIN">
+    <sec:authorize access="hasRole('ADMIN')">
       <irclog:createNavLinkIfNotCurrent controller="person" action="list"/>
-    </sec:ifAnyGranted>
-    <sec:ifNotGranted roles="ROLE_ADMIN">
+    </sec:authorize>
+    <sec:authorize access="!hasRole('ADMIN')">
       <irclog:createNavLinkIfNotCurrent controller="register" action="show"/>
-    </sec:ifNotGranted>
+    </sec:authorize>
     <irclog:createNavLinkIfNotCurrent controller="logout"/>
   </ul>
   <ul id="login-info">
-    <li><img src="${asset.assetPath(src: 'person.png')}" alt="Logged-in user"/><g:message code="nav.login.info" args="${[irclog.loggedInPersonInfo(field: 'realName'), irclog.loggedInPersonInfo(field: 'loginName')]}"/></li>
+    <li><img src="${asset.assetPath(src: 'person.png')}" alt="user-icon"/><irclog:loginUserInfo/></li>
   </ul>
-</sec:ifLoggedIn>
+</sec:authorize>

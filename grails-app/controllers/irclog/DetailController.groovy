@@ -1,10 +1,9 @@
 package irclog
 
 import grails.converters.JSON
-import grails.plugin.springsecurity.SpringSecurityService
 import grails.validation.Validateable
-import org.vertx.groovy.core.Vertx
 import java.security.MessageDigest
+import org.vertx.groovy.core.Vertx
 
 class DetailController {
 

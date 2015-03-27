@@ -45,14 +45,8 @@ irclog {
     }
 }
 
-println ">"*50
-System.properties.sort { it.key }.each { key, value ->
-    println "$key = $value"
-}
-// couldn't apply system properties via command arguments as "-Ddb=h2"
+// FIXME: couldn't apply system properties via command arguments as "-Ddb=h2"
 System.setProperty("db", "h2")
-println "<"*50
-
 
 //
 // DataSource
