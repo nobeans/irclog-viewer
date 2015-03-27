@@ -1,13 +1,11 @@
 package irclog
 
 import grails.test.mixin.integration.Integration
-import grails.transaction.Rollback
 import irclog.utils.DateUtils
 import irclog.utils.DomainUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
-import spock.lang.Stepwise
 
 @Integration
 @Transactional
