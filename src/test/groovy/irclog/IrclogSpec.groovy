@@ -10,20 +10,7 @@ class IrclogSpec extends ConstraintUnitSpec {
 
     Irclog irclog
 
-    def baseIrclogParams
-    def existedIrclog
-
     def setup() {
-        baseIrclogParams = [
-            time: new Date(0),
-            channelName: "#test",
-            nick: "IrclogSpec",
-            type: "PRIVMSG",
-            message: "BASE"
-        ]
-
-        DomainUtils.createIrclog(baseIrclogParams + [message: "EXISTED"]).save(failOnError: true, flush: true)
-
         irclog = DomainUtils.createIrclog()
     }
 
@@ -74,7 +61,7 @@ class IrclogSpec extends ConstraintUnitSpec {
         assert irclog.permaId == null
 
         expect:
-        irclog.validate()
+        irclog.save(flush: true)
 
         and:
         irclog.permaId == permaId
@@ -91,12 +78,22 @@ class IrclogSpec extends ConstraintUnitSpec {
 
     def "validate: permaId is unique"() {
         given:
-        irclog = DomainUtils.createIrclog(baseIrclogParams + [message: "EXISTED"])
+        def baseProps = [
+            time: new Date(0),
+            channelName: "#test",
+            nick: "IrclogSpec",
+            type: "PRIVMSG",
+            message: "EXISTED"
+        ]
+        DomainUtils.createIrclog(baseProps).save(failOnError: true, flush: true)
 
         and:
-        assert irclog.permaId == null
+        def irclog = DomainUtils.createIrclog(baseProps)
 
-        expect:
-        irclog.validate() == false
+        when:
+        irclog.save(flush: true)
+
+        then:
+        irclog.errors['permaId']?.code == "unique"
     }
 }
