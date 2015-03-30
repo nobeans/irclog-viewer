@@ -132,6 +132,6 @@ class TopicServiceSpec extends Specification {
             type: "PRIVMSG",
         ]
         def mergedMap = defaultMap + propMap
-        return DomainUtils.createIrclog(mergedMap).save(failOnError: true, validate: false)
+        return DomainUtils.createIrclog(mergedMap).save(failOnError: true) // To derive permaId of Irclog requires beforeValidate.
     }
 }

@@ -135,12 +135,17 @@ class SummaryUpdateServiceSpec extends Specification {
                 Irclog.ALL_TYPES.each { type ->
                     (ordinal + dateDelta).times {
                         def time = DateUtils.today.clearTime() - dateDelta
-                        DomainUtils.createIrclog(
+                        def irclog = DomainUtils.createIrclog(
                             channelName: channel.name,
                             channel: channel,
                             type: type,
                             time: time
-                        ).save(failOnError: true, flush: false, validate: false)
+                        )
+                        // To derive permaId of Irclog requires beforeValidate.
+                        // But real validation causes extra query each before calling save method and it's very slow.
+                        // So here, beforeValidate is called directly and save with validate:false.
+                        irclog.beforeValidate()
+                        irclog.save(failOnError: true, flush: false, validate: false)
                     }
                 }
             }
