@@ -1,15 +1,20 @@
 package irclog
 
 import grails.test.mixin.TestFor
+import grails.test.runtime.FreshRuntime
 import irclog.test.ConstraintUnitSpec
 import irclog.utils.DomainUtils
+import org.grails.spring.beans.factory.InstanceFactoryBean
+import org.springframework.security.crypto.password.PasswordEncoder
 import spock.lang.Unroll
 
 @TestFor(Person)
 class PersonSpec extends ConstraintUnitSpec {
 
-    static doWithSpring = {
-        springSecurityService(SpringSecurityService)
+    def doWithSpring = {
+        def passwordEncoderStub = Stub(PasswordEncoder)
+        passwordEncoderStub.encode(_) >> { args -> ">>" + args.join(",") + "<<" }
+        passwordEncoder(InstanceFactoryBean, passwordEncoderStub, PasswordEncoder)
     }
 
     def setup() {
@@ -127,5 +132,20 @@ class PersonSpec extends ConstraintUnitSpec {
         adminRole | 'is'
         userRole  | "isn't"
         null      | "isn't"
+    }
+
+    @FreshRuntime
+    def "beforeInsert: password must be converted when saving"() {
+        given:
+        def person = DomainUtils.createPerson(password: "abcdefg", repassword: "abcdefg")
+
+        when:
+        person.save(failOnError: true, flush: true)
+
+        then:
+        !person.hasErrors()
+
+        and:
+        person.password == ">>abcdefg<<"
     }
 }
