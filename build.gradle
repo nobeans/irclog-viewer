@@ -9,6 +9,8 @@ buildscript {
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath 'com.bertramlabs.plugins:asset-pipeline-gradle:2.1.1'
+        classpath "com.bertramlabs.plugins:less-asset-pipeline:2.0.8"
+        classpath "com.bertramlabs.plugins:coffee-asset-pipeline:2.0.6"
     }
 }
 
@@ -83,10 +85,12 @@ dependencies {
     compile "io.vertx:vertx-core:2.0.2-final"
     compile 'io.vertx:lang-groovy:2.0.0-final'
 
-    // Plugins
+    // Assets
+    runtime 'com.bertramlabs.plugins:asset-pipeline-core:2.1.1' // Add this for some bug fixes
+    runtime 'com.bertramlabs.plugins:less-asset-pipeline:2.0.8'
+    runtime 'com.bertramlabs.plugins:coffee-asset-pipeline:2.0.6'
+
 //    compile "org.grails.plugins:quartz:1.0"
-//    compile "org.grails.plugins:less-asset-pipeline:2.0.8"
-//    compile "org.grails.plugins:coffee-asset-pipeline:2.0.6"
 //    compile "org.jggug.kobo:request-tracelog:0.4"
 }
 
