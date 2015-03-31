@@ -57,7 +57,6 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-actuator"
     compile "org.springframework.boot:spring-boot-autoconfigure"
     compile "org.springframework.boot:spring-boot-starter-tomcat"
-    compile "org.springframework.boot:spring-boot-starter-security"
     compile "org.grails:grails-dependencies"
     compile "org.grails:grails-web-boot"
 
@@ -89,6 +88,11 @@ dependencies {
     runtime 'com.bertramlabs.plugins:asset-pipeline-core:2.1.1' // Add this for some bug fixes
     runtime 'com.bertramlabs.plugins:less-asset-pipeline:2.0.8'
     runtime 'com.bertramlabs.plugins:coffee-asset-pipeline:2.0.6'
+
+    // Spring security
+    compile "org.springframework.boot:spring-boot-starter-security"
+    compile "org.springframework.security:spring-security-taglibs"
+    runtime 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'
 
 //    compile "org.grails.plugins:quartz:1.0"
 //    compile "org.jggug.kobo:request-tracelog:0.4"

@@ -1,17 +1,17 @@
 package irclog
 
+import irclog.security.SpringSecurityContext
 import grails.util.Holders
 import grails.validation.Validateable
 import irclog.search.SearchCriteriaStore
 import grails.web.databinding.DataBindingUtils
 
-class SearchController {
+class SearchController implements SpringSecurityContext {
 
     static scope = 'prototype'
 
     IrclogSearchService irclogSearchService
     ChannelService channelService
-    SpringSecurityService springSecurityService
     SearchCriteriaStore searchCriteriaStore
 
     def index(SearchCommand command) {
@@ -36,7 +36,7 @@ class SearchController {
         restoreCriteriaIfNotSpecifiedByRequest(command)
         def criteriaMap = command.toMap()
         try {
-            return irclogSearchService.search(springSecurityService.currentUser, criteriaMap, [max: command.max, offset: command.offset])
+            return irclogSearchService.search(currentUser, criteriaMap, [max: command.max, offset: command.offset])
         } finally {
             searchCriteriaStore.criteria = criteriaMap
         }

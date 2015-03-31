@@ -1,3 +1,4 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!doctype html>
 <html>
 <head>
@@ -46,10 +47,10 @@
           <td>
             <% channel.persons.sort { it.loginName }.each { person -> %>
             <span class="${person.loginName}" title="${person.realName.encodeAsHTML()}">
-              <sec:authorize access="hasRole('ADMIN')">
+              <sec:authorize access="hasRole('ROLE_ADMIN')">
                 <g:link controller="person" action="show" id="${person.id}">${person.loginName.encodeAsHTML()}</g:link>
               </sec:authorize>
-              <sec:authorize access="!hasRole('ADMIN')">
+              <sec:authorize access="!hasRole('ROLE_ADMIN')">
                 ${person.loginName.encodeAsHTML()}
               </sec:authorize>
             </span>

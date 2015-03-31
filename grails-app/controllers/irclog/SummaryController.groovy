@@ -1,16 +1,15 @@
 package irclog
 
 import grails.converters.JSON
+import irclog.security.SpringSecurityContext
+import java.security.MessageDigest
 import org.vertx.groovy.core.Vertx
 
-import java.security.MessageDigest
-
-class SummaryController {
+class SummaryController implements SpringSecurityContext {
 
     private MessageDigest digest = MessageDigest.getInstance('md5')
 
     Vertx vertx
-    SpringSecurityService springSecurityService
     ChannelService channelService
     TopicService topicService
 
@@ -53,12 +52,12 @@ class SummaryController {
     }
 
     private ArrayList<Channel> getAllowedChannels() {
-        channelService.getAccessibleChannelList(springSecurityService.currentUser, [:]).grep { !it.isArchived }
+        channelService.getAccessibleChannelList(currentUser, [:]).grep { !it.isArchived }
     }
 
     // TODO 共通化してVertxServiceへ
     private String saveTokenToVertx(key, token) {
-        def person = springSecurityService.currentUser
+        def person = currentUser
         def channelNames = channelService.getAccessibleChannelList(person, [:])*.name
         vertx.sharedData.getMap(key).put(token, channelNames.join(":"))
     }

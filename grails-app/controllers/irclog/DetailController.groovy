@@ -1,17 +1,17 @@
 package irclog
 
+import irclog.security.SpringSecurityContext
 import grails.converters.JSON
 import grails.validation.Validateable
 import java.security.MessageDigest
 import org.vertx.groovy.core.Vertx
 
-class DetailController {
+class DetailController implements SpringSecurityContext {
 
     private MessageDigest digest = MessageDigest.getInstance('md5')
 
     Vertx vertx
     ChannelService channelService
-    SpringSecurityService springSecurityService
     IrclogSearchService irclogSearchService
 
     def index(DetailCommand command) {
@@ -25,7 +25,7 @@ class DetailController {
     }
 
     private String saveTokenToVertx(token) {
-        def channelNames = channelService.getAccessibleChannelList(springSecurityService.currentUser, [:])*.name
+        def channelNames = channelService.getAccessibleChannelList(currentUser, [:])*.name
         vertx.sharedData.getMap("irclog.detail.push.tokens").put(token, channelNames.join(":"))
     }
 
@@ -48,7 +48,7 @@ class DetailController {
 
     def irclogList(DetailCommand command) {
         def criteriaMap = command.toMap()
-        def irclogList = irclogSearchService.search(springSecurityService.currentUser, criteriaMap, [:], 'asc').list.collect { Irclog irclog ->
+        def irclogList = irclogSearchService.search(currentUser, criteriaMap, [:], 'asc').list.collect { Irclog irclog ->
             irclog.properties["type", "message", "nick", "permaId", "channelName"] + [time: irclog.time.format('HH:mm:ss')]
         }
         render irclogList as JSON

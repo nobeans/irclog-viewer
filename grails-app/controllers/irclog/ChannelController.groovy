@@ -1,17 +1,22 @@
 package irclog
 
+import irclog.security.SpringSecurityContext
+import org.springframework.security.access.prepost.PreAuthorize
+
 /**
  * チャンネル管理コントローラ
  */
-class ChannelController {
+@PreAuthorize("hasRole('ROLE_USER')")
+class ChannelController implements SpringSecurityContext {
 
     static allowedMethods = [delete: 'POST', save: 'POST', update: 'POST', join: 'POST']
 
     ChannelService channelService
-    SpringSecurityService springSecurityService
 
+    @PreAuthorize('permitAll')
     def index() { redirect(action: 'list', params: params) }
 
+    @PreAuthorize('permitAll')
     def list() {
         [
             channelList: channelService.getAccessibleChannelList(currentUser, params),
@@ -19,6 +24,7 @@ class ChannelController {
         ]
     }
 
+    @PreAuthorize('permitAll')
     def show() {
         withChannel(params.id) { channel ->
             [channel: channel]
@@ -108,6 +114,7 @@ class ChannelController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     def kick() {
         withChannel(params.id) { channel ->
             def person = Person.get(params.personId)
@@ -130,9 +137,5 @@ class ChannelController {
             return
         }
         closure(channel)
-    }
-
-    private getCurrentUser() {
-        springSecurityService.currentUser
     }
 }

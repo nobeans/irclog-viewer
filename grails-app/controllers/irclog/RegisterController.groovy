@@ -1,11 +1,13 @@
 package irclog
 
-/**
- * ユーザによるユーザ情報登録・参照・編集のためのコントローラ。
- */
-class RegisterController {
+import irclog.security.SpringSecurityContext
+import org.springframework.security.access.prepost.PreAuthorize
 
-    SpringSecurityService springSecurityService
+/**
+ * Registration/Update/Show by end-user for oneself.
+ */
+@PreAuthorize("hasRole('ROLE_USER')")
+class RegisterController implements SpringSecurityContext {
 
     static allowedMethods = [save: 'POST', update: 'POST']
 
@@ -38,17 +40,19 @@ class RegisterController {
             }
 
             // 更新に成功した場合は、セッション上のユーザ情報を更新する。
-            springSecurityService.reauthenticate(person.loginName)
+            reauthenticate(person.loginName)
 
             flash.message = message(code: "default.updated.message", args: [message(code: "register.label"), person.id])
             redirect(action: 'show', id: person.id)
         }
     }
 
+    @PreAuthorize('permitAll')
     def create() {
         [person: new Person()]
     }
 
+    @PreAuthorize('permitAll')
     def save() {
         // 未ログインかどうか。
         if (loggedIn) {
@@ -70,7 +74,7 @@ class RegisterController {
         }
 
         // 新規登録に成功した場合は、そのままログインする。
-        springSecurityService.reauthenticate(person.loginName)
+        reauthenticate(person.loginName)
 
         flash.message = message(code: "default.created.message", args: [message(code: "register.label"), person.id])
         redirect(action: 'show')

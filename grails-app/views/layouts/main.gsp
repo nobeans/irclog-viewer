@@ -24,7 +24,7 @@
 </div>
 
 <div class="nav">
-  <g:render template="../layouts/nav"/>
+  <g:render template="/layouts/nav"/>
 </div>
 
 <!--[if lte IE 8.0]>

@@ -1,3 +1,4 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!doctype html>
 <html>
 <head>
@@ -40,13 +41,13 @@
           <ul>
             <g:each var="p" in="${channel.persons.sort { it.loginName }}">
               <li title="${p.realName.encodeAsHTML()}">
-                <sec:authorize access="hasRole('ADMIN')">
+                <sec:authorize access="hasRole('ROLE_ADMIN')">
                   <g:link controller="person" action="show" id="${p.id}">${p.loginName.encodeAsHTML()}</g:link>
                   &gt;&gt; <g:link controller="channel" action="kick" id="${channel.id}" params="[personId: p.id]" onclick="return confirm('${message(code: 'channel.kick.confirm.message')}');">
                   <g:message code="channel.kick.label"/>
                 </g:link>
                 </sec:authorize>
-                <sec:authorize access="!hasRole('ADMIN')">
+                <sec:authorize access="!hasRole('ROLE_ADMIN')">
                   ${p.loginName.encodeAsHTML()}
                 </sec:authorize>
               </li>

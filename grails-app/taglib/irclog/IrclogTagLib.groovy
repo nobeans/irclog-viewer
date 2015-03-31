@@ -1,10 +1,10 @@
 package irclog
 
-class IrclogTagLib {
+import irclog.security.SpringSecurityContext
+
+class IrclogTagLib implements SpringSecurityContext {
 
     static namespace = 'irclog'
-
-    SpringSecurityService springSecurityService
 
     def detailLink = { attrs, body ->
         if (!attrs.channelName || !attrs.time) return
@@ -55,9 +55,9 @@ class IrclogTagLib {
         }
         def key = attrs.controller + (attrs.action ? '.' + attrs.action : '')
         if (isActive(key)) {
-            out << """ <li class="menuButton active">${g.message(code: "nav.${key}.label")}</li> """
+            out << """<li class="menuButton active">${g.message(code: "nav.${key}.label")}</li>"""
         } else {
-            out << """ <li class="menuButton">${g.link(class: key, controller: attrs.controller, action: attrs.action) { g.message(code: "nav.${key}.label") }}</li> """
+            out << """<li class="menuButton">${g.link(class: key, controller: attrs.controller, action: attrs.action) { g.message(code: "nav.${key}.label") }}</li>"""
         }
     }
 
@@ -98,7 +98,7 @@ class IrclogTagLib {
     }
 
     def loginUserInfo = { attrs ->
-        def user = springSecurityService.currentUser
+        def user = currentUser
         if (user instanceof Person) {
             out << g.message(code: "nav.login.info", args: [user.realName, user.loginName])
         } else {

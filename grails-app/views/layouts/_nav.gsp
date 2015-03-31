@@ -1,3 +1,4 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <sec:authorize access="isAnonymous()">
   <ul>
     <irclog:createNavLinkIfNotCurrent controller="summary"/>
@@ -16,10 +17,10 @@
     <irclog:createNavLinkIfNotCurrent controller="summary"/>
     <irclog:createNavLinkIfNotCurrent controller="search"/>
     <irclog:createNavLinkIfNotCurrent controller="channel" action="list"/>
-    <sec:authorize access="hasRole('ADMIN')">
+    <sec:authorize access="hasRole('ROLE_ADMIN')">
       <irclog:createNavLinkIfNotCurrent controller="person" action="list"/>
     </sec:authorize>
-    <sec:authorize access="!hasRole('ADMIN')">
+    <sec:authorize access="!hasRole('ROLE_ADMIN')">
       <irclog:createNavLinkIfNotCurrent controller="register" action="show"/>
     </sec:authorize>
     <irclog:createNavLinkIfNotCurrent controller="logout"/>
