@@ -76,7 +76,7 @@ dependencies {
     console "org.grails:grails-console"
 
     //
-    // Added for application
+    // For application
     //
 
     // Dependencies
@@ -93,6 +93,11 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-security"
     compile "org.springframework.security:spring-security-taglibs"
     runtime 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'
+
+    // Webjars
+    runtime('org.webjars:jquery-ui:1.10.4') {
+        exclude module: 'jquery'
+    }
 
 //    compile "org.grails.plugins:quartz:1.0"
 //    compile "org.jggug.kobo:request-tracelog:0.4"

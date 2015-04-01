@@ -81,7 +81,7 @@ class RegisterController implements SpringSecurityContext {
     }
 
     private withLoginPerson(closure) {
-        def person = authenticatedUser
+        def person = currentUser
         if (!person) {
             flash.errors = [message(code: "default.not.found.message", args: [message(code: "register.label"), personId])]
             redirect(uri: '/')

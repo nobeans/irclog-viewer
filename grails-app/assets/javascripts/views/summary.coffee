@@ -1,5 +1,5 @@
 #= encoding UTF-8
-#= require jquery.js
+#= require jquery-2.1.3.js
 #= require jquery.dateFormat-1.0.js
 #= require knockout-2.2.1.js
 

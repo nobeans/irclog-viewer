@@ -1,5 +1,5 @@
 #= encoding UTF-8
-#= require jquery.js
+#= require jquery-2.1.3.js
 #= require underscore.js
 #= require_self
 #= require_tree views

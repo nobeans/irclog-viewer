@@ -1,5 +1,5 @@
 #= encoding UTF-8
-#= require jquery.js
+#= require jquery-2.1.3.js
 
 jQuery ->
   # Trigger only for the target page

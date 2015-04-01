@@ -1,6 +1,6 @@
 #= encoding UTF-8
-#= require jquery.js
-#= require js/jquery-ui-1.10.4.custom.min.js
+#= require jquery-2.1.3.js
+#= require webjars/jquery-ui/1.10.4/ui/jquery-ui.js
 #= require jquery.highlight-3.js
 #= require application
 
