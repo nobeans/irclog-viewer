@@ -29,7 +29,7 @@ class BootStrap {
 
     def destroy = {
 //        ircbot.stop()
-//        vertxService.stop()
+        vertxService.stop()
     }
 
     private static void setupRolesIfNotExists() {
