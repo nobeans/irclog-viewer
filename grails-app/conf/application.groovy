@@ -13,7 +13,6 @@ irclog {
     viewer {
         defaultMax = 100
         typeVisible = true
-        defaultTargetUrl = "/summary"
     }
 
     ircbot {

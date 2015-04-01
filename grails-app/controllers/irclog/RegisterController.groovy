@@ -80,7 +80,7 @@ class RegisterController {
         def person = authenticatedUser
         if (!person) {
             flash.errors = [message(code: "default.not.found.message", args: [message(code: "register.label"), personId])]
-            redirect(controller: 'top')
+            redirect(uri: '/')
             return
         }
         closure(person)

@@ -1,7 +1,7 @@
 class UrlMappings {
     static mappings = {
         // Welcome
-        "/"(controller: "top")
+        "/"(controller: 'summary')
 
         // Mixed viewer
         "/search"(controller: "search", action: "index")
@@ -21,8 +21,9 @@ class UrlMappings {
             }
         }
 
-        "404"(controller: 'login', action: 'denied')
-        "405"(controller: 'login', action: 'denied')
+        "403"(view: '/notFound')
+        "404"(view: '/notFound')
+        "405"(view: '/notFound')
         "500"(view: '/error')
     }
 }
