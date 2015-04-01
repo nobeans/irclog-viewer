@@ -73,6 +73,9 @@ grails:
     gsp:
         tldScanPattern: classpath*:/META-INF/*.tld
 
+server:
+    'context-path': /irclog
+
 ---
 # Disable second level cache
 #
