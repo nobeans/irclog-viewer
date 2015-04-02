@@ -1,11 +1,8 @@
 package irclog
 
-import org.springframework.security.access.prepost.PreAuthorize
-
 /**
  * For administrator only.
  */
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 class PersonController {
 
     // the delete, save and update actions only accept POST requests

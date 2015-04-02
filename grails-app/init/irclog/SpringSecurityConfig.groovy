@@ -38,13 +38,28 @@ class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     @CompileDynamic // somehow fails with CompileStatic
     void configure(HttpSecurity http) {
-        http.exceptionHandling().accessDeniedPage('/login/denied')
+        http.exceptionHandling()
+                .accessDeniedPage('/login/denied')
             .and()
-            .authorizeRequests().anyRequest().permitAll() // almost pages are visible
+            .formLogin()
+                .failureUrl('/login/authfail')
+                .loginPage('/login').permitAll()
             .and()
-            .formLogin().loginPage('/login').failureUrl('/login/authfail').permitAll()
+            .logout()
+                .logoutSuccessUrl('/')
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")).permitAll() // use GET to trigger a logout (taking CSRF risk only for logout)
             .and()
-            .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")).logoutSuccessUrl('/').permitAll() // use GET to trigger a logout (taking CSRF risk only for logout)
+            .authorizeRequests()
+                .antMatchers("/channel/index").permitAll()
+                .antMatchers("/channel/list").permitAll()
+                .antMatchers("/channel/show").permitAll()
+                .antMatchers("/channel/kick").hasRole("ADMIN")
+                .antMatchers("/channel/**").hasRole("USER")
+                .antMatchers("/register/create").permitAll()
+                .antMatchers("/register/save").permitAll()
+                .antMatchers("/register/**").hasRole("USER")
+                .antMatchers("/person/**").hasRole("ADMIN")
+                .anyRequest().permitAll()
     }
 
     @Override

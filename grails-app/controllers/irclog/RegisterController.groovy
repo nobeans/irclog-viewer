@@ -1,12 +1,10 @@
 package irclog
 
 import irclog.security.SpringSecurityContext
-import org.springframework.security.access.prepost.PreAuthorize
 
 /**
  * Registration/Update/Show by end-user for oneself.
  */
-@PreAuthorize("hasRole('ROLE_USER')")
 class RegisterController implements SpringSecurityContext {
 
     static allowedMethods = [save: 'POST', update: 'POST']
@@ -47,12 +45,10 @@ class RegisterController implements SpringSecurityContext {
         }
     }
 
-    @PreAuthorize('permitAll')
     def create() {
         [person: new Person()]
     }
 
-    @PreAuthorize('permitAll')
     def save() {
         // 未ログインかどうか。
         if (loggedIn) {
