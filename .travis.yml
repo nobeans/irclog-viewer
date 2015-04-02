@@ -1,8 +1,8 @@
-language: groovy
+language: java
 
 jdk:
   - oraclejdk7
   - openjdk7
 
 script:
-  - ./grailsw test-app
+  - ./gradlew clean test integrationTest
