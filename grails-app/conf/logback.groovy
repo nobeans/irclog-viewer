@@ -1,25 +1,43 @@
-import grails.util.BuildSettings
+// See http://logback.qos.ch/manual/groovy.html for details on configuration
 import grails.util.Environment
 
-// See http://logback.qos.ch/manual/groovy.html for details on configuration
+def FILE_LOG_PATTERN = '%d{yyyy-MM-dd HH:mm:ss.SSS}\t%thread\t%level\t%logger{39}:%line\t%m%n'
+def CONSOLE_LOG_PATTERN = /%d{HH:mm:ss.SSS} [%thread] %highlight(%level) %cyan(\(%logger{39}:%line\)) %m%n/
+
+def logDir = 'logs'
+
 appender('STDOUT', ConsoleAppender) {
+    withJansi = true
     encoder(PatternLayoutEncoder) {
-        pattern = /%d{yyyy-MM-dd HH:mm:ss.SSS} [%level] \(%thread\) \(%logger{1}:%line\) -- %msg%n/
+        pattern = CONSOLE_LOG_PATTERN
     }
 }
 
-root info, ['STDOUT']
+appender("FILE", RollingFileAppender) {
+    encoder(PatternLayoutEncoder) {
+        pattern = FILE_LOG_PATTERN
+    }
+    rollingPolicy(TimeBasedRollingPolicy) {
+        fileNamePattern = "${logDir}/application.%d{yyyy-MM-dd}.log"
+    }
+}
 
-if (Environment.current == Environment.DEVELOPMENT) {
-    def targetDir = BuildSettings.TARGET_DIR
-    if (targetDir) {
-        appender("FULL_STACKTRACE", FileAppender) {
-            file = "${targetDir}/stacktrace.log"
-            append = true
-            encoder(PatternLayoutEncoder) {
-                pattern = "%level %logger - %msg%n"
-            }
-        }
+appender("FULL_STACKTRACE", RollingFileAppender) {
+    encoder(PatternLayoutEncoder) {
+        pattern = FILE_LOG_PATTERN
+    }
+    rollingPolicy(TimeBasedRollingPolicy) {
+        fileNamePattern = "${logDir}/stacktrace.%d{yyyy-MM-dd}.log"
+    }
+}
+
+root INFO, ['STDOUT', 'FILE']
+
+Environment.executeForCurrentEnvironment {
+    development {
+        logger "StackTrace", ERROR, ['FULL_STACKTRACE'], false
+    }
+    test {
         logger "StackTrace", ERROR, ['FULL_STACKTRACE'], false
     }
 }
