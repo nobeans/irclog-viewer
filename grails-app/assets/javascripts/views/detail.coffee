@@ -20,7 +20,7 @@ jQuery ->
     @updateList: ->
       # TODO append currentChannel for archived channel
       @list.removeAll()
-      $.ajax async: false, url: '/irclog/detail/channelList', success: (data) =>
+      $.ajax async: false, url: '/irclog/detail/channelList', data: {'channel': Channel.current() }, success: (data) =>
         $.each data, (i, channelName) =>
           @list.push new Channel(channelName)
 

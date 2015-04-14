@@ -42,8 +42,8 @@ class DetailController {
         render relatedDateList as JSON
     }
 
-    def channelList() {
-        def channelCandidates = channelService.getAccessibleChannelList(springSecurityService.currentUser, [:]).grep { !it.isArchived }.collect { it.name }
+    def channelList(DetailCommand command) {
+        def channelCandidates = channelService.getAccessibleChannelList(springSecurityService.currentUser, [sort: 'name', order: 'asc']).grep { !it.isArchived || it.name == command.channel }*.name
         render channelCandidates as JSON
     }
 

@@ -19,7 +19,7 @@ class SearchController {
             command: command,
             criteriaMap: command.toMap(),
             periodCandidates: SearchCommand.SELECTABLE_PERIODS,
-            channelCandidates: channelCandidates,
+            channelCandidates: getChannelCandidates(command),
             irclogList: searchResult.list,
             irclogTotalCount: searchResult.totalCount,
             essentialTypes: Irclog.ESSENTIAL_TYPES,
@@ -48,8 +48,8 @@ class SearchController {
         }
     }
 
-    private getChannelCandidates() {
-        return ['all'] + channelService.getAccessibleChannelList(springSecurityService.currentUser, [sort: 'name', 'order': 'asc']).grep { !it.isArchived }*.name
+    private getChannelCandidates(SearchCommand command) {
+        return ['all'] + channelService.getAccessibleChannelList(springSecurityService.currentUser, [sort: 'name', order: 'asc']).grep { !it.isArchived || it.name == command.channel }*.name
     }
 }
 
