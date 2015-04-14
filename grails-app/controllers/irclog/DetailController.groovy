@@ -42,7 +42,7 @@ class DetailController implements SpringSecurityContext {
     }
 
     def channelList(DetailCommand command) {
-        def channelCandidates = channelService.getAccessibleChannelList(springSecurityService.currentUser, [sort: 'name', order: 'asc']).grep { !it.isArchived || it.name == command.channel }*.name
+        def channelCandidates = channelService.getAccessibleChannelList(currentUser, [sort: 'name', order: 'asc']).grep { !it.isArchived || it.name == command.channel }*.name
         render channelCandidates as JSON
     }
 

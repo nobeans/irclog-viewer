@@ -50,7 +50,7 @@ class SearchController implements SpringSecurityContext {
     }
 
     private getChannelCandidates(SearchCommand command) {
-        return ['all'] + channelService.getAccessibleChannelList(springSecurityService.currentUser, [sort: 'name', order: 'asc']).grep { !it.isArchived || it.name == command.channel }*.name
+        return ['all'] + channelService.getAccessibleChannelList(currentUser, [sort: 'name', order: 'asc']).grep { !it.isArchived || it.name == command.channel }*.name
     }
 }
 
