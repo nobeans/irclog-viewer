@@ -51,10 +51,7 @@
   </div>
 
   <div class="buttons">
-    <g:form action="edit">
-      <input type="hidden" name="id" value="${person?.id}"/>
-      <span class="button"><input type="submit" class="edit" value="${message(code: 'default.button.edit.label')}"/></span>
-    </g:form>
+    <span class="button"><g:link class="edit" action="edit" id="${person.id}"><g:message code="default.button.edit.label"/></g:link></span>
   </div>
 </div>
 </body>

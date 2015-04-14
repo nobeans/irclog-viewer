@@ -67,7 +67,7 @@
       <input type="hidden" name="id" value="${channel?.id}"/>
       <span class="button"><input type="button" class="search" onclick="document.location = '${irclog.searchAllLogsLink(channel:channel)}'" value="${message(code: 'channel.searchAllLogs.button.label')}"/></span>
       <sec:authorize access="isAuthenticated()">
-        <span class="button"><g:actionSubmit class="edit" action="edit" value="${message(code: 'default.button.edit.label')}"/></span>
+        <span class="button"><g:link class="edit" action="edit" id="${channel.id}"><g:message code="default.button.edit.label"/></g:link></span>
         <span class="button"><g:actionSubmit class="delete" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', 'default': 'Are you sure?')}');" action="Delete" value="${message(code: 'default.button.delete.label', 'default': 'Delete')}"/></span>
         <% if (channel.persons.find { it.loginName == loginUserName } != null) { %>
         <span class="button"><g:actionSubmit class="part" action="part" value="${message(code: 'channel.part.label')}" onclick="return confirm('${message(code: 'channel.part.confirm.message')}');"/></span>

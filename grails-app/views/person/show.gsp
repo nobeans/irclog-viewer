@@ -67,7 +67,7 @@
   <div class="buttons">
     <g:form>
       <input type="hidden" name="id" value="${person?.id}"/>
-      <span class="button"><g:actionSubmit class="edit" action="Edit" value="${message(code: 'default.button.edit.label', 'default': 'Edit')}"/></span>
+      <span class="button"><g:link class="edit" action="edit" id="${person.id}"><g:message code="default.button.edit.label"/></g:link></span>
       <span class="button"><g:actionSubmit class="delete" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', 'default': 'Are you sure?')}');" action="Delete" value="${message(code: 'default.button.delete.label', 'default': 'Delete')}"/></span>
     </g:form>
   </div>
