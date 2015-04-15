@@ -99,8 +99,9 @@ dependencies {
         exclude module: 'jquery'
     }
 
+    // Others
+    compile "org.grails.plugins:request-tracelog:1.0.0-SNAPSHOT"
 //    compile "org.grails.plugins:quartz:1.0"
-//    compile "org.jggug.kobo:request-tracelog:0.4"
 }
 
 task wrapper(type: Wrapper) {

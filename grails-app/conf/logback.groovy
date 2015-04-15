@@ -1,7 +1,7 @@
 // See http://logback.qos.ch/manual/groovy.html for details on configuration
 import grails.util.Environment
 
-def FILE_LOG_PATTERN = '%d{yyyy-MM-dd HH:mm:ss.SSS}\t%thread\t%level\t%logger{39}:%line\t%m%n'
+def FILE_LOG_PATTERN = '%d{yyyy-MM-dd HH:mm:ss.SSS}\t%thread\t%level\t%logger:%line\t%m%n'
 def CONSOLE_LOG_PATTERN = /%d{HH:mm:ss.SSS} [%thread] %highlight(%level) %cyan(\(%logger{39}:%line\)) %m%n/
 
 def logDir = 'logs'
