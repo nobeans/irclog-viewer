@@ -18,7 +18,7 @@ plugins {
     id "io.spring.dependency-management" version "0.4.0.RELEASE"
 }
 
-version "1.0"
+version "1.0.0.BUILD-SNAPSHOT"
 group "nobeans"
 
 apply plugin: "spring-boot"
