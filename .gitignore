@@ -13,3 +13,8 @@ out
 *.iml
 *.ipr
 *.iws
+
+# for Grails3
+.gradle/
+build/
+logs/
