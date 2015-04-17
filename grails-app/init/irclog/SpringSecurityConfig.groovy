@@ -38,7 +38,8 @@ class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     @CompileDynamic // somehow fails with CompileStatic
     void configure(HttpSecurity http) {
-        http.exceptionHandling()
+        http.csrf().disable()
+            .exceptionHandling()
                 .accessDeniedPage('/login/denied')
             .and()
             .formLogin()
@@ -47,7 +48,6 @@ class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .logout()
                 .logoutSuccessUrl('/')
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")).permitAll() // use GET to trigger a logout (taking CSRF risk only for logout)
             .and()
             .authorizeRequests()
                 .antMatchers("/channel/index").permitAll()

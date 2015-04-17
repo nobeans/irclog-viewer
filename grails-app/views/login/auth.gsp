@@ -15,7 +15,6 @@
     </g:if>
 
     <form action="${createLink(uri: '/login')}" method="POST" id="loginForm" class="cssform" autocomplete="off">
-      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
       <p>
         <label for="username"><g:message code="springSecurity.login.username.label"/>:</label>
         <input type="text" class="text_" name="username" id="username" autofocus="autofocus"/>
