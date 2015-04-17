@@ -18,7 +18,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.security.web.util.AntPathRequestMatcher
+import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver
 
 @CompileStatic
@@ -41,14 +41,15 @@ class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
             .exceptionHandling()
                 .accessDeniedPage('/login/denied')
-            .and()
+                .and()
             .formLogin()
                 .failureUrl('/login/authfail')
                 .loginPage('/login').permitAll()
-            .and()
+                .and()
             .logout()
                 .logoutSuccessUrl('/')
-            .and()
+                .deleteCookies("remember-me")
+                .and()
             .authorizeRequests()
                 .antMatchers("/channel/index").permitAll()
                 .antMatchers("/channel/list").permitAll()
@@ -60,6 +61,9 @@ class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register/**").hasRole("USER")
                 .antMatchers("/person/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
+                .and()
+            .rememberMe()
+                .tokenValiditySeconds(AbstractRememberMeServices.TWO_WEEKS_S)
     }
 
     @Override

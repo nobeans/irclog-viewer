@@ -26,7 +26,7 @@
       </p>
 
       <p id="remember_me_holder">
-        <input type="checkbox" class="chk" name="_spring_security_remember_me" id="remember_me" <% if (hasCookie) { %>checked="checked"<% } %>/>
+        <input type="checkbox" class="chk" name="remember-me" id="remember-me"/>
         <label for="remember_me"><g:message code="springSecurity.login.remember.me.label"/></label>
       </p>
 

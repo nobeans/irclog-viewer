@@ -41,3 +41,5 @@ Environment.executeForCurrentEnvironment {
         logger "StackTrace", ERROR, ['FULL_STACKTRACE'], false
     }
 }
+
+logger "org.springframework.security.web.authentication.rememberme", DEBUG, ['STDOUT', 'FILE']
