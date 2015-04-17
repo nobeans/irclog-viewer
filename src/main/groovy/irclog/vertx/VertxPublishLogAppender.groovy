@@ -17,37 +17,26 @@ class VertxPublishLogAppender implements LogAppender {
     @Override
     void append(String type, String channelName, String nick, String message) {
         setupFields()
-
-        // Save
         Irclog irclog = Irclog.withSession {
-            saveIrclog(type: type, channelName: channelName, nick: nick, message: message, time: DateUtils.today)
+            Irclog.withNewTransaction {
+                saveIrclog(type: type, channelName: channelName, nick: nick, message: message, time: DateUtils.today)
+            }
         }
-
-        // For Push
         publishForPushing(irclog)
     }
 
+    // It's difficult to prepare a Vertx instance while Config.groovy is evaluating.
+    // So it's initialized lazily.
     private Vertx setupFields() {
-        // It's difficult to prepare a Vertx instance while Config.groovy is evaluating.
-        // So it's initialized lazily.
         if (!vertx) {
             vertx = Holders.applicationContext.vertx
         }
-
-        // It's difficult to prepare a Vertx instance while Config.groovy is evaluating.
-        // So it's initialized lazily.
         if (!defaultChannelName) {
             defaultChannelName = Holders.config.irclog.ircbot.channel.asDefault
         }
     }
 
     private Irclog saveIrclog(Map params) {
-        Irclog.withNewTransaction {
-            appendForEachTx(params)
-        }
-    }
-
-    private Irclog appendForEachTx(Map params) {
         if (!params.keySet().containsAll("type", "channelName", "nick", "message", "time")) {
             log.warn "Just ignored invalid params for irclog: ${params}"
             return null
