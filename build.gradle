@@ -100,7 +100,7 @@ dependencies {
     }
 
     // Others
-    compile "org.grails.plugins:request-tracelog:1.0.0"
+    compile "org.grails.plugins:request-tracelog:1.1.0"
 //    compile "org.grails.plugins:quartz:1.0"
 }
 
