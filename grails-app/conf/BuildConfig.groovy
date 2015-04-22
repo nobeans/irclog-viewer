@@ -50,9 +50,7 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
 
         runtime "postgresql:postgresql:9.0-801.jdbc4"
-
-        compile "org.jggug.kobo:gircbot:0.2"
-
+        compile "org.jggug.kobo:gircbot:0.4"
         compile "io.vertx:vertx-core:2.0.2-final"
         compile 'io.vertx:lang-groovy:2.0.0-final'
     }
