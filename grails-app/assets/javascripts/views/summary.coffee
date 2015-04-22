@@ -177,7 +177,7 @@ jQuery ->
       @latestMessage     = ko.computed => @summary.latestMessage()
 
       @rowId = ko.computed => "summary-channel-" + @summary.channelId()
-      @searchAllLogsLink = ko.computed => "/irclog/viewer?channel=#{@summary.channelName().replace(/#/, '%23')}&period=all&nick=&message=&_type="
+      @searchAllLogsLink = ko.computed => "/irclog/search?channel=#{@summary.channelName().replace(/#/, '%23')}&period=all&nick=&message=&_type="
       @channelLink = ko.computed => "/irclog/channel/show/#{@summary.channelId()}"
 
       @summary.event.subscribe (event) =>

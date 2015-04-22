@@ -78,7 +78,7 @@ class IrclogTagLib implements SpringSecurityContext {
     }
 
     def searchAllLogsLink = { attrs ->
-        out << "/irclog/viewer?channel=${attrs.channel.name.replace(/#/, '%23')}&period=all&nick=&message=&_type=".encodeAsHTML()
+        out << "/irclog/search?channel=${attrs.channel.name.replace(/#/, '%23')}&period=all&nick=&message=&_type=".encodeAsHTML()
     }
 
     def summaryLink = { attrs ->
