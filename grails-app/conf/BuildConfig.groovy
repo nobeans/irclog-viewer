@@ -53,10 +53,6 @@ grails.project.dependency.resolution = {
 
         compile "org.jggug.kobo:gircbot:0.2"
 
-        compile 'log4j:apache-log4j-extras:1.1', { // for logging
-            excludes 'log4j'
-        }
-
         compile "io.vertx:vertx-core:2.0.2-final"
         compile 'io.vertx:lang-groovy:2.0.0-final'
     }
