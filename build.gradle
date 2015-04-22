@@ -42,7 +42,6 @@ assets {
 repositories {
     mavenLocal()
     maven { url "https://repo.grails.org/grails/core" }
-    maven { url "http://dl.bintray.com/nobeans/plugins" } // FIXME requires untill accepting the request of linking
 }
 
 dependencyManagement {
