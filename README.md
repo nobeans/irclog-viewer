@@ -25,7 +25,7 @@ So the application will be started, and you can access to `http://localhost:8080
 
 ## Code Status
 
-* [![Build Status](https://drone.io/github.com/nobeans/irclog-viewer/status.png)](https://drone.io/github.com/nobeans/irclog-viewer/latest)
+* [![Build Status](https://travis-ci.org/nobeans/irclog-viewer.svg?branch=master)](https://travis-ci.org/nobeans/irclog-viewer)
 
 ## License
 
