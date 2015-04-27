@@ -101,7 +101,7 @@ dependencies {
 
     // Others
    runtime 'org.jolokia:jolokia-core'
-    compile "org.grails.plugins:request-tracelog:1.1.0"
+    compile "org.grails.plugins:request-tracelog:1.1.1"
 //    compile "org.grails.plugins:quartz:1.0"
 }
 
