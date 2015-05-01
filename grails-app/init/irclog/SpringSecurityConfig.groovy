@@ -52,6 +52,7 @@ class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
             .authorizeRequests()
                 .antMatchers("/channel/index").permitAll()
+                .antMatchers("/channel/hoge").permitAll()
                 .antMatchers("/channel/list").permitAll()
                 .antMatchers("/channel/show").permitAll()
                 .antMatchers("/channel/kick").hasRole("ADMIN")
