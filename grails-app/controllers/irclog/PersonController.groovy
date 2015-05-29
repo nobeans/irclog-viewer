@@ -1,9 +1,11 @@
 package irclog
 
+import irclog.security.SpringSecurityContext
+
 /**
  * For administrator only.
  */
-class PersonController {
+class PersonController implements SpringSecurityContext {
 
     // the delete, save and update actions only accept POST requests
     static allowedMethods = [delete: 'POST', save: 'POST', update: 'POST']
@@ -30,7 +32,7 @@ class PersonController {
 
     def delete() {
         withPerson(params.id) { person ->
-            if (person == authenticatedUser) {
+            if (person == currentUser) {
                 flash.message = message(code: "person.deleted.loggedInUser.error", args: [params.id])
                 redirect(action: 'list')
                 return
@@ -92,7 +94,7 @@ class PersonController {
 
     def toUser() {
         withPerson(params.id) { person ->
-            if (person == authenticatedUser) {
+            if (person == currentUser) {
                 flash.message = message(code: "person.toUser.loggedInUser.error", args: [params.id])
                 redirect(action: 'show', id: person.id)
                 return
