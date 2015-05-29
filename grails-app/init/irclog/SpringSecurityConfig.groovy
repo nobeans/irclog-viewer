@@ -1,5 +1,4 @@
 package irclog
-
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import irclog.security.GormUserDetailsService
@@ -9,8 +8,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.Order
 import org.springframework.security.access.AccessDeniedException
-import org.springframework.security.access.hierarchicalroles.RoleHierarchy
-import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -55,10 +52,10 @@ class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/channel/list").permitAll()
                 .antMatchers("/channel/show").permitAll()
                 .antMatchers("/channel/kick").hasRole("ADMIN")
-                .antMatchers("/channel/**").hasRole("USER")
+                .antMatchers("/channel/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/register/create").permitAll()
                 .antMatchers("/register/save").permitAll()
-                .antMatchers("/register/**").hasRole("USER")
+                .antMatchers("/register/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/person/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()
@@ -86,12 +83,5 @@ class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         mappingExceptionResolver.exceptionMappings = mappings
 
         mappingExceptionResolver
-    }
-
-    @Bean
-    RoleHierarchy roleHierarchy() {
-        def roleHierarchy = new RoleHierarchyImpl()
-        roleHierarchy.hierarchy = "ROLE_ADMIN > ROLE_USER"
-        roleHierarchy
     }
 }
