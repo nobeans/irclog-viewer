@@ -1,10 +1,12 @@
 package irclog
 
+import grails.transaction.Transactional
 import irclog.security.SpringSecurityContext
 
 /**
  * For administrator only.
  */
+@Transactional(readOnly = true)
 class PersonController implements SpringSecurityContext {
 
     // the delete, save and update actions only accept POST requests
@@ -30,6 +32,7 @@ class PersonController implements SpringSecurityContext {
         }
     }
 
+    @Transactional
     def delete() {
         withPerson(params.id) { person ->
             if (person == currentUser) {
@@ -52,6 +55,7 @@ class PersonController implements SpringSecurityContext {
         }
     }
 
+    @Transactional
     def update() {
         withPerson(params.id) { person ->
             // 更新する。
@@ -71,6 +75,7 @@ class PersonController implements SpringSecurityContext {
         return [person: new Person()]
     }
 
+    @Transactional
     def save() {
         def person = new Person(params)
         person.toUser()
@@ -84,6 +89,7 @@ class PersonController implements SpringSecurityContext {
         redirect(action: 'show', id: person.id)
     }
 
+    @Transactional
     def toAdmin() {
         withPerson(params.id) { person ->
             person.toAdmin().save()
@@ -92,6 +98,7 @@ class PersonController implements SpringSecurityContext {
         }
     }
 
+    @Transactional
     def toUser() {
         withPerson(params.id) { person ->
             if (person == currentUser) {

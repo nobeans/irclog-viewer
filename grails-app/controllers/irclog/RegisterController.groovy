@@ -1,10 +1,12 @@
 package irclog
 
+import grails.transaction.Transactional
 import irclog.security.SpringSecurityContext
 
 /**
  * Registration/Update/Show by end-user for oneself.
  */
+@Transactional(readOnly = true)
 class RegisterController implements SpringSecurityContext {
 
     static allowedMethods = [save: 'POST', update: 'POST']
@@ -24,6 +26,7 @@ class RegisterController implements SpringSecurityContext {
         }
     }
 
+    @Transactional
     def update() {
         withLoginPerson { person ->
             // ユーザによる情報更新の場合は一部のプロパティは変更不可
@@ -49,6 +52,7 @@ class RegisterController implements SpringSecurityContext {
         [person: new Person()]
     }
 
+    @Transactional
     def save() {
         // 未ログインかどうか。
         if (loggedIn) {

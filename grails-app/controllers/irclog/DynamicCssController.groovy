@@ -1,5 +1,8 @@
 package irclog
 
+import grails.transaction.Transactional
+
+@Transactional(readOnly = true)
 class DynamicCssController {
 
     def nickColors() {

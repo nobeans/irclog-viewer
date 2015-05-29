@@ -1,5 +1,6 @@
 package irclog
 
+import grails.transaction.Transactional
 import irclog.security.SpringSecurityContext
 import org.springframework.security.authentication.AccountExpiredException
 import org.springframework.security.authentication.CredentialsExpiredException
@@ -7,6 +8,7 @@ import org.springframework.security.authentication.DisabledException
 import org.springframework.security.authentication.LockedException
 import org.springframework.security.web.WebAttributes
 
+@Transactional(readOnly = true)
 class LoginController implements SpringSecurityContext {
 
     static defaultAction = 'auth'

@@ -1,10 +1,12 @@
 package irclog
 
 import grails.converters.JSON
+import grails.transaction.Transactional
 import irclog.security.SpringSecurityContext
 import java.security.MessageDigest
 import org.vertx.groovy.core.Vertx
 
+@Transactional(readOnly = true)
 class SummaryController implements SpringSecurityContext {
 
     private MessageDigest digest = MessageDigest.getInstance('md5')

@@ -1,11 +1,13 @@
 package irclog
 
+import grails.transaction.Transactional
 import irclog.security.SpringSecurityContext
 import grails.util.Holders
 import grails.validation.Validateable
 import irclog.search.SearchCriteriaStore
 import grails.web.databinding.DataBindingUtils
 
+@Transactional(readOnly = true)
 class SearchController implements SpringSecurityContext {
 
     static scope = 'prototype'
