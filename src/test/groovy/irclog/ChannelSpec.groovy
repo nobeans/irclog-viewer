@@ -3,7 +3,6 @@ package irclog
 import grails.test.mixin.TestFor
 import irclog.test.ConstraintUnitSpec
 import irclog.utils.DomainUtils
-import spock.lang.Ignore
 import spock.lang.Unroll
 
 @TestFor(Channel)
@@ -80,7 +79,6 @@ class ChannelSpec extends ConstraintUnitSpec {
         "#test1" | "#test2" | false
     }
 
-    @Ignore("It doesn't work at 3.0.0.RC2")
     def "validate: summary is unique"() {
         given:
         def existedChannel = setupExistedChannel()
