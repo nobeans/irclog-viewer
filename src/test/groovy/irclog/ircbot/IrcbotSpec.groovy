@@ -198,7 +198,9 @@ class IrcbotSpec extends Specification {
 
         and:
         new IrcbotState(channels: ["#test1"]).save(flush: true)
+        sleep 1 // to apply a different timestamp for dateCreated by force
         new IrcbotState(channels: ["#test2"]).save(flush: true)
+        sleep 1 // to apply a different timestamp for dateCreated by force
         new IrcbotState(channels: ["#test3"]).save(flush: true)
 
         when:
