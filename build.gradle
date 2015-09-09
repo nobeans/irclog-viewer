@@ -8,14 +8,14 @@ buildscript {
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
-        classpath 'com.bertramlabs.plugins:asset-pipeline-gradle:2.2.0'
-        classpath 'com.bertramlabs.plugins:less-asset-pipeline:2.1.0'
+        classpath 'com.bertramlabs.plugins:asset-pipeline-gradle:2.5.0'
+        classpath 'com.bertramlabs.plugins:less-asset-pipeline:2.3.0'
         classpath 'com.bertramlabs.plugins:coffee-asset-pipeline:2.0.7'
     }
 }
 
 plugins {
-    id "io.spring.dependency-management" version "0.4.0.RELEASE"
+    id "io.spring.dependency-management" version "0.5.2.RELEASE"
 }
 
 version "1.0.0.BUILD-SNAPSHOT"
